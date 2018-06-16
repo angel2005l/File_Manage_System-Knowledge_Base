@@ -1,4 +1,4 @@
-package com.edu.controller;
+package com.xh.controller;
 
 public class IndexController {
 
