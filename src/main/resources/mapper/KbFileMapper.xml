@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xh.dao.KbFileMapper" >
+  <resultMap id="BaseResultMap" type="com.xh.entity.KbFile" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="file_code" property="fileCode" jdbcType="CHAR" />
+    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+    <result column="file_info" property="fileInfo" jdbcType="VARCHAR" />
+    <result column="file_type" property="fileType" jdbcType="VARCHAR" />
+    <result column="file_status" property="fileStatus" jdbcType="VARCHAR" />
+    <result column="file_level" property="fileLevel" jdbcType="INTEGER" />
+    <result column="project_code" property="projectCode" jdbcType="CHAR" />
+    <result column="create_user_name" property="createUserName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, file_code, file_name, file_info, file_type, file_status, file_level, project_code, 
+    create_user_name, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from kb_file
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+</mapper>
