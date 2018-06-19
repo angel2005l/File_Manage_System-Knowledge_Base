@@ -1,5 +1,20 @@
 package com.xh.service;
 
-public interface IUserService {
+import com.xh.entity.KbUser;
+import com.xh.uitl.Result;
 
+public interface IUserService {
+	/**
+	 * 
+	 * @Title: login
+	 * @Description: 员工登录业务方法
+	 * @author 黄官易
+	 * @param userCode
+	 * @return
+	 * @throws Exception
+	 * @return Result<KbUser>
+	 * @date 2018年6月19日
+	 * @version 1.0
+	 */
+	public Result<KbUser> login(String userCode) throws Exception;
 }

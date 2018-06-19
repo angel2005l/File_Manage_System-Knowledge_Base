@@ -21,4 +21,9 @@
     from kb_user
     where id = #{id,jdbcType=INTEGER}
   </select>
+  
+  <select id="selectUserByUserName" parameterType="string" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from kb_user where user_code = #{userName,javaType=string}
+  </select>
+  
 </mapper>
