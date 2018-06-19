@@ -2,7 +2,7 @@ package com.xh.base;
 
 import com.xh.uitl.Result;
 
-public class BaseSevice {
+public class BaseService {
 	/**
 	 * 返回结果集合
 	 */
