@@ -17,8 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.xh.base.Constant;
-
 public final class IOUtil {
 	private static final Logger log = LoggerFactory.getLogger(IOUtil.class);
 	private static final String realPath = ContextLoader.getCurrentWebApplicationContext().getServletContext()
