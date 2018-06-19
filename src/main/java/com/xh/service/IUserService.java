@@ -10,11 +10,12 @@ public interface IUserService {
 	 * @Description: 员工登录业务方法
 	 * @author 黄官易
 	 * @param userCode
+	 * @param userPassword
 	 * @return
 	 * @throws Exception
 	 * @return Result<KbUser>
 	 * @date 2018年6月19日
 	 * @version 1.0
 	 */
-	public Result<KbUser> login(String userCode) throws Exception;
+	public Result<KbUser> login(String userCode, String userPassword) throws Exception;
 }
