@@ -40,17 +40,19 @@ public final class IOUtil {
 		if (!mf.isEmpty()) {
 			String oldFileName = mf.getOriginalFilename();
 			String suffix = oldFileName.substring(oldFileName.lastIndexOf("."));
-			switch (mf.getContentType()) {
-			case Constant.EXCELMIME:
+			System.err.println("suffix:"+suffix);
+			switch (suffix) {
+			case ".xls":
+			case ".xlsx":
+			case ".doc":
+			case ".docx":
+			case ".ppt":
+			case ".pptx":
 				// 当前时间 唯一性
-				newFileName = System.currentTimeMillis() + suffix;
-				break;
-			case Constant.JPEGMIME:
-			case Constant.PNGMIME:
-				newFileName += suffix;
-				// 新名字使用newFileName来确定 一般是房屋Id+后缀
+				newFileName = DateUtil.curDateYMDForservice() + suffix;
 				break;
 			default:
+				System.err.println("IOUtil:暂时不支持该文件的上传");
 				return "";
 			}
 			File fileObj = new File(realPath + filePath, newFileName);

@@ -3,152 +3,173 @@ package com.xh.base;
 import com.xh.uitl.Result;
 
 public class BaseSevice {
-
 	/**
 	 * 返回结果集合
 	 */
 	/**
 	 * 
-	 * @Title: rtnFailResult   
-	 * @Description: 返回失败结果 并携带信息  
+	 * @Title: rtnFailResult
+	 * @Description: 返回失败结果 并携带信息
+	 * @param code
 	 * @param msg
-	 * @return 
-	 * @author: MR.H
-	 * @return: Result<T>      
-	 *
+	 * @return
+	 * @return Result<T>
+	 * @author 黄官易
+	 * @date 2018.04.13
 	 */
-	public <T> Result<T> rtnFailResult(String msg) {
-		return new Result<>(Result.FAIL, msg);
+	public <T> Result<T> rtnFailResult(int code, String msg) {
+		return new Result<T>(code, msg);
 	}
 
 	/**
 	 * 
-	 * @Title: rtnFailResultWithData   
+	 * @Title: rtnFailResult
 	 * @Description: 返回失败结果 并携带信息和数据
+	 * @param code
 	 * @param msg
 	 * @param data
-	 * @return 
-	 * @author: MR.H
-	 * @return: Result<T>      
-	 *
+	 * @return
+	 * @return Result<T>
+	 * @author 黄官易
+	 * @date 2018.04.13
 	 */
-	public <T> Result<T> rtnFailResultWithData(String msg, T data) {
-		return new Result<T>(Result.FAIL, msg, data);
+	public <T> Result<T> rtnFailResult(int code, String msg, T data) {
+		return new Result<T>(code, msg, data);
 	}
 
 	/**
 	 * 
-	 * @Title: rtnSuccessResult   
+	 * @Title: rtnSuccessResult
 	 * @Description: 返回成功结果
-	 * @return 
-	 * @author: MR.H
-	 * @return: Result<T>      
-	 *
+	 * @return
+	 * @return Result<T>
+	 * @author 黄官易
+	 * @date 2018.04.13
 	 */
 	public <T> Result<T> rtnSuccessResult() {
-		return new Result<T>(Result.SUCCESS);
+		return new Result<T>(Result.SUCCESS_0);
 	}
 
 	/**
 	 * 
-	 * @Title: rtnSuccessResult   
-	 * @Description: 返回成功结果 并携带信息   
+	 * @Title: rtnSuccessResult
+	 * @Description: 返回成功结果 并携带信息
 	 * @param msg
-	 * @return 
-	 * @author: MR.H
-	 * @return: Result<T>      
-	 *
+	 * @return
+	 * @return Result<T>
+	 * @author 黄官易
+	 * @date 2018.04.13
 	 */
 	public <T> Result<T> rtnSuccessResult(String msg) {
-		return new Result<>(Result.SUCCESS, msg);
+		return new Result<>(Result.SUCCESS_0, msg);
 	}
 
 	/**
 	 * 
-	 * @Title: rtnSuccessResultWithData   
+	 * @Title: rtnSuccessResult
 	 * @Description: 返回成功结果 并携带信息和数据
 	 * @param msg
 	 * @param data
-	 * @return 
-	 * @author: MR.H
-	 * @return: Result<T>      
-	 *
+	 * @return
+	 * @return Result<T>
+	 * @author 黄官易
+	 * @date 2018.04.13
 	 */
-	public <T> Result<T> rtnSuccessResultWithData(String msg, T data) {
-		return new Result<T>(Result.SUCCESS, msg, data);
+	public <T> Result<T> rtnSuccessResult(String msg, T data) {
+		return new Result<T>(Result.SUCCESS_0, msg, data);
 	}
 
 	/**
 	 * 
-	 * @Title: rtnErrorResult   
+	 * @Title: rtnErrorResult
 	 * @Description: 返回异常结果 并携带信息
-	 * @param @param msg
-	 * @param @return
-	 * @author: MR.H
-	 * @return: Result<T>      
-	 *
+	 * @param code
+	 * @param msg
+	 * @return
+	 * @return Result<T>
+	 * @author 黄官易
+	 * @date 2018.04.13
 	 */
-	public <T> Result<T> rtnErrorResult(String msg) {
-		return new Result<T>(Result.ERROR, msg);
+	public <T> Result<T> rtnErrorResult(int code, String msg) {
+		return new Result<T>(code, msg);
 	}
 
 	/**
 	 * 
-	 * @Title: rtnErrorResultWithData   
-	 * @Description: 返回异常结果 并携带信息和数据
+	 * @Title: rtnErrorResult  
+	 * @Description: 返回异常结果 并携带信息和数据 
+	 * @param code
 	 * @param msg
 	 * @param data
-	 * @return 
-	 * @author: MR.H
-	 * @return: Result<T>      
-	 *
+	 * @return
+	 * @return Result<T>
+	 * @author 黄官易
+	 * @date 2018.04.13
 	 */
-	public <T> Result<T> rtnErrorResultWithData(String msg, T data) {
-		return new Result<T>(Result.ERROR, msg, data);
+	public <T> Result<T> rtnErrorResult(int code, String msg, T data) {
+		return new Result<T>(code, msg, data);
 	}
 
 	/**
 	 * 
-	 * @Title: rtnDefault   
+	 * @Title: rtnDefault  
 	 * @Description: 返回默认状态
-	 * @param status
-	 * @return 
-	 * @author: MR.H
-	 * @return: Result<T>      
-	 *
+	 * @param code
+	 * @return
+	 * @return Result<T>
+	 * @author 黄官易
+	 * @date 2018.04.13
 	 */
-	public <T> Result<T> rtnDefault(int status) {
-		return new Result<T>(status);
+	public <T> Result<T> rtnDefault(int code) {
+		return new Result<T>(code);
 	}
 
 	/**
 	 * 
-	 * @Title: rtnDefaultMsg   
+	 * @Title: rtnDefaultMsg  
 	 * @Description: 返回默认状态 并携带信息
-	 * @param status
+	 * @param code
 	 * @param msg
-	 * @return 
-	 * @author: MR.H
-	 * @return: Result<T>      
-	 *
+	 * @return
+	 * @return Result<T>
+	 * @author 黄官易
+	 * @date 2018.04.13
 	 */
-	public <T> Result<T> rtnDefaultMsg(int status, String msg) {
-		return new Result<>(status, msg);
+	public <T> Result<T> rtnDefaultMsg(int code, String msg) {
+		return new Result<T>(code, msg);
 	}
 
 	/**
 	 * 
-	 * @Title: rtnDefaultMsgWithData   
+	 * @Title: rtnDefaultMsg  
 	 * @Description: 返回默认状态 并携带信息和数据
-	 * @param status
+	 * @param code
 	 * @param msg
 	 * @param data
-	 * @return 
-	 * @author: MR.H
-	 * @return: Result<T>      
-	 *
+	 * @return
+	 * @return Result<T>
+	 * @author 黄官易
+	 * @date 2018.04.13
 	 */
-	public <T> Result<T> rtnDefaultMsgWithData(int status, String msg, T data) {
-		return new Result<T>(status, msg, data);
+	public <T> Result<T> rtnDefaultMsg(int code, String msg, T data) {
+		return new Result<T>(code, msg, data);
 	}
+
+	/**
+	 * 
+	 * @Title: rtnPageWithCount
+	 * @Description: 返回数据结果
+	 * @param totalResult
+	 * @param data
+	 * @return
+	 * @return Result<Page<T>>
+	 * @author 黄官易
+	 * @date 2018.03.21
+	 */
+	// public <T> Result<Page<T>> rtnPageWithCount(int showCount, int totalResult,
+	// List<T> data) {
+	// return new Result<Page<T>>(Result.SUCCESS, "", new Page<T>(showCount,
+	// totalResult, data));
+	// }
+
 }
