@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.xh</groupId>
-	<artifactId>aspose</artifactId>
+	<artifactId>xh_bi_b_knowledge_base</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>aspose Maven Webapp</name>
@@ -191,7 +191,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>aspose</finalName>
+		<finalName>xh_bi_b_knowledge_base</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
