@@ -6,7 +6,7 @@ public final class Constant {
 	 */
 	public static final String LEFT = "left";
 	/**
-	 *  中间
+	 * 中间
 	 */
 	public static final String CENTER = "center";
 	/**
@@ -14,44 +14,33 @@ public final class Constant {
 	 */
 	public static final String RIGHT = "right";
 	/**
-	 * 订单头标识
+	 * 部门头标识
 	 */
-	public static final String INDENTTAG = "I";
+	public static final String DEPTTAG = "D";
 	/**
-	 * 通用状态
+	 * 项目_表映射头标识
 	 */
-	public static final String[] TYPE = { "审核中", "已确认", "已取消", "已完成" };
+	public static final String PROJECTTABLETAG = "PT";
 	/**
-	 * 订单状态 
+	 * 项目头标识
 	 */
-	public static final String[] INDENTTYPE = { "defaultInd", "enterInd", "cancelInd" };
+	public static final String PROJECTTAG = "P";
 	/**
-	 * 合同头标识
+	 * 文件_表映射头标识
 	 */
-	public static final String BARGAINTAG = "B";
+	public static final String FILETABLETAG = "FT";
 	/**
-	 * 房屋头标识
+	 * 文件头标识
 	 */
-	public static final String HOUSETAG = "H";
+	public static final String FILETAG = "F";
 	/**
-	 * 财物头标识
+	 * 操作日志头标识
 	 */
-	public static final String FINANCETAG = "F";
-
+	public static final String OPERATIONLOGTAG = "L";
 	/**
-	 * 公司头标识
+	 * 职称头标识
 	 */
-	public static final String COMPANYTAG = "C";
-
-	/**
-	 * 员工头标识
-	 */
-	public static final String EMPLOYEETAG = "E";
-
-	/**
-	 * 虚拟顾客
-	 */
-	public static final String[] CUSNAME = { "顾客A", "顾客B", "顾客C", "顾客D" };
+	public static final String PROFESSIONALTAG = "PR";
 
 	/**
 	 * 默认密码
@@ -79,15 +68,12 @@ public final class Constant {
 	public static final String PNGMIME = "image/png";
 
 	/**
-	 * 员工导入列对应字段
-	 * （顺序不可随意改动）
+	 * 员工导入列对应字段 （顺序不可随意改动）
 	 */
-	// public static final String[] EMPEXCELCOL = { "empAccount", "empName",
-	// "empPhone", "empEmail", "empPass" };
 	public static final String[] EMPEXCELCOL = { "empAccount", "empName", "empPhone", "empEmail" };
 
 	/**
-	 *	EXCEL2007及以上后缀名
+	 * EXCEL2007及以上后缀名
 	 */
 	public static final String XLSXSUFFIX = ".xlsx";
 
