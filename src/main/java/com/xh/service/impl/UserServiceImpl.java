@@ -35,8 +35,8 @@ public class UserServiceImpl extends BaseService implements IUserService {
 						: rtnFailResult(Result.ERROR_4100, "用户密码不正确");
 			}
 		} catch (Exception e) {
-			log.error("登陆数据接口异常,异常原因【" + e.toString() + "】");
-			return rtnErrorResult(Result.ERROR_6000, "登陆数据接口异常,请联系管理员");
+			log.error("员工登陆数据接口异常,异常原因【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "员工登陆数据接口异常,请联系管理员");
 		}
 	}
 
