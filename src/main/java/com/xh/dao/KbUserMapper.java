@@ -19,6 +19,6 @@ public interface KbUserMapper {
 	 * @date 2018年6月19日
 	 * @version 1.0
 	 */
-	public KbUser selectUserByUserName(String userName) throws SQLException;
+	public KbUser selectUserByUserCode(String userCode) throws SQLException;
 
 }

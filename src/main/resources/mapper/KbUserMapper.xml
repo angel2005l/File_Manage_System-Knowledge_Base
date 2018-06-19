@@ -22,8 +22,8 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   
-  <select id="selectUserByUserName" parameterType="string" resultMap="BaseResultMap">
-  	select <include refid="Base_Column_List" /> from kb_user where user_code = #{userName,javaType=string}
+  <select id="selectUserByUserCode" parameterType="string" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from kb_user where user_code = #{userCode,javaType=string}
   </select>
   
 </mapper>
