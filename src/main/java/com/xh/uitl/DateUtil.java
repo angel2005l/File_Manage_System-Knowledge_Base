@@ -22,6 +22,7 @@ public final class DateUtil {
 	// 业务格式 （连续）
 	private static final String JOINT_YMD = "yyyyMMdd";
 	private static final String JOINT_YMDHM = "yyyyMMddHHmm";
+	private static final String JOINT_YMDHMS = "yyyyMMddHHmmss";
 	private static final String JOINT_YMDHMSS = "yyyyMMddHHmmssSSS";
 
 	// 格式转换工具
@@ -134,8 +135,23 @@ public final class DateUtil {
 
 	/**
 	 * 
-	 * @Title: curDateYMDHMSSForService   
-	 * @Description: 获得当前业务ID识别码 （yyyyMMddHHmmssSSS）  
+	 * @Title: curDateYMDHMSForService
+	 * @Description: 获得当前业务ID识别码（yyyyMMddHHmmss）
+	 * @author 黄官易
+	 * @return
+	 * @return String
+	 * @date 2018年6月20日
+	 * @version 1.0
+	 */
+	public static String curDateYMDHMSForService() {
+		dateFormat.applyPattern(JOINT_YMDHMS);
+		return dateFormat.format(System.currentTimeMillis());
+	}
+
+	/**
+	 * 
+	 * @Title: curDateYMDHMSSForService
+	 * @Description: 获得当前业务ID识别码 （yyyyMMddHHmmssSSS）
 	 * @return
 	 * @author: MR.H
 	 * @return: String
@@ -309,7 +325,7 @@ public final class DateUtil {
 
 	/**
 	 * 
-	 * @Title: getWeekNum   
+	 * @Title: getWeekNum
 	 * @Description: 今天是一周的第几天
 	 * @return
 	 * @author: MR.H
@@ -323,8 +339,8 @@ public final class DateUtil {
 
 	/**
 	 * 
-	 * @Title: getMonthNum   
-	 * @Description: 今天是一个月的第几天 
+	 * @Title: getMonthNum
+	 * @Description: 今天是一个月的第几天
 	 * @return
 	 * @author: MR.H
 	 * @return: int
@@ -360,5 +376,5 @@ public final class DateUtil {
 	// public static String addYear() {
 	// return "";
 	// }
-	
+
 }
