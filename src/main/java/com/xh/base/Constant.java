@@ -41,12 +41,7 @@ public final class Constant {
 	 * 职称头标识
 	 */
 	public static final String PROFESSIONALTAG = "PR";
-
-	/**
-	 * 默认密码
-	 */
-	public static final String[] PASSWORDDEFAULT = { "qwer", "sa", "123456" };
-
+	
 	/**
 	 * excel2007及以上文件MIME
 	 */
