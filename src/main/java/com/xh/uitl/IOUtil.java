@@ -112,29 +112,31 @@ public final class IOUtil {
 	/**
 	 * 
 	 * @Title: downloadFileTrue
-	 * @Description: TODO(这里用一句话描述这个方法的作用)
+	 * @Description: 文件下载servlet
 	 * @author 陈专懂
 	 * @return HttpServletResponse
 	 * @date 2018年6月19日
 	 * @version 1.0
 	 */
-	public static final HttpServletResponse downloadFileTrue(String path, String fileName, HttpServletResponse resp) {
+	public static final HttpServletResponse downloadFileServlet(String filePath, String fileName,
+			HttpServletResponse resp) {
 		try {
 			// path是指欲下载的文件的路径。
-			File file = new File(path);
+			File file = new File(realPath + filePath + File.separator + fileName);
 			// 取得文件名。
-			String filename = file.getName();
+			// String filename = file.getName();
 			// 取得文件的后缀名。
-			String ext = filename.substring(filename.lastIndexOf(".") + 1).toUpperCase();
+			// String ext = filename.substring(filename.lastIndexOf(".") + 1).toUpperCase();
 			// 以流的形式下载文件。
-			InputStream fis = new BufferedInputStream(new FileInputStream(path));
+			InputStream fis = new BufferedInputStream(new FileInputStream(file));
 			byte[] buffer = new byte[fis.available()];
 			fis.read(buffer);
 			fis.close();
 			// 清空response
 			resp.reset();
 			// 设置response的Header
-			resp.addHeader("Content-Disposition", "attachment;filename=" + new String(filename.getBytes()));
+			String downloadFielName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
+			resp.addHeader("Content-Disposition", "attachment;filename=" + downloadFielName);
 			resp.addHeader("Content-Length", "" + file.length());
 			OutputStream toClient = new BufferedOutputStream(resp.getOutputStream());
 			resp.setContentType("application/octet-stream");
@@ -360,17 +362,16 @@ public final class IOUtil {
 	 */
 	public static void displayPDF(HttpServletResponse response, HttpServletRequest request, String fileAddress) {
 		try {
-			String realPath = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("/");
 			File file = new File(fileAddress);
 			FileInputStream fileInputStream = new FileInputStream(file);
 			byte[] b = new byte[fileInputStream.available()];
 			fileInputStream.read(b);
-			response.setHeader("Content-Disposition", "attachment;fileName=test.pdf");
+			response.setHeader("Content-Disposition", "attachment;fileName=预览文件.pdf");
 			ServletOutputStream out = response.getOutputStream();
 			out.write(b);
 			out.flush();
 			out.close();
-//			IOUtil.clearTempPdf(fileInputStream, realPath+"pdf/");
+			IOUtil.clearTempPdf(fileInputStream);
 
 		} catch (Exception e) {
 			e.printStackTrace();

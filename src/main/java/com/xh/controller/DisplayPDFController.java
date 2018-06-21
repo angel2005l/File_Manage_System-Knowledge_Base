@@ -3,14 +3,9 @@
  */
 package com.xh.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,7 +38,7 @@ public class DisplayPDFController extends BaseController{
 	@RequestMapping("/upFile.do")
 	@ResponseBody
 	public Result<Object> uploadFile(HttpServletRequest req,HttpServletResponse resp,@RequestParam("fileName") MultipartFile file){
-		String fileAddress=IOUtil.uploadFile(file, "upload", "");
+		String fileAddress=IOUtil.uploadFile(file, "../upload", "");
 //		System.err.println("controller:file地址:"+fileAddress);
 		if(!fileAddress.equals("")){
 			return base.rtnSuccessResult(Result.SUCCESS_0_MSG, fileAddress);
@@ -64,11 +59,10 @@ public class DisplayPDFController extends BaseController{
 	@RequestMapping("/downloadFile.do")
 	@ResponseBody
 	public Result<Object> downloadFile(HttpServletRequest req,HttpServletResponse resp){
-		String path=req.getParameter("path");
 		String fileName=req.getParameter("filename");
 //		System.err.println("path:"+path);
 //		System.err.println("fileName:"+fileName);
-		HttpServletResponse re=IOUtil.downloadFileTrue(path, fileName,resp);
+		HttpServletResponse re=IOUtil.downloadFileServlet("../upload", fileName,resp);
 		if(re!=null){
 			return base.rtnSuccessResult();
 		}else{
