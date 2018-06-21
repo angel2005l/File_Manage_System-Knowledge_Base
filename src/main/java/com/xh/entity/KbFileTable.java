@@ -1,5 +1,7 @@
 package com.xh.entity;
 
+import java.util.Date;
+
 public class KbFileTable {
     private Integer id;
 
@@ -57,7 +59,7 @@ public class KbFileTable {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+	public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 }
