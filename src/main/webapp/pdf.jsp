@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-	<iframe src="<c:url value="/build/generic/web/viewer.html" />?file=/xh_bi_b_knowledge_base/disFile/dispdf.do"
+	<iframe src="<c:url value="/build/generic/web/viewer.html" />?file=/kn/servlet/displayPDFController"
         width="100%" height="800"></iframe>
 </body>
 </html>
