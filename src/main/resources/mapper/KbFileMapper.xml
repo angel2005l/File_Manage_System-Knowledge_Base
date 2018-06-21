@@ -20,12 +20,14 @@
   
   <!-- 新增文件信息 -->
   <insert id="insertFile" parameterType="com.xh.entity.KbFile">
-  	insert into kb_file(file_code, file_name, file_info, file_type, file_status, file_level, project_code,create_user_code, create_time) values(#{fileCode},#{fileName},#{fileInfo},#{fileType},#{fileStatus},#{fileLevel},#{projectCode},#{createUserCode},#{createTime})
+  	insert into ${fileTabelName}(file_code, file_name, file_info, file_type, file_status, file_level, project_code,create_user_code, create_time) values(#{kf.fileCode},#{kf.fileName},#{kf.fileInfo},#{kf.fileType},#{kf.fileStatus},#{kf.fileLevel},#{kf.projectCode},#{kf.createUserCode},#{kf.createTime})
   </insert>
   <!-- 根据员工编码查询当前项目下的所有文件 -->
-  <!-- <select id="selectFileByUserCode" >
-  	
-  </select> -->
-  <!--  -->
-  
+  <select id="selectFileByUserCode" resultMap="map">
+  	SELECT a.id ,a.file_code,a.file_name,a.file_info,a.file_type,a.create_time,b.file_permission FROM ${fileTableName} a INNER JOIN kb_file_user b ON a.file_code = b.file_code AND b.user_code = #{userCode} AND a.project_code = #{projectCode}
+  </select>
+  <!-- 根据员工编码查询当前项目下的所有文件行数 -->
+  <select id="selectFileCount" resultType="_int">
+    	SELECT count(1) FROM ${fileTableName} a INNER JOIN kb_file_user b ON a.file_code = b.file_code AND b.user_code = #{userCode} AND a.project_code = #{projectCode}
+  </select>
 </mapper>

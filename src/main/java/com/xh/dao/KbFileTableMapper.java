@@ -47,7 +47,7 @@ public interface KbFileTableMapper {
 	 * @date 2018年6月21日
 	 * @version 1.0
 	 */
-	public int insertFile(KbFileTable obj) throws SQLException;
+	public int insertFileTable(KbFileTable obj) throws SQLException;
 
 	/**
 	 * 

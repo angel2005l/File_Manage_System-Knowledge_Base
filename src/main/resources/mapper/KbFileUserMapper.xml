@@ -17,10 +17,15 @@
     id, file_code, file_name, file_type, file_permission, user_code, user_name, user_dept_code, 
     create_user_code, create_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 'false' as QUERYID,
-    <include refid="Base_Column_List" />
-    from kb_file_user
-    where id = #{id,jdbcType=INTEGER}
-  </select>
+  <!-- 批量插入文件与用户关联关系    -->
+  <insert id="batchInsertFileUser" parameterType="list">
+  	insert into kb_file_user(file_code, file_name, file_type, file_permission, user_code, user_name, user_dept_code, create_user_code, create_time) vaules
+  		<foreach collection="list" item="kfu" separator=",">
+  			(#{kfu.fileCode},#{kfu.fileName},#{kfu.fileType},#{kfu.filePermission},#{kfu.userCode},#{kfu.userName},#{kfu.userDeptCode},#{kfu.createUserCode},#{kfu.createTime})
+  		</foreach>
+  </insert>
+  <!-- 插入文件与用户关联关系 -->
+  <insert id="insertFileUser" parameterType="com.xh.entity.KbFileUser">
+  	  	insert into kb_file_user(file_code, file_name, file_type, file_permission, user_code, user_name, user_dept_code, create_user_code, create_time) vaules(#{fileCode},#{fileName},#{fileType},#{filePermission},#{userCode},#{userName},#{userDeptCode},#{createUserCode},#{createTime})
+  </insert>
 </mapper>

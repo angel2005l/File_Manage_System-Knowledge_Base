@@ -35,7 +35,7 @@
 	</select>
 
 	<!-- 保存文件表路径 -->
-	<insert id="insertFile" parameterType="com.xh.entity.KbFileTable">
+	<insert id="insertFileTable" parameterType="com.xh.entity.KbFileTable">
 		insert into	kb_file_table(ft_code,ft_name,file_level,create_user_code,create_time)
 		select 	'${ftCode}','${ftName}',${fileLevel},'${createUserCode}','${createTime}' from
 		dual where NOT EXISTS(select * from kb_file_table where file_level =#{fileLevel} )

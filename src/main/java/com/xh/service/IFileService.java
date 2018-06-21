@@ -23,7 +23,7 @@ public interface IFileService {
 	 * @date 2018年6月21日
 	 * @version 1.0
 	 */
-	public Result<Object> insFile(KbFile kf, KbFileTable kft, List<KbFileUser> kfus) throws Exception;
+	public Result<Object> insFile(KbFile kf, String projectLevel, List<KbFileUser> kfus) throws Exception;
 
 	/**
 	 * 

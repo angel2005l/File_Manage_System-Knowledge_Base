@@ -27,8 +27,8 @@ import com.xh.uitl.StrUtil;
 @RequestMapping("/file")
 public class FileController extends BaseController {
 	private static final Logger log = LoggerFactory.getLogger(FileController.class);// 日志对象
-	private static final String FILETABLETAG = Constant.FILETABLETAG;// 文件表标识表头
-	private static final String TABELTAG = Constant.TABELTAG;// 数据库表头
+	private static final String FILETABLETAG = Constant.FILETABLETAG;// 文件表标识头
+	private static final String TABELTAG = Constant.TABELTAG;// 数据库表标识头
 
 	@Autowired
 	@Qualifier("fileServiceImpl")
@@ -41,20 +41,20 @@ public class FileController extends BaseController {
 	 * @author 陈专懂
 	 * @return void
 	 * @date 2018年6月19日
-	 * @version 1.0
+	 * @update 2018年6月21日
+	 * @updateAuthor 黄官易
+	 * @version 2.0
 	 */
-	BaseController base = new BaseController();
 
 	@RequestMapping("/upFile.do")
 	@ResponseBody
 	public Result<Object> uploadFile(HttpServletRequest req, HttpServletResponse resp,
 			@RequestParam("fileName") MultipartFile file) {
 		String fileAddress = IOUtil.uploadFile(file, "../upload", "");
-		// System.err.println("controller:file地址:"+fileAddress);
 		if (!fileAddress.equals("")) {
-			return base.rtnSuccessResult(Result.SUCCESS_0_MSG, fileAddress);
+			return rtnSuccessResult(Result.SUCCESS_0_MSG, fileAddress);
 		} else {
-			return base.rtnErrorResult(Result.ERROR_4000, Result.ERROR_4000_MSG);
+			return rtnErrorResult(Result.ERROR_4000, Result.ERROR_4000_MSG);
 		}
 	}
 
@@ -75,9 +75,9 @@ public class FileController extends BaseController {
 		// System.err.println("fileName:"+fileName);
 		HttpServletResponse re = IOUtil.downloadFileServlet("../upload", fileName, resp);
 		if (re != null) {
-			return base.rtnSuccessResult();
+			return rtnSuccessResult();
 		} else {
-			return base.rtnErrorResult(Result.ERROR_4000, Result.ERROR_4000_MSG);
+			return rtnErrorResult(Result.ERROR_4000, Result.ERROR_4000_MSG);
 		}
 	}
 
@@ -94,14 +94,13 @@ public class FileController extends BaseController {
 	@ResponseBody
 	public void displayPDF(HttpServletResponse resp, HttpServletRequest req) {
 		String path = req.getParameter("pathAddress");
-		// System.err.println("controller:"+path);
 		IOUtil.displayPDF(resp, req, path);
 	}
 
 	/**
 	 * 
 	 * @Title: insFileTable
-	 * @Description: 新增文件表信息及文件表业务方法
+	 * @Description: 新增文件表信息及文件表入口方法
 	 * @author 黄官易
 	 * @param request
 	 * @param response
@@ -113,19 +112,23 @@ public class FileController extends BaseController {
 	 */
 	@RequestMapping("/insft.do")
 	@ResponseBody
-	public Result<Object> insFileTable(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+	public Result<Object> insFileTable(HttpServletRequest request, HttpSession session) {
 		String ftName = request.getParameter("ft_name");
 		String ftLevel = request.getParameter("ft_level");
 		KbFileTable kft = new KbFileTable();
-		kft.setFtCode(
-				FILETABLETAG + DateUtil.curDateYMDHMSForService() + StrUtil.getRandom((int) (Math.random() * 1000), 3));
-		kft.setFtName(TABELTAG + ftName);
-		kft.setFileLevel(Integer.parseInt(ftLevel));
-		// kft.setCreateUserCode(session.getAttribute("userCode").toString());
-		kft.setCreateUserCode("kb_system");
-		kft.setCreateTime(DateUtil.curDateYMDHMS());
 		try {
+			// 编码规则 FT+yyyyMMddHHmmss+3位随机数
+			kft.setFtCode(
+					FILETABLETAG + DateUtil.curDateYMDHMSForService() + StrUtil.getRandom((int) (Math.random() * 1000),
+							3));
+			kft.setFtName(TABELTAG + ftName);
+			kft.setFileLevel(Integer.parseInt(ftLevel));
+			kft.setCreateUserCode(session.getAttribute("userCode") == null ? "kb_system"
+					: session.getAttribute("userCode").toString());
+			kft.setCreateTime(DateUtil.curDateYMDHMS());
 			return fs.inseFileTable(kft);
+		} catch (NumberFormatException e) {
+			return rtnFailResult(Result.ERROR_4000, "文件层级参数不合法,文件层级参数必须为一个自然数（0或正整数）");
 		} catch (Exception e) {
 			log.error("新增文件表信息及文件表接口异常,异常原因:【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "新增文件表信息及文件表接口异常,请联系系统管理员");

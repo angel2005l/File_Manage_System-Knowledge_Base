@@ -11,23 +11,59 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.xh.base.BaseService;
+import com.xh.dao.KbFileMapper;
 import com.xh.dao.KbFileTableMapper;
+import com.xh.dao.KbFileUserMapper;
 import com.xh.entity.KbFile;
 import com.xh.entity.KbFileTable;
 import com.xh.entity.KbFileUser;
 import com.xh.service.IFileService;
 import com.xh.uitl.Result;
+import com.xh.uitl.StrUtil;
 
 @Service("fileServiceImpl")
 public class FileServiceImpl extends BaseService implements IFileService {
 	private static final Logger log = LoggerFactory.getLogger(FileServiceImpl.class);// 日志对象
 
 	@Autowired
-	private KbFileTableMapper kftm;
+	private KbFileTableMapper kftm;// 文件表数据接口
+	@Autowired
+	private KbFileMapper kfm;// 文件数据接口
+	@Autowired
+	private KbFileUserMapper kfum;// 文件用户关联接口
 
 	@Override
-	public Result<Object> insFile(KbFile kf, KbFileTable kfb, List<KbFileUser> kfus) throws Exception {
-		return null;
+	@Transactional(rollbackFor = Exception.class)
+	public Result<Object> insFile(KbFile kf, String projectLevel, List<KbFileUser> kfus) throws Exception {
+		if (!StrUtil.isPositiveInteger(projectLevel)) {
+			return rtnFailResult(Result.ERROR_4000, "项目层级参数不合法");
+		}
+		String fileTableName = "";
+		try {
+			fileTableName = kftm.selectFileTableNameByFileLevel(Integer.parseInt(projectLevel));
+		} catch (SQLException e) {
+			log.error("获得文件表信息异常,异常原因【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "获得文件表信息异常,请联系系统管理员");
+		}
+		if (StrUtil.notBlank(fileTableName)) {
+			try {
+				// 保存文件主信息
+				int fileNum = kfm.insertFile(kf, fileTableName);
+				// 保存文件与用户的关联关系
+				int fileUserNum = kfum.batchInsertFileUser(kfus);
+				if (fileNum > 0 && fileUserNum == kfus.size()) {
+					return rtnSuccessResult("文件保存成功");
+				} else {
+					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
+					return rtnFailResult(Result.ERROR_4300, "文件保存失败");
+				}
+			} catch (SQLException e) {
+				log.error("新增文件信息数据接口异常,异常原因:【" + e.toString() + "】");
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
+				return rtnErrorResult(Result.ERROR_6000, "新增文件信息数据接口异常,请联系系统管理员");
+			}
+		}
+		return rtnFailResult(Result.ERROR_4300, "无相关联数据表信息/该层级未开放,请联系系统管理员");
 	}
 
 	@Override
@@ -39,13 +75,13 @@ public class FileServiceImpl extends BaseService implements IFileService {
 		try {
 			// 判断文件是否存在
 			if (kftm.isExistFileTable(kft.getFileLevel()) || kftm.isExistFileDataTable(kft.getFtName())) {
-				return rtnFailResult(Result.ERROR_4000, "改文件层级已存在或文件表名重复");
+				return rtnFailResult(Result.ERROR_4000, "该文件层级已存在或文件表名重复");
 			}
 			// 新增文件表信息
-			int insertFile = kftm.insertFile(kft);
+			int fileTableInfoNum = kftm.insertFileTable(kft);
 			// 创建文件表
-			int createFileTable = kftm.createFileTable(kft.getFtName(), kft.getFileLevel());
-			if (insertFile > 0 && createFileTable == 0)
+			int fileTableNum = kftm.createFileTable(kft.getFtName(), kft.getFileLevel());
+			if (fileTableInfoNum > 0 && fileTableNum == 0)
 				return rtnSuccessResult("文件表新增成功");
 			else
 				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
