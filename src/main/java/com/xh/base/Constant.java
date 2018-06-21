@@ -2,17 +2,10 @@ package com.xh.base;
 
 public final class Constant {
 	/**
-	 * 左边
+	 * 数据库表头
 	 */
-	public static final String LEFT = "left";
-	/**
-	 * 中间
-	 */
-	public static final String CENTER = "center";
-	/**
-	 * 右边
-	 */
-	public static final String RIGHT = "right";
+	public static final String TABELTAG = "kb_";
+
 	/**
 	 * 部门头标识
 	 */
@@ -41,7 +34,7 @@ public final class Constant {
 	 * 职称头标识
 	 */
 	public static final String PROFESSIONALTAG = "PR";
-	
+
 	/**
 	 * excel2007及以上文件MIME
 	 */
