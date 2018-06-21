@@ -52,13 +52,22 @@ public class DisplayPDFController extends BaseController{
 		}
 	}
 	
+	/**
+	 * 
+	 * @Title: downloadFile  
+	 * @Description: TODO(文件下载的功能)  
+	 * @author 陈专懂 
+	 * @return Result<Object> 
+	 * @date 2018年6月20日  
+	 * @version 1.0
+	 */
 	@RequestMapping("/downloadFile.do")
 	@ResponseBody
 	public Result<Object> downloadFile(HttpServletRequest req,HttpServletResponse resp){
 		String path=req.getParameter("path");
 		String fileName=req.getParameter("filename");
-		System.err.println("path:"+path);
-		System.err.println("fileName:"+fileName);
+//		System.err.println("path:"+path);
+//		System.err.println("fileName:"+fileName);
 		HttpServletResponse re=IOUtil.downloadFileTrue(path, fileName,resp);
 		if(re!=null){
 			return base.rtnSuccessResult();
@@ -67,23 +76,22 @@ public class DisplayPDFController extends BaseController{
 		}
 	}
 	
-	@RequestMapping("/disPdf")
+	/**
+	 * 
+	 * @Title: displayPDF  
+	 * @Description: TODO(文件在线预览的功能)  
+	 * @author 陈专懂 
+	 * @return void 
+	 * @date 2018年6月20日  
+	 * @version 1.0
+	 */
+	@RequestMapping("/disPdf.do")
 	@ResponseBody
-	public void displayPDF(HttpServletResponse response,HttpServletRequest request) {
-        try {
-            File file = new File("C:/Users/Administrator/Desktop/123.pdf");
-            FileInputStream fileInputStream = new FileInputStream(file);
-            byte[] b=new byte[fileInputStream.available()];
-            fileInputStream.read(b);
-            response.setHeader("Content-Disposition", "attachment;fileName=test.pdf");
-            ServletOutputStream out=response.getOutputStream();
-            out.write(b);
-            out.flush();
-            out.close();
-            
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+	public void displayPDF(HttpServletResponse resp,HttpServletRequest req) {
+        String path=req.getParameter("pathAddress"); 
+        System.err.println("controller:"+path);
+        req.setAttribute("Str", "/xh_bi_b_knowledge_base/disFile/disPdf.do&pathAddress=C:/Users/Administrator/Desktop/123.pdf");
+		IOUtil.displayPDF(resp, req, "C:/Users/Administrator/Desktop/123.pdf");
     }
 	
 }
