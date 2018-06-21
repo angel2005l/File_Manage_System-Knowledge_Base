@@ -1,21 +1,79 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xh.dao.KbFileTableMapper" >
-  <resultMap id="BaseResultMap" type="com.xh.entity.KbFileTable" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="ft_code" property="ftCode" jdbcType="CHAR" />
-    <result column="ft_name" property="ftName" jdbcType="VARCHAR" />
-    <result column="file_level" property="fileLevel" jdbcType="INTEGER" />
-    <result column="create_user_code" property="createUserCode" jdbcType="VARCHAR" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, ft_code, ft_name, file_level, create_user_code, create_time
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 'false' as QUERYID,
-    <include refid="Base_Column_List" />
-    from kb_file_table
-    where id = #{id,jdbcType=INTEGER}
-  </select>
+<mapper namespace="com.xh.dao.KbFileTableMapper">
+	<resultMap id="BaseResultMap" type="com.xh.entity.KbFileTable">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="ft_code" property="ftCode" jdbcType="CHAR" />
+		<result column="ft_name" property="ftName" jdbcType="VARCHAR" />
+		<result column="file_level" property="fileLevel" jdbcType="INTEGER" />
+		<result column="create_user_code" property="createUserCode"
+			jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, ft_code, ft_name, file_level, create_user_code,
+		create_time
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select 'false' as QUERYID,
+		<include refid="Base_Column_List" />
+		from kb_file_table
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<!-- 判断该层级表信息是否存在 -->
+	<select id="isExistFileTable" parameterType="_int" resultType="_boolean">
+		select count(1) from kb_file_table where file_level =
+		#{fileLevel,jdbcType=INTEGER}
+	</select>
+
+	<!-- 查询当前最大开放级数 -->
+	<select id="selectFileLevelMax" resultType="_int">
+		select
+		max(file_level) from kb_file_table
+	</select>
+
+	<!-- 保存文件表路径 -->
+	<insert id="insertFile" parameterType="BaseResultMap">
+		insert into
+		kb_file_table(ft_code,ft_name,file_level,create_user_code,create_time)
+		select
+		#{ftCode},#{ftName},#{fileLevel},#{createUserCode},#{createTime} from
+		dual where not exsit(select * from kb_file_table )
+	</insert>
+
+	<!-- 创建文件表 -->
+	<update id="createFileTable">
+		create table ${fileTableName} (
+		id int(11) NOT NULL AUTO_INCREMENT ,
+		file_code CHAR(19) NOT NULL,
+		file_name VARCHAR(32) NOT NULL,
+		file_info VARCHAR(255),
+		file_type VARCHAR(12),
+		file_status CHAR() NOT NULL,
+		file_level INT(2) NOT NULL DEFAULT ${fileLevel},
+		project_code CHAR(19) NOT NULL ,
+		create_user_code VARCHAR(11),
+		create_time DATETIME,
+		PRIMARY KEY (`id`),
+		INDEX `index_file_code` (`file_code`) USING BTREE,
+		INDEX `index_project_code` (`project_code`) USING BTREE,
+		INDEX `index_file_code_project_code` (`file_code`,`project_code`) USING BTREE
+		)
+		ENGINE=InnoDB
+		DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+	</update>
+
+	<!-- 根据层级查询表名称 -->
+	<select id="selectFileTableNameByFileLevel" parameterType="_int" resultType="string">
+		select ft_name from xb_file_table where file_level = ${fileLevel} 
+	</select>
+
+	<!-- 查询文件分表是否存在 -->
+	<select id="isExistFileDataTable" parameterType="string" resultType="_boolean">
+		select count(1)  
+        from information_schema.TABLES
+        where table_name =#{tableName}
+	</select>
 </mapper>

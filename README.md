@@ -1,1 +1,3 @@
-对于office、PDF、CAD的可视化阅读的Demo
+知识库项目
+框架SSM
+可视化方案：apsose+pdf.js
