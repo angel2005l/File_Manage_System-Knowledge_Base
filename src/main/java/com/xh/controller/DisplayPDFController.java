@@ -90,7 +90,7 @@ public class DisplayPDFController extends BaseController{
 	public void displayPDF(HttpServletResponse resp,HttpServletRequest req) {
         String path=req.getParameter("pathAddress"); 
         System.err.println("controller:"+path);
-        req.setAttribute("Str", "/xh_bi_b_knowledge_base/disFile/disPdf.do&pathAddress=C:/Users/Administrator/Desktop/123.pdf");
+//        req.setAttribute("Str", "/xh_bi_b_knowledge_base/disFile/disPdf.do&pathAddress=C:/Users/Administrator/Desktop/123.pdf");
 		IOUtil.displayPDF(resp, req, "C:/Users/Administrator/Desktop/123.pdf");
     }
 	

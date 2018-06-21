@@ -372,7 +372,7 @@ public final class IOUtil {
 	 * @date 2018年6月19日
 	 * @version 1.0
 	 */
-	public void displayPDF(HttpServletResponse response, HttpServletRequest request, String fileAddress) {
+	public static void displayPDF(HttpServletResponse response, HttpServletRequest request, String fileAddress) {
 		try {
 			File file = new File(fileAddress);
 			FileInputStream fileInputStream = new FileInputStream(file);
