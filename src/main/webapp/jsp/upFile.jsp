@@ -17,16 +17,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body >
-  	<form action="disFile/upFile.do" method="post" enctype="multipart/form-data" role="form">
+  	<form action="file/upFile.do" method="post" enctype="multipart/form-data" role="form">
     	<input type="file" name="fileName" id="file"/>
     	<input type="submit" value="提交">
   	</form>
   	<br>
   	<br>
   	<br>
-  	<form action="disFile/downloadFile.do" method="post" enctype="multipart/form-data" role="form">
-  		<input type="text" name="path" id="path" value="D:/Program Files/Apache Software Foundation/Tomcat 8.0/webapps/aspose/upload/20180619.docx">
-  		<input type="text" name="filename" id="filename" value="20180619.docx">
+  	<form action="file/downloadFile.do" method="post" enctype="multipart/form-data" role="form">
+  		<input type="text" name="filename" id="filename" value="致各位代理们.docx">
     	<input type="submit" value="download">
   	</form>
   	<div><span style="color:red">${info }</span></div>
