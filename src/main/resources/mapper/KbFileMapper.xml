@@ -17,4 +17,15 @@
     id, file_code, file_name, file_info, file_type, file_status, file_level, project_code, 
     create_user_code, create_time
   </sql>
+  
+  <!-- 新增文件信息 -->
+  <insert id="insertFile" parameterType="com.xh.entity.KbFile">
+  	insert into kb_file(file_code, file_name, file_info, file_type, file_status, file_level, project_code,create_user_code, create_time) values(#{fileCode},#{fileName},#{fileInfo},#{fileType},#{fileStatus},#{fileLevel},#{projectCode},#{createUserCode},#{createTime})
+  </insert>
+  <!-- 根据员工编码查询当前项目下的所有文件 -->
+  <!-- <select id="selectFileByUserCode" >
+  	
+  </select> -->
+  <!--  -->
+  
 </mapper>

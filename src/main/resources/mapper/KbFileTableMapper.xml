@@ -35,34 +35,29 @@
 	</select>
 
 	<!-- 保存文件表路径 -->
-	<insert id="insertFile" parameterMap="BaseResultMap">
-		insert into
-		kb_file_table(ft_code,ft_name,file_level,create_user_code,create_time)
-		select
-		#{ftCode},#{ftName},#{fileLevel},#{createUserCode},#{createTime} from
-		dual where not exsit(select * from kb_file_table )
+	<insert id="insertFile" parameterType="com.xh.entity.KbFileTable">
+		insert into	kb_file_table(ft_code,ft_name,file_level,create_user_code,create_time)
+		select 	'${ftCode}','${ftName}',${fileLevel},'${createUserCode}','${createTime}' from
+		dual where NOT EXISTS(select * from kb_file_table where file_level =#{fileLevel} )
 	</insert>
 
-	<!-- 创建文件表 -->
+		<!-- 创建文件表 -->
 	<update id="createFileTable">
-		create table ${fileTableName} (
-		id int(11) NOT NULL AUTO_INCREMENT ,
-		file_code CHAR(19) NOT NULL,
-		file_name VARCHAR(32) NOT NULL,
-		file_info VARCHAR(255),
-		file_type VARCHAR(12),
-		file_status CHAR() NOT NULL,
-		file_level INT(2) NOT NULL DEFAULT ${fileLevel},
-		project_code CHAR(19) NOT NULL ,
-		create_user_code VARCHAR(11),
-		create_time DATETIME,
-		PRIMARY KEY (`id`),
-		INDEX `index_file_code` (`file_code`) USING BTREE,
-		INDEX `index_project_code` (`project_code`) USING BTREE,
-		INDEX `index_file_code_project_code` (`file_code`,`project_code`) USING BTREE
-		)
-		ENGINE=InnoDB
-		DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+	CREATE TABLE ${fileTableName} (
+  	`id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id自增',
+  	`file_code` char(19) DEFAULT NULL COMMENT '文件编号 F+yyyyMMddHHmmss+4随机数',
+  	`file_name` varchar(32) DEFAULT NULL COMMENT '文件名称',
+  	`file_info` varchar(255) DEFAULT NULL COMMENT '文件信息',
+  	`file_type` varchar(12) DEFAULT NULL COMMENT '.png/.jpge/.cad/.doc/.docx/.xls…(统一小写)',
+  	`file_status` varchar(9) DEFAULT NULL COMMENT 'delete：删除 在档：in the file',
+  	`file_level` int(2) DEFAULT '${fileLevel}' COMMENT '0为根项目 用于限定开放的项目层级',
+  	`project_code` char(19) DEFAULT NULL COMMENT '项目格式 P+yyyyMMddHHmmss+4随机数',
+  	`create_user_code` varchar(11) DEFAULT NULL COMMENT '员工编号',
+  	`create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  	PRIMARY KEY (`id`),
+  	KEY `index_file_code` (`file_code`) USING BTREE,
+  	KEY `index_project_code` (`project_code`) USING BTREE
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	</update>
 
 	<!-- 根据层级查询表名称 -->
