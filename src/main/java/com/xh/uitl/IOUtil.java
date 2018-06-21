@@ -219,13 +219,13 @@ public final class IOUtil {
 	/**
 	 * 
 	 * @Title: displayPDF  
-	 * @Description: TODO(pdf.js)  
+	 * @Description: TODO(pdf.js用于文件的在线预览)  
 	 * @author 陈专懂 
 	 * @return void 
 	 * @date 2018年6月19日  
 	 * @version 1.0
 	 */
-	public void displayPDF(HttpServletResponse response,HttpServletRequest request,String fileAddress) {
+	public  static void displayPDF(HttpServletResponse response,HttpServletRequest request,String fileAddress) {
         try {
             File file = new File(fileAddress);
             FileInputStream fileInputStream = new FileInputStream(file);
@@ -236,7 +236,6 @@ public final class IOUtil {
             out.write(b);
             out.flush();
             out.close();
-            
         } catch(Exception e) {
             e.printStackTrace();
         }
