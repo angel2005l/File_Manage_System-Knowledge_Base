@@ -2,15 +2,14 @@ package com.xh.uitl;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.ibatis.io.Resources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.ContextLoader;
 
-import com.aspose.cells.SaveOptions;
 import com.aspose.cells.Workbook;
 import com.aspose.words.Document;
 import com.aspose.words.License;
@@ -55,6 +54,7 @@ public class AsposeUtil {
 	 * @version 1.0
 	 */
 	public static String word2PDFStr(String filePath) {
+		String realPath = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("/");
 		String pdfPath = "";
 		FileInputStream pdfFileOS = null;
 		// 加载许可证
@@ -63,8 +63,9 @@ public class AsposeUtil {
 			try {
 				File file = new File(filePath);
 				pdfFileOS = new FileInputStream(file);
+				System.err.println(file+""+pdfFileOS);
 				Document doc = new Document(pdfFileOS);
-				pdfPath = "src//main//pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				pdfPath = realPath+"pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
 				doc.save(pdfPath, SaveFormat.PDF);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -105,7 +106,7 @@ public class AsposeUtil {
 				File file = new File(filePath);
 				pdfFileOS = new FileInputStream(file);
 				Document doc = new Document(pdfFileOS);
-				pdfPath = "src//main//pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				pdfPath = "src//main//webapp//pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
 				doc.save(pdfPath, SaveFormat.PDF);
 				File filePdf = new File(pdfPath);
 				pdfFileIs = new FileInputStream(filePdf);
@@ -142,7 +143,7 @@ public class AsposeUtil {
 			// 获得文件对象
 			try {
 				Document doc = new Document(is);
-				pdfPath = "src//main//pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				pdfPath = "src//main//webapp//pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
 				doc.save(pdfPath, SaveFormat.PDF);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -172,7 +173,7 @@ public class AsposeUtil {
 			// 获得文件对象
 			try {
 				Document doc = new Document(is);
-				pdfPath = "src//main//pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				pdfPath = "src//main//webapp//pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
 				doc.save(pdfPath, SaveFormat.PDF);
 				File filePdf = new File(pdfPath);
 				pdfFileIs = new FileInputStream(filePdf);
@@ -221,7 +222,7 @@ public class AsposeUtil {
 				File file = new File(filePath);
 				FileInputStream is = new FileInputStream(file);
 				Workbook wb = new Workbook(is);
-				pdfPath = "src//main//pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				pdfPath = "src//main//webapp//pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
 				wb.save(pdfPath, com.aspose.cells.SaveFormat.PDF);
 			}
 		} catch (Exception e) {
