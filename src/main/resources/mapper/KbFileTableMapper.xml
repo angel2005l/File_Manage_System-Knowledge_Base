@@ -1,23 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xh.dao.KbFileTableMapper">
-  <resultMap id="BaseResultMap" type="com.xh.entity.KbFileTable">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="ft_code" jdbcType="CHAR" property="ftCode" />
-    <result column="ft_name" jdbcType="VARCHAR" property="ftName" />
-    <result column="file_level" jdbcType="INTEGER" property="fileLevel" />
-    <result column="create_user_code" jdbcType="VARCHAR" property="createUserCode" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, ft_code, ft_name, file_level, create_user_code, create_time
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 'false' as QUERYID,
-    <include refid="Base_Column_List" />
-    from kb_file_table
-    where id = #{id,jdbcType=INTEGER}
-  </select>
+	<resultMap id="BaseResultMap" type="com.xh.entity.KbFileTable">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="ft_code" property="ftCode" jdbcType="CHAR" />
+		<result column="ft_name" property="ftName" jdbcType="VARCHAR" />
+		<result column="file_level" property="fileLevel" jdbcType="INTEGER" />
+		<result column="create_user_code" property="createUserCode"
+			jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, ft_code, ft_name, file_level, create_user_code,
+		create_time
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select 'false' as QUERYID,
+		<include refid="Base_Column_List" />
+		from kb_file_table
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
 	<!-- 判断该层级表信息是否存在 -->
 	<select id="isExistFileTable" parameterType="_int" resultType="_boolean">
 		select count(1) from kb_file_table where file_level =
