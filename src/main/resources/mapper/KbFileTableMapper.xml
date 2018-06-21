@@ -35,7 +35,7 @@
 	</select>
 
 	<!-- 保存文件表路径 -->
-	<insert id="insertFile" parameterType="BaseResultMap">
+	<insert id="insertFile" parameterMap="BaseResultMap">
 		insert into
 		kb_file_table(ft_code,ft_name,file_level,create_user_code,create_time)
 		select

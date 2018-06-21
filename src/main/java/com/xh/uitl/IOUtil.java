@@ -374,6 +374,7 @@ public final class IOUtil {
 	 */
 	public static void displayPDF(HttpServletResponse response, HttpServletRequest request, String fileAddress) {
 		try {
+			String realPath = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("/");
 			File file = new File(fileAddress);
 			FileInputStream fileInputStream = new FileInputStream(file);
 			byte[] b = new byte[fileInputStream.available()];
@@ -383,6 +384,7 @@ public final class IOUtil {
 			out.write(b);
 			out.flush();
 			out.close();
+//			IOUtil.clearTempPdf(fileInputStream, realPath+"pdf/");
 
 		} catch (Exception e) {
 			e.printStackTrace();
