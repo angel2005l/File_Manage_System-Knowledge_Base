@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.xh.entity.KbProject;
 import com.xh.entity.KbProjectTable;
 
 public interface KbProjectTableMapper {
@@ -20,7 +21,7 @@ public interface KbProjectTableMapper {
 	public int insertProject(KbProjectTable obj) throws SQLException;
 
 	// 创建文件表
-	public int createProjectTable(@Param("projectTableName") String projectTableName, @Param("projectLevel") int projectLevel)
+	public int createProjectTable(KbProject kp)
 			throws SQLException;
 
 	// 根据层级查询表名称

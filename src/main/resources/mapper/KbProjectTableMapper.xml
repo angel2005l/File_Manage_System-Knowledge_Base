@@ -18,4 +18,66 @@
     from kb_project_table
     where id = #{id,jdbcType=INTEGER}
   </select>
+  
+  	<!-- 判断该层级表信息是否存在 -->
+	<select id="isExistProjectTable" parameterType="_int" resultType="_boolean">
+		select count(1) from kb_project_table where project_level =
+		#{projectLevel,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 查询当前最大开放级数 -->
+	<select id="selectProjectLevelMax" resultType="_int">
+		select
+		max(project_level) from kb_project_table
+	</select>
+	
+	<!-- 保存项目表路径 -->
+	<insert id="insertProject" parameterType="com.xh.entity.KbProjectTable">
+		insert into
+		kb_project_table(pt_code,pt_name,project_level,create_user_code,create_time)
+		select
+		'${ptCode}','${ptName}',${projectLevel},'${createUserCode}','${createTime}' from
+		dual where not EXISTS(select * from kb_project_table where project_level=#{projectLevel} )
+	</insert>
+  
+  
+  	<!-- 创建项目表 -->
+	<update id="createProjectTable">
+		CREATE TABLE ${projectTableName} (
+		id  int(11) NOT NULL AUTO_INCREMENT COMMENT 'id主键自增' ,
+		project_code  char(19) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目格式 P+yyyyMMddHHmmss+4随机数' ,
+		project_name  varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目名称' ,
+		project_type  char(3) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目类型    pub:职务任务（公有）/own：个人任务（私有）||此字段现版本不启用' ,
+		project_info  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目创建目的' ,
+		project_remark  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目备注' ,
+		project_parent_code  char(19) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目所属父项目编码' ,
+		project_level  int(2) NULL DEFAULT 0 COMMENT '项目级别  0为根项目 用于限定开放的项目层级' ,
+		project_status  varchar(9) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目类型  progress:进行中 completed：已完成 canceled：已取消' ,
+		create_user_code  varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人编码' ,
+		create_time  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
+		update_user_code  varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '更新人编码' ,
+		update_time  timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间' ,
+		PRIMARY KEY (`id`),
+		INDEX `un_project_code` (`project_code`) USING BTREE ,
+		INDEX `un_project_parent_code` (`project_parent_code`) USING BTREE ,
+		INDEX `un_create_user_code` (`create_user_code`) USING BTREE ,
+		INDEX `un_update_user_code` (`update_user_code`) USING BTREE 
+		)
+		ENGINE=InnoDB
+		DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+	</update>
+	
+	
+	<!-- 根据层级查询表名称 -->
+	<select id="selectProjectTableNameByProjectLevel" parameterType="_int" resultType="string">
+		select pt_name from xb_project_table where project_level = ${projectLevel} 
+	</select>
+  
+  	<!-- 查询文件分表是否存在 -->
+	<select id="isExistProjectDataTable" parameterType="string" resultType="_boolean">
+		select count(1)  
+        from information_schema.TABLES
+        where table_name =#{tableName}
+	</select>
+  
 </mapper>
