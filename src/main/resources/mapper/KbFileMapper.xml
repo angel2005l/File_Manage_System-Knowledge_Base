@@ -17,5 +17,4 @@
     id, file_code, file_name, file_info, file_type, file_status, file_level, project_code, 
     create_user_code, create_time
   </sql>
-  
 </mapper>

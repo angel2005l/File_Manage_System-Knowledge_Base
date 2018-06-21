@@ -1,26 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xh.dao.KbServerMapper">
-  <resultMap id="BaseResultMap" type="com.xh.entity.KbServer">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="server_code" jdbcType="VARCHAR" property="serverCode" />
-    <result column="server_name" jdbcType="VARCHAR" property="serverName" />
-    <result column="server_core" jdbcType="INTEGER" property="serverCore" />
-    <result column="server_memory" jdbcType="INTEGER" property="serverMemory" />
-    <result column="server_band_width" jdbcType="INTEGER" property="serverBandWidth" />
-    <result column="in_ip" jdbcType="CHAR" property="inIp" />
-    <result column="out_ip" jdbcType="CHAR" property="outIp" />
-    <result column="in_connect" jdbcType="VARCHAR" property="inConnect" />
-    <result column="out_connect" jdbcType="VARCHAR" property="outConnect" />
-    <result column="server_status" jdbcType="CHAR" property="serverStatus" />
-    <result column="create_user_code" jdbcType="VARCHAR" property="createUserCode" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xh.dao.KbServerMapper" >
+  <resultMap id="BaseResultMap" type="com.xh.entity.KbServer" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="server_code" property="serverCode" jdbcType="VARCHAR" />
+    <result column="server_name" property="serverName" jdbcType="VARCHAR" />
+    <result column="server_core" property="serverCore" jdbcType="INTEGER" />
+    <result column="server_memory" property="serverMemory" jdbcType="INTEGER" />
+    <result column="server_band_width" property="serverBandWidth" jdbcType="INTEGER" />
+    <result column="in_ip" property="inIp" jdbcType="CHAR" />
+    <result column="out_ip" property="outIp" jdbcType="CHAR" />
+    <result column="in_connect" property="inConnect" jdbcType="VARCHAR" />
+    <result column="out_connect" property="outConnect" jdbcType="VARCHAR" />
+    <result column="server_status" property="serverStatus" jdbcType="CHAR" />
+    <result column="create_user_code" property="createUserCode" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
-  <sql id="Base_Column_List">
+  <sql id="Base_Column_List" >
     id, server_code, server_name, server_core, server_memory, server_band_width, in_ip, 
     out_ip, in_connect, out_connect, server_status, create_user_code, create_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 'false' as QUERYID,
     <include refid="Base_Column_List" />
     from kb_server

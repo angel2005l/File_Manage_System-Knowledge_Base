@@ -1,23 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xh.dao.KbProjectMapper">
-  <resultMap id="BaseResultMap" type="com.xh.entity.KbProject">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="project_code" jdbcType="CHAR" property="projectCode" />
-    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
-    <result column="project_type" jdbcType="CHAR" property="projectType" />
-    <result column="project_info" jdbcType="VARCHAR" property="projectInfo" />
-    <result column="project_remark" jdbcType="VARCHAR" property="projectRemark" />
-    <result column="project_parent_code" jdbcType="CHAR" property="projectParentCode" />
-    <result column="project_level" jdbcType="INTEGER" property="projectLevel" />
-    <result column="project_status" jdbcType="VARCHAR" property="projectStatus" />
-    <result column="create_user_code" jdbcType="VARCHAR" property="createUserCode" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_user_code" jdbcType="VARCHAR" property="updateUserCode" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xh.dao.KbProjectMapper" >
+  <resultMap id="BaseResultMap" type="com.xh.entity.KbProject" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="project_code" property="projectCode" jdbcType="CHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_type" property="projectType" jdbcType="CHAR" />
+    <result column="project_info" property="projectInfo" jdbcType="VARCHAR" />
+    <result column="project_remark" property="projectRemark" jdbcType="VARCHAR" />
+    <result column="project_parent_code" property="projectParentCode" jdbcType="CHAR" />
+    <result column="project_level" property="projectLevel" jdbcType="INTEGER" />
+    <result column="project_status" property="projectStatus" jdbcType="VARCHAR" />
+    <result column="create_user_code" property="createUserCode" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_user_code" property="updateUserCode" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
-  <sql id="Base_Column_List">
+  <sql id="Base_Column_List" >
     id, project_code, project_name, project_type, project_info, project_remark, project_parent_code, 
     project_level, project_status, create_user_code, create_time, update_user_code, update_time
   </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from kb_project
+    where id = #{id,jdbcType=INTEGER}
+  </select>
 </mapper>
