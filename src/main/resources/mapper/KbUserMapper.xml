@@ -1,29 +1,28 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xh.dao.KbUserMapper" >
-  <resultMap id="BaseResultMap" type="com.xh.entity.KbUser" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="user_code" property="userCode" jdbcType="VARCHAR" />
-    <result column="user_name" property="userName" jdbcType="VARCHAR" />
-    <result column="user_dept_code" property="userDeptCode" jdbcType="CHAR" />
-    <result column="professional_code" property="professionalCode" jdbcType="CHAR" />
-    <result column="user_password" property="userPassword" jdbcType="CHAR" />
-    <result column="user_salt" property="userSalt" jdbcType="CHAR" />
-    <result column="user_status" property="userStatus" jdbcType="CHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xh.dao.KbUserMapper">
+  <resultMap id="BaseResultMap" type="com.xh.entity.KbUser">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_code" jdbcType="VARCHAR" property="userCode" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_dept_code" jdbcType="CHAR" property="userDeptCode" />
+    <result column="professional_code" jdbcType="CHAR" property="professionalCode" />
+    <result column="user_password" jdbcType="CHAR" property="userPassword" />
+    <result column="user_salt" jdbcType="CHAR" property="userSalt" />
+    <result column="user_status" jdbcType="CHAR" property="userStatus" />
   </resultMap>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, user_code, user_name, user_dept_code, professional_code, user_password, user_salt, 
     user_status
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 'false' as QUERYID,
     <include refid="Base_Column_List" />
     from kb_user
     where id = #{id,jdbcType=INTEGER}
   </select>
-  
+  <!-- 根据员工编号查询员工信息 -->
   <select id="selectUserByUserCode" parameterType="string" resultMap="BaseResultMap">
   	select <include refid="Base_Column_List" /> from kb_user where user_code = #{userCode,javaType=string}
   </select>
-  
 </mapper>

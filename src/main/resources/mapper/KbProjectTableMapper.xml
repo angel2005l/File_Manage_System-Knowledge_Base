@@ -1,18 +1,18 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xh.dao.KbProjectTableMapper" >
-  <resultMap id="BaseResultMap" type="com.xh.entity.KbProjectTable" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="pt_code" property="ptCode" jdbcType="VARCHAR" />
-    <result column="pt_name" property="ptName" jdbcType="VARCHAR" />
-    <result column="project_level" property="projectLevel" jdbcType="INTEGER" />
-    <result column="create_user_code" property="createUserCode" jdbcType="VARCHAR" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xh.dao.KbProjectTableMapper">
+  <resultMap id="BaseResultMap" type="com.xh.entity.KbProjectTable">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pt_code" jdbcType="VARCHAR" property="ptCode" />
+    <result column="pt_name" jdbcType="VARCHAR" property="ptName" />
+    <result column="project_level" jdbcType="INTEGER" property="projectLevel" />
+    <result column="create_user_code" jdbcType="VARCHAR" property="createUserCode" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, pt_code, pt_name, project_level, create_user_code, create_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 'false' as QUERYID,
     <include refid="Base_Column_List" />
     from kb_project_table

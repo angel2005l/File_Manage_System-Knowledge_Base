@@ -1,7 +1,5 @@
 package com.xh.entity;
 
-import java.util.Date;
-
 public class KbFile {
     private Integer id;
 
@@ -19,9 +17,9 @@ public class KbFile {
 
     private String projectCode;
 
-    private String createUserName;
+    private String createUserCode;
 
-    private Date createTime;
+    private String createTime;
 
     public Integer getId() {
         return id;
@@ -87,19 +85,19 @@ public class KbFile {
         this.projectCode = projectCode == null ? null : projectCode.trim();
     }
 
-    public String getCreateUserName() {
-        return createUserName;
+    public String getCreateUserCode() {
+        return createUserCode;
     }
 
-    public void setCreateUserName(String createUserName) {
-        this.createUserName = createUserName == null ? null : createUserName.trim();
+    public void setCreateUserCode(String createUserCode) {
+        this.createUserCode = createUserCode == null ? null : createUserCode.trim();
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+	public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 }

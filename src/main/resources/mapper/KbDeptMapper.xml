@@ -1,21 +1,21 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xh.dao.KbDeptMapper" >
-  <resultMap id="BaseResultMap" type="com.xh.entity.KbDept" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="dept_code" property="deptCode" jdbcType="CHAR" />
-    <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
-    <result column="dept_level" property="deptLevel" jdbcType="INTEGER" />
-    <result column="dept_parent_code" property="deptParentCode" jdbcType="CHAR" />
-    <result column="dept_status" property="deptStatus" jdbcType="CHAR" />
-    <result column="create_user_code" property="createUserCode" jdbcType="VARCHAR" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xh.dao.KbDeptMapper">
+  <resultMap id="BaseResultMap" type="com.xh.entity.KbDept">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="dept_code" jdbcType="CHAR" property="deptCode" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    <result column="dept_level" jdbcType="INTEGER" property="deptLevel" />
+    <result column="dept_parent_code" jdbcType="CHAR" property="deptParentCode" />
+    <result column="dept_status" jdbcType="CHAR" property="deptStatus" />
+    <result column="create_user_code" jdbcType="VARCHAR" property="createUserCode" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, dept_code, dept_name, dept_level, dept_parent_code, dept_status, create_user_code, 
     create_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 'false' as QUERYID,
     <include refid="Base_Column_List" />
     from kb_dept
