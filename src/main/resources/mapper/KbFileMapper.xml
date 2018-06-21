@@ -17,10 +17,5 @@
     id, file_code, file_name, file_info, file_type, file_status, file_level, project_code, 
     create_user_code, create_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 'false' as QUERYID,
-    <include refid="Base_Column_List" />
-    from kb_file
-    where id = #{id,jdbcType=INTEGER}
-  </select>
+  
 </mapper>
