@@ -28,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public final class IOUtil {
 	private static final Logger log = LoggerFactory.getLogger(IOUtil.class);
+	private static String realPath = ContextLoader.getCurrentWebApplicationContext().getServletContext()
+			.getRealPath("/");
 
 	/**
 	 * 
@@ -41,7 +43,6 @@ public final class IOUtil {
 	 *
 	 */
 	public static final String uploadFile(MultipartFile mf, String filePath, String newFileName) {
-		String realPath = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("/");
 		// 判断文件是否为空
 		if (!mf.isEmpty()) {
 			String oldFileName = mf.getOriginalFilename();
@@ -89,22 +90,18 @@ public final class IOUtil {
 	 *
 	 */
 	public static final ResponseEntity<byte[]> downloadFile(String path, String fileName) {
-		String realPath = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("/");
 		// 下载文件路径
-		// String path = request.getServletContext().getRealPath("/images/");
 		File file = new File(realPath + File.separator + path + File.separator + fileName);
 		System.err.println("IOUtil:" + file);
 		HttpHeaders headers = new HttpHeaders();
 		// 下载显示的文件名，解决中文名称乱码问题
 		try {
-			// String downloadFielName = new
-			// String(filename.getBytes("UTF-8"),"iso-8859-1");
-			String downloadFielName = new String(fileName.getBytes("UTF-8"), "UTF-8");
+			String downloadFielName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
+			// String downloadFielName = new String(fileName.getBytes("UTF-8"), "UTF-8");
 			// 通知浏览器以attachment（下载方式）打开图片
 			headers.setContentDispositionFormData("attachment", downloadFielName);
 			// application/octet-stream ： 二进制流数据（最常见的文件下载）。
 			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-
 			return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
 		} catch (IOException e) {
 			log.error("IO工具类【downloadFile】方法异常,异常原因:" + e.getMessage());
@@ -198,7 +195,7 @@ public final class IOUtil {
 	public static boolean deleteFiles(String fileName) {
 		File file = new File(fileName);
 		if (!file.exists()) {
-			System.out.println("删除文件失败:" + fileName + "不存在！");
+			log.error("IO工具类【downloadFile】方法失败,失败原因:删除文件失败:" + fileName + "不存在！");
 			return false;
 		} else {
 			if (file.isFile())
@@ -224,14 +221,13 @@ public final class IOUtil {
 		// 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
 		if (file.exists() && file.isFile()) {
 			if (file.delete()) {
-				System.out.println("删除单个文件" + fileName + "成功！");
 				return true;
 			} else {
-				System.out.println("删除单个文件" + fileName + "失败！");
+				log.error("IO工具类【downloadFile】方法失败,失败原因:删除单个文件" + fileName + "失败！");
 				return false;
 			}
 		} else {
-			System.out.println("删除单个文件失败：" + fileName + "不存在！");
+			log.error("IO工具类【downloadFile】方法失败,失败原因:删除单个文件失败：" + fileName + "不存在！");
 			return false;
 		}
 	}
@@ -254,7 +250,7 @@ public final class IOUtil {
 		File dirFile = new File(dir);
 		// 如果dir对应的文件不存在，或者不是一个目录，则退出
 		if ((!dirFile.exists()) || (!dirFile.isDirectory())) {
-			System.out.println("删除目录失败：" + dir + "不存在！");
+			log.error("IO工具类【downloadFile】方法失败,失败原因:删除目录失败：" + dir + "不存在");
 			return false;
 		}
 		boolean flag = true;
@@ -275,16 +271,11 @@ public final class IOUtil {
 			}
 		}
 		if (!flag) {
-			System.out.println("删除目录失败！");
+			log.error("IO工具类【downloadFile】方法失败,异常失败:删除目录失败！");
 			return false;
 		}
 		// 删除当前目录
-		if (dirFile.delete()) {
-			System.out.println("删除目录" + dir + "成功！");
-			return true;
-		} else {
-			return false;
-		}
+		return dirFile.delete();
 	}
 
 	/**
@@ -305,7 +296,7 @@ public final class IOUtil {
 		File dirFile = new File(dir);
 		// 如果dir对应的文件不存在，或者不是一个目录，则退出
 		if ((!dirFile.exists()) || (!dirFile.isDirectory())) {
-			System.out.println("删除目录失败：" + dir + "不存在！");
+			log.error("IO工具类【deleteNoDirectory】方法错误,错误原因:删除目录失败：" + dir + "不存在！");
 			return false;
 		}
 		boolean flag = true;
@@ -324,11 +315,6 @@ public final class IOUtil {
 				if (!flag)
 					break;
 			}
-		}
-		if (!flag) {
-			System.out.println("删除部分文件！");
-		} else {
-			System.out.println("删除当前文件夹下的所有文件夹及文件！");
 		}
 		return true;
 	}
@@ -358,7 +344,7 @@ public final class IOUtil {
 			ObjectInputStream oi = new ObjectInputStream(bi);
 			return (T) oi.readObject();
 		} catch (IOException | ClassNotFoundException e) {
-			log.error("IO工具类【deepClone】方法异常,异常原因:" + e.getMessage());
+			log.error("IO工具类【deepClone】方法异常,异常原因:" + e.toString());
 			return null;
 		}
 	}
@@ -406,8 +392,7 @@ public final class IOUtil {
 				is.close();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("IO工具类【closeInputStream】方法异常,异常原因:" + e.toString());
 		}
 	}
 
@@ -427,8 +412,7 @@ public final class IOUtil {
 				os.close();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("IO工具类【closeOutputStream】方法异常,异常原因:" + e.toString());
 		}
 	}
 
@@ -442,12 +426,8 @@ public final class IOUtil {
 	 * @date 2018年6月20日
 	 * @version 1.0
 	 */
-	public static void clearTempPdf(InputStream is, String filePath) {
-		String path = "src//main//pdf//";
-		if (StrUtil.notBlank(filePath)) {
-			path = filePath;
-		}
+	public static void clearTempPdf(InputStream is) {
 		closeInputStream(is);
-		IOUtil.deleteNoDirectory(path);
+		IOUtil.deleteNoDirectory(realPath + "pdf/");
 	}
 }
