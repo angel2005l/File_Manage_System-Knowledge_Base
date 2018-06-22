@@ -19,13 +19,13 @@
   </sql>
   <!-- 批量插入文件与用户关联关系    -->
   <insert id="batchInsertFileUser" parameterType="list">
-  	insert into kb_file_user(file_code, file_name, file_type, file_permission, user_code, user_name, user_dept_code, create_user_code, create_time) vaules
-  		<foreach collection="list" item="kfu" separator=",">
-  			(#{kfu.fileCode},#{kfu.fileName},#{kfu.fileType},#{kfu.filePermission},#{kfu.userCode},#{kfu.userName},#{kfu.userDeptCode},#{kfu.createUserCode},#{kfu.createTime})
+  	insert into kb_file_user(file_code, file_name, file_type, file_permission, user_code, user_name, user_dept_code, create_user_code, create_time) 
+  		<foreach collection="list" item="kfu" separator=" union all ">
+  		SELECT '${kfu.fileCode}','${kfu.fileName}','${kfu.fileType}','${kfu.filePermission}',user_code,user_name,user_dept_code,'${kfu.createUserCode}','${kfu.createTime}' FROM kb_user WHERE user_code = #{kfu.userCode} 
   		</foreach>
   </insert>
   <!-- 插入文件与用户关联关系 -->
   <insert id="insertFileUser" parameterType="com.xh.entity.KbFileUser">
-  	  	insert into kb_file_user(file_code, file_name, file_type, file_permission, user_code, user_name, user_dept_code, create_user_code, create_time) vaules(#{fileCode},#{fileName},#{fileType},#{filePermission},#{userCode},#{userName},#{userDeptCode},#{createUserCode},#{createTime})
+  	  	insert into kb_file_user(file_code, file_name, file_type, file_permission, user_code, user_name, user_dept_code, create_user_code, create_time) SELECT '${kfu.fileCode}','${kfu.fileName}','${kfu.fileType}','${kfu.filePermission}',user_code,user_name,user_dept_code,'${kfu.createUserCode}','${kfu.createTime}' FROM kb_user WHERE user_code = #{kfu.userCode} 
   </insert>
 </mapper>

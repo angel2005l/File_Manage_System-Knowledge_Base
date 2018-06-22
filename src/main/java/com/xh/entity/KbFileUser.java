@@ -1,8 +1,13 @@
 package com.xh.entity;
 
-public class KbFileUser {
-	private Integer id;
+import java.io.Serializable;
 
+public class KbFileUser implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5383314717397681908L;
+	private Integer id;
 	private String fileCode;
 
 	private String fileName;

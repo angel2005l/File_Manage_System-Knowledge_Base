@@ -1,105 +1,103 @@
 package com.xh.entity;
 
-import java.util.Date;
-
 public class KbFile {
-    private Integer id;
+	private Integer id;
 
-    private String fileCode;
+	private String fileCode;
 
-    private String fileName;
+	private String fileName;
 
-    private String fileInfo;
+	private String fileInfo;
 
-    private String fileType;
+	private String fileType;
 
-    private String fileStatus;
+	private String fileStatus;
 
-    private Integer fileLevel;
+	private Integer fileLevel;
 
-    private String projectCode;
+	private String projectCode;
 
-    private String createUserName;
+	private String createUserCode;
 
-    private Date createTime;
+	private String createTime;
 
-    public Integer getId() {
-        return id;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public String getFileCode() {
-        return fileCode;
-    }
+	public String getFileCode() {
+		return fileCode;
+	}
 
-    public void setFileCode(String fileCode) {
-        this.fileCode = fileCode == null ? null : fileCode.trim();
-    }
+	public void setFileCode(String fileCode) {
+		this.fileCode = fileCode == null ? null : fileCode.trim();
+	}
 
-    public String getFileName() {
-        return fileName;
-    }
+	public String getFileName() {
+		return fileName;
+	}
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName == null ? null : fileName.trim();
-    }
+	public void setFileName(String fileName) {
+		this.fileName = fileName == null ? null : fileName.trim();
+	}
 
-    public String getFileInfo() {
-        return fileInfo;
-    }
+	public String getFileInfo() {
+		return fileInfo;
+	}
 
-    public void setFileInfo(String fileInfo) {
-        this.fileInfo = fileInfo == null ? null : fileInfo.trim();
-    }
+	public void setFileInfo(String fileInfo) {
+		this.fileInfo = fileInfo == null ? null : fileInfo.trim();
+	}
 
-    public String getFileType() {
-        return fileType;
-    }
+	public String getFileType() {
+		return fileType;
+	}
 
-    public void setFileType(String fileType) {
-        this.fileType = fileType == null ? null : fileType.trim();
-    }
+	public void setFileType(String fileType) {
+		this.fileType = fileType == null ? null : fileType.trim();
+	}
 
-    public String getFileStatus() {
-        return fileStatus;
-    }
+	public String getFileStatus() {
+		return fileStatus;
+	}
 
-    public void setFileStatus(String fileStatus) {
-        this.fileStatus = fileStatus == null ? null : fileStatus.trim();
-    }
+	public void setFileStatus(String fileStatus) {
+		this.fileStatus = fileStatus == null ? null : fileStatus.trim();
+	}
 
-    public Integer getFileLevel() {
-        return fileLevel;
-    }
+	public Integer getFileLevel() {
+		return fileLevel;
+	}
 
-    public void setFileLevel(Integer fileLevel) {
-        this.fileLevel = fileLevel;
-    }
+	public void setFileLevel(Integer fileLevel) {
+		this.fileLevel = fileLevel;
+	}
 
-    public String getProjectCode() {
-        return projectCode;
-    }
+	public String getProjectCode() {
+		return projectCode;
+	}
 
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode == null ? null : projectCode.trim();
-    }
+	public void setProjectCode(String projectCode) {
+		this.projectCode = projectCode == null ? null : projectCode.trim();
+	}
 
-    public String getCreateUserName() {
-        return createUserName;
-    }
+	public String getCreateUserCode() {
+		return createUserCode;
+	}
 
-    public void setCreateUserName(String createUserName) {
-        this.createUserName = createUserName == null ? null : createUserName.trim();
-    }
+	public void setCreateUserCode(String createUserCode) {
+		this.createUserCode = createUserCode;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public String getCreateTime() {
+		return createTime;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
 }

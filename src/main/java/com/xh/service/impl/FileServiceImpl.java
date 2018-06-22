@@ -1,7 +1,9 @@
 package com.xh.service.impl;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.xh.base.BaseService;
+import com.xh.base.Constant;
 import com.xh.dao.KbFileMapper;
 import com.xh.dao.KbFileTableMapper;
 import com.xh.dao.KbFileUserMapper;
@@ -18,12 +22,16 @@ import com.xh.entity.KbFile;
 import com.xh.entity.KbFileTable;
 import com.xh.entity.KbFileUser;
 import com.xh.service.IFileService;
+import com.xh.uitl.DateUtil;
+import com.xh.uitl.IOUtil;
 import com.xh.uitl.Result;
 import com.xh.uitl.StrUtil;
 
 @Service("fileServiceImpl")
 public class FileServiceImpl extends BaseService implements IFileService {
 	private static final Logger log = LoggerFactory.getLogger(FileServiceImpl.class);// 日志对象
+	private static final String FILETAG = Constant.FILETAG; // 文件标识头
+	private static final String FILEPATH = "../upload";// 将文件保存在服务器根目录
 
 	@Autowired
 	private KbFileTableMapper kftm;// 文件表数据接口
@@ -34,8 +42,8 @@ public class FileServiceImpl extends BaseService implements IFileService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public Result<Object> insFile(KbFile kf, String projectLevel, List<KbFileUser> kfus) throws Exception {
-		if (!StrUtil.isPositiveInteger(projectLevel)) {
+	public Result<Map<String, String>> insFile(KbFile kf, String projectLevel, List<KbFileUser> kfus) throws Exception {
+		if (!StrUtil.isNaturalNumber(projectLevel)) {
 			return rtnFailResult(Result.ERROR_4000, "项目层级参数不合法");
 		}
 		String fileTableName = "";
@@ -104,4 +112,37 @@ public class FileServiceImpl extends BaseService implements IFileService {
 		}
 	}
 
+	@Override
+	public Result<Map<String, String>> uploadFile(MultipartFile mf) throws Exception {
+		if (!mf.isEmpty()) {
+			String oldFileName = mf.getOriginalFilename();
+			String suffix = StrUtil.strToLower(oldFileName.substring(oldFileName.lastIndexOf(".")));
+			String newFileName = FILETAG + DateUtil.curDateYMDHMSForService()
+					+ StrUtil.getRandom((int) (Math.random() * 10000), 4);
+			Map<String, String> result = new HashMap<String, String>();
+			// 现支持的文件类型
+			switch (suffix) {
+			case ".xls":
+			case ".xlsx":
+			case ".doc":
+			case ".docx":
+			case ".ppt":
+			case ".pptx":
+			case ".jpe":
+			case ".jpeg":
+			case ".jpg":
+			case ".png":
+				// 执行数据唯一性
+				IOUtil.uploadFile(mf, FILEPATH, newFileName + suffix);
+				result.put("fileCode", newFileName);
+				result.put("fileName", oldFileName);
+				result.put("fileType", suffix);
+				break;
+			default:
+				return rtnFailResult(Result.ERROR_4300, "暂时不支持【" + suffix + "】该类型文件格式");
+			}
+			return rtnSuccessResult("", result);
+		}
+		return rtnFailResult(Result.ERROR_4000, "文件数据为空,上传失败");
+	}
 }

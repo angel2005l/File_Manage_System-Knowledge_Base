@@ -53,8 +53,22 @@ public final class StrUtil {
 	 * @return: boolean
 	 *
 	 */
-	public static final boolean iPositiveNum(String str) {
+	public static final boolean isPositiveNum(String str) {
 		return str.matches("^[1-9]\\d*\\.\\d*\\|0\\.\\d*[1-9]\\d*$");
+	}
+	/**
+	 * 
+	 * @Title: isNaturalNumber  
+	 * @Description: 是否是一个自然数
+	 * @author 黄官易
+	 * @param str
+	 * @return    
+	 * @return boolean 
+	 * @date 2018年6月22日  
+	 * @version 1.0
+	 */
+	public static final boolean isNaturalNumber(String str) {
+		return str.matches("^[1-9]\\d*|0$");
 	}
 
 	/**

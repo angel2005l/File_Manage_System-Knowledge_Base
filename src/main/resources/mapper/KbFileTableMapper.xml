@@ -49,7 +49,7 @@
   	`file_name` varchar(32) DEFAULT NULL COMMENT '文件名称',
   	`file_info` varchar(255) DEFAULT NULL COMMENT '文件信息',
   	`file_type` varchar(12) DEFAULT NULL COMMENT '.png/.jpge/.cad/.doc/.docx/.xls…(统一小写)',
-  	`file_status` varchar(9) DEFAULT NULL COMMENT 'delete：删除 在档：in the file',
+  	`file_status` varchar(9) DEFAULT NULL COMMENT '删除:delete 在档：record',
   	`file_level` int(2) DEFAULT '${fileLevel}' COMMENT '0为根项目 用于限定开放的项目层级',
   	`project_code` char(19) DEFAULT NULL COMMENT '项目格式 P+yyyyMMddHHmmss+4随机数',
   	`create_user_code` varchar(11) DEFAULT NULL COMMENT '员工编号',
@@ -62,7 +62,7 @@
 
 	<!-- 根据层级查询表名称 -->
 	<select id="selectFileTableNameByFileLevel" parameterType="_int" resultType="string">
-		select ft_name from xb_file_table where file_level = ${fileLevel} 
+		select ft_name from kb_file_table where file_level = #{fileLevel} 
 	</select>
 
 	<!-- 查询文件分表是否存在 -->
@@ -73,11 +73,11 @@
 	</select>
 	<!-- 删除文件表 -->
 	<update id="dropFileDataTable" parameterType="string">
-		drop table ${fileTableName}
+		drop table #{fileTableName}
 	</update>
 	<!-- 删除文件表映射 -->
 	<delete id="deleteFileTabel" parameterType="string">
-		delete kb_file_table where ft_code = #{ftCode}
+		delete from kb_file_table where ft_code = #{ftCode}
 	</delete>
 	
 </mapper>

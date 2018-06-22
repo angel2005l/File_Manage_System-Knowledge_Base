@@ -44,38 +44,17 @@ public final class IOUtil {
 	 */
 	public static final String uploadFile(MultipartFile mf, String filePath, String newFileName) {
 		// 判断文件是否为空
-		if (!mf.isEmpty()) {
-			String oldFileName = mf.getOriginalFilename();
-			String suffix = oldFileName.substring(oldFileName.lastIndexOf("."));
-			// System.err.println("suffix:"+suffix);
-			switch (suffix) {
-			case ".xls":
-			case ".xlsx":
-			case ".doc":
-			case ".docx":
-			case ".ppt":
-			case ".pptx":
-				// 当前时间 唯一性
-				newFileName = DateUtil.curDateYMDForservice() + suffix;
-				break;
-			default:
-				System.err.println("IOUtil:暂时不支持该文件的上传");
-				return "";
-			}
-			File fileObj = new File(realPath + filePath, newFileName);
-			if (!fileObj.getParentFile().exists()) {
-				fileObj.getParentFile().mkdirs();
-			}
-			try {
-				mf.transferTo(new File(realPath + filePath + File.separator + newFileName));// 将文件写到磁盘上
-			} catch (IllegalStateException | IOException e) {
-				log.error("IO工具类【uploadFile】方法异常,异常原因:" + e.getMessage());
-				return "";
-			}
-			return realPath + filePath + File.separator + newFileName;
-		} else {
+		File fileObj = new File(realPath + filePath, newFileName);
+		if (!fileObj.getParentFile().exists()) {
+			fileObj.getParentFile().mkdirs();
+		}
+		try {
+			mf.transferTo(new File(realPath + filePath + File.separator + newFileName));// 将文件写到磁盘上
+		} catch (IllegalStateException | IOException e) {
+			log.error("IO工具类【uploadFile】方法异常,异常原因:" + e.getMessage());
 			return "";
 		}
+		return realPath + filePath + File.separator + newFileName;
 	}
 
 	/**
@@ -433,4 +412,5 @@ public final class IOUtil {
 		closeInputStream(is);
 		IOUtil.deleteNoDirectory(realPath + "pdf/");
 	}
+
 }

@@ -21,7 +21,7 @@ public interface KbFileMapper {
 	 * @return: int
 	 *
 	 */
-	public int insertFile(@Param("fk") KbFile kf, @Param("fileTabelName") String fileTabelName) throws SQLException;
+	public int insertFile(@Param("kf") KbFile kf, @Param("fileTabelName") String fileTabelName) throws SQLException;
 
 	/**
 	 * 

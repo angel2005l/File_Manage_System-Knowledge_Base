@@ -1,5 +1,9 @@
 package com.xh.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,7 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.xh.base.BaseController;
 import com.xh.base.Constant;
+import com.xh.entity.KbFile;
 import com.xh.entity.KbFileTable;
+import com.xh.entity.KbFileUser;
 import com.xh.service.IFileService;
 import com.xh.uitl.DateUtil;
 import com.xh.uitl.IOUtil;
@@ -37,24 +43,84 @@ public class FileController extends BaseController {
 	/**
 	 * 
 	 * @Title: uploadFile
-	 * @Description: 文件的上传功能
-	 * @author 陈专懂
-	 * @return void
-	 * @date 2018年6月19日
-	 * @update 2018年6月21日
-	 * @updateAuthor 黄官易
-	 * @version 2.0
+	 * @Description: 文件上传入口方法
+	 * @author 黄官易
+	 * @param req
+	 * @param resp
+	 * @param file
+	 * @return
+	 * @return Result<Object>
+	 * @date 2018年6月22日
+	 * @version 1.0
 	 */
 
 	@RequestMapping("/upFile.do")
 	@ResponseBody
-	public Result<Object> uploadFile(HttpServletRequest req, HttpServletResponse resp,
-			@RequestParam("fileName") MultipartFile file) {
-		String fileAddress = IOUtil.uploadFile(file, "../upload", "");
-		if (!fileAddress.equals("")) {
-			return rtnSuccessResult(Result.SUCCESS_0_MSG, fileAddress);
-		} else {
-			return rtnErrorResult(Result.ERROR_4000, Result.ERROR_4000_MSG);
+	public Result<Map<String, String>> uploadFile(HttpServletRequest request, HttpSession session,
+			@RequestParam("file_data") MultipartFile mf) {
+		try {
+			// 上传文件并写入磁盘保存
+			Result<Map<String, String>> ufResult = fs.uploadFile(mf);
+			if (Result.SUCCESS_0 != ufResult.getCode()) {
+				return ufResult;
+			}
+			// 上传并写入文件成功,将文件信息写入数据库
+			String fileInfo = request.getParameter("file_info");
+			String projectLevel = request.getParameter("project_level");
+			String projectCode = request.getParameter("project_code");
+			String userCode = session.getAttribute("userCode").toString();
+			Map<String, String> fileMap = ufResult.getData();
+			String fileCode = fileMap.get("fileCode");
+			String fileName = fileMap.get("fileName");
+			String fileType = fileMap.get("fileType");
+			KbFile kf = new KbFile();
+			// 文件对象
+			kf.setFileCode(fileCode);
+			kf.setFileName(fileName);
+			kf.setFileInfo(fileInfo);
+			kf.setFileType(fileType);
+			kf.setFileStatus("record");
+			kf.setFileLevel(Integer.parseInt(projectLevel));
+			kf.setProjectCode(projectCode);
+			kf.setCreateUserCode(userCode);
+			kf.setCreateTime(DateUtil.curDateYMDHMS());
+
+			// 文件关联关系对象
+			List<KbFileUser> kfus = new ArrayList<KbFileUser>();
+			// 下载具有预览的权限加深
+			String[] fileShow = request.getParameterValues("file_show");
+			String[] fileDownload = request.getParameterValues("file_download");
+
+			for (String showUserCode : fileShow) {
+				KbFileUser kfu = new KbFileUser();
+				kfu.setFileCode(fileCode);
+				kfu.setFileName(fileName);
+				kfu.setFileType(fileType);
+				kfu.setUserCode(showUserCode);
+				kfu.setFilePermission("onlyread");
+				kfu.setCreateUserCode(userCode);
+				kfu.setCreateTime(DateUtil.curDateYMDHMS());
+				kfus.add(kfu);
+			}
+			for (String downloadUserCode : fileDownload) {
+				KbFileUser kfu = new KbFileUser();
+				kfu.setFileCode(fileCode);
+				kfu.setFileName(fileName);
+				kfu.setFileType(fileType);
+				kfu.setUserCode(downloadUserCode);
+				kfu.setFilePermission("download");
+				kfu.setCreateUserCode(userCode);
+				kfu.setCreateTime(DateUtil.curDateYMDHMS());
+				KbFileUser cloneKfu = IOUtil.deepClone(kfu);
+				cloneKfu.setFilePermission("onlyread");
+				kfus.add(kfu);
+				kfus.add(cloneKfu);
+			}
+
+			return fs.insFile(kf, projectLevel, kfus);
+		} catch (Exception e) {
+			log.error("文件上传服务异常,异常原因【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "文件上传服务异常,请联系系统管理员");
 		}
 	}
 
@@ -118,9 +184,8 @@ public class FileController extends BaseController {
 		KbFileTable kft = new KbFileTable();
 		try {
 			// 编码规则 FT+yyyyMMddHHmmss+3位随机数
-			kft.setFtCode(
-					FILETABLETAG + DateUtil.curDateYMDHMSForService() + StrUtil.getRandom((int) (Math.random() * 1000),
-							3));
+			kft.setFtCode(FILETABLETAG + DateUtil.curDateYMDHMSForService()
+					+ StrUtil.getRandom((int) (Math.random() * 1000), 3));
 			kft.setFtName(TABELTAG + ftName);
 			kft.setFileLevel(Integer.parseInt(ftLevel));
 			kft.setCreateUserCode(session.getAttribute("userCode") == null ? "kb_system"

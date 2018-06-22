@@ -1,6 +1,9 @@
 package com.xh.service;
 
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.xh.entity.KbFile;
 import com.xh.entity.KbFileTable;
@@ -23,7 +26,7 @@ public interface IFileService {
 	 * @date 2018年6月21日
 	 * @version 1.0
 	 */
-	public Result<Object> insFile(KbFile kf, String projectLevel, List<KbFileUser> kfus) throws Exception;
+	public Result<Map<String,String>> insFile(KbFile kf, String projectLevel, List<KbFileUser> kfus) throws Exception;
 
 	/**
 	 * 
@@ -38,4 +41,17 @@ public interface IFileService {
 	 * @version 1.0
 	 */
 	public Result<Object> inseFileTable(KbFileTable kft) throws Exception;
+	/**
+	 * 
+	 * @Title: uploadFile  
+	 * @Description: 文件上传
+	 * @author 黄官易
+	 * @param mf
+	 * @return
+	 * @throws Exception    
+	 * @return Result<Map<String,String>> 
+	 * @date 2018年6月22日  
+	 * @version 1.0
+	 */
+	public Result<Map<String, String>> uploadFile(MultipartFile mf) throws Exception;
 }
