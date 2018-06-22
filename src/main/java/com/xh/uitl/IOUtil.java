@@ -71,7 +71,6 @@ public final class IOUtil {
 	public static final ResponseEntity<byte[]> downloadFile(String path, String fileName) {
 		// 下载文件路径
 		File file = new File(realPath + File.separator + path + File.separator + fileName);
-		System.err.println("IOUtil:" + file);
 		HttpHeaders headers = new HttpHeaders();
 		// 下载显示的文件名，解决中文名称乱码问题
 		try {

@@ -76,7 +76,7 @@ public class FileServiceImpl extends BaseService implements IFileService {
 
 	@Override
 	@Transactional(rollbackFor = { Exception.class })
-	public Result<Object> inseFileTable(KbFileTable kft) throws Exception {
+	public Result<Object> insFileTable(KbFileTable kft) throws Exception {
 		if (null == kft) {
 			return rtnFailResult(Result.ERROR_4000, "文件表数据为空");
 		}
@@ -132,7 +132,6 @@ public class FileServiceImpl extends BaseService implements IFileService {
 			case ".jpeg":
 			case ".jpg":
 			case ".png":
-				// 执行数据唯一性
 				IOUtil.uploadFile(mf, FILEPATH, newFileName + suffix);
 				result.put("fileCode", newFileName);
 				result.put("fileName", oldFileName);
@@ -144,5 +143,19 @@ public class FileServiceImpl extends BaseService implements IFileService {
 			return rtnSuccessResult("", result);
 		}
 		return rtnFailResult(Result.ERROR_4000, "文件数据为空,上传失败");
+	}
+
+	@Override
+	public Result<KbFile> selFileByFileCode(int fileLevel, String fileCode) throws Exception {
+		String fileTableName = kftm.selectFileTableNameByFileLevel(fileLevel);
+		System.err.println(fileTableName);
+		try {
+			KbFile fileObj = kfm.selectFileByFileCode(fileTableName, fileCode);
+			System.err.println(fileObj);
+			return null == fileObj ? rtnFailResult(Result.ERROR_4000, "文件不存在或已被移除") : rtnSuccessResult("", fileObj);
+		} catch (SQLException e) {
+			log.error("根据文件编码查询文件信息数据接口异常,异常原因【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "获取文件信息异常,请联系系统管理员");
+		}
 	}
 }

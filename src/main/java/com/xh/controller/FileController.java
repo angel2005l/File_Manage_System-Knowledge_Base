@@ -69,6 +69,7 @@ public class FileController extends BaseController {
 			String projectLevel = request.getParameter("project_level");
 			String projectCode = request.getParameter("project_code");
 			String userCode = session.getAttribute("userCode").toString();
+			// String userCode = "820032";
 			Map<String, String> fileMap = ufResult.getData();
 			String fileCode = fileMap.get("fileCode");
 			String fileName = fileMap.get("fileName");
@@ -89,7 +90,9 @@ public class FileController extends BaseController {
 			List<KbFileUser> kfus = new ArrayList<KbFileUser>();
 			// 下载具有预览的权限加深
 			String[] fileShow = request.getParameterValues("file_show");
-			String[] fileDownload = request.getParameterValues("file_download");
+			// String[] fileShow = {};
+			// String[] fileDownload = {"820032","820046","820033"};
+			// 还差对上级所属部门的查询
 
 			for (String showUserCode : fileShow) {
 				KbFileUser kfu = new KbFileUser();
@@ -102,6 +105,7 @@ public class FileController extends BaseController {
 				kfu.setCreateTime(DateUtil.curDateYMDHMS());
 				kfus.add(kfu);
 			}
+			String[] fileDownload = request.getParameterValues("file_download");
 			for (String downloadUserCode : fileDownload) {
 				KbFileUser kfu = new KbFileUser();
 				kfu.setFileCode(fileCode);
@@ -116,7 +120,7 @@ public class FileController extends BaseController {
 				kfus.add(kfu);
 				kfus.add(cloneKfu);
 			}
-
+			// 数据文件结构
 			return fs.insFile(kf, projectLevel, kfus);
 		} catch (Exception e) {
 			log.error("文件上传服务异常,异常原因【" + e.toString() + "】");
@@ -126,25 +130,48 @@ public class FileController extends BaseController {
 
 	/**
 	 * 
+	 * @Title: downloadCheck
+	 * @Description: 校验下载文件
+	 * @author 黄官易
+	 * @param request
+	 * @return
+	 * @return Result<String>
+	 * @date 2018年6月22日
+	 * @version 1.0
+	 */
+	public Result<String> downloadCheck(HttpServletRequest request) {
+		String fileCode = request.getParameter("file_code");
+		String fileLevel = request.getParameter("file_level");
+		try {
+			Result<KbFile> fileResult = fs.selFileByFileCode(Integer.parseInt(fileLevel), fileCode);
+			if (Result.SUCCESS_0 != fileResult.getCode()) {
+				return rtnFailResult(fileResult.getCode(), fileResult.getMsg());
+			}
+			KbFile data = fileResult.getData();
+			return rtnSuccessResult("", data.getFileCode() + data.getFileType());
+		} catch (Exception e) {
+			log.error("文件下载异常,异常原因【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "文件下载异常,请联系系统管理员");
+		}
+	}
+
+	/**
+	 * 
 	 * @Title: downloadFile
-	 * @Description: TODO(文件下载的功能)
-	 * @author 陈专懂
+	 * @Description: 下载文件
+	 * @author 黄官易
+	 * @param request
+	 * @param resp
+	 * @return
 	 * @return Result<Object>
-	 * @date 2018年6月20日
+	 * @date 2018年6月22日
 	 * @version 1.0
 	 */
 	@RequestMapping("/downloadFile.do")
 	@ResponseBody
-	public Result<Object> downloadFile(HttpServletRequest req, HttpServletResponse resp) {
-		String fileName = req.getParameter("filename");
-		// System.err.println("path:"+path);
-		// System.err.println("fileName:"+fileName);
-		HttpServletResponse re = IOUtil.downloadFileServlet("../upload", fileName, resp);
-		if (re != null) {
-			return rtnSuccessResult();
-		} else {
-			return rtnErrorResult(Result.ERROR_4000, Result.ERROR_4000_MSG);
-		}
+	public Object downloadFile(HttpServletRequest request) {
+		String fileName = request.getParameter("file_Name");
+		return IOUtil.downloadFile("../upload", fileName);
 	}
 
 	/**
@@ -191,7 +218,7 @@ public class FileController extends BaseController {
 			kft.setCreateUserCode(session.getAttribute("userCode") == null ? "kb_system"
 					: session.getAttribute("userCode").toString());
 			kft.setCreateTime(DateUtil.curDateYMDHMS());
-			return fs.inseFileTable(kft);
+			return fs.insFileTable(kft);
 		} catch (NumberFormatException e) {
 			return rtnFailResult(Result.ERROR_4000, "文件层级参数不合法,文件层级参数必须为一个自然数（0或正整数）");
 		} catch (Exception e) {

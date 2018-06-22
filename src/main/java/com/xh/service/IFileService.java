@@ -26,7 +26,7 @@ public interface IFileService {
 	 * @date 2018年6月21日
 	 * @version 1.0
 	 */
-	public Result<Map<String,String>> insFile(KbFile kf, String projectLevel, List<KbFileUser> kfus) throws Exception;
+	public Result<Map<String, String>> insFile(KbFile kf, String projectLevel, List<KbFileUser> kfus) throws Exception;
 
 	/**
 	 * 
@@ -40,18 +40,34 @@ public interface IFileService {
 	 * @date 2018年6月21日
 	 * @version 1.0
 	 */
-	public Result<Object> inseFileTable(KbFileTable kft) throws Exception;
+	public Result<Object> insFileTable(KbFileTable kft) throws Exception;
+
 	/**
 	 * 
-	 * @Title: uploadFile  
+	 * @Title: uploadFile
 	 * @Description: 文件上传
 	 * @author 黄官易
 	 * @param mf
 	 * @return
-	 * @throws Exception    
-	 * @return Result<Map<String,String>> 
-	 * @date 2018年6月22日  
+	 * @throws Exception
+	 * @return Result<Map<String,String>>
+	 * @date 2018年6月22日
 	 * @version 1.0
 	 */
 	public Result<Map<String, String>> uploadFile(MultipartFile mf) throws Exception;
+
+	/**
+	 * 
+	 * @Title: selFileByFileCode
+	 * @Description: 根据文件编码查询文件信息业务方法
+	 * @author 黄官易
+	 * @param projectLevel
+	 * @param fileCode
+	 * @return
+	 * @throws Exception
+	 * @return Result<KbFile>
+	 * @date 2018年6月22日
+	 * @version 1.0
+	 */
+	public Result<KbFile> selFileByFileCode(int fileLevel, String fileCode) throws Exception;
 }

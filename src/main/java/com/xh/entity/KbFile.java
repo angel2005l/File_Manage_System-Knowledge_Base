@@ -100,4 +100,13 @@ public class KbFile {
 	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
 	}
+
+	@Override
+	public String toString() {
+		return "KbFile [id=" + id + ", fileCode=" + fileCode + ", fileName=" + fileName + ", fileInfo=" + fileInfo
+				+ ", fileType=" + fileType + ", fileStatus=" + fileStatus + ", fileLevel=" + fileLevel
+				+ ", projectCode=" + projectCode + ", createUserCode=" + createUserCode + ", createTime=" + createTime
+				+ "]";
+	}
+
 }

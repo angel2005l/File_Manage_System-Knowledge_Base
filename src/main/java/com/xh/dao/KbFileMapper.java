@@ -12,8 +12,8 @@ public interface KbFileMapper {
 
 	/**
 	 * 
-	 * @Title: insertFile   
-	 * @Description: 新增文件信息  
+	 * @Title: insertFile
+	 * @Description: 新增文件信息
 	 * @param obj
 	 * @return
 	 * @throws SQLException
@@ -25,7 +25,7 @@ public interface KbFileMapper {
 
 	/**
 	 * 
-	 * @Title: selectFileByUserCode   
+	 * @Title: selectFileByUserCode
 	 * @Description: 根据员工编码查询当前项目下的所有文件
 	 * @param fileTableName
 	 * @param projectCode
@@ -37,13 +37,12 @@ public interface KbFileMapper {
 	 *
 	 */
 	public List<Map<String, Object>> selectFileByUserCode(@Param("fileTableName") String fileTableName,
-			@Param("projectCode") String projectCode, @Param("userCode") String userCode)
-			throws SQLException;
+			@Param("projectCode") String projectCode, @Param("userCode") String userCode) throws SQLException;
 
 	/**
 	 * 
-	 * @Title: selectFileCount   
-	 * @Description: 根据员工编码查询当前项目下的所有文件行数  
+	 * @Title: selectFileCount
+	 * @Description: 根据员工编码查询当前项目下的所有文件行数
 	 * @param fileName
 	 * @param projectCode
 	 * @param userCode
@@ -54,5 +53,21 @@ public interface KbFileMapper {
 	 *
 	 */
 	public int selectFileCount(String fileName, String projectCode, String userCode) throws SQLException;
+
+	/**
+	 * 
+	 * @Title: selectFileByFileCode
+	 * @Description: 根据文件标号查询特定文件信息
+	 * @author 黄官易
+	 * @param fileTableName
+	 * @param fileCode
+	 * @return
+	 * @throws SQLException
+	 * @return KbFile
+	 * @date 2018年6月22日
+	 * @version 1.0
+	 */
+	public KbFile selectFileByFileCode(@Param("fileTableName") String fileTableName, @Param("fileCode") String fileCode)
+			throws SQLException;
 
 }

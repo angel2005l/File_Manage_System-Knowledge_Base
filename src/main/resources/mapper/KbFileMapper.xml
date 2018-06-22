@@ -15,7 +15,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, file_code, file_name, file_info, file_type, file_status, file_level, project_code, 
-    create_user_code, create_time
+    create_user_code, DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') as create_time
   </sql>
   
   <!-- 新增文件信息 -->
@@ -29,5 +29,9 @@
   <!-- 根据员工编码查询当前项目下的所有文件行数 -->
   <select id="selectFileCount" resultType="_int">
     	SELECT count(1) FROM ${fileTableName} a INNER JOIN kb_file_user b ON a.file_code = b.file_code AND b.user_code = #{userCode} AND a.project_code = #{projectCode}
+  </select>
+  <!-- 根据文件标号查询特定文件信息 -->
+  <select id="selectFileByFileCode" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from ${fileTableName} where file_code =#{fileCode}
   </select>
 </mapper>
