@@ -32,9 +32,54 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<br>
   	<br>
   	<br>
-  	<form action="build/generic/web/viewer.html" method="get" target="_blank">
+  	<form action="build/generic/web/viewer.html" method="get" target="_blank"><!-- 在新的窗口打开 -->
    		PDF路径： <input type="text" name="file" value="/xh_bi_b_knowledge_base/disFile/disPdf.do?pathAddress=C:/Users/Administrator/Desktop/123.pdf" /><input type="submit" value="提交" />
     </form>   
   	
+  	<hr>
+  	<br>
+  	<br>
+  	<br>
+  	<form action="pro/newPro" method="get">
+		<div>项目名称：<input type="text" placeholder="请输入项目名称" name="project_name" /></div>
+		<div style="display: block;">项目类型：<select name="project_type">     
+			  <option value="0">-请选择-</option>     
+			  <option value="pub">公有</option>     
+			  <option value="own">私有</option>  
+			 </select> 
+		</div>
+		<div>项目创建目的：<textarea name="project_info" placeholder="请输入项目创建目的"></textarea></div>
+		<div>项目备注:<input type="text" name="project_remark" placeholder="请输入项目备注" /></div>
+		<div>项目所属父项目的编码(下拉选择框):<select name="project_parent_code">     
+			  <option value="-1">-请选择-</option>     
+			  <option value="0">12313</option>     
+			  <option value="1">12313</option>  
+			  <option value="2">12313</option>  
+			 </select></div>
+		<div>项目级别:<select name="project_level">     
+			  <option value="-1">-请选择-</option>     
+			  <option value="0">一级项目</option>     
+			  <option value="1">二级项目</option>  
+			  <option value="2">三级项目</option>  
+			</select> </div>
+		<div>项目参与人员：
+			<input type="button" name="selAll" id="selAll" value="全选/反选" onclick="into()" />
+			1<input type="checkbox" name="pt_user" value="黄XX1" />
+			2<input type="checkbox" name="pt_user" value="黄XX2" />
+			3<input type="checkbox" name="pt_user" value="黄XX3" />
+			4<input type="checkbox" name="pt_user" value="黄XX4" />
+		</div>
+  	</form>
+  	
+  <script type="text/javascript" src="js/jquery-1.8.1.min.js"></script>
+	<script>
+		function into(){
+			var allsel=document.getElementsByName("pt_user");
+			for(var i=0;i<allsel.length;i++){
+				allsel[i].checked=!allsel[i].checked;
+			}
+		}
+
+	</script>
   </body>
 </html>

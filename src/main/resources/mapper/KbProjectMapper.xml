@@ -26,4 +26,11 @@
     from kb_project
     where id = #{id,jdbcType=INTEGER}
   </select>
+  
+	<insert id="insertProject" parameterType="Map">
+		insert into ${formName} (project_code,project_name,project_type,project_info,project_remark,project_parent_code,project_status,create_user_code,create_time,update_user_code) 
+		values (#{projectCode},#{projectName},#{projectType},#{projectInfo},#{projectRemark},#{projectParentCode},#{projectStatus},#{createUserCode},#{createTime},#{updateUserCode})
+	</insert>
+  
+  
 </mapper>

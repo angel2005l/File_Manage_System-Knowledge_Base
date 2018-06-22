@@ -4,7 +4,6 @@ import java.sql.SQLException;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.xh.entity.KbProject;
 import com.xh.entity.KbProjectTable;
 
 public interface KbProjectTableMapper {
@@ -17,16 +16,17 @@ public interface KbProjectTableMapper {
 	// 查询当前最大开放级数
 	public int selectProjectLevelMax() throws SQLException;
 
-	// 保存文件表路径
+	// 保存项目表路径
 	public int insertProject(KbProjectTable obj) throws SQLException;
 
-	// 创建文件表
+	// 创建项目表
 	public int createProjectTable(@Param("projectTableName") String projectTableName, @Param("projectLevel") int projectLevel)
 			throws SQLException;
 
 	// 根据层级查询表名称
-	public String selectProjectTableNameByProjectLevel(int projectLevel) throws SQLException;
+	public String selectProjectTableNameByProjectLevel(@Param("projectLevel") int projectLevel) throws SQLException;
 
-	// 查询文件分表是否存在
+	// 查询项目分表是否存在
 	public boolean isExistProjectDataTable(String ptName) throws SQLException;
+	
 }

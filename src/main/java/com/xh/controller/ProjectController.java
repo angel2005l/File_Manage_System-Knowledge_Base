@@ -1,5 +1,10 @@
 package com.xh.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -11,9 +16,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xh.base.BaseController;
 import com.xh.base.Constant;
 import com.xh.entity.KbFileTable;
+import com.xh.entity.KbProject;
 import com.xh.entity.KbProjectTable;
 import com.xh.service.IProjectService;
 import com.xh.uitl.DateUtil;
@@ -51,6 +58,41 @@ public class ProjectController extends BaseController{
 		}
 	}
 
+	@RequestMapping("/addPro.do")
+	@ResponseBody
+	public Result<Object> selProjectTable(HttpServletRequest request, HttpServletResponse response){
+		int ptLevel=Integer.parseInt(request.getParameter("pt_level"));
+		String obj=ps.selectProjectTableNameByProjectLevel(ptLevel).getData().toString();//表名
+		Map<String,Object> map=new HashMap<String, Object>();
+		String projectCode="P"+DateUtil.curDateYMDHMSForService()+StrUtil.getRandom((int) (Math.random() * 1000),4);
+		map.put("formName", obj);
+		map.put("projectCode", projectCode);
+		map.put("projectName", "fffffff");
+		map.put("projectType", "pub");
+		map.put("projectInfo", "aaaaaa");
+		map.put("projectRemark", "aaaaaa");
+		map.put("projectParentCode", "P2018062213071254");//需要从数据库中取出动态显示在前端
+		map.put("projectStatus", "progress");
+		map.put("createUserCode", "12312313");
+		map.put("createTime", "2018-06-22 15:35:00");
+		map.put("updateUserCode", "1231321313");
+		map.put("projectPermission", "write");
+		List<String> strList=new ArrayList<String>();
+		strList.add("820046");
+		strList.add("820032");
+		strList.add("820033");
+		strList.add("820055");
+		
+		
+		
+		ps.insertProject(map);
+		
+//		System.err.println("controller:"+obj);
+		
+		
+		
+		return rtnSuccessResult("获取项目表名称成功", obj);
+	}
 	
 	
 }

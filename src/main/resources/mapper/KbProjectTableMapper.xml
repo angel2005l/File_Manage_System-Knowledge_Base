@@ -51,7 +51,7 @@
 		  `project_info` varchar(255) DEFAULT NULL COMMENT '项目创建目的',
 		  `project_remark` varchar(255) DEFAULT NULL COMMENT '项目备注',
 		  `project_parent_code` char(19) DEFAULT NULL COMMENT '项目所属父项目编码',
-		  `project_level` int(2) DEFAULT '0' COMMENT '项目级别  0为根项目 用于限定开放的项目层级',
+		  `project_level` int(2) DEFAULT ${projectLevel} COMMENT '项目级别  0为根项目 用于限定开放的项目层级',
 		  `project_status` varchar(9) DEFAULT NULL COMMENT '项目类型  progress:进行中 completed：已完成 canceled：已取消',
 		  `create_user_code` varchar(11) DEFAULT NULL COMMENT '创建人编码',
 		  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
@@ -67,8 +67,8 @@
 	
 	
 	<!-- 根据层级查询表名称 -->
-	<select id="selectProjectTableNameByProjectLevel" parameterType="_int" resultType="string">
-		select pt_name from xb_project_table where project_level = ${projectLevel} 
+	<select id="selectProjectTableNameByProjectLevel" parameterType="_int" resultType="String">
+		select pt_name from kb_project_table where project_level = ${projectLevel} 
 	</select>
   
   	<!-- 查询文件分表是否存在 -->

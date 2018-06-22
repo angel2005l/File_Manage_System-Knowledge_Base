@@ -4,6 +4,8 @@
 package com.xh.service.impl;
 
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.xh.base.BaseService;
+import com.xh.dao.KbProjectMapper;
 import com.xh.dao.KbProjectTableMapper;
-import com.xh.entity.KbFileTable;
+import com.xh.dao.KbUserMapper;
+import com.xh.entity.KbProject;
 import com.xh.entity.KbProjectTable;
+import com.xh.entity.KbUser;
 import com.xh.service.IProjectService;
 import com.xh.uitl.Result;
 
@@ -28,11 +33,12 @@ import com.xh.uitl.Result;
 public class ProjectServiceImpl extends BaseService implements IProjectService {
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class); // 日志对象
 
-//	@Autowired 
-//	private KbProjectMapper projectMapper; //项目基础表
+	@Autowired 
+	private KbProjectMapper projectMapper; //项目基础表
 	@Autowired 
 	private KbProjectTableMapper projectTableMapper; //项目表关联表
-	
+	@Autowired 
+	private KbUserMapper userMapper; //用户信息表
 	
 	/**
 	 * 
@@ -71,8 +77,69 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	}
 
 
-	@Override
-	public Result<Object> inseFileTable(KbFileTable kft) throws Exception {
+	/**
+	 * @Title: selectProjectTableNameByProjectLevel  
+	 * @Description: 根据项目等级查询上级项目的编号、名字
+	 * @author 陈专懂 
+	 * @return String 
+	 * @date 2018年6月22日  
+	 * @version 1.0
+	 */
+	@Transactional(rollbackFor = { Exception.class })
+	public Result<Object> selectProjectTableNameByProjectLevel(int projectLevel) {
+//		if(projectLevel==0){
+//			return rtnSuccessResult("该项目为一级项目",projectLevel);
+//		}
+		//可以再添加一层校验，校验查询传入的等级是否超过最高等级
+		try {
+			String ptName=projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);
+			return rtnSuccessResult("获取上级项目编号、名称成功", ptName);
+		} catch (SQLException e) {
+			log.error("获取上级项目表信息及项目表接口异常,异常原因:【" + e.toString() + "】");
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
+			return rtnErrorResult(Result.ERROR_6000, "获取上级项目表文件数据接口异常,请联系系统管理员");
+		}
+	}
+
+
+/**
+ * 
+ */
+	@Transactional(rollbackFor = { Exception.class })
+	public Result<Object> insertProject(Map<String,Object> map) {
+		try {
+			int i=projectMapper.insertProject(map);
+			if(i==1){
+				return rtnSuccessResult();
+			}else{
+				return rtnErrorResult(Result.ERROR_4000, "添加项目表信息失败");
+			}
+		} catch (SQLException e) {
+			log.error("添加项目表信息接口异常,异常原因:【" + e.toString() + "】");
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
+			return rtnErrorResult(Result.ERROR_6000, "添加项目表信息接口异常,请联系系统管理员");
+		}
+	}
+
+	/**
+	 * 
+	 */
+	@Transactional(rollbackFor = { Exception.class })
+	public Result<Object> selectUserByUserCode(List<String> strList,Map<String,Object> map,String projectPermission) {
+		try {
+			for(int i=0;i<strList.size();i++){
+				KbUser user=userMapper.selectUserByUserCode(strList.get(i));
+				map.put("userCode", user.getUserCode());
+				map.put("userName", user.getUserName());
+				map.put("userDeptCode", user.getUserDeptCode());
+			}
+			} catch (SQLException e) {
+				log.error("查询用户表信息接口异常,异常原因:【" + e.toString() + "】");
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
+				return rtnErrorResult(Result.ERROR_6000, "查询用户表信息接口异常,请联系系统管理员");
+			}
+		
 		return null;
 	}
+
 }
