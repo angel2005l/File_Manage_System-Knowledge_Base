@@ -76,7 +76,7 @@ public class ProjectController extends BaseController{
 		map.put("createUserCode", "12312313");
 		map.put("createTime", "2018-06-22 15:35:00");
 		map.put("updateUserCode", "1231321313");
-		
+		map.put("projectPermission", "write");
 		List<String> strList=new ArrayList<String>();
 		strList.add("820046");
 		strList.add("820032");
