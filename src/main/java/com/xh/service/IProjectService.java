@@ -3,7 +3,8 @@
  */
 package com.xh.service;
 
-import com.xh.entity.KbProject;
+import com.xh.entity.KbFileTable;
+import com.xh.entity.KbProjectTable;
 import com.xh.uitl.Result;
 
 /**
@@ -13,7 +14,7 @@ import com.xh.uitl.Result;
  */
 public interface IProjectService {
 	//动态建表
-	public Result<Object> createProjectList(KbProject kbproject);
+	public Result<Object> createProjectList(KbProjectTable kbpt);
 
-	
+	public Result<Object> inseFileTable(KbFileTable kft) throws Exception;
 }

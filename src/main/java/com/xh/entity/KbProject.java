@@ -23,113 +23,247 @@ public class KbProject {
 
     private String createUserCode;
 
-    private Date createTime;
+    private String createTime;
 
     private String updateUserCode;
 
-    private Date updateTime;
+    private String updateTime;
 
-    public Integer getId() {
-        return id;
-    }
+	/**
+	 * @return the id
+	 */
+	public Integer getId() {
+		return id;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public String getProjectCode() {
-        return projectCode;
-    }
+	/**
+	 * @return the projectCode
+	 */
+	public String getProjectCode() {
+		return projectCode;
+	}
 
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode == null ? null : projectCode.trim();
-    }
+	/**
+	 * @param projectCode the projectCode to set
+	 */
+	public void setProjectCode(String projectCode) {
+		this.projectCode = projectCode;
+	}
 
-    public String getProjectName() {
-        return projectName;
-    }
+	/**
+	 * @return the projectName
+	 */
+	public String getProjectName() {
+		return projectName;
+	}
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName == null ? null : projectName.trim();
-    }
+	/**
+	 * @param projectName the projectName to set
+	 */
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
 
-    public String getProjectType() {
-        return projectType;
-    }
+	/**
+	 * @return the projectType
+	 */
+	public String getProjectType() {
+		return projectType;
+	}
 
-    public void setProjectType(String projectType) {
-        this.projectType = projectType == null ? null : projectType.trim();
-    }
+	/**
+	 * @param projectType the projectType to set
+	 */
+	public void setProjectType(String projectType) {
+		this.projectType = projectType;
+	}
 
-    public String getProjectInfo() {
-        return projectInfo;
-    }
+	/**
+	 * @return the projectInfo
+	 */
+	public String getProjectInfo() {
+		return projectInfo;
+	}
 
-    public void setProjectInfo(String projectInfo) {
-        this.projectInfo = projectInfo == null ? null : projectInfo.trim();
-    }
+	/**
+	 * @param projectInfo the projectInfo to set
+	 */
+	public void setProjectInfo(String projectInfo) {
+		this.projectInfo = projectInfo;
+	}
 
-    public String getProjectRemark() {
-        return projectRemark;
-    }
+	/**
+	 * @return the projectRemark
+	 */
+	public String getProjectRemark() {
+		return projectRemark;
+	}
 
-    public void setProjectRemark(String projectRemark) {
-        this.projectRemark = projectRemark == null ? null : projectRemark.trim();
-    }
+	/**
+	 * @param projectRemark the projectRemark to set
+	 */
+	public void setProjectRemark(String projectRemark) {
+		this.projectRemark = projectRemark;
+	}
 
-    public String getProjectParentCode() {
-        return projectParentCode;
-    }
+	/**
+	 * @return the projectParentCode
+	 */
+	public String getProjectParentCode() {
+		return projectParentCode;
+	}
 
-    public void setProjectParentCode(String projectParentCode) {
-        this.projectParentCode = projectParentCode == null ? null : projectParentCode.trim();
-    }
+	/**
+	 * @param projectParentCode the projectParentCode to set
+	 */
+	public void setProjectParentCode(String projectParentCode) {
+		this.projectParentCode = projectParentCode;
+	}
 
-    public Integer getProjectLevel() {
-        return projectLevel;
-    }
+	/**
+	 * @return the projectLevel
+	 */
+	public Integer getProjectLevel() {
+		return projectLevel;
+	}
 
-    public void setProjectLevel(Integer projectLevel) {
-        this.projectLevel = projectLevel;
-    }
+	/**
+	 * @param projectLevel the projectLevel to set
+	 */
+	public void setProjectLevel(Integer projectLevel) {
+		this.projectLevel = projectLevel;
+	}
 
-    public String getProjectStatus() {
-        return projectStatus;
-    }
+	/**
+	 * @return the projectStatus
+	 */
+	public String getProjectStatus() {
+		return projectStatus;
+	}
 
-    public void setProjectStatus(String projectStatus) {
-        this.projectStatus = projectStatus == null ? null : projectStatus.trim();
-    }
+	/**
+	 * @param projectStatus the projectStatus to set
+	 */
+	public void setProjectStatus(String projectStatus) {
+		this.projectStatus = projectStatus;
+	}
 
-    public String getCreateUserCode() {
-        return createUserCode;
-    }
+	/**
+	 * @return the createUserCode
+	 */
+	public String getCreateUserCode() {
+		return createUserCode;
+	}
 
-    public void setCreateUserCode(String createUserCode) {
-        this.createUserCode = createUserCode == null ? null : createUserCode.trim();
-    }
+	/**
+	 * @param createUserCode the createUserCode to set
+	 */
+	public void setCreateUserCode(String createUserCode) {
+		this.createUserCode = createUserCode;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	/**
+	 * @return the createTime
+	 */
+	public String getCreateTime() {
+		return createTime;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	/**
+	 * @param createTime the createTime to set
+	 */
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
 
-    public String getUpdateUserCode() {
-        return updateUserCode;
-    }
+	/**
+	 * @return the updateUserCode
+	 */
+	public String getUpdateUserCode() {
+		return updateUserCode;
+	}
 
-    public void setUpdateUserCode(String updateUserCode) {
-        this.updateUserCode = updateUserCode == null ? null : updateUserCode.trim();
-    }
+	/**
+	 * @param updateUserCode the updateUserCode to set
+	 */
+	public void setUpdateUserCode(String updateUserCode) {
+		this.updateUserCode = updateUserCode;
+	}
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
+	/**
+	 * @return the updateTime
+	 */
+	public String getUpdateTime() {
+		return updateTime;
+	}
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
+	/**
+	 * @param updateTime the updateTime to set
+	 */
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	/**
+	 * @param id
+	 * @param projectCode
+	 * @param projectName
+	 * @param projectType
+	 * @param projectInfo
+	 * @param projectRemark
+	 * @param projectParentCode
+	 * @param projectLevel
+	 * @param projectStatus
+	 * @param createUserCode
+	 * @param createTime
+	 * @param updateUserCode
+	 * @param updateTime
+	 */
+	public KbProject(Integer id, String projectCode, String projectName, String projectType, String projectInfo,
+			String projectRemark, String projectParentCode, Integer projectLevel, String projectStatus,
+			String createUserCode, String createTime, String updateUserCode, String updateTime) {
+		super();
+		this.id = id;
+		this.projectCode = projectCode;
+		this.projectName = projectName;
+		this.projectType = projectType;
+		this.projectInfo = projectInfo;
+		this.projectRemark = projectRemark;
+		this.projectParentCode = projectParentCode;
+		this.projectLevel = projectLevel;
+		this.projectStatus = projectStatus;
+		this.createUserCode = createUserCode;
+		this.createTime = createTime;
+		this.updateUserCode = updateUserCode;
+		this.updateTime = updateTime;
+	}
+
+	/**
+	 * 
+	 */
+	public KbProject() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "KbProject [id=" + id + ", projectCode=" + projectCode + ", projectName=" + projectName
+				+ ", projectType=" + projectType + ", projectInfo=" + projectInfo + ", projectRemark=" + projectRemark
+				+ ", projectParentCode=" + projectParentCode + ", projectLevel=" + projectLevel + ", projectStatus="
+				+ projectStatus + ", createUserCode=" + createUserCode + ", createTime=" + createTime
+				+ ", updateUserCode=" + updateUserCode + ", updateTime=" + updateTime + "]";
+	}
+
+ 
 }

@@ -21,7 +21,7 @@ public interface KbProjectTableMapper {
 	public int insertProject(KbProjectTable obj) throws SQLException;
 
 	// 创建文件表
-	public int createProjectTable(KbProject kp)
+	public int createProjectTable(@Param("projectTableName") String projectTableName, @Param("projectLevel") int projectLevel)
 			throws SQLException;
 
 	// 根据层级查询表名称
