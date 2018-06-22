@@ -176,9 +176,6 @@ public class FileController extends BaseController {
 		String fileName = request.getParameter("file_name");
 		return IOUtil.downloadFile("../upload", fileName);
 	}
-	
-	
-	
 
 	/**
 	 * 
@@ -193,7 +190,7 @@ public class FileController extends BaseController {
 	@ResponseBody
 	public void displayPDF(HttpServletResponse resp, HttpServletRequest req) {
 		String path = req.getParameter("pathAddress");
-		IOUtil.displayPDF(resp, req, path);
+		// IOUtil.displayPDF(resp, req, path);
 	}
 
 	/**
