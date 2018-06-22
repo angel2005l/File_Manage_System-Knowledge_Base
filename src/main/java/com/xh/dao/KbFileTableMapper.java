@@ -38,7 +38,7 @@ public interface KbFileTableMapper {
 	/**
 	 * 
 	 * @Title: insertFile
-	 * @Description: 保存文件表路径
+	 * @Description: 保存文件表映射
 	 * @author 黄官易
 	 * @param obj
 	 * @return
@@ -62,7 +62,7 @@ public interface KbFileTableMapper {
 	 * @date 2018年6月21日
 	 * @version 1.0
 	 */
-	public int createFileTable(@Param("fileTableName") String fileTableName, @Param("fileLevel") int fileLevel)
+	public int createFileDataTable(@Param("fileTableName") String fileTableName, @Param("fileLevel") int fileLevel)
 			throws SQLException;
 
 	/**
@@ -92,5 +92,30 @@ public interface KbFileTableMapper {
 	 * @version 1.0
 	 */
 	public boolean isExistFileDataTable(String ftName) throws SQLException;
+
+	/**
+	 * 
+	 * @Title: dropFileDataTable
+	 * @Description: 删除文件表
+	 * @author 黄官易
+	 * @return
+	 * @throws SQLException
+	 * @return int
+	 * @date 2018年6月22日
+	 * @version 1.0
+	 */
+	public int dropFileDataTable(String fileTableName) throws SQLException;
+	/**
+	 * 
+	 * @Title: deleteFileTabel  
+	 * @Description: 删除文件表映射
+	 * @author 黄官易
+	 * @return
+	 * @throws SQLException    
+	 * @return int 
+	 * @date 2018年6月22日  
+	 * @version 1.0
+	 */
+	public int deleteFileTabel(String ftCode) throws SQLException;
 
 }

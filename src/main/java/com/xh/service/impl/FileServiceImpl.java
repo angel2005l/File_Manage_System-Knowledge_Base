@@ -73,22 +73,33 @@ public class FileServiceImpl extends BaseService implements IFileService {
 			return rtnFailResult(Result.ERROR_4000, "文件表数据为空");
 		}
 		try {
+			// 判断是否越级插入
+			int fileLevelMax = kftm.selectFileLevelMax();
+			if (fileLevelMax == 0 && kft.getFileLevel() != 0) {
+				// 初始化 排除边界值为0
+				return rtnFailResult(Result.ERROR_4000, "初始化失败,初始层级应该为0");
+			} else if (kft.getFileLevel() - fileLevelMax > 1) {
+				return rtnFailResult(Result.ERROR_4000, "文件层级越级");
+			} else if (kft.getFileLevel() - fileLevelMax <= 0) {
+				return rtnFailResult(Result.ERROR_4000, "该文件层级已存在");
+			}
 			// 判断文件是否存在
-			if (kftm.isExistFileTable(kft.getFileLevel()) || kftm.isExistFileDataTable(kft.getFtName())) {
-				return rtnFailResult(Result.ERROR_4000, "该文件层级已存在或文件表名重复");
+			if (kftm.isExistFileDataTable(kft.getFtName())) {
+				return rtnFailResult(Result.ERROR_4000, "文件表名重复");
 			}
 			// 新增文件表信息
 			int fileTableInfoNum = kftm.insertFileTable(kft);
-			// 创建文件表
-			int fileTableNum = kftm.createFileTable(kft.getFtName(), kft.getFileLevel());
-			if (fileTableInfoNum > 0 && fileTableNum == 0)
-				return rtnSuccessResult("文件表新增成功");
-			else
+			if (fileTableInfoNum != 1) {
 				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
-			return rtnFailResult(Result.ERROR_4000, "文件表新增失败");
+				return rtnFailResult(Result.ERROR_4000, "文件表新增失败");
+			}
+			// 创建文件表
+			kftm.createFileDataTable(kft.getFtName(), kft.getFileLevel());
+			return rtnSuccessResult("文件表新增成功");
 		} catch (SQLException e) {
 			log.error("新增表文件数据接口异常,异常原因：+【" + e.toString() + "】");
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
+			kftm.dropFileDataTable(kft.getFtName());
+			kftm.deleteFileTabel(kft.getFtCode());
 			return rtnErrorResult(Result.ERROR_6000, "新增表文件数据接口异常,请联系系统管理员");
 		}
 	}

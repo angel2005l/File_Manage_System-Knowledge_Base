@@ -42,7 +42,7 @@
 	</insert>
 
 		<!-- 创建文件表 -->
-	<update id="createFileTable">
+	<update id="createFileDataTable">
 	CREATE TABLE ${fileTableName} (
   	`id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id自增',
   	`file_code` char(19) DEFAULT NULL COMMENT '文件编号 F+yyyyMMddHHmmss+4随机数',
@@ -71,4 +71,13 @@
         from information_schema.TABLES
         where table_name =#{tableName}
 	</select>
+	<!-- 删除文件表 -->
+	<update id="dropFileDataTable" parameterType="string">
+		drop table ${fileTableName}
+	</update>
+	<!-- 删除文件表映射 -->
+	<delete id="deleteFileTabel" parameterType="string">
+		delete kb_file_table where ft_code = #{ftCode}
+	</delete>
+	
 </mapper>
