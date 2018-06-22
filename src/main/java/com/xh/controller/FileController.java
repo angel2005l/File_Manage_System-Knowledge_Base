@@ -139,7 +139,10 @@ public class FileController extends BaseController {
 	 * @date 2018年6月22日
 	 * @version 1.0
 	 */
+	@RequestMapping("/downloadCheck.do")
+	@ResponseBody
 	public Result<String> downloadCheck(HttpServletRequest request) {
+		System.err.println("sdadsa");
 		String fileCode = request.getParameter("file_code");
 		String fileLevel = request.getParameter("file_level");
 		try {
@@ -150,8 +153,8 @@ public class FileController extends BaseController {
 			KbFile data = fileResult.getData();
 			return rtnSuccessResult("", data.getFileCode() + data.getFileType());
 		} catch (Exception e) {
-			log.error("文件下载异常,异常原因【" + e.toString() + "】");
-			return rtnErrorResult(Result.ERROR_6000, "文件下载异常,请联系系统管理员");
+			log.error("校验下载异常,异常原因【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "校验下载异常,请联系系统管理员");
 		}
 	}
 
@@ -170,7 +173,7 @@ public class FileController extends BaseController {
 	@RequestMapping("/downloadFile.do")
 	@ResponseBody
 	public Object downloadFile(HttpServletRequest request) {
-		String fileName = request.getParameter("file_Name");
+		String fileName = request.getParameter("file_name");
 		return IOUtil.downloadFile("../upload", fileName);
 	}
 
