@@ -13,53 +13,127 @@ public class KbProjectTable {
 
     private String createUserCode;
 
-    private Date createTime;
+    private String createTime;
 
-    public Integer getId() {
-        return id;
-    }
+	/**
+	 * @return the id
+	 */
+	public Integer getId() {
+		return id;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public String getPtCode() {
-        return ptCode;
-    }
+	/**
+	 * @return the ptCode
+	 */
+	public String getPtCode() {
+		return ptCode;
+	}
 
-    public void setPtCode(String ptCode) {
-        this.ptCode = ptCode == null ? null : ptCode.trim();
-    }
+	/**
+	 * @param ptCode the ptCode to set
+	 */
+	public void setPtCode(String ptCode) {
+		this.ptCode = ptCode;
+	}
 
-    public String getPtName() {
-        return ptName;
-    }
+	/**
+	 * @return the ptName
+	 */
+	public String getPtName() {
+		return ptName;
+	}
 
-    public void setPtName(String ptName) {
-        this.ptName = ptName == null ? null : ptName.trim();
-    }
+	/**
+	 * @param ptName the ptName to set
+	 */
+	public void setPtName(String ptName) {
+		this.ptName = ptName;
+	}
 
-    public Integer getProjectLevel() {
-        return projectLevel;
-    }
+	/**
+	 * @return the projectLevel
+	 */
+	public Integer getProjectLevel() {
+		return projectLevel;
+	}
 
-    public void setProjectLevel(Integer projectLevel) {
-        this.projectLevel = projectLevel;
-    }
+	/**
+	 * @param projectLevel the projectLevel to set
+	 */
+	public void setProjectLevel(Integer projectLevel) {
+		this.projectLevel = projectLevel;
+	}
 
-    public String getCreateUserCode() {
-        return createUserCode;
-    }
+	/**
+	 * @return the createUserCode
+	 */
+	public String getCreateUserCode() {
+		return createUserCode;
+	}
 
-    public void setCreateUserCode(String createUserCode) {
-        this.createUserCode = createUserCode == null ? null : createUserCode.trim();
-    }
+	/**
+	 * @param createUserCode the createUserCode to set
+	 */
+	public void setCreateUserCode(String createUserCode) {
+		this.createUserCode = createUserCode;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	/**
+	 * @return the createTime
+	 */
+	public String getCreateTime() {
+		return createTime;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	/**
+	 * @param createTime the createTime to set
+	 */
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
+
+	/**
+	 * @param id
+	 * @param ptCode
+	 * @param ptName
+	 * @param projectLevel
+	 * @param createUserCode
+	 * @param createTime
+	 */
+	public KbProjectTable(Integer id, String ptCode, String ptName, Integer projectLevel, String createUserCode,
+			String createTime) {
+		super();
+		this.id = id;
+		this.ptCode = ptCode;
+		this.ptName = ptName;
+		this.projectLevel = projectLevel;
+		this.createUserCode = createUserCode;
+		this.createTime = createTime;
+	}
+
+	/**
+	 * 
+	 */
+	public KbProjectTable() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "KbProjectTable [id=" + id + ", ptCode=" + ptCode + ", ptName=" + ptName + ", projectLevel="
+				+ projectLevel + ", createUserCode=" + createUserCode + ", createTime=" + createTime + "]";
+	}
+
+ 
 }
