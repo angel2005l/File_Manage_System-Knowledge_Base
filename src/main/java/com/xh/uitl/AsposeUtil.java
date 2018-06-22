@@ -63,7 +63,7 @@ public class AsposeUtil {
 		if (getLicenseWithWord()) {
 			// 获得文件对象
 			try {
-				File file = new File(filePath);
+				File file = new File(realPath + filePath);
 				is = new FileInputStream(file);
 				Document doc = new Document(is);
 				pdfPath = realPath + "pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
@@ -101,7 +101,7 @@ public class AsposeUtil {
 		if (getLicenseWithWord()) {
 			// 获得文件对象
 			try {
-				File file = new File(filePath);
+				File file = new File(realPath + filePath);
 				is = new FileInputStream(file);
 				Document doc = new Document(is);
 				String pdfPath = realPath + "pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
@@ -222,7 +222,7 @@ public class AsposeUtil {
 	/**
 	 * 
 	 * @Title: excel2PDFStr   
-	 * @Description: 根据文件路径 转化excel文件返回输入流对象
+	 * @Description: 根据文件路径 转化excel文件返回路径
 	 * @param filePath
 	 * @return
 	 * @author: MR.H
@@ -235,14 +235,14 @@ public class AsposeUtil {
 		FileInputStream is = null;
 		try {
 			if (getLicenseWithExcel()) {
-				File file = new File(filePath);
+				File file = new File(realPath + filePath);
 				is = new FileInputStream(file);
 				Workbook wb = new Workbook(is);
 				pdfPath = realPath + "pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
 				wb.save(pdfPath, com.aspose.cells.SaveFormat.PDF);
 			}
 		} catch (Exception e) {
-			
+
 		} finally {
 			if (null != is) {
 				try {
@@ -255,8 +255,113 @@ public class AsposeUtil {
 		return pdfPath;
 	}
 
-	public static String excel2PDFStr(InputStream is) {
+	/**
+	 * 
+	 * @Title: excel2PDFtream   
+	 * @Description: 根据文件路径 转化excel文件返回输入流对象  
+	 * @param filePath
+	 * @return
+	 * @author: MR.H
+	 * @return: InputStream
+	 *
+	 */
+	public static InputStream excel2PDFtream(String filePath) {
+		FileInputStream is = null;
+		FileInputStream pdfFileIs = null;
+		// 加载许可证
+		if (getLicenseWithWord()) {
+			// 获得文件对象
+			try {
+				File file = new File(realPath + filePath);
+				is = new FileInputStream(file);
+				Document doc = new Document(is);
+				String pdfPath = realPath + "pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				doc.save(pdfPath, com.aspose.cells.SaveFormat.PDF);
+				File filePdf = new File(pdfPath);
+				pdfFileIs = new FileInputStream(filePdf);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (null != is) {
+					try {
+						is.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		return pdfFileIs;
+	}
 
-		return "";
+	/**
+	 * 
+	 * @Title: excel2PDFStr   
+	 * @Description: 根据输入流 转化excel文件返回路径
+	 * @param is
+	 * @return
+	 * @author: MR.H
+	 * @return: String
+	 *
+	 */
+	public static String excel2PDFStr(InputStream is) {
+		String pdfPath = "";
+		// 加载许可证
+		if (getLicenseWithWord()) {
+			// 获得文件对象
+			try {
+				Document doc = new Document(is);
+				pdfPath = realPath + "pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				doc.save(pdfPath, com.aspose.cells.SaveFormat.PDF);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				if (null != is) {
+					try {
+						is.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		return pdfPath;
+	}
+
+	/**
+	 * 
+	 * @Title: excel2PDFStream   
+	 * @Description: 根据输入流 转化excel文件返回输入流对象  
+	 * @param is
+	 * @return
+	 * @author: MR.H
+	 * @return: InputStream
+	 *
+	 */
+	public static InputStream excel2PDFStream(InputStream is) {
+		FileInputStream pdfFileIs = null;
+		// 加载许可证
+		if (getLicenseWithWord()) {
+			// 获得文件对象
+			try {
+				Document doc = new Document(is);
+				String pdfPath = realPath + "pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				doc.save(pdfPath, com.aspose.cells.SaveFormat.PDF);
+				File filePdf = new File(pdfPath);
+				pdfFileIs = new FileInputStream(filePdf);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (null != is) {
+					try {
+						is.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		return pdfFileIs;
 	}
 }
