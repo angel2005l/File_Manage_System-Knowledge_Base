@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -142,7 +143,6 @@ public class FileController extends BaseController {
 	@RequestMapping("/downloadCheck.do")
 	@ResponseBody
 	public Result<String> downloadCheck(HttpServletRequest request) {
-		System.err.println("sdadsa");
 		String fileCode = request.getParameter("file_code");
 		String fileLevel = request.getParameter("file_level");
 		try {
@@ -172,10 +172,13 @@ public class FileController extends BaseController {
 	 */
 	@RequestMapping("/downloadFile.do")
 	@ResponseBody
-	public Object downloadFile(HttpServletRequest request) {
+	public ResponseEntity<byte[]> downloadFile(HttpServletRequest request) {
 		String fileName = request.getParameter("file_name");
 		return IOUtil.downloadFile("../upload", fileName);
 	}
+	
+	
+	
 
 	/**
 	 * 

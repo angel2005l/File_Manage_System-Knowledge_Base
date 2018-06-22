@@ -148,10 +148,8 @@ public class FileServiceImpl extends BaseService implements IFileService {
 	@Override
 	public Result<KbFile> selFileByFileCode(int fileLevel, String fileCode) throws Exception {
 		String fileTableName = kftm.selectFileTableNameByFileLevel(fileLevel);
-		System.err.println(fileTableName);
 		try {
 			KbFile fileObj = kfm.selectFileByFileCode(fileTableName, fileCode);
-			System.err.println(fileObj);
 			return null == fileObj ? rtnFailResult(Result.ERROR_4000, "文件不存在或已被移除") : rtnSuccessResult("", fileObj);
 		} catch (SQLException e) {
 			log.error("根据文件编码查询文件信息数据接口异常,异常原因【" + e.toString() + "】");
