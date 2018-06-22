@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.context.ContextLoader;
 
 import com.aspose.cells.Workbook;
-import com.aspose.slides.pa2137a2a.is;
 import com.aspose.words.Document;
 import com.aspose.words.License;
 import com.aspose.words.SaveFormat;
@@ -69,13 +68,13 @@ public class AsposeUtil {
 				pdfPath = realPath + "pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
 				doc.save(pdfPath, SaveFormat.PDF);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("Aspose工具类【word2PDFStr(String)】方法异常,异常原因:【" + e.toString() + "】");
 			} finally {
 				if (null != is) {
 					try {
 						is.close();
 					} catch (IOException e) {
-						e.printStackTrace();
+						log.error("Aspose工具类【word2PDFStr(String)】方法关闭输入流异常,异常原因:【" + e.toString() + "】");
 					}
 				}
 			}
@@ -109,13 +108,13 @@ public class AsposeUtil {
 				File filePdf = new File(pdfPath);
 				pdfFileIs = new FileInputStream(filePdf);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("Aspose工具类【word2PDFStream(String)】方法异常,异常原因:【" + e.toString() + "】");
 			} finally {
 				if (null != is) {
 					try {
 						is.close();
 					} catch (IOException e) {
-						e.printStackTrace();
+						log.error("Aspose工具类【word2PDFStream(String)】方法关闭输入流异常,异常原因:【" + e.toString() + "】");
 					}
 				}
 			}
@@ -144,14 +143,13 @@ public class AsposeUtil {
 				pdfPath = realPath + "pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
 				doc.save(pdfPath, SaveFormat.PDF);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error("Aspose工具类【word2PDFStr(InputStream)】方法异常,异常原因:【" + e.toString() + "】");
 			} finally {
 				if (null != is) {
 					try {
 						is.close();
 					} catch (IOException e) {
-						e.printStackTrace();
+						log.error("Aspose工具类【word2PDFStr(InputStream)】方法关闭输入流异常,异常原因:【" + e.toString() + "】");
 					}
 				}
 			}
@@ -182,13 +180,13 @@ public class AsposeUtil {
 				File filePdf = new File(pdfPath);
 				pdfFileIs = new FileInputStream(filePdf);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("Aspose工具类【word2PDFStream(InputStream)】方法异常,异常原因:【" + e.toString() + "】");
 			} finally {
 				if (null != is) {
 					try {
 						is.close();
 					} catch (IOException e) {
-						e.printStackTrace();
+						log.error("Aspose工具类【word2PDFStream(InputStream)】方法关闭输入流异常,异常原因:【" + e.toString() + "】");
 					}
 				}
 			}
@@ -242,13 +240,13 @@ public class AsposeUtil {
 				wb.save(pdfPath, com.aspose.cells.SaveFormat.PDF);
 			}
 		} catch (Exception e) {
-
+			log.error("Aspose工具类【excel2PDFStr(String)】方法异常,异常原因:【" + e.toString() + "】");
 		} finally {
 			if (null != is) {
 				try {
 					is.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					log.error("Aspose工具类【excel2PDFStr(String)】方法关闭输入流异常,异常原因:【" + e.toString() + "】");
 				}
 			}
 		}
@@ -280,13 +278,13 @@ public class AsposeUtil {
 				File filePdf = new File(pdfPath);
 				pdfFileIs = new FileInputStream(filePdf);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("Aspose工具类【excel2PDFtream(String)】方法异常,异常原因:【" + e.toString() + "】");
 			} finally {
 				if (null != is) {
 					try {
 						is.close();
 					} catch (IOException e) {
-						e.printStackTrace();
+						log.error("Aspose工具类【excel2PDFtream(String)】方法关闭输入流异常,异常原因:【" + e.toString() + "】");
 					}
 				}
 			}
@@ -314,14 +312,13 @@ public class AsposeUtil {
 				pdfPath = realPath + "pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
 				doc.save(pdfPath, com.aspose.cells.SaveFormat.PDF);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error("Aspose工具类【excel2PDFStr(InputStream)】方法异常,异常原因:【" + e.toString() + "】");
 			} finally {
 				if (null != is) {
 					try {
 						is.close();
 					} catch (IOException e) {
-						e.printStackTrace();
+						log.error("Aspose工具类【excel2PDFStr(InputStream)】方法关闭输入流异常,异常原因:【" + e.toString() + "】");
 					}
 				}
 			}
@@ -351,13 +348,13 @@ public class AsposeUtil {
 				File filePdf = new File(pdfPath);
 				pdfFileIs = new FileInputStream(filePdf);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("Aspose工具类【excel2PDFStream(InputStream)】方法异常,异常原因:【" + e.toString() + "】");
 			} finally {
 				if (null != is) {
 					try {
 						is.close();
 					} catch (IOException e) {
-						e.printStackTrace();
+						log.error("Aspose工具类【excel2PDFStream(InputStream)】方法关闭输入流异常,异常原因:【" + e.toString() + "】");
 					}
 				}
 			}
