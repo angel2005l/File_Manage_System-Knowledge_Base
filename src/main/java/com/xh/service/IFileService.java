@@ -3,6 +3,7 @@ package com.xh.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.xh.entity.KbFile;
@@ -70,4 +71,19 @@ public interface IFileService {
 	 * @version 1.0
 	 */
 	public Result<KbFile> selFileByFileCode(int fileLevel, String fileCode) throws Exception;
+
+	/**
+	 * 
+	 * @Title: downloadPdf
+	 * @Description: 下载临时PDF文件
+	 * @author 黄官易
+	 * @param fileCode
+	 * @param fileName
+	 * @return
+	 * @throws Exception
+	 * @return ResponseEntity<byte[]>
+	 * @date 2018年6月23日
+	 * @version 1.0
+	 */
+	public ResponseEntity<byte[]> downloadPdf(String filePath, String fileCode, String fileName) throws Exception;
 }

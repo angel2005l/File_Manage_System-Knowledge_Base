@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -180,7 +179,7 @@ public class FileController extends BaseController {
 	/**
 	 * 
 	 * @Title: displayPDF
-	 * @Description: TODO(文件在线预览的功能)
+	 * @Description: 文件在线预览的功能
 	 * @author 陈专懂
 	 * @return void
 	 * @date 2018年6月20日
@@ -188,8 +187,15 @@ public class FileController extends BaseController {
 	 */
 	@RequestMapping("/disPdf.do")
 	@ResponseBody
-	public void displayPDF(HttpServletResponse resp, HttpServletRequest req) {
-		String path = req.getParameter("pathAddress");
+	public ResponseEntity<byte[]> displayPDF(HttpServletRequest request) {
+		String fileCode = request.getParameter("file_code");
+		String fileName = request.getParameter("file_name");
+		try {
+			return fs.downloadPdf("../upload", fileCode, fileName);
+		} catch (Exception e) {
+			log.error("文件在线预览异常,异常原因【" + e.toString() + "】");
+			return null;
+		}
 		// IOUtil.displayPDF(resp, req, path);
 	}
 
