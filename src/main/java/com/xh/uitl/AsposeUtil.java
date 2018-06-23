@@ -65,7 +65,7 @@ public class AsposeUtil {
 				File file = new File(realPath + filePath);
 				is = new FileInputStream(file);
 				Document doc = new Document(is);
-				pdfPath = realPath + "pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				pdfPath = realPath + "pdf" + File.separator + DateUtil.curDateYMDHMSSForService() + ".pdf";
 				doc.save(pdfPath, SaveFormat.PDF);
 			} catch (Exception e) {
 				log.error("Aspose工具类【word2PDFStr(String)】方法异常,异常原因:【" + e.toString() + "】");
@@ -103,7 +103,7 @@ public class AsposeUtil {
 				File file = new File(realPath + filePath);
 				is = new FileInputStream(file);
 				Document doc = new Document(is);
-				String pdfPath = realPath + "pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				String pdfPath = realPath + "pdf" + File.separator + DateUtil.curDateYMDHMSSForService() + ".pdf";
 				doc.save(pdfPath, SaveFormat.PDF);
 				File filePdf = new File(pdfPath);
 				pdfFileIs = new FileInputStream(filePdf);
@@ -140,7 +140,7 @@ public class AsposeUtil {
 			// 获得文件对象
 			try {
 				Document doc = new Document(is);
-				pdfPath = realPath + "pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				pdfPath = realPath + "pdf" + File.separator + DateUtil.curDateYMDHMSSForService() + ".pdf";
 				doc.save(pdfPath, SaveFormat.PDF);
 			} catch (Exception e) {
 				log.error("Aspose工具类【word2PDFStr(InputStream)】方法异常,异常原因:【" + e.toString() + "】");
@@ -175,7 +175,7 @@ public class AsposeUtil {
 			// 获得文件对象
 			try {
 				Document doc = new Document(is);
-				String pdfPath = realPath + "pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				String pdfPath = realPath + "pdf" + File.separator + DateUtil.curDateYMDHMSSForService() + ".pdf";
 				doc.save(pdfPath, SaveFormat.PDF);
 				File filePdf = new File(pdfPath);
 				pdfFileIs = new FileInputStream(filePdf);
@@ -219,7 +219,7 @@ public class AsposeUtil {
 
 	/**
 	 * 
-	 * @Title: excel2PDFStr   
+	 * @Title: excel2PDFStr
 	 * @Description: 根据文件路径 转化excel文件返回路径
 	 * @param filePath
 	 * @return
@@ -236,7 +236,7 @@ public class AsposeUtil {
 				File file = new File(realPath + filePath);
 				is = new FileInputStream(file);
 				Workbook wb = new Workbook(is);
-				pdfPath = realPath + "pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				pdfPath = realPath + "pdf" + File.separator + DateUtil.curDateYMDHMSSForService() + ".pdf";
 				wb.save(pdfPath, com.aspose.cells.SaveFormat.PDF);
 			}
 		} catch (Exception e) {
@@ -255,8 +255,8 @@ public class AsposeUtil {
 
 	/**
 	 * 
-	 * @Title: excel2PDFtream   
-	 * @Description: 根据文件路径 转化excel文件返回输入流对象  
+	 * @Title: excel2PDFtream
+	 * @Description: 根据文件路径 转化excel文件返回输入流对象
 	 * @param filePath
 	 * @return
 	 * @author: MR.H
@@ -273,7 +273,7 @@ public class AsposeUtil {
 				File file = new File(realPath + filePath);
 				is = new FileInputStream(file);
 				Document doc = new Document(is);
-				String pdfPath = realPath + "pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				String pdfPath = realPath + "pdf" + File.separator + DateUtil.curDateYMDHMSSForService() + ".pdf";
 				doc.save(pdfPath, com.aspose.cells.SaveFormat.PDF);
 				File filePdf = new File(pdfPath);
 				pdfFileIs = new FileInputStream(filePdf);
@@ -294,7 +294,7 @@ public class AsposeUtil {
 
 	/**
 	 * 
-	 * @Title: excel2PDFStr   
+	 * @Title: excel2PDFStr
 	 * @Description: 根据输入流 转化excel文件返回路径
 	 * @param is
 	 * @return
@@ -309,7 +309,7 @@ public class AsposeUtil {
 			// 获得文件对象
 			try {
 				Document doc = new Document(is);
-				pdfPath = realPath + "pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				pdfPath = realPath + "pdf" + File.separator + DateUtil.curDateYMDHMSSForService() + ".pdf";
 				doc.save(pdfPath, com.aspose.cells.SaveFormat.PDF);
 			} catch (Exception e) {
 				log.error("Aspose工具类【excel2PDFStr(InputStream)】方法异常,异常原因:【" + e.toString() + "】");
@@ -328,8 +328,8 @@ public class AsposeUtil {
 
 	/**
 	 * 
-	 * @Title: excel2PDFStream   
-	 * @Description: 根据输入流 转化excel文件返回输入流对象  
+	 * @Title: excel2PDFStream
+	 * @Description: 根据输入流 转化excel文件返回输入流对象
 	 * @param is
 	 * @return
 	 * @author: MR.H
@@ -343,7 +343,7 @@ public class AsposeUtil {
 			// 获得文件对象
 			try {
 				Document doc = new Document(is);
-				String pdfPath = realPath + "pdf//" + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				String pdfPath = realPath + "pdf" + File.separator + DateUtil.curDateYMDHMSSForService() + ".pdf";
 				doc.save(pdfPath, com.aspose.cells.SaveFormat.PDF);
 				File filePdf = new File(pdfPath);
 				pdfFileIs = new FileInputStream(filePdf);
