@@ -180,9 +180,11 @@ public class FileController extends BaseController {
 	 * 
 	 * @Title: displayPDF
 	 * @Description: 文件在线预览的功能
-	 * @author 陈专懂
-	 * @return void
-	 * @date 2018年6月20日
+	 * @author 黄官易
+	 * @param request
+	 * @return
+	 * @return ResponseEntity<byte[]>
+	 * @date 2018年6月23日
 	 * @version 1.0
 	 */
 	@RequestMapping("/disPdf.do")

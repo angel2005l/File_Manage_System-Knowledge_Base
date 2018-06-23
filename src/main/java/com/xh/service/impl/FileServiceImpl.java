@@ -1,5 +1,6 @@
 package com.xh.service.impl;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -163,25 +164,31 @@ public class FileServiceImpl extends BaseService implements IFileService {
 	public ResponseEntity<byte[]> downloadPdf(String filePath, String fileCode, String fileName) throws Exception {
 		String suffix = fileName.substring(fileName.lastIndexOf("."));
 		String pdfFileName = "";
+		String fileRootPath = filePath + File.separator + fileCode + suffix;// 获得文件路径
 		switch (suffix) {
 		case ".xls":
 		case ".xlsx":
-			pdfFileName = AsposeUtil.excel2PDFStr(filePath);
+			pdfFileName = AsposeUtil.excel2PDFStr(fileRootPath);
 			break;
 		case ".doc":
 		case ".docx":
-			pdfFileName = AsposeUtil.word2PDFStr(filePath);
+			pdfFileName = AsposeUtil.word2PDFStr(fileRootPath);
 			break;
 		case ".ppt":
 		case ".pptx":
 			// 暂未开放，敬请期待
 			break;
 		default:
-			log.error("未知文件转换PDF错误,错误文件类型【"+suffix+"】");
+			log.error("未知文件转换PDF错误,错误文件类型【" + suffix + "】");
 			return null;
 		}
-		ResponseEntity<byte[]> downloadFile = IOUtil.downloadFile("pdf", fileCode + suffix);
-		IOUtil.clearTempPdf(null, pdfFileName.substring(pdfFileName.lastIndexOf("/") + 1));
+		if (StrUtil.isBlank(pdfFileName)) {
+			return null;
+		}
+		pdfFileName  = pdfFileName.substring(pdfFileName.lastIndexOf(File.separator) + 1);
+		System.err.println(pdfFileName);
+		ResponseEntity<byte[]> downloadFile = IOUtil.downloadFile("pdf", pdfFileName);
+		IOUtil.clearTempPdf(null, pdfFileName);
 		return downloadFile;
 	}
 
