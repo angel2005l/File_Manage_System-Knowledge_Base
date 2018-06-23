@@ -186,7 +186,6 @@ public class FileServiceImpl extends BaseService implements IFileService {
 			return null;
 		}
 		pdfFileName  = pdfFileName.substring(pdfFileName.lastIndexOf(File.separator) + 1);
-		System.err.println(pdfFileName);
 		ResponseEntity<byte[]> downloadFile = IOUtil.downloadFile("pdf", pdfFileName);
 		IOUtil.clearTempPdf(null, pdfFileName);
 		return downloadFile;
