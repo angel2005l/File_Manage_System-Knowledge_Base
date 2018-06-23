@@ -407,7 +407,9 @@ public final class IOUtil {
 	 */
 	public static void clearTempPdf(InputStream is, String fileName) {
 		closeInputStream(is);
-		IOUtil.deleteFile(realPath + "pdf" + File.separator + fileName);
+		if(StrUtil.notBlank(fileName)) {
+			IOUtil.deleteFile(realPath + "pdf" + File.separator + fileName);
+		}
 		// IOUtil.deleteNoDirectory(realPath + "pdf/");//太过于危险
 	}
 
