@@ -15,7 +15,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, file_code, file_name, file_type, file_permission, user_code, user_name, user_dept_code, 
-    create_user_code, create_time
+    create_user_code, DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') as create_time
   </sql>
   <!-- 批量插入文件与用户关联关系    -->
   <insert id="batchInsertFileUser" parameterType="list">

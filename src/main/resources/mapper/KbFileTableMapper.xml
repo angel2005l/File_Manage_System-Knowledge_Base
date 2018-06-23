@@ -11,17 +11,8 @@
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, ft_code, ft_name, file_level, create_user_code,
-		create_time
+		id, ft_code, ft_name, file_level, create_user_code,DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') as create_time
 	</sql>
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
-		parameterType="java.lang.Integer">
-		select 'false' as QUERYID,
-		<include refid="Base_Column_List" />
-		from kb_file_table
-		where id = #{id,jdbcType=INTEGER}
-	</select>
-
 	<!-- 判断该层级表信息是否存在 -->
 	<select id="isExistFileTable" parameterType="_int" resultType="_boolean">
 		select count(1) from kb_file_table where file_level =
