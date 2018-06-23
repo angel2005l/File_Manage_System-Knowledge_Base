@@ -1,6 +1,7 @@
 package com.xh.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,15 +37,29 @@ public class UserController extends BaseController {
 	 */
 	@RequestMapping("/login.do")
 	@ResponseBody
-	public Result<KbUser> login(HttpServletRequest request) {
+	public Result<KbUser> login(HttpServletRequest request, HttpSession session) {
 		String userCode = request.getParameter("user_code");
 		String userPassword = request.getParameter("user_password");
 		try {
-			return userService.login(userCode, userPassword);
+			Result<KbUser> loginResult = userService.login(userCode, userPassword);
+			if (Result.SUCCESS_0 == loginResult.getCode()) {
+				KbUser ku = loginResult.getData();
+				session.setAttribute("user_code", ku.getUserCode());
+				session.setAttribute("user_name", ku.getUserName());
+				session.setAttribute("profession_code", ku.getProfessionalCode());
+				session.setAttribute("user_dept_code", ku.getUserDeptCode());
+				loginResult.setData(null);// 清理正常状态下携带的user对象
+			}
+			return loginResult;
 		} catch (Exception e) {
 			log.error("员工登陆业务方法异常,异常原因【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "员工登陆异常,请联系管理员");
 		}
 	}
+	
+	
+	
+	
+	
 
 }

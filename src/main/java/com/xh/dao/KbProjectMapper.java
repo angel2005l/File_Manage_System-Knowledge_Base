@@ -13,4 +13,6 @@ public interface KbProjectMapper {
     //添加项目信息
 	public int insertProject(Map<String,Object> map) throws SQLException;
 
+	//查询所有的项目信息
+	public List<KbProject> selectProject();
 }

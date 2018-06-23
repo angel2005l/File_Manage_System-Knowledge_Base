@@ -154,5 +154,21 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			}
 		return rtnSuccessResult("根据用户编号查询用户信息成功", list);
 	}
-
+	/**
+	 * 
+	 * @Title: selectAllPro  
+	 * @Description: 查询所有的根目录的项目信息
+	 * @author 陈专懂 
+	 * @return Result<Object> 
+	 * @date 2018年6月23日  
+	 * @version 1.0
+	 */
+	public Result<Object> selectAllPro(String formName){
+		List<KbProject> kbp=projectMapper.selectProject();
+		if(kbp.isEmpty()){
+			return rtnErrorResult(Result.ERROR_4000, "数据表中没有数据");
+		}
+		return rtnSuccessResult("项目表中项目数据查询成功",kbp);
+	}
+	
 }

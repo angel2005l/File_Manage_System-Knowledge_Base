@@ -96,5 +96,16 @@ public class ProjectController extends BaseController{
 		return rtnSuccessResult("添加项目信息及项目涉及人员成功");
 	}
 	
+	@RequestMapping("/selectAllPro.do")
+	@ResponseBody
+	public Result<Object> selectAllPro(HttpServletRequest request, HttpServletResponse response){
+		String obj=ps.selectProjectTableNameByProjectLevel(0).getData().toString();//表名
+		if(obj==null){
+			return rtnErrorResult(Result.ERROR_4000, "找不到项目最根目录");
+		}
+		Object kpro=ps.selectAllPro(obj).getData();
+		List<KbProject> list=(ArrayList<KbProject>)kpro;
+		return null;
+	}
 	
 }

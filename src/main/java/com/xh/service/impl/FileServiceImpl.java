@@ -8,6 +8,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -22,6 +23,7 @@ import com.xh.entity.KbFile;
 import com.xh.entity.KbFileTable;
 import com.xh.entity.KbFileUser;
 import com.xh.service.IFileService;
+import com.xh.uitl.AsposeUtil;
 import com.xh.uitl.DateUtil;
 import com.xh.uitl.IOUtil;
 import com.xh.uitl.Result;
@@ -148,14 +150,39 @@ public class FileServiceImpl extends BaseService implements IFileService {
 	@Override
 	public Result<KbFile> selFileByFileCode(int fileLevel, String fileCode) throws Exception {
 		String fileTableName = kftm.selectFileTableNameByFileLevel(fileLevel);
-		System.err.println(fileTableName);
 		try {
 			KbFile fileObj = kfm.selectFileByFileCode(fileTableName, fileCode);
-			System.err.println(fileObj);
 			return null == fileObj ? rtnFailResult(Result.ERROR_4000, "文件不存在或已被移除") : rtnSuccessResult("", fileObj);
 		} catch (SQLException e) {
 			log.error("根据文件编码查询文件信息数据接口异常,异常原因【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "获取文件信息异常,请联系系统管理员");
 		}
 	}
+
+	@Override
+	public ResponseEntity<byte[]> downloadPdf(String filePath, String fileCode, String fileName) throws Exception {
+		String suffix = fileName.substring(fileName.lastIndexOf("."));
+		String pdfFileName = "";
+		switch (suffix) {
+		case ".xls":
+		case ".xlsx":
+			pdfFileName = AsposeUtil.excel2PDFStr(filePath);
+			break;
+		case ".doc":
+		case ".docx":
+			pdfFileName = AsposeUtil.word2PDFStr(filePath);
+			break;
+		case ".ppt":
+		case ".pptx":
+			// 暂未开放，敬请期待
+			break;
+		default:
+			log.error("未知文件转换PDF错误,错误文件类型【"+suffix+"】");
+			return null;
+		}
+		ResponseEntity<byte[]> downloadFile = IOUtil.downloadFile("pdf", fileCode + suffix);
+		IOUtil.clearTempPdf(null, pdfFileName.substring(pdfFileName.lastIndexOf("/") + 1));
+		return downloadFile;
+	}
+
 }

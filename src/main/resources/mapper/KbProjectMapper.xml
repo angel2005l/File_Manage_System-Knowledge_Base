@@ -31,6 +31,8 @@
 		insert into ${formName} (project_code,project_name,project_type,project_info,project_remark,project_parent_code,project_status,create_user_code,create_time,update_user_code) 
 		values (#{projectCode},#{projectName},#{projectType},#{projectInfo},#{projectRemark},#{projectParentCode},#{projectStatus},#{createUserCode},#{createTime},#{updateUserCode})
 	</insert>
-  
+  <select id="selectProject" resultMap="BaseResultMap" parameterType="String">
+  	select <include refid="Base_Column_List" /> from ${formName} 
+  </select>
   
 </mapper>

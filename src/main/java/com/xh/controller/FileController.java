@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -142,7 +142,6 @@ public class FileController extends BaseController {
 	@RequestMapping("/downloadCheck.do")
 	@ResponseBody
 	public Result<String> downloadCheck(HttpServletRequest request) {
-		System.err.println("sdadsa");
 		String fileCode = request.getParameter("file_code");
 		String fileLevel = request.getParameter("file_level");
 		try {
@@ -172,7 +171,7 @@ public class FileController extends BaseController {
 	 */
 	@RequestMapping("/downloadFile.do")
 	@ResponseBody
-	public Object downloadFile(HttpServletRequest request) {
+	public ResponseEntity<byte[]> downloadFile(HttpServletRequest request) {
 		String fileName = request.getParameter("file_name");
 		return IOUtil.downloadFile("../upload", fileName);
 	}
@@ -180,7 +179,7 @@ public class FileController extends BaseController {
 	/**
 	 * 
 	 * @Title: displayPDF
-	 * @Description: TODO(文件在线预览的功能)
+	 * @Description: 文件在线预览的功能
 	 * @author 陈专懂
 	 * @return void
 	 * @date 2018年6月20日
@@ -188,9 +187,16 @@ public class FileController extends BaseController {
 	 */
 	@RequestMapping("/disPdf.do")
 	@ResponseBody
-	public void displayPDF(HttpServletResponse resp, HttpServletRequest req) {
-		String path = req.getParameter("pathAddress");
-		IOUtil.displayPDF(resp, req, path);
+	public ResponseEntity<byte[]> displayPDF(HttpServletRequest request) {
+		String fileCode = request.getParameter("file_code");
+		String fileName = request.getParameter("file_name");
+		try {
+			return fs.downloadPdf("../upload", fileCode, fileName);
+		} catch (Exception e) {
+			log.error("文件在线预览异常,异常原因【" + e.toString() + "】");
+			return null;
+		}
+		// IOUtil.displayPDF(resp, req, path);
 	}
 
 	/**

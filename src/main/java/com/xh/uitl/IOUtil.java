@@ -51,7 +51,7 @@ public final class IOUtil {
 		try {
 			mf.transferTo(new File(realPath + filePath + File.separator + newFileName));// 将文件写到磁盘上
 		} catch (IllegalStateException | IOException e) {
-			log.error("IO工具类【uploadFile】方法异常,异常原因:" + e.getMessage());
+			log.error("IO工具类【uploadFile】方法异常,异常原因:" + e.toString());
 			return "";
 		}
 		return realPath + filePath + File.separator + newFileName;
@@ -70,19 +70,20 @@ public final class IOUtil {
 	 */
 	public static final ResponseEntity<byte[]> downloadFile(String path, String fileName) {
 		// 下载文件路径
-		File file = new File(realPath + File.separator + path + File.separator + fileName);
+		File file = new File(realPath + path + File.separator + fileName);
 		HttpHeaders headers = new HttpHeaders();
 		// 下载显示的文件名，解决中文名称乱码问题
 		try {
 			String downloadFielName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
-			// String downloadFielName = new String(fileName.getBytes("UTF-8"), "UTF-8");
+			// String downloadFielName = new String(fileName.getBytes("UTF-8"),
+			// "UTF-8");
 			// 通知浏览器以attachment（下载方式）打开图片
 			headers.setContentDispositionFormData("attachment", downloadFielName);
 			// application/octet-stream ： 二进制流数据（最常见的文件下载）。
 			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 			return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
 		} catch (IOException e) {
-			log.error("IO工具类【downloadFile】方法异常,异常原因:" + e.getMessage());
+			log.error("IO工具类【downloadFile】方法异常,异常原因:" + e.toString());
 			return null;
 		}
 	}
@@ -101,10 +102,6 @@ public final class IOUtil {
 		try {
 			// path是指欲下载的文件的路径。
 			File file = new File(realPath + filePath + File.separator + fileName);
-			// 取得文件名。
-			// String filename = file.getName();
-			// 取得文件的后缀名。
-			// String ext = filename.substring(filename.lastIndexOf(".") + 1).toUpperCase();
 			// 以流的形式下载文件。
 			InputStream fis = new BufferedInputStream(new FileInputStream(file));
 			byte[] buffer = new byte[fis.available()];
@@ -338,9 +335,10 @@ public final class IOUtil {
 	 * @date 2018年6月19日
 	 * @version 1.0
 	 */
-	public static void displayPDF(HttpServletResponse response, HttpServletRequest request, String fileAddress) {
+	public static void displayPDF(HttpServletResponse response, HttpServletRequest request, String path,
+			String fileName) {
 		try {
-			File file = new File(fileAddress);
+			File file = new File(realPath + path + File.separator + fileName);
 			FileInputStream fileInputStream = new FileInputStream(file);
 			byte[] b = new byte[fileInputStream.available()];
 			fileInputStream.read(b);
@@ -349,7 +347,7 @@ public final class IOUtil {
 			out.write(b);
 			out.flush();
 			out.close();
-			IOUtil.clearTempPdf(fileInputStream);
+			IOUtil.clearTempPdf(fileInputStream, fileName);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -407,9 +405,12 @@ public final class IOUtil {
 	 * @date 2018年6月20日
 	 * @version 1.0
 	 */
-	public static void clearTempPdf(InputStream is) {
+	public static void clearTempPdf(InputStream is, String fileName) {
 		closeInputStream(is);
-		IOUtil.deleteNoDirectory(realPath + "pdf/");
+		if(StrUtil.notBlank(fileName)) {
+			IOUtil.deleteFile(realPath + "pdf" + File.separator + fileName);
+		}
+		// IOUtil.deleteNoDirectory(realPath + "pdf/");//太过于危险
 	}
 
 }
