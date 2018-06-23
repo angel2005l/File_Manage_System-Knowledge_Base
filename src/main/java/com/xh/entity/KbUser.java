@@ -80,4 +80,16 @@ public class KbUser {
     public void setUserStatus(String userStatus) {
         this.userStatus = userStatus == null ? null : userStatus.trim();
     }
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "KbUser [id=" + id + ", userCode=" + userCode + ", userName=" + userName + ", userDeptCode="
+				+ userDeptCode + ", professionalCode=" + professionalCode + ", userPassword=" + userPassword
+				+ ", userSalt=" + userSalt + ", userStatus=" + userStatus + "]";
+	}
+    
+    
 }

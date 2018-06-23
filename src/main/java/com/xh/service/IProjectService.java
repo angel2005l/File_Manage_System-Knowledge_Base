@@ -25,6 +25,6 @@ public interface IProjectService {
 	//添加项目信息
 	public Result<Object> insertProject(Map<String,Object> map);
 	//根据员工的编号，查找员工信息
-	public Result<Object> selectUserByUserCode(List<String> strList,Map<String,Object> map,String projectPermission);
+	public Result<Object> selectUserByUserCode(List<String> strList);
 	
 }

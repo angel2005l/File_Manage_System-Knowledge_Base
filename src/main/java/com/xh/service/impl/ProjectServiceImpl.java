@@ -4,6 +4,7 @@
 package com.xh.service.impl;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import com.xh.base.BaseService;
 import com.xh.dao.KbProjectMapper;
 import com.xh.dao.KbProjectTableMapper;
+import com.xh.dao.KbProjectUserMapper;
 import com.xh.dao.KbUserMapper;
 import com.xh.entity.KbProject;
 import com.xh.entity.KbProjectTable;
@@ -39,6 +41,8 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	private KbProjectTableMapper projectTableMapper; //项目表关联表
 	@Autowired 
 	private KbUserMapper userMapper; //用户信息表
+	@Autowired
+	private KbProjectUserMapper proUserMapper;//项目用户关联表
 	
 	/**
 	 * 
@@ -79,7 +83,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 
 	/**
 	 * @Title: selectProjectTableNameByProjectLevel  
-	 * @Description: 根据项目等级查询上级项目的编号、名字
+	 * @Description: 根据项目等级查询项目的编号、名字
 	 * @author 陈专懂 
 	 * @return String 
 	 * @date 2018年6月22日  
@@ -93,23 +97,29 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 		//可以再添加一层校验，校验查询传入的等级是否超过最高等级
 		try {
 			String ptName=projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);
-			return rtnSuccessResult("获取上级项目编号、名称成功", ptName);
+			return rtnSuccessResult("获取项目编号、名称成功", ptName);
 		} catch (SQLException e) {
-			log.error("获取上级项目表信息及项目表接口异常,异常原因:【" + e.toString() + "】");
+			log.error("获取项目表信息及项目表接口异常,异常原因:【" + e.toString() + "】");
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
-			return rtnErrorResult(Result.ERROR_6000, "获取上级项目表文件数据接口异常,请联系系统管理员");
+			return rtnErrorResult(Result.ERROR_6000, "获取项目表文件数据接口异常,请联系系统管理员");
 		}
 	}
 
 
-/**
- * 
- */
+	/**
+	 * @Title: insertProject  
+	 * @Description: 添加项目及项目用户关联表
+	 * @author 陈专懂 
+	 * @return String 
+	 * @date 2018年6月22日  
+	 * @version 1.0
+	 */
 	@Transactional(rollbackFor = { Exception.class })
 	public Result<Object> insertProject(Map<String,Object> map) {
 		try {
 			int i=projectMapper.insertProject(map);
-			if(i==1){
+			int j=proUserMapper.insertProjectUser(map);
+			if(i==1&&j==1){
 				return rtnSuccessResult();
 			}else{
 				return rtnErrorResult(Result.ERROR_4000, "添加项目表信息失败");
@@ -122,24 +132,27 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	}
 
 	/**
-	 * 
+	 * @Title: selectUserByUserCode  
+	 * @Description: 根据用户code查询用户的信息
+	 * @author 陈专懂 
+	 * @return String 
+	 * @date 2018年6月22日  
+	 * @version 1.0
 	 */
 	@Transactional(rollbackFor = { Exception.class })
-	public Result<Object> selectUserByUserCode(List<String> strList,Map<String,Object> map,String projectPermission) {
+	public Result<Object> selectUserByUserCode(List<String> strList) {
+		List<KbUser> list=new ArrayList<KbUser>();
 		try {
 			for(int i=0;i<strList.size();i++){
 				KbUser user=userMapper.selectUserByUserCode(strList.get(i));
-				map.put("userCode", user.getUserCode());
-				map.put("userName", user.getUserName());
-				map.put("userDeptCode", user.getUserDeptCode());
+				list.add(user);
 			}
 			} catch (SQLException e) {
 				log.error("查询用户表信息接口异常,异常原因:【" + e.toString() + "】");
 				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
 				return rtnErrorResult(Result.ERROR_6000, "查询用户表信息接口异常,请联系系统管理员");
 			}
-		
-		return null;
+		return rtnSuccessResult("根据用户编号查询用户信息成功", list);
 	}
 
 }

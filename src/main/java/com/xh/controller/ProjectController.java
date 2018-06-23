@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,6 +23,7 @@ import com.xh.base.Constant;
 import com.xh.entity.KbFileTable;
 import com.xh.entity.KbProject;
 import com.xh.entity.KbProjectTable;
+import com.xh.entity.KbUser;
 import com.xh.service.IProjectService;
 import com.xh.uitl.DateUtil;
 import com.xh.uitl.Result;
@@ -74,24 +76,24 @@ public class ProjectController extends BaseController{
 		map.put("projectParentCode", "P2018062213071254");//需要从数据库中取出动态显示在前端
 		map.put("projectStatus", "progress");
 		map.put("createUserCode", "12312313");
-		map.put("createTime", "2018-06-22 15:35:00");
+		map.put("createTime", DateUtil.curDateYMDHMS());
 		map.put("updateUserCode", "1231321313");
-		map.put("projectPermission", "write");
+		
 		List<String> strList=new ArrayList<String>();
 		strList.add("820046");
 		strList.add("820032");
 		strList.add("820033");
 		strList.add("820055");
-		
-		
-		
-		ps.insertProject(map);
-		
-//		System.err.println("controller:"+obj);
-		
-		
-		
-		return rtnSuccessResult("获取项目表名称成功", obj);
+		Object rs=ps.selectUserByUserCode(strList).getData();
+		List<KbUser> taskList = (ArrayList<KbUser>)rs;
+		for(int i=0;i<taskList.size();i++){
+			map.put("userName", taskList.get(i).getUserName());
+			map.put("userCode", taskList.get(i).getUserCode());
+			map.put("userDeptCode", taskList.get(i).getUserDeptCode());
+			map.put("projectPermission", "write");
+			ps.insertProject(map);
+		}
+		return rtnSuccessResult("添加项目信息及项目涉及人员成功");
 	}
 	
 	
