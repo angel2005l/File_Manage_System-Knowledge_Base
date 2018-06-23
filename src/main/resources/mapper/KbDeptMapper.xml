@@ -15,10 +15,4 @@
     id, dept_code, dept_name, dept_level, dept_parent_code, dept_status, create_user_code, 
     create_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 'false' as QUERYID,
-    <include refid="Base_Column_List" />
-    from kb_dept
-    where id = #{id,jdbcType=INTEGER}
-  </select>
 </mapper>
