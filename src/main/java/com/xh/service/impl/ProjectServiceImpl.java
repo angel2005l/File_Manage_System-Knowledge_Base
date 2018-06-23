@@ -115,7 +115,26 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	 * @version 1.0
 	 */
 	@Transactional(rollbackFor = { Exception.class })
-	public Result<Object> insertProject(Map<String,Object> map) {
+	public Result<Object> insertProject(List<Map<String,Object>> list,Map<String,Object> map) {
+		//   进度标记————————————————————————————————————————————————————————————————————————————————————————————
+		try {
+			int i=projectMapper.insertProject(map);
+			int j=proUserMapper.insertProjectUser(map);
+			
+			if(i==1&&j==1){
+				return rtnSuccessResult();
+			}else{
+				return rtnErrorResult(Result.ERROR_4000, "添加项目表信息失败");
+			}
+		} catch (SQLException e) {
+			log.error("添加项目表信息接口异常,异常原因:【" + e.toString() + "】");
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
+			return rtnErrorResult(Result.ERROR_6000, "添加项目表信息接口异常,请联系系统管理员");
+		}
+	}
+	
+	
+	public Result<Object> insertProjectOne(Map<String,Object> map) {
 		try {
 			int i=projectMapper.insertProject(map);
 			int j=proUserMapper.insertProjectUser(map);
@@ -126,7 +145,6 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			}
 		} catch (SQLException e) {
 			log.error("添加项目表信息接口异常,异常原因:【" + e.toString() + "】");
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
 			return rtnErrorResult(Result.ERROR_6000, "添加项目表信息接口异常,请联系系统管理员");
 		}
 	}

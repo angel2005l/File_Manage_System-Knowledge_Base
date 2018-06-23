@@ -83,7 +83,7 @@
 
         <div class="projects ui-sortable grid-view">
 
-<!--         <a class="project c2 i2" href="https://tower.im/projects/7c858190582946e2ac79a893c978b8dd" data-access-id="20510112" data-group-ids="[]" data-stack="" data-stack-root="">
+        <a class="project c2 i2" href="https://tower.im/projects/7c858190582946e2ac79a893c978b8dd" data-access-id="20510112" data-group-ids="[]" data-stack="" data-stack-root="">
     			<span class="badge"></span>
     			<span class="name">商务智能部设计组</span>
   			</a>
@@ -121,7 +121,7 @@
         <a class="project c2 i2" href="https://tower.im/projects/4ed664c4af7949c8979d4bd4ea5307ce" data-access-id="21114942" data-group-ids="[]" data-stack="" data-stack-root="">
 			    <span class="badge"></span>
 			    <span class="name">医疗-培护宁项目</span>
-			  </a> -->
+			  </a>
 
         </div>
 

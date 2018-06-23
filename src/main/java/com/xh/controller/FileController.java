@@ -143,8 +143,7 @@ public class FileController extends BaseController {
 	@ResponseBody
 	public Result<String> downloadCheck(HttpServletRequest request) {
 		String fileCode = request.getParameter("file_code");
-		String fileLevel = request.getParameter("file_level");
-		try {
+		String fileLevel = request.getParameter("file_level");		try {
 			Result<KbFile> fileResult = fs.selFileByFileCode(Integer.parseInt(fileLevel), fileCode);
 			if (Result.SUCCESS_0 != fileResult.getCode()) {
 				return rtnFailResult(fileResult.getCode(), fileResult.getMsg());
@@ -190,15 +189,15 @@ public class FileController extends BaseController {
 	@RequestMapping("/disPdf.do")
 	@ResponseBody
 	public ResponseEntity<byte[]> displayPDF(HttpServletRequest request) {
-		String fileCode = request.getParameter("file_code");
-		String fileName = request.getParameter("file_name");
+		String fileInfo = request.getParameter("file_info");
+		String[] fileInfos = fileInfo.split(",");
 		try {
-			return fs.downloadPdf("../upload", fileCode, fileName);
+			ResponseEntity<byte[]> downloadPdf = fs.downloadPdf("../upload", fileInfos[0], fileInfos[1]);
+			return downloadPdf;
 		} catch (Exception e) {
 			log.error("文件在线预览异常,异常原因【" + e.toString() + "】");
 			return null;
 		}
-		// IOUtil.displayPDF(resp, req, path);
 	}
 
 	/**

@@ -32,10 +32,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<br>
   	<br>
   	<br>
-  	<form action="build/generic/web/viewer.html" method="get" target="_blank"><!-- 在新的窗口打开 -->
-   		PDF路径： <input type="text" name="file" value="/xh_bi_b_knowledge_base/disFile/disPdf.do?pathAddress=C:/Users/Administrator/Desktop/123.pdf" /><input type="submit" value="提交" />
+  	<form action="build/generic/web/viewer.html" method="get" target="_blank">在新的窗口打开
+   		PDF路径： <input type="text" name="file" value="/xh_bi_b_knowledge_base/file/disPdf.do?file_info=F201806221421466073,新海知识库数据库结构.xlsx"/>
+   		<input type="submit" value="提交" />
     </form>   
-  	
   	<hr>
   	<br>
   	<br>

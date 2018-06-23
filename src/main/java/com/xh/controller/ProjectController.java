@@ -86,13 +86,15 @@ public class ProjectController extends BaseController{
 		strList.add("820055");
 		Object rs=ps.selectUserByUserCode(strList).getData();
 		List<KbUser> taskList = (ArrayList<KbUser>)rs;
+		List<Map<String,Object>> objList=new ArrayList<Map<String,Object>>();
 		for(int i=0;i<taskList.size();i++){
 			map.put("userName", taskList.get(i).getUserName());
 			map.put("userCode", taskList.get(i).getUserCode());
 			map.put("userDeptCode", taskList.get(i).getUserDeptCode());
 			map.put("projectPermission", "write");
-			ps.insertProject(map);
+			objList.add(map);
 		}
+		ps.insertProject(objList,map);
 		return rtnSuccessResult("添加项目信息及项目涉及人员成功");
 	}
 	

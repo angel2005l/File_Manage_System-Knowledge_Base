@@ -32,7 +32,7 @@
 			$.ajax({
 				url:"file/downloadCheck.do",
 				type:"post",
-				data:{"file_code":'F2018062214300242',"file_level":0},
+				data:{"file_code":'F201806221430024226',"file_level":0},
 				dataType:'json',
 				success:function(data){
 					if(data.code ===0){

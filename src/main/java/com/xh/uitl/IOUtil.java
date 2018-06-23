@@ -81,7 +81,7 @@ public final class IOUtil {
 			headers.setContentDispositionFormData("attachment", downloadFielName);
 			// application/octet-stream ： 二进制流数据（最常见的文件下载）。
 			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-			return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
+			return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file), headers, HttpStatus.OK);
 		} catch (IOException e) {
 			log.error("IO工具类【downloadFile】方法异常,异常原因:" + e.toString());
 			return null;
