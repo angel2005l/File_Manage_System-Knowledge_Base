@@ -52,7 +52,8 @@ public interface KbFileMapper {
 	 * @return: int
 	 *
 	 */
-	public int selectFileCount(String fileName, String projectCode, String userCode) throws SQLException;
+	public int selectFileCount(@Param("fileTableName") String fileTableName, @Param("projectCode") String projectCode,
+			@Param("userCode") String userCode) throws SQLException;
 
 	/**
 	 * 
