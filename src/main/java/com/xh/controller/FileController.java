@@ -13,11 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.aspose.p2cbca448.re;
 import com.xh.base.BaseController;
 import com.xh.base.Constant;
 import com.xh.entity.KbFile;
@@ -54,6 +57,7 @@ public class FileController extends BaseController {
 	 * @version 1.0
 	 */
 
+	@Transactional(rollbackFor = { Exception.class })
 	@RequestMapping("/upFile.do")
 	@ResponseBody
 	public Result<Map<String, String>> uploadFile(HttpServletRequest request, HttpSession session,
@@ -116,10 +120,7 @@ public class FileController extends BaseController {
 				kfu.setFilePermission("download");
 				kfu.setCreateUserCode(userCode);
 				kfu.setCreateTime(DateUtil.curDateYMDHMS());
-				KbFileUser cloneKfu = IOUtil.deepClone(kfu);
-				cloneKfu.setFilePermission("onlyread");
 				kfus.add(kfu);
-				kfus.add(cloneKfu);
 			}
 			//
 			Result<Object> insResult = fs.insFile(kf, projectLevel, kfus);
@@ -127,9 +128,11 @@ public class FileController extends BaseController {
 			if (Result.SUCCESS_0 == insResult.getCode() && Result.SUCCESS_0 == insSupResult.getCode()) {
 				return rtnSuccessResult("文件保存成功");
 			} else {
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
 				return rtnFailResult(Result.ERROR_4000, "文件保存失败");
 			}
 		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
 			log.error("文件上传服务异常,异常原因【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "文件上传服务异常,请联系系统管理员");
 		}
@@ -245,8 +248,24 @@ public class FileController extends BaseController {
 		}
 	}
 
-	public Result<Map<String, Object>> selectFileForDetail(HttpServletRequest request) {
-		
+	/**
+	 * 
+	 * @Title: selectFileForDetail
+	 * @Description: TODO(这里用一句话描述这个方法的作用)
+	 * @author 黄官易
+	 * @param request
+	 * @return
+	 * @return Result<List<Map<String,Object>>>
+	 * @date 2018年6月25日
+	 * @version 1.0
+	 */
+	public Result<List<Map<String, Object>>> selectFileForDetail(HttpServletRequest request) {
+
+		String parameter = request.getParameter("project_level");
+		// String a = req
+
+		// fs.selectFile(projectLevel, userCode, projectCode);
+
 		return null;
 	}
 

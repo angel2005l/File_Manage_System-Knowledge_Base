@@ -101,6 +101,21 @@ public interface IFileService {
 	 * @version 1.0
 	 */
 	public Result<Object> insSuperiorUserFileWithOnlyRead(KbFile kf, String userDeptCode) throws Exception;
-	
-	public Result<Object> 
+
+	/**
+	 * 
+	 * @Title: selectFile
+	 * @Description: 查询当前项目中 用户有权限的文件
+	 * @author 黄官易
+	 * @param projectLevel
+	 * @param UserCode
+	 * @param projectCode
+	 * @return
+	 * @throws Exception
+	 * @return Result<Object>
+	 * @date 2018年6月25日
+	 * @version 1.0
+	 */
+	public Result<List<Map<String, Object>>> selectFile(int projectLevel, String userCode, String projectCode)
+			throws Exception;
 }

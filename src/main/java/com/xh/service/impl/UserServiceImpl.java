@@ -90,7 +90,7 @@ public class UserServiceImpl extends BaseService implements IUserService {
 			return rtnSuccessResult("", kus);
 		} catch (SQLException e) {
 			log.error("根据部门编码查询全部的用户接口异常,异常信息:【" + e.toString() + "】");
-			return rtnErrorResult(Result.ERROR_6000, "查询系统异常");
+			return rtnErrorResult(Result.ERROR_6000, "查询系统异常,请联系系统管理员");
 		}
 	}
 
@@ -101,7 +101,7 @@ public class UserServiceImpl extends BaseService implements IUserService {
 			return rtnSuccessResult("", kus);
 		} catch (SQLException e) {
 			log.error("根据部门编码查询上级部门的领导层用户,异常信息:【" + e.toString() + "】");
-			return rtnErrorResult(Result.ERROR_6000, "查询系统异常");
+			return rtnErrorResult(Result.ERROR_6000, "查询系统异常,请联系系统管理员");
 		}
 	}
 
