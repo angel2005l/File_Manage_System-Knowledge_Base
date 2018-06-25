@@ -1,11 +1,8 @@
 package com.xh.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,10 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSONObject;
 import com.xh.base.BaseController;
 import com.xh.base.Constant;
-import com.xh.entity.KbFileTable;
 import com.xh.entity.KbProject;
 import com.xh.entity.KbProjectTable;
 import com.xh.entity.KbProjectUser;
