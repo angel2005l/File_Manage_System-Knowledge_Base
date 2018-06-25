@@ -6,8 +6,6 @@ import java.util.List;
 import com.xh.entity.KbUser;
 
 public interface KbUserMapper {
-	public KbUser selectByPrimaryKey(Integer id);
-
 	/**
 	 * 
 	 * @Title: selectUserByUserName

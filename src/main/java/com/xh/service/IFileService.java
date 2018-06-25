@@ -27,7 +27,7 @@ public interface IFileService {
 	 * @date 2018年6月21日
 	 * @version 1.0
 	 */
-	public Result<Map<String, String>> insFile(KbFile kf, String projectLevel, List<KbFileUser> kfus) throws Exception;
+	public Result<Object> insFile(KbFile kf, String projectLevel, List<KbFileUser> kfus) throws Exception;
 
 	/**
 	 * 
@@ -86,4 +86,21 @@ public interface IFileService {
 	 * @version 1.0
 	 */
 	public ResponseEntity<byte[]> downloadPdf(String filePath, String fileCode, String fileName) throws Exception;
+
+	/**
+	 * 
+	 * @Title: insSuperiorUserFileWithOnlyRead
+	 * @Description: 新增文件上级预览权限
+	 * @author 黄官易
+	 * @param kf
+	 * @param kbUser
+	 * @return
+	 * @throws Exception
+	 * @return Result<Object>
+	 * @date 2018年6月25日
+	 * @version 1.0
+	 */
+	public Result<Object> insSuperiorUserFileWithOnlyRead(KbFile kf, String userDeptCode) throws Exception;
+	
+	public Result<Object> 
 }
