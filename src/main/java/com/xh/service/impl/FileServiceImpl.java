@@ -222,7 +222,6 @@ public class FileServiceImpl extends BaseService implements IFileService {
 			kfu.setCreateTime(DateUtil.curDateYMDHMS());
 			kfuList.add(kfu);
 		}
-
 		try {
 			int insNum = kfm.insertSuperiorUserFileWithOnlyRead(kfuList);
 			if (insNum == kfuList.size()) {
@@ -236,7 +235,19 @@ public class FileServiceImpl extends BaseService implements IFileService {
 			log.error("默认添加上级部门领导层文件预览接口异常,异常原因:【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "默认添加上级部门领导层文件预览接口异常");
 		}
+	}
 
+	@Override
+	public Result<List<Map<String, Object>>> selectFile(int projectLevel, String userCode, String projectCode)
+			throws Exception {
+		try {
+			String fileTableName = kftm.selectFileTableNameByFileLevel(projectLevel);
+			List<Map<String, Object>> fileInfoList = kfm.selectFileByUserCode(fileTableName, projectCode, userCode);
+			return rtnSuccessResult("", fileInfoList);
+		} catch (SQLException e) {
+			log.error("根据部门编码查询上级部门的领导层用户,异常信息:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "查询系统异常,请联系系统管理员");
+		}
 	}
 
 }
