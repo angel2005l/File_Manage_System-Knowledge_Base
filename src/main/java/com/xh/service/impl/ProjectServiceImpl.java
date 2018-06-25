@@ -90,7 +90,6 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	 * @date 2018年6月22日  
 	 * @version 1.0
 	 */
-	@Transactional(rollbackFor = { Exception.class })
 	public Result<Object> selectProjectTableNameByProjectLevel(int projectLevel) {
 //		if(projectLevel==0){
 //			return rtnSuccessResult("该项目为一级项目",projectLevel);
@@ -101,7 +100,6 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			return rtnSuccessResult("获取项目编号、名称成功", ptName);
 		} catch (SQLException e) {
 			log.error("获取项目表信息及项目表接口异常,异常原因:【" + e.toString() + "】");
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
 			return rtnErrorResult(Result.ERROR_6000, "获取项目表文件数据接口异常,请联系系统管理员");
 		}
 	}
@@ -182,8 +180,11 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	 * @date 2018年6月23日  
 	 * @version 1.0
 	 */
-	public Result<Object> selectAllPro(String formName){
-		List<KbProject> kbp=projectMapper.selectProject();
+	public Result<Object> selectAllPro(String formName,String projectParentCode){
+		System.err.println("projectParentCode:"+projectParentCode);
+		System.err.println("formName:"+formName);
+		List<KbProject> kbp=projectMapper.selectProject(formName,projectParentCode);
+		System.err.println("service:"+kbp);
 		if(kbp.isEmpty()){
 			return rtnErrorResult(Result.ERROR_4000, "数据表中没有数据");
 		}

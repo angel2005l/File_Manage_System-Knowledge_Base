@@ -29,5 +29,5 @@ public interface IProjectService {
 	//根据员工的编号，查找员工信息
 	public Result<Object> selectUserByUserCode(List<String> strList);
 	//查询所有的根层的项目信息
-	public Result<Object> selectAllPro(String formName);
+	public Result<Object> selectAllPro(String formName,String projectParentCode);
 }
