@@ -31,8 +31,9 @@
 		insert into ${formName} (project_code,project_name,project_type,project_info,project_remark,project_parent_code,project_status,create_user_code,create_time,update_user_code) 
 		values(#{kb.projectCode},#{kb.projectName},#{kb.projectType},#{kb.projectInfo},#{kb.projectRemark},#{kb.projectParentCode},#{kb.projectStatus},#{kb.createUserCode},#{kb.createTime},#{kb.updateUserCode})
 	</insert>
-  <select id="selectProject" resultMap="BaseResultMap" parameterType="String">
-  	select <include refid="Base_Column_List" /> from ${formName} 
+  <select id="selectProject" resultMap="BaseResultMap" parameterType="string">
+  	select <include refid="Base_Column_List" /> from ${formName}
+  	<if test="projectParentCode!='-1' "> where project_parent_code=#{projectParentCode}</if> 
   </select>
   
 </mapper>

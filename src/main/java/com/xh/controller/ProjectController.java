@@ -111,12 +111,18 @@ public class ProjectController extends BaseController{
 	@ResponseBody
 	public Result<Object> selectAllPro(HttpServletRequest request, HttpServletResponse response){
 		String obj=ps.selectProjectTableNameByProjectLevel(0).getData().toString();//表名
+		System.err.println("表名:"+obj);
+		String projectParentCode="-1";
 		if(obj==null){
 			return rtnErrorResult(Result.ERROR_4000, "找不到项目最根目录");
 		}
-		Object kpro=ps.selectAllPro(obj).getData();
+		Object kpro=ps.selectAllPro(obj,projectParentCode).getData();
 		List<KbProject> list=(ArrayList<KbProject>)kpro;
-		return null;
+		System.err.println("信息："+list);
+		if(list!=null){
+			return rtnSuccessResult("获取该等级项目信息成功", list);
+		}
+		return rtnErrorResult(Result.ERROR_4000, "获取该等级项目信息失败，请联系管理员。");
 	}
 	
 }

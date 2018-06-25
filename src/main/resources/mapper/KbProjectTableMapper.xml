@@ -68,7 +68,7 @@
 	
 	<!-- 根据层级查询表名称 -->
 	<select id="selectProjectTableNameByProjectLevel" parameterType="_int" resultType="String">
-		select pt_name from kb_project_table where project_level = ${projectLevel} 
+		select pt_name from kb_project_table where project_level = #{projectLevel}
 	</select>
   
   	<!-- 查询文件分表是否存在 -->

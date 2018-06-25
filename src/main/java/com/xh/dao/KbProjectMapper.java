@@ -15,5 +15,5 @@ public interface KbProjectMapper {
 	public int insertProject(@Param("kb") KbProject kbObj,@Param("formName") String formName) throws SQLException;
 
 	//查询所有的项目信息
-	public List<KbProject> selectProject();
+	public List<KbProject> selectProject(@Param("formName")String formName,@Param("projectParentCode")String projectParentCode);
 }
