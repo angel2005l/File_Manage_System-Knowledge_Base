@@ -92,10 +92,12 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	 */
 	@Transactional(rollbackFor = { Exception.class })
 	public Result<Object> selectProjectTableNameByProjectLevel(int projectLevel) {
-//		if(projectLevel==0){
-//			return rtnSuccessResult("该项目为一级项目",projectLevel);
-//		}
+		if(projectLevel==0){
+			return rtnSuccessResult("该项目为一级项目",projectLevel);
+		}
 		//可以再添加一层校验，校验查询传入的等级是否超过最高等级
+		
+		
 		try {
 			String ptName=projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);
 			return rtnSuccessResult("获取项目编号、名称成功", ptName);
