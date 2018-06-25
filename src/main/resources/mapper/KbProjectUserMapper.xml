@@ -23,9 +23,12 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   <!-- 添加项目用户表 -->
-  	<insert id="insertProjectUser" parameterType="Map">
-		insert into kb_project_user (project_code,project_name,project_permission,user_code,user_name,user_dept_code,create_user_code,create_time) 
-		values (#{projectCode},#{projectName},#{projectPermission},#{userCode},#{userName},#{userDeptCode},#{createUserCode},#{createTime})
+  	<insert id="insertProjectUser" parameterType="list">
+		insert into kb_project_user (project_code,project_name,project_permission,user_code,user_name,user_dept_code,create_user_code,create_time)
+		<foreach collection="list" item="userPro" separator="union ">
+			select '${userPro.projectCode}','${userPro.projectName}','${userPro.projectPermission}','${userPro.userCode}','${userPro.userName}','${userPro.userDeptCode}','${userPro.createUserCode}','${userPro.createTime}' from dual
+		</foreach>
 	</insert>
-  
+<!--   		insert into kb_project_user (project_code,project_name,project_permission,user_code,user_name,user_dept_code,create_user_code,create_time) 
+		values (#{projectCode},#{projectName},#{projectPermission},#{userCode},#{userName},#{userDeptCode},#{createUserCode},#{createTime}) -->
 </mapper>

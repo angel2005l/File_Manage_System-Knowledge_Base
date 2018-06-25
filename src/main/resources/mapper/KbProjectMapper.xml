@@ -27,9 +27,9 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   
-	<insert id="insertProject" parameterType="Map">
+	<insert id="insertProject" parameterType="com.xh.entity.KbProject">
 		insert into ${formName} (project_code,project_name,project_type,project_info,project_remark,project_parent_code,project_status,create_user_code,create_time,update_user_code) 
-		values (#{projectCode},#{projectName},#{projectType},#{projectInfo},#{projectRemark},#{projectParentCode},#{projectStatus},#{createUserCode},#{createTime},#{updateUserCode})
+		values(#{kb.projectCode},#{kb.projectName},#{kb.projectType},#{kb.projectInfo},#{kb.projectRemark},#{kb.projectParentCode},#{kb.projectStatus},#{kb.createUserCode},#{kb.createTime},#{kb.updateUserCode})
 	</insert>
   <select id="selectProject" resultMap="BaseResultMap" parameterType="String">
   	select <include refid="Base_Column_List" /> from ${formName} 

@@ -22,6 +22,7 @@ import com.xh.dao.KbProjectUserMapper;
 import com.xh.dao.KbUserMapper;
 import com.xh.entity.KbProject;
 import com.xh.entity.KbProjectTable;
+import com.xh.entity.KbProjectUser;
 import com.xh.entity.KbUser;
 import com.xh.service.IProjectService;
 import com.xh.uitl.Result;
@@ -115,13 +116,13 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	 * @version 1.0
 	 */
 	@Transactional(rollbackFor = { Exception.class })
-	public Result<Object> insertProject(List<Map<String,Object>> list,Map<String,Object> map) {
-		//   进度标记————————————————————————————————————————————————————————————————————————————————————————————
+	public Result<Object> insertProject(KbProject kbObj,List<KbProjectUser> listUser,String formName) {
+		
 		try {
-			int i=projectMapper.insertProject(map);
-			int j=proUserMapper.insertProjectUser(map);
+			int rtnPro=projectMapper.insertProject(kbObj,formName);
+			int rtnUserPro=proUserMapper.insertProjectUser(listUser);
 			
-			if(i==1&&j==1){
+			if(rtnPro==1&&rtnUserPro==1){
 				return rtnSuccessResult();
 			}else{
 				return rtnErrorResult(Result.ERROR_4000, "添加项目表信息失败");
@@ -134,7 +135,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	}
 	
 	
-	public Result<Object> insertProjectOne(Map<String,Object> map) {
+/*	public Result<Object> insertProjectOne(Map<String,Object> map) {
 		try {
 			int i=projectMapper.insertProject(map);
 			int j=proUserMapper.insertProjectUser(map);
@@ -147,7 +148,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			log.error("添加项目表信息接口异常,异常原因:【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "添加项目表信息接口异常,请联系系统管理员");
 		}
-	}
+	}*/
 
 	/**
 	 * @Title: selectUserByUserCode  

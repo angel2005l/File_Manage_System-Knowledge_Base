@@ -23,6 +23,7 @@ import com.xh.base.Constant;
 import com.xh.entity.KbFileTable;
 import com.xh.entity.KbProject;
 import com.xh.entity.KbProjectTable;
+import com.xh.entity.KbProjectUser;
 import com.xh.entity.KbUser;
 import com.xh.service.IProjectService;
 import com.xh.uitl.DateUtil;
@@ -64,40 +65,53 @@ public class ProjectController extends BaseController{
 	@ResponseBody
 	public Result<Object> selProjectTable(HttpServletRequest request, HttpServletResponse response){
 		int ptLevel=Integer.parseInt(request.getParameter("pt_level"));
-		String obj=ps.selectProjectTableNameByProjectLevel(ptLevel).getData().toString();//表名
-		Map<String,Object> map=new HashMap<String, Object>();
-		String projectCode="P"+DateUtil.curDateYMDHMSForService()+StrUtil.getRandom((int) (Math.random() * 1000),4);
-		map.put("formName", obj);
-		map.put("projectCode", projectCode);
-		map.put("projectName", "fffffff");
-		map.put("projectType", "pub");
-		map.put("projectInfo", "aaaaaa");
-		map.put("projectRemark", "aaaaaa");
-		map.put("projectParentCode", "P2018062213071254");//需要从数据库中取出动态显示在前端
-		map.put("projectStatus", "progress");
-		map.put("createUserCode", "12312313");
-		map.put("createTime", DateUtil.curDateYMDHMS());
-		map.put("updateUserCode", "1231321313");
+		String formName=ps.selectProjectTableNameByProjectLevel(ptLevel).getData().toString();//表名
 		
-		List<String> strList=new ArrayList<String>();
+		String projectCode="P"+DateUtil.curDateYMDHMSForService()+StrUtil.getRandom((int) (Math.random() * 1000),4);
+		KbProject kbObj=new KbProject();//new 一个kbPeoject的对象
+		kbObj.setProjectCode(projectCode);
+		kbObj.setProjectName(request.getParameter("project_name"));
+		kbObj.setProjectType(request.getParameter("project_type"));
+		kbObj.setProjectInfo(request.getParameter("project_info"));
+		kbObj.setProjectRemark(request.getParameter("project_remark"));
+		kbObj.setProjectParentCode(request.getParameter("project_parent_code"));//需要从数据库中取出动态显示在前端
+		kbObj.setProjectStatus(request.getParameter("project_status"));
+		kbObj.setCreateUserCode(request.getParameter("create_user_code"));
+		kbObj.setCreateTime(DateUtil.curDateYMDHMS());
+		kbObj.setUpdateUserCode(request.getParameter("update_time"));
+		
+		List<String> strList=new ArrayList<String>();//获取write或read
 		strList.add("820046");
 		strList.add("820032");
 		strList.add("820033");
 		strList.add("820055");
 		Object rs=ps.selectUserByUserCode(strList).getData();
-		List<KbUser> taskList = (ArrayList<KbUser>)rs;
-		List<Map<String,Object>> objList=new ArrayList<Map<String,Object>>();
+		List<KbUser> taskList = (ArrayList<KbUser>)rs;//员工信息的list集合
+		List<KbProjectUser> listUser=new ArrayList<KbProjectUser>();
 		for(int i=0;i<taskList.size();i++){
-			map.put("userName", taskList.get(i).getUserName());
-			map.put("userCode", taskList.get(i).getUserCode());
-			map.put("userDeptCode", taskList.get(i).getUserDeptCode());
-			map.put("projectPermission", "write");
-			objList.add(map);
+			KbProjectUser proUser=new KbProjectUser();
+			proUser.setProjectCode(projectCode);
+			proUser.setProjectName(kbObj.getProjectName());
+			proUser.setUserName(taskList.get(i).getUserName());
+			proUser.setUserCode(taskList.get(i).getUserCode());
+			proUser.setUserDeptCode(taskList.get(i).getUserDeptCode());
+			proUser.setProjectPermission("write");
+			proUser.setCreateUserCode(kbObj.getCreateUserCode());
+			proUser.setCreateTime(DateUtil.curDateYMDHMS());
+			listUser.add(proUser);
 		}
-		ps.insertProject(objList,map);
+		ps.insertProject(kbObj,listUser,formName);
 		return rtnSuccessResult("添加项目信息及项目涉及人员成功");
 	}
-	
+	/**
+	 * 
+	 * @Title: selectAllPro  
+	 * @Description: 主页、显示所有的项目
+	 * @author 陈专懂 
+	 * @return Result<Object> 
+	 * @date 2018年6月25日  
+	 * @version 1.0
+	 */
 	@RequestMapping("/selectAllPro.do")
 	@ResponseBody
 	public Result<Object> selectAllPro(HttpServletRequest request, HttpServletResponse response){
