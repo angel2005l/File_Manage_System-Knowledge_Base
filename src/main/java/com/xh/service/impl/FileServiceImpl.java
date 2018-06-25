@@ -2,6 +2,7 @@ package com.xh.service.impl;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +22,13 @@ import com.xh.base.Constant;
 import com.xh.dao.KbFileMapper;
 import com.xh.dao.KbFileTableMapper;
 import com.xh.dao.KbFileUserMapper;
+import com.xh.dao.KbUserMapper;
 import com.xh.entity.KbFile;
 import com.xh.entity.KbFileTable;
 import com.xh.entity.KbFileUser;
+import com.xh.entity.KbUser;
 import com.xh.service.IFileService;
+import com.xh.service.IUserService;
 import com.xh.uitl.AsposeUtil;
 import com.xh.uitl.DateUtil;
 import com.xh.uitl.IOUtil;
@@ -42,10 +47,16 @@ public class FileServiceImpl extends BaseService implements IFileService {
 	private KbFileMapper kfm;// 文件数据接口
 	@Autowired
 	private KbFileUserMapper kfum;// 文件用户关联接口
+	@Autowired
+	private KbUserMapper kum; // 用户接口
+
+	@Autowired
+	@Qualifier("userServiceImpl")
+	private IUserService us;
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public Result<Map<String, String>> insFile(KbFile kf, String projectLevel, List<KbFileUser> kfus) throws Exception {
+	public Result<Object> insFile(KbFile kf, String projectLevel, List<KbFileUser> kfus) throws Exception {
 		if (!StrUtil.isNaturalNumber(projectLevel)) {
 			return rtnFailResult(Result.ERROR_4000, "项目层级参数不合法");
 		}
@@ -185,10 +196,47 @@ public class FileServiceImpl extends BaseService implements IFileService {
 		if (StrUtil.isBlank(pdfFileName)) {
 			return null;
 		}
-		pdfFileName  = pdfFileName.substring(pdfFileName.lastIndexOf(File.separator) + 1);
+		pdfFileName = pdfFileName.substring(pdfFileName.lastIndexOf(File.separator) + 1);
 		ResponseEntity<byte[]> downloadFile = IOUtil.downloadFile("pdf", pdfFileName);
 		IOUtil.clearTempPdf(null, pdfFileName);
 		return downloadFile;
+	}
+
+	@Transactional(rollbackFor = { Exception.class })
+	@Override
+	public Result<Object> insSuperiorUserFileWithOnlyRead(KbFile kf, String userDeptCode) throws Exception {
+
+		List<KbUser> superiorUsers = kum.selectSuperiorUserByUserDeptCode(userDeptCode);
+		if (null == superiorUsers || superiorUsers.isEmpty()) {
+			return rtnSuccessResult();
+		}
+		List<KbFileUser> kfuList = new ArrayList<KbFileUser>();
+		for (KbUser ku : superiorUsers) {
+			KbFileUser kfu = new KbFileUser();
+			kfu.setFileCode(kf.getFileCode());
+			kfu.setFileName(kf.getFileName());
+			kfu.setFileType(kf.getFileType());
+			kfu.setUserCode(ku.getUserCode());
+			kfu.setFilePermission("onlyread");
+			kfu.setCreateUserCode(kf.getCreateUserCode());
+			kfu.setCreateTime(DateUtil.curDateYMDHMS());
+			kfuList.add(kfu);
+		}
+
+		try {
+			int insNum = kfm.insertSuperiorUserFileWithOnlyRead(kfuList);
+			if (insNum == kfuList.size()) {
+				return rtnSuccessResult("默认添加上级部门领导层文件预览成功");
+			} else {
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
+				return rtnFailResult(Result.ERROR_4000, "默认添加上级部门领导层文件预览成功");
+			}
+		} catch (SQLException e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
+			log.error("默认添加上级部门领导层文件预览接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "默认添加上级部门领导层文件预览接口异常");
+		}
+
 	}
 
 }

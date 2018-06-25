@@ -69,6 +69,7 @@ public class FileController extends BaseController {
 			String projectLevel = request.getParameter("project_level");
 			String projectCode = request.getParameter("project_code");
 			String userCode = session.getAttribute("userCode").toString();
+			String userDeptCode = session.getAttribute("userDeptCode").toString();
 			// String userCode = "820032";
 			Map<String, String> fileMap = ufResult.getData();
 			String fileCode = fileMap.get("fileCode");
@@ -120,8 +121,14 @@ public class FileController extends BaseController {
 				kfus.add(kfu);
 				kfus.add(cloneKfu);
 			}
-			// 数据文件结构
-			return fs.insFile(kf, projectLevel, kfus);
+			//
+			Result<Object> insResult = fs.insFile(kf, projectLevel, kfus);
+			Result<Object> insSupResult = fs.insSuperiorUserFileWithOnlyRead(kf, userDeptCode);
+			if (Result.SUCCESS_0 == insResult.getCode() && Result.SUCCESS_0 == insSupResult.getCode()) {
+				return rtnSuccessResult("文件保存成功");
+			} else {
+				return rtnFailResult(Result.ERROR_4000, "文件保存失败");
+			}
 		} catch (Exception e) {
 			log.error("文件上传服务异常,异常原因【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "文件上传服务异常,请联系系统管理员");
@@ -143,7 +150,8 @@ public class FileController extends BaseController {
 	@ResponseBody
 	public Result<String> downloadCheck(HttpServletRequest request) {
 		String fileCode = request.getParameter("file_code");
-		String fileLevel = request.getParameter("file_level");		try {
+		String fileLevel = request.getParameter("file_level");
+		try {
 			Result<KbFile> fileResult = fs.selFileByFileCode(Integer.parseInt(fileLevel), fileCode);
 			if (Result.SUCCESS_0 != fileResult.getCode()) {
 				return rtnFailResult(fileResult.getCode(), fileResult.getMsg());
@@ -235,6 +243,11 @@ public class FileController extends BaseController {
 			log.error("新增文件表信息及文件表接口异常,异常原因:【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "新增文件表信息及文件表接口异常,请联系系统管理员");
 		}
+	}
+
+	public Result<Map<String, Object>> selectFileForDetail(HttpServletRequest request) {
+		
+		return null;
 	}
 
 }

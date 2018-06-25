@@ -28,4 +28,12 @@
   <insert id="insertFileUser" parameterType="com.xh.entity.KbFileUser">
   	  	insert into kb_file_user(file_code, file_name, file_type, file_permission, user_code, user_name, user_dept_code, create_user_code, create_time) SELECT '${kfu.fileCode}','${kfu.fileName}','${kfu.fileType}','${kfu.filePermission}',user_code,user_name,user_dept_code,'${kfu.createUserCode}','${kfu.createTime}' FROM kb_user WHERE user_code = #{kfu.userCode} 
   </insert>
+  <!-- 默认添加上级部门所属关系 -->
+  <insert id="insertSuperiorUserFileWithOnlyRead" parameterType="list">
+  	insert into kb_file_user(file_code, file_name, file_type, file_permission, user_code, user_name, user_dept_code, create_user_code, create_time) 
+  	values
+  	<foreach collection="list" item="kfu" separator=",">
+  		(#{kfu.fileCode},#{kfu.fileName},#{kfu.fileType},#{kfu.filePermission},#{kfu.userCode},#{kfu.userName},#{kfu.userDeptCode},#{kfu.createUserCode},#{kfu.createTime})
+  	</foreach>
+  </insert>
 </mapper>
