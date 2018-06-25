@@ -15,15 +15,30 @@
     id, user_code, user_name, user_dept_code, professional_code, user_password, user_salt, 
     user_status
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 'false' as QUERYID,
-    <include refid="Base_Column_List" />
-    from kb_user
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  
+  <!-- 根据员工编号查询员工信息 -->
   <select id="selectUserByUserCode" parameterType="string" resultMap="BaseResultMap">
   	select <include refid="Base_Column_List" /> from kb_user where user_code = #{userCode,javaType=string}
   </select>
   
+  <!-- 添加员工信息 -->
+  <insert id="" parameterType="com.xh.entity.KbUser">
+  	insert into kb_user(user_code, user_name, user_dept_code, professional_code, user_password, user_salt, user_status) 
+  	values(#{userCode},#{userName},#{userDeptCode},#{professionalCode},#{userPassword},#{userSalt},#{userStatus})
+  </insert>
+  <!-- 批量添加员工信息 -->
+  <insert id="batchInsertUsers" parameterType="list">
+  	insert into kb_user(user_code, user_name, user_dept_code, professional_code, user_password, user_salt, user_status)
+  	<foreach collection="list" item="b" separator=",">
+  	values(#{b.userCode},#{b.userName},#{b.userDeptCode},#{b.professionalCode},#{b.userPassword},#{b.userSalt},#{b.userStatus})
+  	</foreach> 
+  </insert>
+  <!-- 根据部门编码查询全部的用户 -->
+  	<select id="selectUsersByUserDeptCode" parameterType="string" resultType="com.xh.entity.KbUser">
+  		select <include refid="Base_Column_List" /> from kb_user where user_dept_code = #{userDeptCode}
+  	</select>
+  <!-- 根据部门编码查询上级部门的领导层用户 -->
+  <select id="selectSuperiorUserByUserDeptCode" parameterType="string" resultType="com.xh.entity.KbUser">
+  	 SELECT <include refid="Base_Column_List" /> FROM kb_user WHERE user_dept_code= (SELECT dept_parent_code FROM kb_dept WHERE  dept_code = #{userDeptCode})
+  	AND professional_code =(SELECT professional_code  FROM kb_professional WHERE professional_level = 1)
+  </select>
 </mapper>
