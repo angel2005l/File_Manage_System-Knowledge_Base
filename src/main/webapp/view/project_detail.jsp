@@ -428,7 +428,7 @@
 														<div class="tags"></div>
 														<div class="control-dir no-dir">
 															<a class="link-change-dir"
-																onclick="display('${b.file_code }','${b.file_level }')">预览</a>
+																onclick="display('${b.file_code }','${b.file_name }')" target="_blank">预览</a>
 															<c:if test="${b.file_permission eq 'download' }">
 																<a onclick="downloadFile('${b.file_code }','${b.file_level }')" class="link-change-dir">下载</a>
 															</c:if>
@@ -470,13 +470,15 @@
 			<div class="footer">© 商务智能部</div>
 		</div>
 	</div>
+	<form id="displayForm" action="build/generic/web/viewer.html" method="get" target="_blank">在新的窗口打开
+   		<input id="displayValues" type="hidden" name="file" value="/xh_bi_b_knowledge_base/file/disPdf.do?file_info=F201806221421466073,新海知识库数据库结构.xlsx"/>
+    </form>   
 	<script type="text/javascript" src="assets/js/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript">
-				function display(code,level){
-					
-					
-					
-					
+				function display(code,name){
+					var str = "/xh_bi_b_knowledge_base/file/disPdf.do?file_info="+code+","+name;
+					$("#displayValues").val(str);
+					$("#displayForm").submit();
 				}
 				
 				function downloadFile(code,level){
