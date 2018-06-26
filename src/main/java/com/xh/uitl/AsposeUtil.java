@@ -272,9 +272,9 @@ public class AsposeUtil {
 			try {
 				File file = new File(realPath + filePath);
 				is = new FileInputStream(file);
-				Document doc = new Document(is);
+				Workbook wk = new Workbook(is);
 				String pdfPath = realPath + "pdf" + File.separator + DateUtil.curDateYMDHMSSForService() + ".pdf";
-				doc.save(pdfPath, com.aspose.cells.SaveFormat.PDF);
+				wk.save(pdfPath, com.aspose.cells.SaveFormat.PDF);
 				File filePdf = new File(pdfPath);
 				pdfFileIs = new FileInputStream(filePdf);
 			} catch (Exception e) {
@@ -308,9 +308,9 @@ public class AsposeUtil {
 		if (getLicenseWithWord()) {
 			// 获得文件对象
 			try {
-				Document doc = new Document(is);
+				Workbook wk = new Workbook(is);
 				pdfPath = realPath + "pdf" + File.separator + DateUtil.curDateYMDHMSSForService() + ".pdf";
-				doc.save(pdfPath, com.aspose.cells.SaveFormat.PDF);
+				wk.save(pdfPath, com.aspose.cells.SaveFormat.PDF);
 			} catch (Exception e) {
 				log.error("Aspose工具类【excel2PDFStr(InputStream)】方法异常,异常原因:【" + e.toString() + "】");
 			} finally {
@@ -342,9 +342,9 @@ public class AsposeUtil {
 		if (getLicenseWithWord()) {
 			// 获得文件对象
 			try {
-				Document doc = new Document(is);
+				Workbook wk = new Workbook(is);
 				String pdfPath = realPath + "pdf" + File.separator + DateUtil.curDateYMDHMSSForService() + ".pdf";
-				doc.save(pdfPath, com.aspose.cells.SaveFormat.PDF);
+				wk.save(pdfPath, com.aspose.cells.SaveFormat.PDF);
 				File filePdf = new File(pdfPath);
 				pdfFileIs = new FileInputStream(filePdf);
 			} catch (Exception e) {
