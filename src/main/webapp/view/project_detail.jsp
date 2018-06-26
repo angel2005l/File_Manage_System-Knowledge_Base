@@ -56,7 +56,7 @@
 							<div class="noti-pop">
 								<div class="noti-pop-hd">
 									<b class="title">通知</b>
-									<a class="mark-as-read" id="noti-mark-read" data-loading="true" data-remote="true" rel="nofollow" data-method="post" href="https://tower.im/teams/66fb82b17f5341cbb0f5f39a1064c013/notifications/read_all">
+									<a class="mark-as-read" id="noti-mark-read" data-loading="true" data-remote="true" rel="nofollow" data-method="post" href="">
 										<span class="twr twr twr-check"></span> 全部标记为已读
 									</a>
 								</div>
@@ -67,10 +67,10 @@
 								</div>
 								<div class="noti-pop-empty">- 没有新通知 -</div>
 								<div class="noti-pop-footer">
-									<a class="noti-settings" data-stack="true" data-stack-root="true" href="https://tower.im/members/3b3a614642fc499bbce9a48e5c7672aa/notification_settings">
+									<a class="noti-settings" data-stack="true" data-stack-root="true" href="">
 										<i class="twr twr-cog"></i> 通知设置
 									</a>
-									<a class="noti-all-link" data-stack="true" data-stack-root="true" href="https://tower.im/teams/66fb82b17f5341cbb0f5f39a1064c013/notifications">查看全部通知</a>
+									<a class="noti-all-link" data-stack="true" data-stack-root="true" href="">查看全部通知</a>
 								</div>
 							</div>
 						</div>
@@ -85,7 +85,7 @@
 				</div>
 			</div>
 
-			<script id="tpl-header-menu" type="text/html">
+		<!--  	<script id="tpl-header-menu" type="text/html">
 				<div class="header-menu">
 					<header class="header-menu-head">
 						<div class="header-menu-member">
@@ -114,21 +114,9 @@
 							</div>
 						</div>
 					</div>
-			</script>
+			</script>-->
 
 			<div class="container workspace simple-stack simple-stack-transition">
-				<div class="page page-root simple-pjax page-behind" style="">
-					<a class="link-page-behind" data-stack="" href="" data-stack-fluid="">面包屑</a>
-				</div>
-				<div class="page page-root simple-pjax page-behind" style="">
-					<a class="link-page-behind" data-stack="" href="" data-stack-fluid="">面包屑</a>
-				</div>
-				<div class="page page-root simple-pjax page-behind" style="">
-					<a class="link-page-behind" data-stack="" href="" data-stack-fluid="">面包屑</a>
-				</div>
-				<div class="page page-root simple-pjax page-behind" style="">
-					<a class="link-page-behind" data-stack="" href="" data-stack-fluid="">面包屑</a>
-				</div>
 				<div class="page page-root simple-pjax page-behind" style="">
 					<a class="link-page-behind" data-stack="" href="" data-stack-fluid="">面包屑</a>
 				</div>
@@ -153,38 +141,38 @@
 
 											<h4>
     <span class="name-non-linkable">
-        <span class="todolist-rest">知识库（新）</span>
+        <span class="todolist-rest" >测试根项目1</span>
+        <span style="display:none"><input type="text" value="P201806221307125412" name="project_code" /></span>
     </span>
+    <!-- 功能暂不明确 -->
     <span class="name">
-            <span class="todolist-todos-count">1</span>
-        <a class="todolist-rest" data-stack="true" href="">项目名称</a>
+            <span class="todolist-todos-count"></span>
+        <a class="todolist-rest" data-stack="true" href=""></a>
     </span>
-                <div class="progress-wrap">
-                    <span class="progress-pie" title="75%" data-pie="75"></span>
-                    <span class="progress-text">3/4</span>
-                </div>
+    <!-- 进度条 -->
+   	<div class="progress-wrap">
+    	<span class="progress-pie" title="75%" data-pie="75"></span>
+        <span class="progress-text">3/4</span>
+    </div>
 
 
     <a href="javascript:;" class="fold">
         <i class="twr twr-angle-up"></i>
     </a>
-</h4>
+	</h4>
+				</div>
 
-										</div>
+				<ul class="todos todos-uncompleted ui-sortable">
 
-										<ul class="todos todos-uncompleted ui-sortable">
-
-											<li class="todo running" data-guid="62a2464f74964a1a8581bcccad958b89" data-sort="0.0" data-sequence-mine="0.0" data-sort-url="" data-project-guid="8f766bfdbe614633b7170027e8165a55" data-project-name="(新)-智能工厂" data-check-items-size="10" data-completed-check-items-size="6">
-
-												<div class="todo-actions actions">
-													<div class="inr">
-														<a class="run" title="标记成正在进行中" data-loading="true" data-remote="true" data-method="post" href="https://tower.im/projects/8f766bfdbe614633b7170027e8165a55/todos/62a2464f74964a1a8581bcccad958b89/running" style="display: none;">执行</a>
-														<a class="pause" title="暂停" data-loading="true" data-remote="true" data-method="post" href="https://tower.im/projects/8f766bfdbe614633b7170027e8165a55/todos/62a2464f74964a1a8581bcccad958b89/pause" style="display: inline;">暂停</a>
-														<a href="https://tower.im/projects/8f766bfdbe614633b7170027e8165a55/todos/62a2464f74964a1a8581bcccad958b89/edit" class="edit" data-request-members="8f766bfdbe614633b7170027e8165a55" title="编辑">编辑</a>
-
-													</div>
-												</div>
-
+				<li class="todo running" data-guid="62a2464f74964a1a8581bcccad958b89" data-sort="0.0" data-sequence-mine="0.0" data-sort-url="" data-project-guid="8f766bfdbe614633b7170027e8165a55" data-project-name="(新)-智能工厂" data-check-items-size="10" data-completed-check-items-size="6">
+						<!-- 功能暂不明确 -->
+<!-- 					<div class="todo-actions actions">
+						<div class="inr">
+								<a class="run" title="标记成正在进行中" data-loading="true" data-remote="true" data-method="post" href="" style="display: none;">执行</a>
+								<a class="pause" title="暂停" data-loading="true" data-remote="true" data-method="post" href="" style="display: inline;">暂停</a>
+								<a href="" class="edit" data-request-members="8f766bfdbe614633b7170027e8165a55" title="编辑">编辑</a>
+						</div>
+					</div> -->
 												<div class="todo-wrap">
 													<div class="simple-checkbox" style="height: 18px; width: 18px;">
 														<div class="checkbox-container" style="border: 1.8px solid;">
@@ -193,46 +181,38 @@
 														</div>
 														<input type="checkbox" name="todo-done" class="checkbox-input" style="display: none;"></div>
 													<span class="todo-content">
-     													 <span class="raw">知识库 新版本</span>
+     													<!--  <span class="raw">知识库 新版本3</span>
 													<span class="content-non-linkable">
-															<span class="todo-rest">知识库 新版本</span>
-													</span>
+															<span class="todo-rest">知识库 新版本2</span>
+													</span> -->
 													<span class="content-linkable">
-        													<a class="todo-rest" data-stack="true" href="https://tower.im/projects/8f766bfdbe614633b7170027e8165a55/todos/62a2464f74964a1a8581bcccad958b89">知识库 新版本</a>
+        													<a class="todo-rest" data-stack="true" href="">知识库 新版本1</a>
       													</span>
 													<div class="progress-wrap">
 														<span class="progress-pie" title="60%" data-pie="60"></span>
 														<span class="todo-progress" title="总共有 10 个检查项，已完成 6 个">(6/10)</span>
 													</div>
 													</span>
+													
 
 													<span class="todo-detail">
          												<a class="label todo-assign-due" href="javascript:;" data-request-members="8f766bfdbe614633b7170027e8165a55">
-              											<span class="assignee" data-guid="3b3a614642fc499bbce9a48e5c7672aa" data-gavatar="https://avatar.tower.im/1a4f53e4f9af48a6b20ae4a24cd6d5d9">项目创建人 </span>
+              											<span class="assignee" data-guid="3b3a614642fc499bbce9a48e5c7672aa" data-gavatar="">项目创建人 </span>
 													</a>
-													<span class="label comments-count">12条评论</span>
-													<a class="label comments-count" href="https://tower.im/projects/8f766bfdbe614633b7170027e8165a55/todos/62a2464f74964a1a8581bcccad958b89" data-stack="">
+													<!-- <span class="label comments-count">12条评论</span>
+													<a class="label comments-count" href="" data-stack="">
 														12份文件
-													</a>
-
+													</a> -->
 													</span>
-
-													<a class="label todo-proj" title="(新)-智能工厂 - 知识库（新）" data-stack="true" href="https://tower.im/projects/8f766bfdbe614633b7170027e8165a55/lists/fcf031d5c79a43768df1daacd52f00de/show">(新)-智能工厂 - 知识库（新）</a>
 												</div>
 											</li>
-
 										</ul>
-
-										<ul class="todo-new-wrap"></ul>
-										<a href="javascript:;" class="btn-new-todo" data-url="/projects/8f766bfdbe614633b7170027e8165a55/lists/fcf031d5c79a43768df1daacd52f00de" data-request-members="8f766bfdbe614633b7170027e8165a55">添加新任务</a>
-
-										<ul class="todos todos-completed" data-length="3" data-url="/projects/8f766bfdbe614633b7170027e8165a55/lists/fcf031d5c79a43768df1daacd52f00de/completed">
-
-											<li class="todo completed" data-guid="5c8583122f27477f81c90f83c8484835" data-sort="1024.0" data-sequence-mine="0.0" data-sort-url="/projects/8f766bfdbe614633b7170027e8165a55/todos/5c8583122f27477f81c90f83c8484835/reorder" data-project-guid="8f766bfdbe614633b7170027e8165a55" data-project-name="(新)-智能工厂" data-creator-guid="07bd49af0e1f4e67abeab4722791b3fd" data-assignee-guid="859f3810cf53463392c1edb48c5e43db" data-updated-at="1528522296" data-check-items-size="1" data-completed-check-items-size="1" data-closed-at="1528522283">
-
-												<div class="todo-actions actions">
-													<div class="inr" style="display: none;">
-
+					<ul class="todo-new-wrap"></ul>
+					<a href="javascript:;" class="btn-new-todo" data-url="/projects/8f766bfdbe614633b7170027e8165a55/lists/fcf031d5c79a43768df1daacd52f00de" data-request-members="8f766bfdbe614633b7170027e8165a55"></a>
+					<ul class="todos todos-completed" data-length="3" data-url="/projects/8f766bfdbe614633b7170027e8165a55/lists/fcf031d5c79a43768df1daacd52f00de/completed">
+					<li class="todo completed" data-guid="5c8583122f27477f81c90f83c8484835" data-sort="1024.0" data-sequence-mine="0.0" data-sort-url="/projects/8f766bfdbe614633b7170027e8165a55/todos/5c8583122f27477f81c90f83c8484835/reorder" data-project-guid="8f766bfdbe614633b7170027e8165a55" data-project-name="(新)-智能工厂" data-creator-guid="07bd49af0e1f4e67abeab4722791b3fd" data-assignee-guid="859f3810cf53463392c1edb48c5e43db" data-updated-at="1528522296" data-check-items-size="1" data-completed-check-items-size="1" data-closed-at="1528522283">
+					<div class="todo-actions actions">
+						<div class="inr" style="display: none;">
 													</div>
 												</div>
 
@@ -250,7 +230,7 @@
         <span class="todo-rest">知识库审核</span>
 													</span>
 													<span class="content-linkable">
-        <a class="todo-rest" data-stack="true" href="https://tower.im/projects/8f766bfdbe614633b7170027e8165a55/todos/5c8583122f27477f81c90f83c8484835">知识库审核</a>
+        <a class="todo-rest" data-stack="true" href="">知识库审核</a>
       </span>
 													<div class="progress-wrap">
 														<span class="progress-pie" title="100%" data-pie="100"></span>
@@ -263,7 +243,7 @@
         <span class="label completed-member">( 张铭一 <span class="completed-time" data-readable-time="2018-06-09T13:31:23+08:00">6月9日</span> )</span>
 													</span>
 
-													<a class="label todo-proj" title="(新)-智能工厂 - 知识库（新）" data-stack="true" href="https://tower.im/projects/8f766bfdbe614633b7170027e8165a55/lists/fcf031d5c79a43768df1daacd52f00de/show">(新)-智能工厂 - 知识库（新）</a>
+													<a class="label todo-proj" title="(新)-智能工厂 - 知识库（新）" data-stack="true" href="">(新)-智能工厂 - 知识库（新）</a>
 												</div>
 											</li>
 
@@ -289,7 +269,7 @@
         <span class="todo-rest">新知识库原型</span>
 													</span>
 													<span class="content-linkable">
-        <a class="todo-rest" data-stack="true" href="https://tower.im/projects/8f766bfdbe614633b7170027e8165a55/todos/210bda932564477cbf8fdd6360b22cdc">新知识库原型</a>
+        <a class="todo-rest" data-stack="true" href="">新知识库原型</a>
       </span>
 													</span>
 
@@ -297,7 +277,7 @@
         <span class="label completed-member">( 章晓莲 <span class="completed-time" data-readable-time="2018-06-01T08:38:22+08:00">6月1日</span> )</span>
 													</span>
 
-													<a class="label todo-proj" title="(新)-智能工厂 - 知识库（新）" data-stack="true" href="https://tower.im/projects/8f766bfdbe614633b7170027e8165a55/lists/fcf031d5c79a43768df1daacd52f00de/show">(新)-智能工厂 - 知识库（新）</a>
+													<a class="label todo-proj" title="(新)-智能工厂 - 知识库（新）" data-stack="true" href="">(新)-智能工厂 - 知识库（新）</a>
 												</div>
 											</li>
 
@@ -335,7 +315,7 @@
         <span class="label completed-member">( 凌小平 <span class="completed-time" data-readable-time="2018-05-15T08:07:35+08:00">5月15日</span> )</span>
 													</span>
 
-													<a class="label todo-proj" title="(新)-智能工厂 - 知识库（新）" data-stack="true" href="https://tower.im/projects/8f766bfdbe614633b7170027e8165a55/lists/fcf031d5c79a43768df1daacd52f00de/show">(新)-智能工厂 - 知识库（新）</a>
+													<a class="label todo-proj" title="(新)-智能工厂 - 知识库（新）" data-stack="true" href="">(新)-智能工厂 - 知识库（新）</a>
 												</div>
 											</li>
 
@@ -387,15 +367,15 @@
 						</div>
 						<div class="detail-actions">
 							<div class="item detail-star-action">
-								<a class="detail-action detail-action-star" title="关注" data-remote="true" data-itemtype="Todolist" data-itemid="7552347" data-loading="true" rel="nofollow" data-method="post" href="https://tower.im/projects/8f766bfdbe614633b7170027e8165a55/lists/fcf031d5c79a43768df1daacd52f00de/star?muid=fcf031d5c79a43768df1daacd52f00de">关注</a>
+								<a class="detail-action detail-action-star" title="关注" data-remote="true" data-itemtype="Todolist" data-itemid="7552347" data-loading="true" rel="nofollow" data-method="post" href="">返回上一层</a>
 							</div>
 
 							<div class="item">
-								<a class="detail-action detail-action-edit" href="javascript:;">编辑</a>
+								<a class="detail-action detail-action-edit" href="javascript:;">添加子项目</a>
 							</div>
 
 							<div class="item">
-								<a class="detail-action detail-action-archive" title="请确认清单内任务都已完成" data-method="put" data-remote="true" data-loading="true" href="https://tower.im/projects/8f766bfdbe614633b7170027e8165a55/lists/fcf031d5c79a43768df1daacd52f00de/toggle_archived">归档</a>
+								<a class="detail-action detail-action-archive" title="请确认清单内任务都已完成" data-method="put" data-remote="true" data-loading="true" href="">分享</a>
 							</div>
 
 						</div>
