@@ -37,6 +37,7 @@ public class EnumUtil {
 				if (code.equals(c))
 					return getInvokeValue(t, "getText");
 			}
+			return "file_extension_file.png";
 		}
 		return "";
 	}
