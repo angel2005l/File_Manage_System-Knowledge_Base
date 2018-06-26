@@ -20,6 +20,8 @@ public class KbProjectUser {
     private String createUserCode;
 
     private String createTime;
+    
+    private Integer projectLevel;
 
 	/**
 	 * @return the id
@@ -148,6 +150,20 @@ public class KbProjectUser {
 	}
 
 	/**
+	 * @return the projectLevel
+	 */
+	public Integer getProjectLevel() {
+		return projectLevel;
+	}
+
+	/**
+	 * @param projectLevel the projectLevel to set
+	 */
+	public void setProjectLevel(Integer projectLevel) {
+		this.projectLevel = projectLevel;
+	}
+
+	/**
 	 * @param id
 	 * @param projectCode
 	 * @param projectName
@@ -157,9 +173,10 @@ public class KbProjectUser {
 	 * @param userDeptCode
 	 * @param createUserCode
 	 * @param createTime
+	 * @param projectLevel
 	 */
 	public KbProjectUser(Integer id, String projectCode, String projectName, String projectPermission, String userCode,
-			String userName, String userDeptCode, String createUserCode, String createTime) {
+			String userName, String userDeptCode, String createUserCode, String createTime, Integer projectLevel) {
 		super();
 		this.id = id;
 		this.projectCode = projectCode;
@@ -170,6 +187,7 @@ public class KbProjectUser {
 		this.userDeptCode = userDeptCode;
 		this.createUserCode = createUserCode;
 		this.createTime = createTime;
+		this.projectLevel = projectLevel;
 	}
 
 	/**
@@ -188,8 +206,9 @@ public class KbProjectUser {
 		return "KbProjectUser [id=" + id + ", projectCode=" + projectCode + ", projectName=" + projectName
 				+ ", projectPermission=" + projectPermission + ", userCode=" + userCode + ", userName=" + userName
 				+ ", userDeptCode=" + userDeptCode + ", createUserCode=" + createUserCode + ", createTime=" + createTime
-				+ "]";
+				+ ", projectLevel=" + projectLevel + "]";
 	}
+
 
     
 }

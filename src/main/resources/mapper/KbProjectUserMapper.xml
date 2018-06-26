@@ -6,6 +6,7 @@
     <result column="project_code" jdbcType="CHAR" property="projectCode" />
     <result column="project_name" jdbcType="VARCHAR" property="projectName" />
     <result column="project_permission" jdbcType="CHAR" property="projectPermission" />
+    <result column="project_level" jdbcType="INTEGER" property="projectLevel" />
     <result column="user_code" jdbcType="VARCHAR" property="userCode" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="user_dept_code" jdbcType="CHAR" property="userDeptCode" />
@@ -13,7 +14,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, project_code, project_name, project_permission, user_code, user_name, user_dept_code, 
+    id, project_code, project_name, project_permission,project_level, user_code, user_name, user_dept_code, 
     create_user_code, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -24,9 +25,9 @@
   </select>
   <!-- 添加项目用户表 -->
   	<insert id="insertProjectUser" parameterType="list">
-		insert into kb_project_user (project_code,project_name,project_permission,user_code,user_name,user_dept_code,create_user_code,create_time)
+		insert into kb_project_user (project_code,project_name,project_permission,project_level,user_code,user_name,user_dept_code,create_user_code,create_time)
 		<foreach collection="list" item="userPro" separator="union ">
-			select '${userPro.projectCode}','${userPro.projectName}','${userPro.projectPermission}','${userPro.userCode}','${userPro.userName}','${userPro.userDeptCode}','${userPro.createUserCode}','${userPro.createTime}' from dual
+			select '${userPro.projectCode}','${userPro.projectName}','${userPro.projectPermission}','${userPro.projectLevel}','${userPro.userCode}','${userPro.userName}','${userPro.userDeptCode}','${userPro.createUserCode}','${userPro.createTime}' from dual
 		</foreach>
 	</insert>
 <!--   		insert into kb_project_user (project_code,project_name,project_permission,user_code,user_name,user_dept_code,create_user_code,create_time) 

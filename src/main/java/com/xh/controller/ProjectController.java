@@ -35,6 +35,15 @@ public class ProjectController extends BaseController{
 	@Autowired
 	private IProjectService ps;
 	
+	/**
+	 * 
+	 * @Title: insertProjectTable  
+	 * @Description: 动态创建项目信息表的信息
+	 * @author 陈专懂 
+	 * @return Result<Object> 
+	 * @date 2018年6月26日  
+	 * @version 1.0
+	 */
 	@RequestMapping("/inpt.do")
 	@ResponseBody
 	public Result<Object> insertProjectTable(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
@@ -56,6 +65,16 @@ public class ProjectController extends BaseController{
 		}
 	}
 
+	
+	/**
+	 * 
+	 * @Title: selProjectTable  
+	 * @Description: 新增项目表信息及项目员工表信息
+	 * @author 陈专懂 
+	 * @return Result<Object> 
+	 * @date 2018年6月26日  
+	 * @version 1.0
+	 */
 	@RequestMapping("/addPro.do")
 	@ResponseBody
 	public Result<Object> selProjectTable(HttpServletRequest request, HttpServletResponse response){
@@ -73,7 +92,7 @@ public class ProjectController extends BaseController{
 		kbObj.setProjectStatus(request.getParameter("project_status"));
 		kbObj.setCreateUserCode(request.getParameter("create_user_code"));
 		kbObj.setCreateTime(DateUtil.curDateYMDHMS());
-		kbObj.setUpdateUserCode(request.getParameter("update_time"));
+		kbObj.setUpdateUserCode(request.getParameter("update_user_code"));
 		
 		List<String> strList=new ArrayList<String>();//获取write或read
 		strList.add("820046");
@@ -87,6 +106,7 @@ public class ProjectController extends BaseController{
 			KbProjectUser proUser=new KbProjectUser();
 			proUser.setProjectCode(projectCode);
 			proUser.setProjectName(kbObj.getProjectName());
+			proUser.setProjectLevel(ptLevel);
 			proUser.setUserName(taskList.get(i).getUserName());
 			proUser.setUserCode(taskList.get(i).getUserCode());
 			proUser.setUserDeptCode(taskList.get(i).getUserDeptCode());
