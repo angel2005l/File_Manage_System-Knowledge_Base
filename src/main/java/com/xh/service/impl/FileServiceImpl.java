@@ -163,6 +163,9 @@ public class FileServiceImpl extends BaseService implements IFileService {
 	public Result<KbFile> selFileByFileCode(int fileLevel, String fileCode) throws Exception {
 		String fileTableName = kftm.selectFileTableNameByFileLevel(fileLevel);
 		try {
+			if (StrUtil.isBlank(fileTableName)) {
+				return rtnFailResult(Result.ERROR_4000, "无效的文件层级");
+			}
 			KbFile fileObj = kfm.selectFileByFileCode(fileTableName, fileCode);
 			return null == fileObj ? rtnFailResult(Result.ERROR_4000, "文件不存在或已被移除") : rtnSuccessResult("", fileObj);
 		} catch (SQLException e) {
