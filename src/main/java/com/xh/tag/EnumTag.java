@@ -35,7 +35,7 @@ public class EnumTag extends BodyTagSupport {
 		if (StrUtil.notBlank(value)) {
 			Class clazz = null;
 			try {
-				clazz = Class.forName("com.xinhai.enums." + className);
+				clazz = Class.forName("com.xh.pair." + className);
 				value = EnumUtil.getTextFromCode(clazz, value);
 				pageContext.getOut().write(value);
 			} catch (Exception e) {

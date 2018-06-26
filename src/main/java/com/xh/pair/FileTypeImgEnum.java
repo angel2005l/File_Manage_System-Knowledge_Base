@@ -8,6 +8,7 @@ public enum FileTypeImgEnum {
 	DOCX(".docx","file_extension_docx.png"),
 	DWG(".dwg","file_extension_dwg.png"),
 	EXE(".exe","file_extension_exe.png"),
+	FILE(".file","file_extension_file.png"),
 	GIF(".gif","file_extension_gif.png"),
 	HTML(".html","file_extension_html.png"),
 	JAVA(".java","file_extension_java.png"),
@@ -25,11 +26,11 @@ public enum FileTypeImgEnum {
 	
 	
 	private String code;
-	private String name;
+	private String text;
 
-	private FileTypeImgEnum(String code, String name) {
+	private FileTypeImgEnum(String code, String text) {
 		this.code = code;
-		this.name = name;
+		this.text = text;
 	}
 
 	public String getCode() {
@@ -40,12 +41,13 @@ public enum FileTypeImgEnum {
 		this.code = code;
 	}
 
-	public String getName() {
-		return name;
+	public String getText() {
+		return text;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setText(String text) {
+		this.text = text;
 	}
+
 	
 }

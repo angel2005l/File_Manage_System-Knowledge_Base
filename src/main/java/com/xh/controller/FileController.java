@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.aspose.p2cbca448.re;
 import com.xh.base.BaseController;
@@ -29,6 +30,7 @@ import com.xh.entity.KbFileUser;
 import com.xh.service.IFileService;
 import com.xh.uitl.DateUtil;
 import com.xh.uitl.IOUtil;
+import com.xh.uitl.IpUtil;
 import com.xh.uitl.Result;
 import com.xh.uitl.StrUtil;
 
@@ -251,7 +253,7 @@ public class FileController extends BaseController {
 	/**
 	 * 
 	 * @Title: selectFileForDetail
-	 * @Description: TODO(这里用一句话描述这个方法的作用)
+	 * @Description: 文件查询
 	 * @author 黄官易
 	 * @param request
 	 * @return
@@ -259,14 +261,27 @@ public class FileController extends BaseController {
 	 * @date 2018年6月25日
 	 * @version 1.0
 	 */
-	public Result<List<Map<String, Object>>> selectFileForDetail(HttpServletRequest request) {
-
-		String parameter = request.getParameter("project_level");
-		// String a = req
-
-		// fs.selectFile(projectLevel, userCode, projectCode);
-
-		return null;
+	@RequestMapping("/pfd.do")
+	public String selectFileForDetail(HttpServletRequest request, HttpSession session) {
+//		String isRoot = request.getParameter("is_root");
+//		String projectLevel = request.getParameter("project_level");
+//		String projectCode = request.getParameter("project_code");
+		// String userCode = session.getAttribute("user_code").toString();
+		String projectCode = "P201806221307125412";
+		String projectLevel="0";
+		String userCode = "820032";
+		try {
+			Result<List<Map<String, Object>>> fileResult = fs.selectFile(Integer.parseInt(projectLevel), userCode, projectCode);
+			System.err.println(fileResult);
+			request.setAttribute("files", fileResult.getData());
+		} catch (NumberFormatException e) {
+			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
+			return "view/index.jsp";
+		} catch (Exception e) {
+			log.error("文件查询异常,异常原因:【" + e.toString() + "】");
+			return "view/error.jsp";
+		}
+		return  "view/project_detail";
 	}
 
 }
