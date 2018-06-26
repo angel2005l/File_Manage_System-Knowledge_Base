@@ -386,7 +386,6 @@
 			</div>
 			<div class="footer">© 商务智能部</div>
 		</div>
-	</div>
 	<form id="displayForm" action="build/generic/web/viewer.html" method="get" target="_blank">
    		<input id="displayValues" type="hidden" name="file" value="/xh_bi_b_knowledge_base/file/disPdf.do?file_info=F201806221421466073,新海知识库数据库结构.xlsx"/>
     </form>   
