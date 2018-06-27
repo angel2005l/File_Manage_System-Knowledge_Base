@@ -253,9 +253,6 @@ public class FileServiceImpl extends BaseService implements IFileService {
 		try {
 			String fileTableName = kftm.selectFileTableNameByFileLevel(projectLevel);
 			List<Map<String, Object>> fileInfoList = kfm.selectFileByUserCode(fileTableName, projectCode, userCode);
-			for (Map<String, Object> map : fileInfoList) {
-				System.err.println(map.toString());
-			}
 			return rtnSuccessResult("", fileInfoList);
 		} catch (SQLException e) {
 			log.error("根据部门编码查询上级部门的领导层用户,异常信息:【" + e.toString() + "】");

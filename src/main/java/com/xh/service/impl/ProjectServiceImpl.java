@@ -5,6 +5,7 @@ package com.xh.service.impl;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.xh.base.BaseService;
+import com.xh.dao.KbFileMapper;
+import com.xh.dao.KbFileTableMapper;
 import com.xh.dao.KbProjectMapper;
 import com.xh.dao.KbProjectTableMapper;
 import com.xh.dao.KbProjectUserMapper;
@@ -44,6 +47,10 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	private KbUserMapper userMapper; // 用户信息表
 	@Autowired
 	private KbProjectUserMapper proUserMapper;// 项目用户关联表
+	@Autowired
+	private KbFileTableMapper kftm;// 文件用户关联表
+	@Autowired
+	private KbFileMapper kfm; // 文件表
 
 	/**
 	 * 
@@ -149,8 +156,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	 * @date 2018年6月22日
 	 * @version 1.0
 	 */
-	@Transactional(rollbackFor = { Exception.class })
-	public Result<Object> selectUserByUserCode(List<String> strList) {
+	public Result<List<KbUser>> selectUserByUserCode(List<String> strList) {
 		List<KbUser> list = new ArrayList<KbUser>();
 		try {
 			for (int i = 0; i < strList.size(); i++) {
@@ -159,7 +165,6 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			}
 		} catch (SQLException e) {
 			log.error("查询用户表信息接口异常,异常原因:【" + e.toString() + "】");
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
 			return rtnErrorResult(Result.ERROR_6000, "查询用户表信息接口异常,请联系系统管理员");
 		}
 		return rtnSuccessResult("根据用户编号查询用户信息成功", list);
@@ -168,7 +173,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	/**
 	 * 
 	 * @Title: selectAllPro
-	 * @Description:  查询当前项目下的所有子项目
+	 * @Description: 查询当前项目下的所有子项目
 	 * @author 陈专懂
 	 * @return Result<Object>
 	 * @date 2018年6月23日
@@ -186,8 +191,26 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			}
 			return rtnSuccessResult("项目表中项目数据查询成功", kbp);
 		} catch (SQLException e) {
-			log.error("");
-			return rtnErrorResult(Result.ERROR_6000 ,"查询系统异常");
+			log.error("查询当前项目下的所有子项目数据接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "查询系统异常");
 		}
+	}
+
+	@Override
+	public Map<String, Object> getShareProject(String projectCode, int projectLevel, String userCode)
+			throws SQLException {
+		// 因为想在项目表层级与文件表层级相同 fileLevel/projectLevel 相同
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		// 查询项目表信息
+		String projectTableName = projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);
+		KbProject shareProject = projectMapper.selectProjectByProjectCode(projectTableName, projectCode);
+		// 查询文件表信息
+		String fileTableName = kftm.selectFileTableNameByFileLevel(projectLevel);
+		List<Map<String, Object>> shareFiles = kfm.selectFileByUserCode(fileTableName, projectCode, userCode);
+		if (null != shareProject && null != shareFiles) {
+			resultMap.put("shareProject", shareProject);
+			resultMap.put("shareFiles", shareFiles);
+		}
+		return resultMap;
 	}
 }

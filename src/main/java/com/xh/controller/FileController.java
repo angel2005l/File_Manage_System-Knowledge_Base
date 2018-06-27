@@ -283,9 +283,6 @@ public class FileController extends BaseController {
 		return "view/project_detail";
 	}
 
-	// 文件分享
-
-	// 会传入项目code 文件的code 项目/文件等级
 	/**
 	 * 
 	 * @Title: shareFile
