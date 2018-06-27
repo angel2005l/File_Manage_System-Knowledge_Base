@@ -35,7 +35,7 @@ import com.xh.uitl.Result;
  * @date 2018年6月21日下午3:45:15
  * @version 1.0
  */
-@Service("ProjectServiceImpl")
+@Service("projectServiceImpl")
 public class ProjectServiceImpl extends BaseService implements IProjectService {
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class); // 日志对象
 

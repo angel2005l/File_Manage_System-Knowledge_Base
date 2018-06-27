@@ -192,11 +192,12 @@ public class ProjectController extends BaseController {
 	}
 
 	// 跳转项目添加页面
-	@RequestMapping("insJsp.do")
+	@RequestMapping("/insJsp.do")
 	public String toInsertProject(HttpServletRequest request, HttpSession session) {
 		try {
 			// 获得部门信息
-			String userDeptCode = session.getAttribute("user_dept_code").toString();
+//			String userDeptCode = session.getAttribute("user_dept_code").toString();
+			String userDeptCode = "D201806230935390372";
 			// 获得父类编码
 			String projectParentCode = request.getParameter("project_code");
 			// 获得父类等级
