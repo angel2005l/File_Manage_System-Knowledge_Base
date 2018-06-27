@@ -97,13 +97,15 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	 * @date 2018年6月22日
 	 * @version 1.0
 	 */
-	public Result<Object> selectProjectTableNameByProjectLevel(int projectLevel) {
+	public Result<Object> selectProjectTableNameByProjectLevel(int level) {
 		// if(projectLevel==0){
 		// return rtnSuccessResult("该项目为一级项目",projectLevel);
 		// }
 		// 可以再添加一层校验，校验查询传入的等级是否超过最高等级
 		try {
-			String ptName=projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel+1);
+			int projectLevel=level+1;
+			System.err.println("level："+projectLevel);
+			String ptName=projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);
 			if(ptName==null){
 				return rtnErrorResult(Result.ERROR_4000, "该表不存在或该层级已为最低层级");
 			}

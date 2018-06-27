@@ -274,7 +274,13 @@ public class FileController extends BaseController {
 		String projectCode = "P201806221307125412";
 		String projectLevel = "0";
 		String userCode = "820032";
+		String projectParentCode="-1";
 		try {
+			String obj=ps.selectProjectTableNameByProjectLevel(Integer.parseInt(projectLevel)).getData().toString();//表名
+			System.err.println("表名："+obj);
+			Object kpro=ps.selectAllPro(obj,projectParentCode).getData();
+			List<KbProject> list=(ArrayList<KbProject>)kpro;
+			System.err.println("list:"+list);
 			Result<List<Map<String, Object>>> fileResult = fs.selectFile(Integer.parseInt(projectLevel), userCode,
 					projectCode);
 			System.err.println(fileResult);
