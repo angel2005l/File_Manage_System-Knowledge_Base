@@ -310,11 +310,11 @@ public class FileController extends BaseController {
 				request.setAttribute("shareProject", shareMap.get("shareProject"));
 				request.setAttribute("shareFile", shareMap.get("shareFile"));
 			} else {
-				return "view/index.jsp";
+				return "view/not_share.jsp";
 			}
 		} catch (NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
-			return "view/index.jsp";
+			return "view/not_share.jsp";
 		} catch (Exception e) {
 			log.error("文件查询异常,异常原因:【" + e.toString() + "】");
 			return "view/not_share.jsp";
