@@ -16,7 +16,7 @@ public interface KbProjectMapper {
 	/**
 	 * 
 	 * @Title: selectSonProjectByParentCode
-	 * @Description: 查询当前项目下的所有子项目
+	 * @Description: 查询当前项目下的所有子项目(最大权限)
 	 * @author 陈专懂
 	 * @param formName
 	 * @param projectParentCode
@@ -26,7 +26,22 @@ public interface KbProjectMapper {
 	 * @version 1.0
 	 */
 	public List<KbProject> selectSonProjectByParentCode(@Param("formName") String formName,
-			@Param("projectParentCode") String projectParentCode) throws SQLException;;
+			@Param("projectCode") String projectCode) throws SQLException;
+	
+	/**
+	 * 
+	 * @Title: selectSonProjectByParentCode
+	 * @Description: 查询当前项目下的所有子项目
+	 * @author 陈专懂
+	 * @param formName
+	 * @param projectParentCode
+	 * @return
+	 * @return List<KbProject>
+	 * @date 2018年6月27日
+	 * @version 1.0
+	 */
+	public List<KbProject> selectSonProjectByParentCodeAndUserCode(@Param("formName") String formName,
+			@Param("projectCode") String projectCode,@Param("userCode")String userCode) throws SQLException;
 
 	/**
 	 * 

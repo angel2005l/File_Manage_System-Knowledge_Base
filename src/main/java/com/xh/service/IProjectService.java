@@ -31,9 +31,12 @@ public interface IProjectService {
 	// 根据员工的编号，查找员工信息
 	public Result<List<KbUser>> selectUserByUserCode(List<String> strList);
 
-	// 查询所有的根层的项目信息
-	public Result<List<KbProject>> selectAllPro(String formName, String projectParentCode);
+	// 查询所有的根层的项目信息(最大权限)
+	public Result<List<KbProject>> selectAllPro(String formName, String projectCode);
 
+	// 查询所有的根层的项目信息
+	public Result<List<KbProject>> selectAllProByUser(String formName, String projectCode,String userCode);
+	
 	/**
 	 * 
 	 * @Title: getShareProject

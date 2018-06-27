@@ -134,8 +134,8 @@
 		</div>
 	<h4>
     <span class="name-non-linkable">
-        <span class="todolist-rest" >admin1</span>
-        <span style="display:none"><input type="text" value="P201806251124300102" name="project_parent_code" /></span><!-- 父类的projectCode -->
+        <span class="todolist-rest" >admin3</span>
+        <span style="display:none"><input type="text" value="P201806221307125412" name="project_code" /></span><!-- 父类的projectCode -->
         <span style="display:none"><input type="text" value="0" name="project_level" /></span><!-- 父类的projectLevel -->
     </span>
     
@@ -146,8 +146,8 @@
     </span>
     <!-- 进度条 -->
    	<div class="progress-wrap">
-    	<span class="progress-pie" title="75%" data-pie="75"></span>
-        <span class="progress-text">3/4</span>
+    	<span class="progress-pie" title="${per }%" data-pie="${per }"></span>
+        <span class="progress-text">${ratio }</span>
     </div>
 
 
@@ -158,171 +158,85 @@
 				</div>
 
 				<ul class="todos todos-uncompleted ui-sortable">
-
-				<li class="todo running" data-guid="62a2464f74964a1a8581bcccad958b89" data-sort="0.0" data-sequence-mine="0.0" data-sort-url="" data-project-guid="8f766bfdbe614633b7170027e8165a55" data-project-name="(新)-智能工厂" data-check-items-size="10" data-completed-check-items-size="6">
-						<!-- 功能暂不明确 -->
-<!-- 					<div class="todo-actions actions">
-						<div class="inr">
-								<a class="run" title="标记成正在进行中" data-loading="true" data-remote="true" data-method="post" href="" style="display: none;">执行</a>
-								<a class="pause" title="暂停" data-loading="true" data-remote="true" data-method="post" href="" style="display: inline;">暂停</a>
-								<a href="" class="edit" data-request-members="8f766bfdbe614633b7170027e8165a55" title="编辑">编辑</a>
+				<c:forEach var="projects" items="${projects }">
+				<c:if test="${projects.projectStatus=='progress' }">
+				<li class="todo running" data-guid="62a2464f74964a1a8581bcccad958b89" data-sort="0.0" data-sequence-mine="0.0" data-sort-url="" data-project-guid="8f766bfdbe614633b7170027e8165a55" data-project-name="" data-check-items-size="10" data-completed-check-items-size="6">
+					<div class="todo-wrap">
+					<div class="simple-checkbox" style="height: 18px; width: 18px;">
+						<div class="checkbox-container" style="border: 1.8px solid;">
+							<div class="checkbox-tick" style="border-right: 2.52px solid; border-bottom: 2.52px solid;"></div>
 						</div>
-					</div> -->
-												<div class="todo-wrap">
-													<div class="simple-checkbox" style="height: 18px; width: 18px;">
-														<div class="checkbox-container" style="border: 1.8px solid;">
-															<div class="checkbox-tick" style="border-right: 2.52px solid; border-bottom: 2.52px solid;">
-															</div>
-														</div>
-														<input type="checkbox" name="todo-done" class="checkbox-input" style="display: none;"></div>
-													<span class="todo-content">
-     													<!--  <span class="raw">知识库 新版本3</span>
-													<span class="content-non-linkable">
-															<span class="todo-rest">知识库 新版本2</span>
-													</span> -->
-													
-													<span class="content-linkable">
-        													<c:forEach var="projectName" items="${ a}"><a class="todo-rest" data-stack="true" href="" name="project_name">${projectName. }</a></c:forEach>
-      												</span>
-													<div class="progress-wrap">
-														<span class="progress-pie" title="60%" data-pie="60"></span>
-														<span class="todo-progress" title="总共有 10 个检查项，已完成 6 个">(6/10)</span>
-													</div>
-													</span>
-													
-
-													<span class="todo-detail">
-         												<a class="label todo-assign-due" href="javascript:;" data-request-members="8f766bfdbe614633b7170027e8165a55">
-              											<span class="assignee" data-guid="3b3a614642fc499bbce9a48e5c7672aa" data-gavatar="">项目创建人 </span>
-													</a>
-													<!-- <span class="label comments-count">12条评论</span>
-													<a class="label comments-count" href="" data-stack="">
-														12份文件
-													</a> -->
-													</span>
-												</div>
-											</li>
-										</ul>
+						<input type="checkbox" name="todo-done" class="checkbox-input" style="display: none;">
+					</div>
+					<span class="todo-content">
+     					 <span class="raw">${projects.projectName }</span>
+						<span class="content-non-linkable">
+							<span class="todo-rest">${projects.projectName }</span>
+						</span>
+						<span class="content-linkable">
+        					<a class="todo-rest" data-stack="true" href="file/pfd.do?project_code=${projects.projectCode }&project_level=${projects.projectLevel}" name="project_name">${projects.projectName }</a>
+      					</span>
+						<!-- <div class="progress-wrap">
+							<span class="progress-pie" title="60%" data-pie="60"></span>
+							<span class="todo-progress" title="总共有 10 个检查项，已完成 6 个">(6/10)</span>
+						</div> -->
+					</span>
+					<span class="todo-detail">
+         				<a class="label todo-assign-due" href="javascript:;" data-request-members="8f766bfdbe614633b7170027e8165a55">
+              				<span class="assignee" data-guid="3b3a614642fc499bbce9a48e5c7672aa" data-gavatar="">${projects.createUserCode }</span>
+						</a>
+					</span>
+					</div>
+					</li>
+					</c:if>
+					</c:forEach>
+					
+					</ul>
 					<ul class="todo-new-wrap"></ul>
 					<a href="javascript:;" class="btn-new-todo" data-url="/projects/8f766bfdbe614633b7170027e8165a55/lists/fcf031d5c79a43768df1daacd52f00de" data-request-members="8f766bfdbe614633b7170027e8165a55"></a>
 					<ul class="todos todos-completed" data-length="3" data-url="/projects/8f766bfdbe614633b7170027e8165a55/lists/fcf031d5c79a43768df1daacd52f00de/completed">
+					
+					<c:forEach var="projects" items="${projects }">
+					<c:if test="${projects.projectStatus=='completed' }">
 					<li class="todo completed" data-guid="5c8583122f27477f81c90f83c8484835" data-sort="1024.0" data-sequence-mine="0.0" data-sort-url="/projects/8f766bfdbe614633b7170027e8165a55/todos/5c8583122f27477f81c90f83c8484835/reorder" data-project-guid="8f766bfdbe614633b7170027e8165a55" data-project-name="(新)-智能工厂" data-creator-guid="07bd49af0e1f4e67abeab4722791b3fd" data-assignee-guid="859f3810cf53463392c1edb48c5e43db" data-updated-at="1528522296" data-check-items-size="1" data-completed-check-items-size="1" data-closed-at="1528522283">
+					
 					<div class="todo-actions actions">
-						<div class="inr" style="display: none;">
-													</div>
-												</div>
-
-												<div class="todo-wrap">
-													<div class="simple-checkbox checked" style="height: 18px; width: 18px;">
-														<div class="checkbox-container" style="border: 1.8px solid;">
-															<div class="checkbox-tick" style="border-right: 2.52px solid; border-bottom: 2.52px solid;">
-															</div>
-														</div>
-														<input type="checkbox" name="todo-done" checked="" class="checkbox-input"></div>
-
-													<span class="todo-content">
-      <span class="raw">知识库审核</span>
-													<span class="content-non-linkable">
-        <span class="todo-rest">知识库审核</span>
-													</span>
-													<span class="content-linkable">
-        <a class="todo-rest" data-stack="true" href="">知识库审核</a>
-      </span>
-													<div class="progress-wrap">
-														<span class="progress-pie" title="100%" data-pie="100"></span>
-														<span class="todo-progress" title="总共有 1 个检查项，已完成 1 个">(1/1)</span>
-													</div>
-													<i class="twr twr-description" title="任务描述"></i>
-													</span>
-
-													<span class="todo-detail">
-        <span class="label completed-member">( 张铭一 <span class="completed-time" data-readable-time="2018-06-09T13:31:23+08:00">6月9日</span> )</span>
-													</span>
-
-													<a class="label todo-proj" title="(新)-智能工厂 - 知识库（新）" data-stack="true" href="">(新)-智能工厂 - 知识库（新）</a>
-												</div>
-											</li>
-
-											<li class="todo completed" data-guid="210bda932564477cbf8fdd6360b22cdc" data-sort="1024.0" data-sequence-mine="0.0" data-sort-url="/projects/8f766bfdbe614633b7170027e8165a55/todos/210bda932564477cbf8fdd6360b22cdc/reorder" data-project-guid="8f766bfdbe614633b7170027e8165a55" data-project-name="(新)-智能工厂" data-creator-guid="859f3810cf53463392c1edb48c5e43db" data-assignee-guid="c3be8cca336d47a59fe6c0ce1ec1be19" data-updated-at="1527813502" data-check-items-size="0" data-completed-check-items-size="0" data-closed-at="1527813502">
-
-												<div class="todo-actions actions">
-													<div class="inr" style="display: none;">
-
-													</div>
-												</div>
-
-												<div class="todo-wrap">
-													<div class="simple-checkbox checked" style="height: 18px; width: 18px;">
-														<div class="checkbox-container" style="border: 1.8px solid;">
-															<div class="checkbox-tick" style="border-right: 2.52px solid; border-bottom: 2.52px solid;">
-															</div>
-														</div>
-														<input type="checkbox" name="todo-done" checked="" class="checkbox-input" style="display: none;"></div>
-
-													<span class="todo-content">
-      <span class="raw">新知识库原型</span>
-													<span class="content-non-linkable">
-        <span class="todo-rest">新知识库原型</span>
-													</span>
-													<span class="content-linkable">
-        <a class="todo-rest" data-stack="true" href="">新知识库原型</a>
-      </span>
-													</span>
-
-													<span class="todo-detail">
-        <span class="label completed-member">( 章晓莲 <span class="completed-time" data-readable-time="2018-06-01T08:38:22+08:00">6月1日</span> )</span>
-													</span>
-
-													<a class="label todo-proj" title="(新)-智能工厂 - 知识库（新）" data-stack="true" href="">(新)-智能工厂 - 知识库（新）</a>
-												</div>
-											</li>
-
-											<li class="todo completed" data-guid="dc27a0e8a1c742589838399a67a86088" data-sort="2048.0" data-sequence-mine="0.0" data-sort-url="/projects/8f766bfdbe614633b7170027e8165a55/todos/dc27a0e8a1c742589838399a67a86088/reorder" data-project-guid="8f766bfdbe614633b7170027e8165a55" data-project-name="(新)-智能工厂" data-creator-guid="859f3810cf53463392c1edb48c5e43db" data-assignee-guid="bb61bd9f3d3d462da97b3a4476204034" data-updated-at="1528522260" data-check-items-size="4" data-completed-check-items-size="4" data-closed-at="1526342855">
-
-												<div class="todo-actions actions">
-													<div class="inr" style="display: none;">
-
-													</div>
-												</div>
-
-												<div class="todo-wrap">
-													<div class="simple-checkbox checked" style="height: 18px; width: 18px;">
-														<div class="checkbox-container" style="border: 1.8px solid;">
-															<div class="checkbox-tick" style="border-right: 2.52px solid; border-bottom: 2.52px solid;">
-															</div>
-														</div>
-														<input type="checkbox" name="todo-done" checked="" class="checkbox-input" style="display: none;"></div>
-
-													<span class="todo-content">
-      <span class="raw">知识库系统</span>
-													<span class="content-non-linkable">
-        <span class="todo-rest">知识库系统</span>
-													</span>
-													<span class="content-linkable">
-        <a class="todo-rest" data-stack="true" href="https://tower.im/projects/8f766bfdbe614633b7170027e8165a55/todos/dc27a0e8a1c742589838399a67a86088">知识库系统</a>
-      </span>
-													<div class="progress-wrap">
-														<span class="progress-pie" title="100%" data-pie="100"></span>
-														<span class="todo-progress" title="总共有 4 个检查项，已完成 4 个">(4/4)</span>
-													</div>
-													</span>
-
-													<span class="todo-detail">
-        <span class="label completed-member">( 凌小平 <span class="completed-time" data-readable-time="2018-05-15T08:07:35+08:00">5月15日</span> )</span>
-													</span>
-
-													<a class="label todo-proj" title="(新)-智能工厂 - 知识库（新）" data-stack="true" href="">(新)-智能工厂 - 知识库（新）</a>
-												</div>
-											</li>
-
-										</ul>
-
-									</div>
-
-								</div>
+						<div class="inr" style="display: none;"></div>
+					</div>
+					<div class="todo-wrap">
+							<div class="simple-checkbox checked" style="height: 18px; width: 18px;">
+							<div class="checkbox-container" style="border: 1.8px solid;">
+							<div class="checkbox-tick" style="border-right: 2.52px solid; border-bottom: 2.52px solid;"></div>
 							</div>
+							<input type="checkbox" name="todo-done" checked="" class="checkbox-input">
+					</div>
 
-								</div>
+					<span class="todo-content">
+      					<span class="raw">${projects.projectName }</span>
+						<span class="content-non-linkable">
+        					<span class="todo-rest">${projects.projectName }</span>
+						</span>
+						<span class="content-linkable">
+        					<a class="todo-rest" data-stack="true" href="">${projects.projectName }</a>
+      					</span>
+						<!-- <div class="progress-wrap">
+							<span class="progress-pie" title="100%" data-pie="100"></span>
+							<span class="todo-progress" title="总共有 1 个检查项，已完成 1 个">(1/1)</span>
+						</div> -->
+							<!-- <i class="twr twr-description" title="任务描述"></i> -->
+					</span>
+					<span class="todo-detail">
+        				<span class="label completed-member">${projects.createUserCode }</span>
+					</span>
+					</div>
+					</li>
+					</c:if>
+					</c:forEach>
+				</ul>
+			</div>
+			</div>
+			</div>
+			</div>
 
 
 						<div class="comments streams">
@@ -367,7 +281,7 @@
 				</div>
 				<div class="detail-actions">
 							<div class="item detail-star-action">
-								<a class="detail-action detail-action-star" title="关注" data-remote="true" data-itemtype="Todolist" data-itemid="7552347" data-loading="true" rel="nofollow" data-method="post" href="">返回上一层</a>
+								<a class="detail-action detail-action-star" title="返回上一层" data-remote="true" data-itemtype="Todolist" data-itemid="7552347" data-loading="true" rel="nofollow" data-method="post" href="javascript:;" onclick="back()">返回上一层</a>
 							</div>
 
 							<div class="item">
@@ -409,6 +323,16 @@
 							alert("error");
 						}
 					})	
+				}
+				
+				function back(){
+					var projectCode=document.getElementsByName("project_code")[0].value;
+					var projectLevel=document.getElementsByName("project_level")[0].value;
+					alert("123123"+projectCode+"_____"+projectLevel);
+					<%-- var userCode= "<%=session.getAttribute("user_code")%>"; --%>
+					window.location.href="file/pfd.do?project_code="+projectCode+"&project_level="+projectLevel;
+					
+					
 				}
 			</script>
 
