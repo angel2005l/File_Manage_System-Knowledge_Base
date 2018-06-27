@@ -96,7 +96,10 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 //		}
 		//可以再添加一层校验，校验查询传入的等级是否超过最高等级
 		try {
-			String ptName=projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);
+			String ptName=projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel+1);
+			if(ptName==null){
+				return rtnErrorResult(Result.ERROR_4000, "该表不存在或该层级已为最低层级");
+			}
 			return rtnSuccessResult("获取项目编号、名称成功", ptName);
 		} catch (SQLException e) {
 			log.error("获取项目表信息及项目表接口异常,异常原因:【" + e.toString() + "】");

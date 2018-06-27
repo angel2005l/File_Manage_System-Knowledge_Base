@@ -121,29 +121,25 @@
 					<a class="link-page-behind" data-stack="" href="" data-stack-fluid="">面包屑</a>
 				</div>
 				<div class="page page-1 simple-pjax">
-					<div class="page-inner" id="page-todolist">
-
-						<div class="todos-all">
-
-							<div class="todolists-wrap">
-								<div class="todolists">
-
-									<div class="todolist">
-
-										<div class="title">
-											<div class="todolist-actions actions">
-												<div class="inr">
-													<a class="archive" title="归档（请确认清单内任务都已完成）" data-method="put" data-remote="true" data-loading="true" href="">归档</a>
-													<a href="" class="edit" data-remote="true" data-loading="true" data-mothod="get" title="编辑">编辑</a>
-
-												</div>
-											</div>
-
-											<h4>
+				<div class="page-inner" id="page-todolist">
+				<div class="todos-all">
+				<div class="todolists-wrap">
+				<div class="todolists">
+				<div class="todolist">
+				<div class="title">
+				<div class="todolist-actions actions">
+				<div class="inr">
+				<a class="archive" title="归档（请确认清单内任务都已完成）" data-method="put" data-remote="true" data-loading="true" href="">归档</a>
+				<a href="" class="edit" data-remote="true" data-loading="true" data-mothod="get" title="编辑">编辑</a>
+			</div>
+		</div>
+	<h4>
     <span class="name-non-linkable">
-        <span class="todolist-rest" >测试根项目1</span>
-        <span style="display:none"><input type="text" value="P201806221307125412" name="project_code" /></span>
+        <span class="todolist-rest" >admin1</span>
+        <span style="display:none"><input type="text" value="P201806251124300102" name="project_parent_code" /></span><!-- 父类的projectCode -->
+        <span style="display:none"><input type="text" value="0" name="project_level" /></span><!-- 父类的projectLevel -->
     </span>
+    
     <!-- 功能暂不明确 -->
     <span class="name">
             <span class="todolist-todos-count"></span>
@@ -185,9 +181,10 @@
 													<span class="content-non-linkable">
 															<span class="todo-rest">知识库 新版本2</span>
 													</span> -->
+													
 													<span class="content-linkable">
-        													<a class="todo-rest" data-stack="true" href="">知识库 新版本1</a>
-      													</span>
+        													<c:forEach var="projectName" items="${ }"><a class="todo-rest" data-stack="true" href="" name="project_name">${projectName. }</a></c:forEach>
+      												</span>
 													<div class="progress-wrap">
 														<span class="progress-pie" title="60%" data-pie="60"></span>
 														<span class="todo-progress" title="总共有 10 个检查项，已完成 6 个">(6/10)</span>
@@ -416,6 +413,7 @@
 					})	
 				}
 			</script>
+
 </body>
 
 </html>
