@@ -267,15 +267,19 @@ public class FileServiceImpl extends BaseService implements IFileService {
 	public Map<String, Object> getShareFile(String fileCode, int fileLevel, String projectCode) throws Exception {
 		// 因为想在项目表层级与文件表层级相同 fileLevel/projectLevel 相同
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		// 查询项目信息
-		String projectTableName = kptm.selectProjectTableNameByProjectLevel(fileLevel);
-		KbProject shareProject = kpm.selectProjectByProjectCode(projectTableName, projectCode);
-		// 查询文件信息
-		String fileTableName = kftm.selectFileTableNameByFileLevel(fileLevel);
-		KbFile shareFile = kfm.selectFileByFileCode(fileTableName, fileCode);
-		if (null != shareProject && null != shareFile) {
-			resultMap.put("shareProject", shareProject);
-			resultMap.put("shareFile", shareFile);
+		try {
+			// 查询项目信息
+			String projectTableName = kptm.selectProjectTableNameByProjectLevel(fileLevel);
+			KbProject shareProject = kpm.selectProjectByProjectCode(projectTableName, projectCode);
+			// 查询文件信息
+			String fileTableName = kftm.selectFileTableNameByFileLevel(fileLevel);
+			KbFile shareFile = kfm.selectFileByFileCode(fileTableName, fileCode);
+			if (null != shareProject && null != shareFile) {
+				resultMap.put("shareProject", shareProject);
+				resultMap.put("shareFile", shareFile);
+			}
+		} catch (SQLException e) {
+			log.error("文件分享数据接口异常,异常原因:【" + e.toString() + "】");
 		}
 		return resultMap;
 	}
