@@ -205,7 +205,7 @@
 
 											<div class="members member-checkbox-list">
 												<c:forEach var="b" items="${userList }">
-												<label title="包雪丹" class="member">
+												<label title="${b.userName }" class="member">
                               				  		<input type="checkbox" name="" id="" value="${b.userCode }">
                                 					<span class="name"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">${b.userName }</font></font></span>
                        					 		</label>
@@ -230,7 +230,7 @@
 											</div>
 											<div class="members member-checkbox-list">
 											<c:forEach var="b" items="${userList }">
-												<label title="包雪丹" class="member">
+												<label title="${b.userName }" class="member">
                               				  		<input type="checkbox" name="" id="" value="${b.userCode }">
                                 					<span class="name"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">${b.userName }</font></font></span>
                        					 		</label>
