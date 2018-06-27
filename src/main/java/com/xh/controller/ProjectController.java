@@ -136,8 +136,7 @@ public class ProjectController extends BaseController{
 		if(obj==null){
 			return rtnErrorResult(Result.ERROR_4000, "找不到项目最根目录");
 		}
-		Object kpro=ps.selectAllPro(obj,projectParentCode).getData();
-		List<KbProject> list=(ArrayList<KbProject>)kpro;
+		List<KbProject> list = ps.selectAllPro(obj,projectParentCode).getData();
 		System.err.println("信息："+list);
 		if(list!=null){
 			return rtnSuccessResult("获取该等级项目信息成功", list);
