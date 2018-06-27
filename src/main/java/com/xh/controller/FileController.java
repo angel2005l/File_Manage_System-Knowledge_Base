@@ -347,6 +347,6 @@ public class FileController extends BaseController {
 			log.error("文件查询异常,异常原因:【" + e.toString() + "】");
 			return "view/not_share";
 		}
-		return "viev/share_file";
+		return "view/share_file";
 	}
 }

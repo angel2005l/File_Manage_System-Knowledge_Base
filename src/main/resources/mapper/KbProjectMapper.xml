@@ -18,7 +18,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, project_code, project_name, project_type, project_info, project_remark, project_parent_code, 
-    project_level, project_status, create_user_code, create_time, update_user_code, update_time
+    project_level, project_status, create_user_code, DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') as create_time, update_user_code, DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') as update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 'false' as QUERYID,
@@ -38,6 +38,6 @@
   </select>
   <!-- 查询特定的项目信息 -->
   <select id="selectProjectByProjectCode" resultMap="BaseResultMap">
-  	select <include refid="BaseResultMap" /> from ${projectTableName} where project_code = #{projectCode}
+  	select <include refid="Base_Column_List" /> from ${projectTableName} where project_code = #{projectCode}
   </select>
 </mapper>

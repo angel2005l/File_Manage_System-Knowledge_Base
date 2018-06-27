@@ -183,7 +183,7 @@
 													</span> -->
 													
 													<span class="content-linkable">
-        													<c:forEach var="projectName" items="${ }"><a class="todo-rest" data-stack="true" href="" name="project_name">${projectName. }</a></c:forEach>
+        													<c:forEach var="projectName" items="${ a}"><a class="todo-rest" data-stack="true" href="" name="project_name">${projectName. }</a></c:forEach>
       												</span>
 													<div class="progress-wrap">
 														<span class="progress-pie" title="60%" data-pie="60"></span>
