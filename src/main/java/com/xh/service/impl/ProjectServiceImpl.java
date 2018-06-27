@@ -178,18 +178,47 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	/**
 	 * 
 	 * @Title: selectAllPro
+	 * @Description: 查询当前项目下的所有子项目(最大权限)
+	 * @author 陈专懂
+	 * @return Result<Object>
+	 * @date 2018年6月23日
+	 * @version 1.0
+	 */
+	public Result<List<KbProject>> selectAllPro(String formName, String projectCode) {
+		System.err.println("projectParentCode:" + projectCode);
+		System.err.println("formName:" + formName);
+		List<KbProject> kbp;
+		try {
+			kbp = projectMapper.selectSonProjectByParentCode(formName, projectCode);
+			System.err.println("service:" + kbp);
+			if (kbp.isEmpty()) {
+				return rtnErrorResult(Result.ERROR_4000, "数据表中没有数据");
+			}
+			return rtnSuccessResult("项目表中项目数据查询成功", kbp);
+		} catch (SQLException e) {
+			log.error("查询当前项目下的所有子项目数据接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "查询系统异常");
+		}
+	}
+	
+	
+	
+	/**
+	 * 
+	 * @Title: selectAllPro
 	 * @Description: 查询当前项目下的所有子项目
 	 * @author 陈专懂
 	 * @return Result<Object>
 	 * @date 2018年6月23日
 	 * @version 1.0
 	 */
-	public Result<List<KbProject>> selectAllPro(String formName, String projectParentCode) {
-		System.err.println("projectParentCode:" + projectParentCode);
+	public Result<List<KbProject>> selectAllProByUser(String formName, String projectCode,String userCode) {
+		System.err.println("projectParentCode:" + projectCode);
 		System.err.println("formName:" + formName);
+		System.err.println("userCode:" + userCode);
 		List<KbProject> kbp;
 		try {
-			kbp = projectMapper.selectSonProjectByParentCode(formName, projectParentCode);
+			kbp = projectMapper.selectSonProjectByParentCodeAndUserCode(formName, projectCode,userCode);
 			System.err.println("service:" + kbp);
 			if (kbp.isEmpty()) {
 				return rtnErrorResult(Result.ERROR_4000, "数据表中没有数据");

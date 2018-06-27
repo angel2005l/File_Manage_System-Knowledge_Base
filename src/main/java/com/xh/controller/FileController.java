@@ -271,20 +271,40 @@ public class FileController extends BaseController {
 		// String projectLevel = request.getParameter("project_level");
 		// String projectCode = request.getParameter("project_code");
 		// String userCode = session.getAttribute("user_code").toString();
-		String projectCode = "P201806221307125412";
-		String projectLevel = "0";
-		String userCode = "820032";
-		String projectParentCode="-1";
+		String projectCode=request.getParameter("project_code");
+		String projectLevel=request.getParameter("project_level");
+		String userCode="820032";
+//		String projectParentCode=request.getParameter("project_parent_code");
+		System.err.println("1:"+projectCode+";---2:"+projectLevel+";---3:"+userCode);
+//		String projectCode = "P201806221307125412";
+//		String projectLevel = "0";
+//		String userCode = "820032";
+//		String projectParentCode="-1";
 		try {
 			String obj=ps.selectProjectTableNameByProjectLevel(Integer.parseInt(projectLevel)).getData().toString();//表名
-			System.err.println("表名："+obj);
-			Object kpro=ps.selectAllPro(obj,projectParentCode).getData();
+			Object kpro=ps.selectAllProByUser(obj,projectCode,userCode).getData();
 			List<KbProject> list=(ArrayList<KbProject>)kpro;
-			System.err.println("list:"+list);
+//			System.err.println("list:"+list);
+			double proCount=0;//项目进行中的数量
+			double completed=0;//项目已完成的数量
+			for (KbProject kb : list) {
+				if(kb.getProjectStatus().equals("progress")){
+					proCount++;
+				}else{
+					completed++;
+				}
+			}
+			int sum=(int) (proCount+completed);
+			String ratio=(int)completed+"/"+sum;
+			int per=(int) ((completed/sum)*100);
+			System.err.println("ratio:"+ratio+";per:"+per);
 			Result<List<Map<String, Object>>> fileResult = fs.selectFile(Integer.parseInt(projectLevel), userCode,
 					projectCode);
 			System.err.println(fileResult);
 			request.setAttribute("files", fileResult.getData());
+			request.setAttribute("projects", list);
+			request.setAttribute("ratio", ratio);
+			request.setAttribute("per", per);
 		} catch (NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
 			return "view/index.jsp";

@@ -32,9 +32,14 @@
 		values(#{kb.projectCode},#{kb.projectName},#{kb.projectType},#{kb.projectInfo},#{kb.projectRemark},#{kb.projectParentCode},#{kb.projectStatus},#{kb.createUserCode},#{kb.createTime},#{kb.updateUserCode})
 	</insert>
 	<!-- 查询当前项目下的所有子项目 -->
-  <select id="selectProject" resultMap="BaseResultMap" parameterType="string">
+  <select id="selectSonProjectByParentCode" resultMap="BaseResultMap" parameterType="string">
   	select <include refid="Base_Column_List" /> from ${formName}
-  	<if test="projectParentCode!='-1' "> where project_parent_code=#{projectParentCode}</if> 
+  	<if test="projectCode!='-1' "> where project_parent_code=#{projectCode}</if> 
+  </select>
+	<!-- 查询当前项目下的所有子项目 -->
+  <select id="selectSonProjectByParentCodeAndUserCode" resultMap="BaseResultMap" parameterType="string">
+  	select a.project_code, a.project_name, a.project_type, a.project_info, a.project_remark, a.project_parent_code, 
+    a.project_level, a.project_status, a.create_user_code, a.create_time, a.update_user_code, a.update_time from ${formName} a inner join kb_project_user b on a.project_code=b.project_code and b.user_code=#{userCode} and project_parent_code =#{projectCode}
   </select>
   <!-- 查询特定的项目信息 -->
   <select id="selectProjectByProjectCode" resultMap="BaseResultMap">
