@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.aspose.p2cbca448.re;
 import com.xh.base.BaseController;
 import com.xh.base.Constant;
 import com.xh.entity.KbFile;
@@ -310,15 +308,15 @@ public class FileController extends BaseController {
 				request.setAttribute("shareProject", shareMap.get("shareProject"));
 				request.setAttribute("shareFile", shareMap.get("shareFile"));
 			} else {
-				return "view/not_share.jsp";
+				return "view/not_share";
 			}
 		} catch (NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
-			return "view/not_share.jsp";
+			return "view/not_share";
 		} catch (Exception e) {
 			log.error("文件查询异常,异常原因:【" + e.toString() + "】");
-			return "view/not_share.jsp";
+			return "view/not_share";
 		}
-		return "viev/share_file.jsp";
+		return "viev/share_file";
 	}
 }
