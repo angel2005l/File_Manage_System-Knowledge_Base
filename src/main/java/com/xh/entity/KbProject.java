@@ -1,7 +1,5 @@
 package com.xh.entity;
 
-import java.util.Date;
-
 public class KbProject {
     private Integer id;
 

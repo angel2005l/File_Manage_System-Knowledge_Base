@@ -22,10 +22,13 @@ import com.xh.base.Constant;
 import com.xh.dao.KbFileMapper;
 import com.xh.dao.KbFileTableMapper;
 import com.xh.dao.KbFileUserMapper;
+import com.xh.dao.KbProjectMapper;
+import com.xh.dao.KbProjectTableMapper;
 import com.xh.dao.KbUserMapper;
 import com.xh.entity.KbFile;
 import com.xh.entity.KbFileTable;
 import com.xh.entity.KbFileUser;
+import com.xh.entity.KbProject;
 import com.xh.entity.KbUser;
 import com.xh.service.IFileService;
 import com.xh.service.IUserService;
@@ -49,6 +52,10 @@ public class FileServiceImpl extends BaseService implements IFileService {
 	private KbFileUserMapper kfum;// 文件用户关联接口
 	@Autowired
 	private KbUserMapper kum; // 用户接口
+	@Autowired
+	private KbProjectTableMapper kptm;// 项目表接口
+	@Autowired
+	private KbProjectMapper kpm;// 项目接口
 
 	@Autowired
 	@Qualifier("userServiceImpl")
@@ -254,6 +261,23 @@ public class FileServiceImpl extends BaseService implements IFileService {
 			log.error("根据部门编码查询上级部门的领导层用户,异常信息:【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "查询系统异常,请联系系统管理员");
 		}
+	}
+
+	@Override
+	public Map<String, Object> getShareFile(String fileCode, int fileLevel, String projectCode) throws Exception {
+		// 因为想在项目表层级与文件表层级相同 fileLevel/projectLevel 相同
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		// 查询项目信息
+		String projectTableName = kptm.selectProjectTableNameByProjectLevel(fileLevel);
+		KbProject shareProject = kpm.selectProjectByProjectCode(projectTableName, projectCode);
+		// 查询文件信息
+		String fileTableName = kftm.selectFileTableNameByFileLevel(fileLevel);
+		KbFile shareFile = kfm.selectFileByFileCode(fileTableName, fileCode);
+		if (null != shareProject && null != shareFile) {
+			resultMap.put("shareProject", shareProject);
+			resultMap.put("shareFile", shareFile);
+		}
+		return resultMap;
 	}
 
 }

@@ -118,4 +118,20 @@ public interface IFileService {
 	 */
 	public Result<List<Map<String, Object>>> selectFile(int projectLevel, String userCode, String projectCode)
 			throws Exception;
+
+	/**
+	 * 
+	 * @Title: getShare
+	 * @Description: 文件分享
+	 * @author 黄官易
+	 * @param fileCode
+	 * @param fileLevel
+	 * @param projectCode
+	 * @return
+	 * @throws Exception
+	 * @return Map<String,Object>
+	 * @date 2018年6月27日
+	 * @version 1.0
+	 */
+	public Map<String, Object> getShareFile(String fileCode, int fileLevel, String projectCode) throws Exception;
 }

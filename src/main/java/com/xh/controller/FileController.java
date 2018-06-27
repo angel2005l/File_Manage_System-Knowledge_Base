@@ -263,15 +263,16 @@ public class FileController extends BaseController {
 	 */
 	@RequestMapping("/pfd.do")
 	public String selectFileForDetail(HttpServletRequest request, HttpSession session) {
-//		String isRoot = request.getParameter("is_root");
-//		String projectLevel = request.getParameter("project_level");
-//		String projectCode = request.getParameter("project_code");
+		// String isRoot = request.getParameter("is_root");
+		// String projectLevel = request.getParameter("project_level");
+		// String projectCode = request.getParameter("project_code");
 		// String userCode = session.getAttribute("user_code").toString();
 		String projectCode = "P201806221307125412";
-		String projectLevel="0";
+		String projectLevel = "0";
 		String userCode = "820032";
 		try {
-			Result<List<Map<String, Object>>> fileResult = fs.selectFile(Integer.parseInt(projectLevel), userCode, projectCode);
+			Result<List<Map<String, Object>>> fileResult = fs.selectFile(Integer.parseInt(projectLevel), userCode,
+					projectCode);
 			System.err.println(fileResult);
 			request.setAttribute("files", fileResult.getData());
 		} catch (NumberFormatException e) {
@@ -281,9 +282,43 @@ public class FileController extends BaseController {
 			log.error("文件查询异常,异常原因:【" + e.toString() + "】");
 			return "view/error.jsp";
 		}
-		return  "view/project_detail";
+		return "view/project_detail";
 	}
 
-	
-	
+	// 文件分享
+
+	// 会传入项目code 文件的code 项目/文件等级
+	/**
+	 * 
+	 * @Title: shareFile
+	 * @Description: 文件分享
+	 * @author 黄官易
+	 * @param request
+	 * @return void
+	 * @date 2018年6月27日
+	 * @version 1.0
+	 */
+	@RequestMapping("/sf.do")
+	public String shareFile(HttpServletRequest request) {
+		String fileCode = request.getParameter("file_code");// 文件编码
+		String fileLevel = request.getParameter("file_level"); // 文件等级
+		String projectCode = request.getParameter("project_code");// 项目编码
+		try {
+			// 获得项目名称与分享文件
+			Map<String, Object> shareMap = fs.getShareFile(fileCode, Integer.parseInt(fileLevel), projectCode);
+			if (!shareMap.isEmpty()) {
+				request.setAttribute("shareProject", shareMap.get("shareProject"));
+				request.setAttribute("shareFile", shareMap.get("shareFile"));
+			} else {
+				return "view/index.jsp";
+			}
+		} catch (NumberFormatException e) {
+			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
+			return "view/index.jsp";
+		} catch (Exception e) {
+			log.error("文件查询异常,异常原因:【" + e.toString() + "】");
+			return "view/not_share.jsp";
+		}
+		return "viev/share_file.jsp";
+	}
 }
