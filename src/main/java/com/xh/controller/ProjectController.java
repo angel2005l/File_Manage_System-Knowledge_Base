@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +23,7 @@ import com.xh.entity.KbProjectTable;
 import com.xh.entity.KbProjectUser;
 import com.xh.entity.KbUser;
 import com.xh.service.IProjectService;
+import com.xh.service.IUserService;
 import com.xh.uitl.DateUtil;
 import com.xh.uitl.IpUtil;
 import com.xh.uitl.Result;
@@ -35,7 +37,11 @@ public class ProjectController extends BaseController {
 	private static final String TABELTAG = Constant.TABELTAG;// 数据库表头
 
 	@Autowired
+	@Qualifier("projectServiceImpl")
 	private IProjectService ps;
+	@Autowired
+	@Qualifier("userServiceImpl")
+	private IUserService us;// 用户服务层
 
 	/**
 	 * 
@@ -84,7 +90,7 @@ public class ProjectController extends BaseController {
 		String formName = ps.selectProjectTableNameByProjectLevel(ptLevel).getData().toString();// 表名
 
 		String projectCode = "P" + DateUtil.curDateYMDHMSForService()
-				+ StrUtil.getRandom((int) (Math.random() * 1000), 4);
+				+ StrUtil.getRandom((int) (Math.random() * 10000), 4);
 		KbProject kbObj = new KbProject();// new 一个kbPeoject的对象
 		kbObj.setProjectCode(projectCode);
 		kbObj.setProjectName(request.getParameter("project_name"));
@@ -183,6 +189,30 @@ public class ProjectController extends BaseController {
 			return "view/not_share";
 		}
 		return "view/share_project";
+	}
+
+	// 跳转项目添加页面
+	@RequestMapping("insJsp.do")
+	public String toInsertProject(HttpServletRequest request, HttpSession session) {
+		try {
+			// 获得部门信息
+			String userDeptCode = session.getAttribute("user_dept_code").toString();
+			// 获得父类编码
+			String projectParentCode = request.getParameter("project_code");
+			// 获得父类等级
+			String projectParentLevel = StrUtil.isBlank(request.getParameter("project_level")) ? "0"
+					: request.getParameter("project_level");
+			Result<List<KbUser>> userResult = us.selUsersByUserDeptCode(userDeptCode); // 获得员工信息
+			request.setAttribute("userList", userResult.getData());
+			request.setAttribute("projectParentCode", projectParentCode);
+			request.setAttribute("projectLevel", Integer.parseInt(projectParentLevel) + 1);
+		} catch (NumberFormatException | NullPointerException e) {
+			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
+			return "view/login";
+		} catch (Exception e) {
+			log.error("跳转项目添加页面异常,异常原因:【" + e.toString() + "】");
+		}
+		return "view/insert_project";
 	}
 
 }

@@ -13,7 +13,6 @@
 		<meta name="renderer" content="webkit">
 		<link rel="stylesheet" media="all" href="assets/css/xh_application.css">
 		<link rel="stylesheet" href="assets/css/xh.css" />
-		<script src="assets/js/analytics.js"></script>
 		<script src="assets/js/xh_application.js"></script>
 	</head>
 
@@ -386,7 +385,6 @@
 	<form id="displayForm" action="build/generic/web/viewer.html" method="get" target="_blank">
    		<input id="displayValues" type="hidden" name="file" value="/xh_bi_b_knowledge_base/file/disPdf.do?file_info=F201806221421466073,新海知识库数据库结构.xlsx"/>
     </form>   
-	<script type="text/javascript" src="assets/js/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript">
 				function display(code,name){
 					var str = "/xh_bi_b_knowledge_base/file/disPdf.do?file_info="+code+","+name;
