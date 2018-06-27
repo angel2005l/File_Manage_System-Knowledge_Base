@@ -1,27 +1,25 @@
 package com.xh.entity;
 
-import java.util.Date;
-
 public class KbProjectUser {
-    private Integer id;
+	private Integer id;
 
-    private String projectCode;
+	private String projectCode;
 
-    private String projectName;
+	private String projectName;
 
-    private String projectPermission;
+	private String projectPermission;
 
-    private String userCode;
+	private String userCode;
 
-    private String userName;
+	private String userName;
 
-    private String userDeptCode;
+	private String userDeptCode;
 
-    private String createUserCode;
+	private String createUserCode;
 
-    private String createTime;
-    
-    private Integer projectLevel;
+	private String createTime;
+
+	private Integer projectLevel;
 
 	/**
 	 * @return the id
@@ -31,7 +29,8 @@ public class KbProjectUser {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(Integer id) {
 		this.id = id;
@@ -45,7 +44,8 @@ public class KbProjectUser {
 	}
 
 	/**
-	 * @param projectCode the projectCode to set
+	 * @param projectCode
+	 *            the projectCode to set
 	 */
 	public void setProjectCode(String projectCode) {
 		this.projectCode = projectCode;
@@ -59,7 +59,8 @@ public class KbProjectUser {
 	}
 
 	/**
-	 * @param projectName the projectName to set
+	 * @param projectName
+	 *            the projectName to set
 	 */
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
@@ -73,7 +74,8 @@ public class KbProjectUser {
 	}
 
 	/**
-	 * @param projectPermission the projectPermission to set
+	 * @param projectPermission
+	 *            the projectPermission to set
 	 */
 	public void setProjectPermission(String projectPermission) {
 		this.projectPermission = projectPermission;
@@ -87,7 +89,8 @@ public class KbProjectUser {
 	}
 
 	/**
-	 * @param userCode the userCode to set
+	 * @param userCode
+	 *            the userCode to set
 	 */
 	public void setUserCode(String userCode) {
 		this.userCode = userCode;
@@ -101,7 +104,8 @@ public class KbProjectUser {
 	}
 
 	/**
-	 * @param userName the userName to set
+	 * @param userName
+	 *            the userName to set
 	 */
 	public void setUserName(String userName) {
 		this.userName = userName;
@@ -115,7 +119,8 @@ public class KbProjectUser {
 	}
 
 	/**
-	 * @param userDeptCode the userDeptCode to set
+	 * @param userDeptCode
+	 *            the userDeptCode to set
 	 */
 	public void setUserDeptCode(String userDeptCode) {
 		this.userDeptCode = userDeptCode;
@@ -129,7 +134,8 @@ public class KbProjectUser {
 	}
 
 	/**
-	 * @param createUserCode the createUserCode to set
+	 * @param createUserCode
+	 *            the createUserCode to set
 	 */
 	public void setCreateUserCode(String createUserCode) {
 		this.createUserCode = createUserCode;
@@ -143,7 +149,8 @@ public class KbProjectUser {
 	}
 
 	/**
-	 * @param createTime the createTime to set
+	 * @param createTime
+	 *            the createTime to set
 	 */
 	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
@@ -157,7 +164,8 @@ public class KbProjectUser {
 	}
 
 	/**
-	 * @param projectLevel the projectLevel to set
+	 * @param projectLevel
+	 *            the projectLevel to set
 	 */
 	public void setProjectLevel(Integer projectLevel) {
 		this.projectLevel = projectLevel;
@@ -198,7 +206,9 @@ public class KbProjectUser {
 		// TODO Auto-generated constructor stub
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -209,6 +219,4 @@ public class KbProjectUser {
 				+ ", projectLevel=" + projectLevel + "]";
 	}
 
-
-    
 }

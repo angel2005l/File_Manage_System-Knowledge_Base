@@ -191,12 +191,23 @@ public class ProjectController extends BaseController {
 		return "view/share_project";
 	}
 
-	// 跳转项目添加页面
-	@RequestMapping("/insJsp.do")
+	/**
+	 * 
+	 * @Title: toInsertProject
+	 * @Description: 跳转项目添加页面
+	 * @author 黄官易
+	 * @param request
+	 * @param session
+	 * @return
+	 * @return String
+	 * @date 2018年6月27日
+	 * @version 1.0
+	 */
+	@RequestMapping("/insProJsp.do")
 	public String toInsertProject(HttpServletRequest request, HttpSession session) {
 		try {
 			// 获得部门信息
-//			String userDeptCode = session.getAttribute("user_dept_code").toString();
+			// String userDeptCode = session.getAttribute("user_dept_code").toString();
 			String userDeptCode = "D201806230935390372";
 			// 获得父类编码
 			String projectParentCode = request.getParameter("project_code");

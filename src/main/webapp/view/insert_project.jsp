@@ -9,7 +9,7 @@
 
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-		<title>创建新项目- Tower</title>
+		<title></title>
 		<meta name="renderer" content="webkit">
 		<link type="text/css" rel="stylesheet" href="assets/css/translateelement.css">
 	</head>
