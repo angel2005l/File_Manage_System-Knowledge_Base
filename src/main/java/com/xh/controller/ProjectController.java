@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.aspose.p2cbca448.re;
 import com.xh.base.BaseController;
 import com.xh.base.Constant;
 import com.xh.entity.KbProject;
@@ -167,12 +168,9 @@ public class ProjectController extends BaseController {
 	@RequestMapping("/sp.do")
 	public String getShareProject(HttpServletRequest request) {
 		// 所见即所得原理
-		// 项目编码
-		String projectCode = request.getParameter("project_code");
-		// 项目等级
-		String projectLevel = request.getParameter("project_level");
-		// 用户编码
-		String userCode = request.getParameter("user_code");
+		String projectCode = request.getParameter("project_code");// 项目编码
+		String projectLevel = request.getParameter("project_level");// 项目等级
+		String userCode = request.getParameter("user_code");// 用户编码
 		try {
 			Map<String, Object> shareMap = ps.getShareProject(projectCode, Integer.parseInt(projectLevel), userCode);
 			if (!shareMap.isEmpty()) {
@@ -191,27 +189,23 @@ public class ProjectController extends BaseController {
 		return "view/share_project";
 	}
 
-
 	@RequestMapping("/AllProInMain.do")
-	public String selectAllProInMain(HttpServletRequest request,HttpServletResponse response){
-		
-		List<List<KbProject>> proList=ps.selectAllProInMain();
-		List<KbProject> projectList=new ArrayList<KbProject>();
+	public String selectAllProInMain(HttpServletRequest request, HttpServletResponse response) {
+
+		List<List<KbProject>> proList = ps.selectAllProInMain();
+		List<KbProject> projectList = new ArrayList<KbProject>();
 		for (List<KbProject> list : proList) {
 			for (KbProject kbProject : list) {
 				projectList.add(kbProject);
 			}
 		}
-//		System.err.println("controller:"+projectList.toString());
-		if(!projectList.isEmpty()){
+		if (!projectList.isEmpty()) {
 			request.setAttribute("ProList", projectList);
-		}else{
+		} else {
 			return "view/not_share";
 		}
 		return "view/xh_kb";
 	}
-	
-	
 
 	/**
 	 * 
@@ -228,14 +222,12 @@ public class ProjectController extends BaseController {
 	@RequestMapping("/insProJsp.do")
 	public String toInsertProject(HttpServletRequest request, HttpSession session) {
 		try {
+			// String userDeptCode = session.getAttribute("user_dept_code").toString();//
 			// 获得部门信息
-			// String userDeptCode = session.getAttribute("user_dept_code").toString();
 			String userDeptCode = "D201806230935390372";
-			// 获得父类编码
-			String projectParentCode = request.getParameter("project_code");
-			// 获得父类等级
+			String projectParentCode = request.getParameter("project_code");// 获得父类编码
 			String projectParentLevel = StrUtil.isBlank(request.getParameter("project_level")) ? "0"
-					: request.getParameter("project_level");
+					: request.getParameter("project_level");// 获得父类等级
 			Result<List<KbUser>> userResult = us.selUsersByUserDeptCode(userDeptCode); // 获得员工信息
 			request.setAttribute("userList", userResult.getData());
 			request.setAttribute("projectParentCode", projectParentCode);
@@ -249,5 +241,30 @@ public class ProjectController extends BaseController {
 		return "view/insert_project";
 	}
 
+	/**
+	 * 
+	 * @Title: index
+	 * @Description: 主页面（当前用户参与的所有项目）
+	 * @author 黄官易
+	 * @param request
+	 * @param session
+	 * @return
+	 * @return String
+	 * @date 2018年6月28日
+	 * @version 1.0
+	 */
+	public String index(HttpServletRequest request, HttpSession session) {
+		try {
+			String userCode = session.getAttribute("user_code").toString();// 用户编码
+			List<Map<String, Object>> result = ps.selectProjectByUserCode(userCode);// 查询用户关联的所有项目
+			request.setAttribute("projectList", result);
+		} catch (NullPointerException e) {
+			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
+			return "view/login";
+		} catch (Exception e) {
+			log.error("主页面（当前用户参与的所有项目）查询异常,异常原因:【" + e.toString() + "】");
+		}
+		return "view/index";
+	}
 
 }

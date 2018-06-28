@@ -18,7 +18,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, server_code, server_name, server_core, server_memory, server_band_width, in_ip, 
-    out_ip, in_connect, out_connect, server_status, create_user_code, create_time
+    out_ip, in_connect, out_connect, server_status, create_user_code, DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') as create_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 'false' as QUERYID,
