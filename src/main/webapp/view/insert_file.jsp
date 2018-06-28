@@ -101,7 +101,8 @@
 						<font style="vertical-align: inherit;">上传文件</font>
 					</h3>
 
-					<form id="fileFrom" class="form" method="post" enctype="multipart/form-data">
+					<form id="fileFrom" class="form" method="post"
+						enctype="multipart/form-data">
 						<div class="form-item">
 							<div class="form-field">
 								<input type="file" name="file_data">
@@ -177,7 +178,8 @@
 						</div>
 
 						<div class="">
-								<button type="button" class="btn btn-primary" onclick="clickBtn()">
+							<button type="button" class="btn btn-primary"
+								onclick="clickBtn()">
 								<font style="vertical-align: inherit;"><font
 									style="vertical-align: inherit;">上传文件</font></font>
 							</button>
@@ -188,8 +190,7 @@
 							</font>
 							</a>
 						</div>
-						<input type="button" value="上传文件" onclick="clickBtn()"> <input
-							type="hidden" name="project_level" value="${projectLevel }">
+						<input type="hidden" name="project_level" value="${projectLevel }">
 						<input type="hidden" name="project_code" value="${projectCode }">
 					</form>
 
@@ -247,6 +248,29 @@
 					alert("服务未响应");
 				}
 			});
+		}
+		function checkFile() {
+			var fileUrl =$("#file_data").val();
+			if(fileUrl==''){
+				alert("请选择文件")
+			}else if (fileUrl.indexOf(" ") >= 0) {
+				alert("文件名不能有空格");
+				return false;
+			}
+			/* var re = /(\\+)/g;
+			var filename = fileUrl.replace(re, "#");
+			var one = filename.split("#");
+			var two = one[one.length - 1];
+			var three = two.split(".");
+			var last = three[three.length - 1];
+			var tp = "xlsx";
+			var rs = tp.indexOf(last);
+			if (rs >= 0) {
+				return true;
+			} else {
+				alert("当前只支持文件扩展名为.xlsx的Excel2007及以上文件！");
+				return false;
+			} */
 		}
 	</script>
 
