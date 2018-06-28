@@ -222,8 +222,8 @@
 				obj.prop("checked", false);
 			}
 		}
-		function changeFileDownload(showFile) {
-			var obj = $("input[name='file_download'][value=" + showFile + "]");
+		function changeFileDownload(showVal) {
+			var obj = $("input[name='file_download'][value=" + showVal + "]");
 			if (obj.is(":checked")) {
 				obj.prop("checked", false);
 			}

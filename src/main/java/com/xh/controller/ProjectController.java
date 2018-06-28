@@ -12,10 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.aspose.p2cbca448.re;
+import com.aspose.slides.pa2137a2a.in;
 import com.xh.base.BaseController;
 import com.xh.base.Constant;
 import com.xh.entity.KbProject;
@@ -33,6 +36,7 @@ import com.xh.uitl.StrUtil;
 @RequestMapping("/pro")
 public class ProjectController extends BaseController {
 	private static final Logger log = LoggerFactory.getLogger(FileController.class);// 日志对象
+	private static final String PROJECTTAG = Constant.PROJECTTAG;// 项目标识头
 	private static final String PROJECTTABLETAG = Constant.PROJECTTABLETAG;// 项目表标识表头
 	private static final String TABELTAG = Constant.TABELTAG;// 数据库表头
 
@@ -82,49 +86,121 @@ public class ProjectController extends BaseController {
 	 * @return Result<Object>
 	 * @date 2018年6月26日
 	 * @version 1.0
+	 *//*
+		 * @RequestMapping("/addPro.do")
+		 * 
+		 * @ResponseBody public Result<Object> selProjectTable(HttpServletRequest
+		 * request, HttpSession session) { int ptLevel =
+		 * Integer.parseInt(request.getParameter("pt_level")); String formName =
+		 * ps.selectProjectTableNameByProjectLevel(ptLevel).getData().toString();// 表名
+		 * String userCode = session.getAttribute("user_code").toString();//创建人用户编码
+		 * String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService() +
+		 * StrUtil.getRandom((int) (Math.random() * 10000), 4); KbProject kbObj = new
+		 * KbProject();// new 一个kbPeoject的对象 kbObj.setProjectCode(projectCode);
+		 * kbObj.setProjectName(request.getParameter("project_name"));
+		 * kbObj.setProjectType(request.getParameter("project_type"));
+		 * kbObj.setProjectInfo(request.getParameter("project_info"));
+		 * kbObj.setProjectParentCode(request.getParameter("project_parent_code"));//
+		 * 需要从数据库中取出动态显示在前端
+		 * kbObj.setProjectStatus(request.getParameter("project_status"));
+		 * kbObj.setCreateUserCode(userCode);
+		 * kbObj.setCreateTime(DateUtil.curDateYMDHMS());
+		 * kbObj.setUpdateUserCode(userCode);
+		 * 
+		 * List<String> strList = new ArrayList<String>();// 获取write或read
+		 * strList.add("820046"); strList.add("820032"); strList.add("820033");
+		 * strList.add("820055"); List<KbUser> taskList =
+		 * ps.selectUserByUserCode(strList).getData(); List<KbProjectUser> listUser =
+		 * new ArrayList<KbProjectUser>(); for (int i = 0; i < taskList.size(); i++) {
+		 * KbProjectUser proUser = new KbProjectUser();
+		 * proUser.setProjectCode(projectCode);
+		 * proUser.setProjectName(kbObj.getProjectName());
+		 * proUser.setProjectLevel(ptLevel);
+		 * proUser.setUserName(taskList.get(i).getUserName());
+		 * proUser.setUserCode(taskList.get(i).getUserCode());
+		 * proUser.setUserDeptCode(taskList.get(i).getUserDeptCode());
+		 * proUser.setProjectPermission("write");
+		 * proUser.setCreateUserCode(kbObj.getCreateUserCode());
+		 * proUser.setCreateTime(DateUtil.curDateYMDHMS()); listUser.add(proUser); }
+		 * ps.insertProject(kbObj, listUser, formName); return
+		 * rtnSuccessResult("添加项目信息及项目涉及人员成功"); }
+		 */
+
+	/**
+	 * 
+	 * @Title: addProject
+	 * @Description: 新增项目表信息及项目员工表信息
+	 * @author 黄官易
+	 * @param request
+	 * @return
+	 * @return Result<Object>
+	 * @date 2018年6月28日
+	 * @version 1.0
 	 */
-	@RequestMapping("/addPro.do")
-	@ResponseBody
-	public Result<Object> selProjectTable(HttpServletRequest request, HttpServletResponse response) {
-		int ptLevel = Integer.parseInt(request.getParameter("pt_level"));
-		String formName = ps.selectProjectTableNameByProjectLevel(ptLevel).getData().toString();// 表名
+	public Result<Object> addProject(HttpServletRequest request, HttpSession session) {
+		try {
+			// 项目信息主体
+			String projectName = request.getParameter("project_name");
+			String projectType = request.getParameter("project_type");
+			String projectInfo = request.getParameter("project_info");
+			// String projectRemark = request.getParameter("project_remark");
+			String projectParentCode = request.getParameter("project_parent_code");
+			String projectParentLevel = request.getParameter("project_level");
+			int projectLevel = Integer.parseInt(projectParentLevel) + 1;
+			String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService() + StrUtil.getRandom(10000, 4);
+			String userCode = session.getAttribute("user_code").toString();
+			KbProject kp = new KbProject();
+			kp.setProjectCode(projectCode);
+			kp.setProjectName(projectName);
+			kp.setProjectType(projectType);
+			kp.setProjectInfo(projectInfo);
+			kp.setProjectRemark("");
+			kp.setProjectParentCode(projectParentCode);
+			kp.setProjectLevel(projectLevel);
+			kp.setProjectStatus("progress");
+			kp.setCreateUserCode(userCode);
+			kp.setCreateTime(DateUtil.curDateYMDHMS());
+			kp.setUpdateUserCode(userCode);
+			kp.setUpdateTime(DateUtil.curDateYMDHMS());
+			// 参与者关联
+			List<KbProjectUser> kpuList = new ArrayList<KbProjectUser>();
+			String[] projectEdits = request.getParameterValues("project_edit");
+			if (null != projectEdits && projectEdits.length > 0) {
+				for (String editUserCode : projectEdits) {
+					KbProjectUser kpu = new KbProjectUser();
+					kpu.setProjectCode(projectCode);
+					kpu.setProjectName(projectName);
+					kpu.setProjectPermission("write");
+					kpu.setProjectLevel(projectLevel);
+					kpu.setUserCode(editUserCode);
+//					kpu.
+					
+					
+					
+					
+					
+					
+					
+					
+					
+				}
 
-		String projectCode = "P" + DateUtil.curDateYMDHMSForService()
-				+ StrUtil.getRandom((int) (Math.random() * 10000), 4);
-		KbProject kbObj = new KbProject();// new 一个kbPeoject的对象
-		kbObj.setProjectCode(projectCode);
-		kbObj.setProjectName(request.getParameter("project_name"));
-		kbObj.setProjectType(request.getParameter("project_type"));
-		kbObj.setProjectInfo(request.getParameter("project_info"));
-		kbObj.setProjectRemark(request.getParameter("project_remark"));
-		kbObj.setProjectParentCode(request.getParameter("project_parent_code"));// 需要从数据库中取出动态显示在前端
-		kbObj.setProjectStatus(request.getParameter("project_status"));
-		kbObj.setCreateUserCode(request.getParameter("create_user_code"));
-		kbObj.setCreateTime(DateUtil.curDateYMDHMS());
-		kbObj.setUpdateUserCode(request.getParameter("update_user_code"));
+			}
 
-		List<String> strList = new ArrayList<String>();// 获取write或read
-		strList.add("820046");
-		strList.add("820032");
-		strList.add("820033");
-		strList.add("820055");
-		List<KbUser> taskList = ps.selectUserByUserCode(strList).getData();
-		List<KbProjectUser> listUser = new ArrayList<KbProjectUser>();
-		for (int i = 0; i < taskList.size(); i++) {
-			KbProjectUser proUser = new KbProjectUser();
-			proUser.setProjectCode(projectCode);
-			proUser.setProjectName(kbObj.getProjectName());
-			proUser.setProjectLevel(ptLevel);
-			proUser.setUserName(taskList.get(i).getUserName());
-			proUser.setUserCode(taskList.get(i).getUserCode());
-			proUser.setUserDeptCode(taskList.get(i).getUserDeptCode());
-			proUser.setProjectPermission("write");
-			proUser.setCreateUserCode(kbObj.getCreateUserCode());
-			proUser.setCreateTime(DateUtil.curDateYMDHMS());
-			listUser.add(proUser);
+			// 预览者关联
+			String[] projectReads = request.getParameterValues("project_read");
+
+			if (null != projectReads && projectReads.length > 0) {
+				for (String string : projectReads) {
+
+				}
+
+			}
+
+		} catch (NumberFormatException e) {
+			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
 		}
-		ps.insertProject(kbObj, listUser, formName);
-		return rtnSuccessResult("添加项目信息及项目涉及人员成功");
+		return null;
 	}
 
 	/**
@@ -221,11 +297,10 @@ public class ProjectController extends BaseController {
 	@RequestMapping("/insProJsp.do")
 	public String toInsertProject(HttpServletRequest request, HttpSession session) {
 		try {
-			// String userDeptCode = session.getAttribute("user_dept_code").toString();//
-			// 获得部门信息
-			String userDeptCode = "D201806230935390372";
-			String projectParentCode = request.getParameter("project_code");// 获得父类编码
-			String projectParentLevel = StrUtil.isBlank(request.getParameter("project_level")) ? "0"
+			String userDeptCode = session.getAttribute("user_dept_code").toString();// 获得部门信息
+			String projectParentCode = StrUtil.isBlank(request.getParameter("project_code")) ? ""
+					: request.getParameter("project_code");// 获得父类编码
+			String projectParentLevel = StrUtil.isBlank(request.getParameter("project_level")) ? "-1"
 					: request.getParameter("project_level");// 获得父类等级
 			Result<List<KbUser>> userResult = us.selUsersByUserDeptCode(userDeptCode); // 获得员工信息
 			request.setAttribute("userList", userResult.getData());

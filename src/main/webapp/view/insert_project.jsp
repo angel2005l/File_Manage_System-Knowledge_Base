@@ -153,7 +153,7 @@
 										<div class="members member-checkbox-list">
 											<c:forEach var="b" items="${userList }">
 												<label title="${b.userName }" class="member"> <input
-													type="checkbox" name="" value="${b.userCode }"> <span
+													type="checkbox" name="project_edit" value="${b.userCode },${b.userName }"> <span
 													class="name"><font style="vertical-align: inherit;"><font
 															style="vertical-align: inherit;">${b.userName }</font></font></span>
 												</label>
@@ -180,7 +180,7 @@
 										<div class="members member-checkbox-list">
 											<c:forEach var="b" items="${userList }">
 												<label title="${b.userName }" class="member"> <input
-													type="checkbox" name="" id="" value="${b.userCode }">
+													type="checkbox" name="project_read" id="" value="${b.userCode }">
 													<span class="name"><font
 														style="vertical-align: inherit;"><font
 															style="vertical-align: inherit;">${b.userName }</font></font></span>
@@ -194,7 +194,7 @@
 						</div>
 
 						<div class="form-buttons">
-							<button type="submit" class="btn btn-primary"
+							<button type="button" class="btn btn-primary"
 								id="btn-create-project" data-disable-with="正在创建..."
 								data-success-text="创建成功">
 								<font style="vertical-align: inherit;"><font
@@ -224,23 +224,23 @@
 	<script type="text/javascript">
 		$(function() {
 			//控制权限唯一
-			$("input[name='file_download']").on("change", function() {
-				var dowloadVal = $(this).val();
-				changeFileShow(dowloadVal);
+			$("input[name='project_edit']").on("change", function() {
+				var editVal = $(this).val();
+				changeFileShow(editVal);
 			});
-			$("input[name='file_show']").on("change", function() {
-				var showVal = $(this).val();
-				changeFileDownload(showVal);
+			$("input[name='project_read']").on("change", function() {
+				var readVal = $(this).val();
+				changeFileDownload(readVal);
 			})
 		})
-		function changeFileShow(dowloadVal) {
-			var obj = $("input[name='file_show'][value=" + dowloadVal + "]");
+		function changeFileShow(editVal) {
+			var obj = $("input[name='project_read'][value=" + editVal + "]");
 			if (obj.is(":checked")) {
 				obj.prop("checked", false);
 			}
 		}
-		function changeFileDownload(showFile) {
-			var obj = $("input[name='file_download'][value=" + showFile + "]");
+		function changeFileDownload(readVal) {
+			var obj = $("input[name='project_edit'][value=" + readVal + "]");
 			if (obj.is(":checked")) {
 				obj.prop("checked", false);
 			}
