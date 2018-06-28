@@ -7,7 +7,6 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.xh.entity.KbFile;
-import com.xh.entity.KbFileUser;
 
 public interface KbFileMapper {
 
@@ -71,19 +70,4 @@ public interface KbFileMapper {
 	 */
 	public KbFile selectFileByFileCode(@Param("fileTableName") String fileTableName, @Param("fileCode") String fileCode)
 			throws SQLException;
-
-	/**
-	 * 
-	 * @Title: insertSuperiorUserFileWithOnlyRead
-	 * @Description: 默认添加上级部门所属关系
-	 * @author 黄官易
-	 * @param kus
-	 * @return
-	 * @throws SQLException
-	 * @return int
-	 * @date 2018年6月25日
-	 * @version 1.0
-	 */
-	public int insertSuperiorUserFileWithOnlyRead(List<KbFileUser> kfu) throws SQLException;
-
 }

@@ -14,10 +14,8 @@
 	href="assets/css/translateelement.css">
 </head>
 
-<body class="">
-
+<body>
 	<div class="wrapper">
-
 		<div class="header">
 			<div class="header-container">
 				<h1 class="logo">
@@ -103,16 +101,16 @@
 						<font style="vertical-align: inherit;">上传文件</font>
 					</h3>
 
-					<form class="form form-invite" action="" method="post">
+					<form id="fileFrom" class="form" method="post" enctype="multipart/form-data">
 						<div class="form-item">
 							<div class="form-field">
-								<input type="file" name="file_info">
+								<input type="file" name="file_data">
 							</div>
 						</div>
 
 						<div class="form-item">
 							<div class="form-field">
-								<textarea name="project_desc" id="project-desc"
+								<textarea name="file_info" id="file_info"
 									placeholder="简单描述文件信息，便于其他人理解（选填）" data-validate="length:0,255"
 									data-validate-msg="文件描述最长255个字符"></textarea>
 							</div>
@@ -171,7 +169,6 @@
 															style="vertical-align: inherit;">${b.userName }</font></font></span>
 												</label>
 											</c:forEach>
-
 										</div>
 									</div>
 								</div>
@@ -179,22 +176,21 @@
 							</div>
 						</div>
 
-						<div class="form-buttons">
-							<button type="submit" class="btn btn-primary"
-								id="btn-create-project" data-disable-with="正在上传..."
-								data-success-text="上传成功">
+						<div class="">
+								<button type="button" class="btn btn-primary" onclick="clickBtn()">
 								<font style="vertical-align: inherit;"><font
 									style="vertical-align: inherit;">上传文件</font></font>
 							</button>
-							<a href="退回主页" class="btn btn-x" data-stack="" data-stack-root="">
-								<font style="vertical-align: inherit;"> <font
+
+							<a href="退回主页" class="btn btn-x"> <font
+								style="vertical-align: inherit;"> <font
 									style="vertical-align: inherit;">取消</font>
 							</font>
 							</a>
 						</div>
-						<input type="hidden" name="project_level" value="${projectLevel }">
-						<input type="hidden" name="project_parent_code"
-							value="${projectCode }">
+						<input type="button" value="上传文件" onclick="clickBtn()"> <input
+							type="hidden" name="project_level" value="${projectLevel }">
+						<input type="hidden" name="project_code" value="${projectCode }">
 					</form>
 
 				</div>
@@ -206,8 +202,11 @@
 			</font>
 		</div>
 	</div>
+	<script type="text/javascript" src="assets/js/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="assets/js/jquery.form.js"></script>
 	<script type="text/javascript">
 		$(function() {
+			//控制权限唯一
 			$("input[name='file_download']").on("change", function() {
 				var dowloadVal = $(this).val();
 				changeFileShow(dowloadVal);
@@ -216,7 +215,6 @@
 				var showVal = $(this).val();
 				changeFileDownload(showVal);
 			})
-
 		})
 		function changeFileShow(dowloadVal) {
 			var obj = $("input[name='file_show'][value=" + dowloadVal + "]");
@@ -229,6 +227,26 @@
 			if (obj.is(":checked")) {
 				obj.prop("checked", false);
 			}
+		}
+
+		function clickBtn() {
+			$("#fileFrom").ajaxSubmit({
+				url : 'file/upFile.do',
+				type : 'post',
+				dataType : 'json',
+				success : function(result) {
+					alert(result.msg);
+					if (result.code == 0) {
+						//parent.location.href='userManage?method=user_sel';
+						//parent.layer.close(index);
+					} else {
+						return;
+					}
+				},
+				error : function() {
+					alert("服务未响应");
+				}
+			});
 		}
 	</script>
 

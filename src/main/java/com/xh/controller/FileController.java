@@ -68,7 +68,6 @@ public class FileController extends BaseController {
 	 * @version 1.0
 	 */
 
-	@Transactional(rollbackFor = { Exception.class })
 	@RequestMapping("/upFile.do")
 	@ResponseBody
 	public Result<Map<String, String>> uploadFile(HttpServletRequest request, HttpSession session,
@@ -81,11 +80,14 @@ public class FileController extends BaseController {
 			}
 			// 上传并写入文件成功,将文件信息写入数据库
 			String fileInfo = request.getParameter("file_info");
-			String projectLevel = request.getParameter("project_level");
-			String projectCode = request.getParameter("project_code");
-			String userCode = session.getAttribute("userCode").toString();
-			String userDeptCode = session.getAttribute("userDeptCode").toString();
-			// String userCode = "820032";
+			// String projectLevel = request.getParameter("project_level");
+			// String projectCode = request.getParameter("project_code");
+			String projectLevel = "0";
+			String projectCode = "P201806221307125412";
+			// String userCode = session.getAttribute("userCode").toString();
+			// String userDeptCode = session.getAttribute("userDeptCode").toString();
+			String userDeptCode = "D201806230935390372";
+			String userCode = "820032";
 			Map<String, String> fileMap = ufResult.getData();
 			String fileCode = fileMap.get("fileCode");
 			String fileName = fileMap.get("fileName");
@@ -106,9 +108,6 @@ public class FileController extends BaseController {
 			List<KbFileUser> kfus = new ArrayList<KbFileUser>();
 			// 下载具有预览的权限加深
 			String[] fileShow = request.getParameterValues("file_show");
-			// String[] fileShow = {};
-			// String[] fileDownload = {"820032","820046","820033"};
-			// 还差对上级所属部门的查询
 
 			for (String showUserCode : fileShow) {
 				KbFileUser kfu = new KbFileUser();
@@ -136,14 +135,17 @@ public class FileController extends BaseController {
 			//
 			Result<Object> insResult = fs.insFile(kf, projectLevel, kfus);
 			Result<Object> insSupResult = fs.insSuperiorUserFileWithOnlyRead(kf, userDeptCode);
+			System.err.println((Result.SUCCESS_0 == insResult.getCode())+"---"+ (Result.SUCCESS_0 == insSupResult.getCode()));
 			if (Result.SUCCESS_0 == insResult.getCode() && Result.SUCCESS_0 == insSupResult.getCode()) {
+				System.err.println("12312");
 				return rtnSuccessResult("文件保存成功");
 			} else {
-				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
+				System.err.println("sdsads");
+//				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
 				return rtnFailResult(Result.ERROR_4000, "文件保存失败");
 			}
 		} catch (Exception e) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
+//			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
 			log.error("文件上传服务异常,异常原因【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "文件上传服务异常,请联系系统管理员");
 		}
