@@ -79,8 +79,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <a class="project c2 i2" href="javascript:;" data-access-id="20510112" data-group-ids="[]" data-stack="" data-stack-root="" onclick="goto()">
     			<span class="badge"></span>
     			<span class="name">${projects.projectName }</span>
-    			<span style="display:none"><input type="text" name="project_code" />${projects.projectCode }</span>
-    			<span style="display:none"><input type="text" name="project_level" />${projects.projectLevel }</span>
+    			<span style="display:none"><input type="text" name="project_code" value="${projects.projectCode }" /></span>
+    			<span style="display:none"><input type="text" name="project_level" value="${projects.projectLevel }" /></span>
   		</a>
   		<%-- </c:if> --%>
   		</c:forEach>
@@ -158,16 +158,18 @@ window.gon={};gon.oss_direct_upload=true;
     }
   }, 5000)
 })()
-</script>
 
-
-
-  <script>
   	function goto(){
-  		
+  			var projectCode=document.getElementsByName("project_code")[0].value;
+			var projectLevel=document.getElementsByName("project_level")[0].value;
+			alert("12"+projectCode+";;;"+projectLevel);
+			<%-- var userCode= "<%=session.getAttribute("user_code")%>"; --%>
+			window.location.href="file/pfd.do?project_code="+projectCode+"&project_level="+projectLevel;
   	
   	}
-  
+</script>
+
+  <script>
   
   
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

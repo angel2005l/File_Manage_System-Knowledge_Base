@@ -282,35 +282,34 @@ public class FileController extends BaseController {
 //		String projectParentCode="-1";
 		try {
 			String obj=ps.selectProjectTableNameByProjectLevel(Integer.parseInt(projectLevel)).getData().toString();//表名
-			Object kpro=ps.selectAllProByUser(obj,projectCode,userCode).getData();
-			List<KbProject> list=(ArrayList<KbProject>)kpro;
-//			System.err.println("list:"+list);
+			List<KbProject> kpro=ps.selectAllProByUser(obj,projectCode,userCode).getData();
+			System.err.println("list:"+kpro);
 			double proCount=0;//项目进行中的数量
 			double completed=0;//项目已完成的数量
-			for (KbProject kb : list) {
+			for (KbProject kb : kpro) {
 				if(kb.getProjectStatus().equals("progress")){
 					proCount++;
 				}else{
 					completed++;
 				}
 			}
-			int sum=(int) (proCount+completed);
-			String ratio=(int)completed+"/"+sum;
-			int per=(int) ((completed/sum)*100);
+			int sum=(int) (proCount+completed);//该项目下所有的项目
+			String ratio=(int)completed+"/"+sum;//已完成项目/项目总数
+			int per=(int) ((completed/sum)*100);//已完成项目所占百分比
 			System.err.println("ratio:"+ratio+";per:"+per);
 			Result<List<Map<String, Object>>> fileResult = fs.selectFile(Integer.parseInt(projectLevel), userCode,
 					projectCode);
 			System.err.println(fileResult);
 			request.setAttribute("files", fileResult.getData());
-			request.setAttribute("projects", list);
+			request.setAttribute("projects", kpro);
 			request.setAttribute("ratio", ratio);
 			request.setAttribute("per", per);
 		} catch (NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
-			return "view/index.jsp";
+			return "view/index";
 		} catch (Exception e) {
 			log.error("文件查询异常,异常原因:【" + e.toString() + "】");
-			return "view/error.jsp";
+			return "view/error";
 		}
 		return "view/project_detail";
 	}
