@@ -33,11 +33,11 @@
   	</foreach> 
   </insert>
   <!-- 根据部门编码查询全部的用户 -->
-  	<select id="selectUsersByUserDeptCode" parameterType="string" resultType="com.xh.entity.KbUser">
+  	<select id="selectUsersByUserDeptCode" parameterType="string" resultMap="BaseResultMap">
   		select <include refid="Base_Column_List" /> from kb_user where user_dept_code = #{userDeptCode}
   	</select>
   <!-- 根据部门编码查询上级部门的领导层用户 -->
-  <select id="selectSuperiorUserByUserDeptCode" parameterType="string" resultType="com.xh.entity.KbUser">
+  <select id="selectSuperiorUserByUserDeptCode" parameterType="string" resultMap="BaseResultMap">
   	 SELECT <include refid="Base_Column_List" /> FROM kb_user WHERE user_dept_code= (SELECT dept_parent_code FROM kb_dept WHERE  dept_code = #{userDeptCode})
   	AND professional_code =(SELECT professional_code  FROM kb_professional WHERE professional_level = 1)
   </select>

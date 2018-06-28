@@ -21,15 +21,59 @@ public interface IUserService {
 	 */
 	public Result<KbUser> login(String userCode, String userPassword) throws Exception;
 
-	// 添加员工信息
+	/**
+	 * 
+	 * @Title: insUser
+	 * @Description: 添加员工信息
+	 * @author 黄官易
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 * @return Result<Object>
+	 * @date 2018年6月27日
+	 * @version 1.0
+	 */
 	public Result<Object> insUser(KbUser user) throws Exception;
 
-	// 批量添加员工信息
+	/**
+	 * 
+	 * @Title: batchInsUsers
+	 * @Description: 批量添加员工信息
+	 * @author 黄官易
+	 * @param users
+	 * @return
+	 * @throws Exception
+	 * @return Result<Object>
+	 * @date 2018年6月27日
+	 * @version 1.0
+	 */
 	public Result<Object> batchInsUsers(List<KbUser> users) throws Exception;
 
-	// 根据部门编码查询全部的用户
+	/**
+	 * 
+	 * @Title: selUsersByUserDeptCode
+	 * @Description: 根据部门编码查询全部的用户
+	 * @author 黄官易
+	 * @param userDeptCode
+	 * @return
+	 * @throws Exception
+	 * @return Result<List<KbUser>>
+	 * @date 2018年6月27日
+	 * @version 1.0
+	 */
 	public Result<List<KbUser>> selUsersByUserDeptCode(String userDeptCode) throws Exception;
 
-	// 根据部门编码查询上级部门的领导层用户
+	/**
+	 * 
+	 * @Title: selSuperiorUserByUserDeptCode
+	 * @Description: 根据部门编码查询上级部门的领导层用户
+	 * @author 黄官易
+	 * @param userDeptCode
+	 * @return
+	 * @throws Exception
+	 * @return Result<List<KbUser>>
+	 * @date 2018年6月27日
+	 * @version 1.0
+	 */
 	public Result<List<KbUser>> selSuperiorUserByUserDeptCode(String userDeptCode) throws Exception;
 }

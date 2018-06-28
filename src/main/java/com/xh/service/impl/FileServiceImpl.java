@@ -228,12 +228,14 @@ public class FileServiceImpl extends BaseService implements IFileService {
 			kfu.setFileType(kf.getFileType());
 			kfu.setUserCode(ku.getUserCode());
 			kfu.setFilePermission("onlyread");
+			kfu.setUserName(ku.getUserName());
+			kfu.setUserDeptCode(ku.getUserDeptCode());
 			kfu.setCreateUserCode(kf.getCreateUserCode());
 			kfu.setCreateTime(DateUtil.curDateYMDHMS());
 			kfuList.add(kfu);
 		}
 		try {
-			int insNum = kfm.insertSuperiorUserFileWithOnlyRead(kfuList);
+			int insNum = kfum.insertSuperiorUserFileWithOnlyRead(kfuList);
 			if (insNum == kfuList.size()) {
 				return rtnSuccessResult("默认添加上级部门领导层文件预览成功");
 			} else {

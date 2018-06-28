@@ -9,6 +9,7 @@ public final class MD5Util {
 
 	/**
 	 * 获得密码密文
+	 * 
 	 * @param Passwd
 	 * @return
 	 */
@@ -23,13 +24,14 @@ public final class MD5Util {
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
 			System.err.println(e.getMessage());
 			return "";
-		} 
+		}
 		// System.out.println(EncryptPass);
 		return EncryptPass;
 	}
 
 	/**
 	 * 生成随机盐值
+	 * 
 	 * @return
 	 */
 	public static final String getRandomSalt() {
@@ -38,16 +40,20 @@ public final class MD5Util {
 		random.nextBytes(salt);
 		return myEncoding(salt);
 	}
+
 	/**
 	 * 
-	 * @Title: check   
+	 * @Title: check
 	 * @Description: 校验密码密文
-	 * @param: @param str
-	 * @param: @param salt
-	 * @param: @param checkedStr
-	 * @param: @return 
+	 * @param: @param
+	 *             str
+	 * @param: @param
+	 *             salt
+	 * @param: @param
+	 *             checkedStr
+	 * @param: @return
 	 * @author: MR.H
-	 * @return: boolean      
+	 * @return: boolean
 	 *
 	 */
 	public static final boolean check(String str, String salt, String checkedStr) {
@@ -59,13 +65,12 @@ public final class MD5Util {
 
 	/**
 	 * 对加密密文进行格式编码
+	 * 
 	 * @param encoding
 	 * @return
 	 */
 	private static final String myEncoding(byte[] encoding) {
-		char hexDigits[] = {
-				'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-				'a', 'b', 'c', 'd', 'e', 'f' };
+		char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 		int encodeLength = encoding.length;
 		char Encrytion[] = new char[encodeLength * 2];
 		int indexEncryt = 0;
