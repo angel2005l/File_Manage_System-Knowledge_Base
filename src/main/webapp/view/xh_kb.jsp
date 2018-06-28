@@ -76,7 +76,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div class="projects ui-sortable grid-view">
 		<c:forEach var="projects" items="${ProList }">
 		<%-- <c:if test="${projects.projectStatus=='progress' }"> --%>
-        <a class="project c2 i2" href="javascript:;" data-access-id="20510112" data-group-ids="[]" data-stack="" data-stack-root="" onclick="goto()">
+        <a class="project c2 i2" href="javascript:;" data-access-id="20510112" data-group-ids="[]" data-stack="" data-stack-root="" onclick="goto('${projects.projectCode }','${projects.projectLevel }','${projects.projectName }')">
     			<span class="badge"></span>
     			<span class="name">${projects.projectName }</span>
     			<span style="display:none"><input type="text" name="project_code" value="${projects.projectCode }" /></span>
@@ -159,12 +159,10 @@ window.gon={};gon.oss_direct_upload=true;
   }, 5000)
 })()
 
-  	function goto(){
-  			var projectCode=document.getElementsByName("project_code")[0].value;
-			var projectLevel=document.getElementsByName("project_level")[0].value;
-			alert("12"+projectCode+";;;"+projectLevel);
+  	function goto(projectCode,projectLevel,projectName){
+			/* alert("projectCode："+projectCode+"----projectLevel："+projectLevel+"-----projectName:"+projectName); */
 			<%-- var userCode= "<%=session.getAttribute("user_code")%>"; --%>
-			window.location.href="file/pfd.do?project_code="+projectCode+"&project_level="+projectLevel;
+			window.location.href="file/pfd.do?project_code="+projectCode+"&project_level="+projectLevel+"&project_name="+projectName;
   	
   	}
 </script>

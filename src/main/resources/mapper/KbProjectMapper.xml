@@ -45,9 +45,15 @@
   <select id="selectProjectByProjectCode" resultMap="BaseResultMap">
   	select <include refid="Base_Column_List" /> from ${projectTableName} where project_code = #{projectCode}
   </select>
-  
+  <!-- 查询主界面所有信息 -->
   <select id="selectAllPro" parameterType="string" resultMap="BaseResultMap">
   	select <include refid="Base_Column_List" /> from ${formName}
   </select>
+    <!-- 查询上级项目下的所有的项目 -->
+  <select id="selectSuperiorAllPro" resultMap="BaseResultMap" parameterType="string">
+  	select <include refid="Base_Column_List" /> from ${formName} where project_parent_code = (SELECT project_parent_code from ${formName} a INNER JOIN kb_project_user b on a.project_code=b.project_code and a.project_code=#{projectCode} and b.user_code=#{userCode})
+  </select>
+  
+  
   
 </mapper>

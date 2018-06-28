@@ -273,21 +273,14 @@ public class FileController extends BaseController {
 	 */
 	@RequestMapping("/pfd.do")
 	public String selectFileForDetail(HttpServletRequest request, HttpSession session) {
-		// String isRoot = request.getParameter("is_root");
-		// String projectLevel = request.getParameter("project_level");
-		// String projectCode = request.getParameter("project_code");
-		// String userCode = session.getAttribute("user_code").toString();
-//		String projectCode = request.getParameter("project_code");
-//		String projectLevel = request.getParameter("project_level");
-//		String userCode = "820032";
-		// String projectParentCode=request.getParameter("project_parent_code");
-		 String projectCode = "P201806221307125412";
-		 String projectLevel = "0";
-		 String userCode = "820032";
-		// String projectParentCode="-1";
+		
+		String projectName = request.getParameter("project_name");
+		String projectCode = request.getParameter("project_code");
+		String projectLevel = request.getParameter("project_level");
+		System.err.println("projectCode:"+projectCode+"----projectLevel:"+projectLevel);
+		String userCode = "820032";
 		try {
-
-			String obj=ps.selectProjectTableNameByProjectLevel(Integer.parseInt(projectLevel)).getData().toString();//表名
+			String obj=ps.selectProjectTableNameByProjectLevel(Integer.parseInt(projectLevel)).getData().toString();//获得表名
 			List<KbProject> kpro=ps.selectAllProByUser(obj,projectCode,userCode).getData();
 			System.err.println("list:"+kpro);
 			double proCount=0;//项目进行中的数量
@@ -299,7 +292,6 @@ public class FileController extends BaseController {
 					completed++;
 				}
 			}
-
 			int sum=(int) (proCount+completed);//该项目下所有的项目
 			String ratio=(int)completed+"/"+sum;//已完成项目/项目总数
 			int per=(int) ((completed/sum)*100);//已完成项目所占百分比
@@ -312,6 +304,9 @@ public class FileController extends BaseController {
 			request.setAttribute("projects", kpro);
 			request.setAttribute("ratio", ratio);
 			request.setAttribute("per", per);
+			request.setAttribute("projectCode", projectCode);
+			request.setAttribute("projectLevel", projectLevel);
+			request.setAttribute("projectName", projectName);
 		} catch (NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
 			return "view/index";
@@ -322,32 +317,67 @@ public class FileController extends BaseController {
 		return "view/project_detail";
 	}
 	
-//	/**
-//	 * 
-//	 * @Title: selectAllPro  
-//	 * @Description: 主页、显示所有的项目
-//	 * @author 陈专懂 
-//	 * @return Result<Object> 
-//	 * @date 2018年6月25日  
-//	 * @version 1.0
-//	 */
-//	@RequestMapping("/selectAllPro.do")
-//	@ResponseBody
-//	public Result<Object> selectAllPro(HttpServletRequest request, HttpServletResponse response){
-//		String obj=ps.selectProjectTableNameByProjectLevel(0).getData().toString();//表名
-//		System.err.println("表名:"+obj);
-//		String projectParentCode="-1";
-//		if(obj==null){
-//			return rtnErrorResult(Result.ERROR_4000, "找不到项目最根目录");
-//		}
-//		Object kpro=ps.selectAllPro(obj,projectParentCode).getData();
-//		List<KbProject> list=(ArrayList<KbProject>)kpro;
-//		System.err.println("信息："+list);
-//		if(list!=null){
-//			return rtnSuccessResult("获取该等级项目信息成功", list);
-//		}
-//		return rtnErrorResult(Result.ERROR_4000, "获取该等级项目信息失败，请联系管理员。");
-//	}
+	/**
+	 * 
+	 * @Title: backFileForDetail  
+	 * @Description: 详情单的返回功能（可以和上面的进入下一层方法合并，后续）
+	 * @author 陈专懂 
+	 * @return String 
+	 * @date 2018年6月28日  
+	 * @version 1.0
+	 */
+	@RequestMapping("/back.do")
+	public String backFileForDetail(HttpServletRequest request, HttpSession session,HttpServletResponse response) {
+		String projectCode = request.getParameter("project_code");
+		int projectLevel = Integer.parseInt(request.getParameter("project_level"));
+		String userCode = "820032";
+		try {
+			List<KbProject> kpro=ps.selectSuperiorAllPro(userCode, projectCode, projectLevel);
+			int level=0;
+			if(projectLevel==0){
+//				System.err.println("123");
+//				response.sendRedirect("pro/AllProInMain.do");
+				level=0;
+			}else{
+				level=projectLevel-1;
+			}
+			List<KbProject> TOPkpro=ps.selectSuperiorAllPro(userCode, projectCode, level);
+			System.err.println("1:"+TOPkpro.get(0).getProjectCode()+",,,,,:"+TOPkpro.get(0).getProjectName());
+			System.err.println("list:"+kpro);
+			double proCount=0;//项目进行中的数量
+			double completed=0;//项目已完成的数量
+			for (KbProject kb : kpro) {
+				if(kb.getProjectStatus().equals("progress")){
+					proCount++;
+				} else {
+					completed++;
+				}
+			}
+			int sum=(int) (proCount+completed);//该项目下所有的项目
+			String ratio=(int)completed+"/"+sum;//已完成项目/项目总数
+			int per=(int) ((completed/sum)*100);//已完成项目所占百分比
+			System.err.println("ratio:"+ratio+";per:"+per);
+
+			Result<List<Map<String, Object>>> fileResult = fs.selectFile(TOPkpro.get(0).getProjectLevel(), userCode,
+					TOPkpro.get(0).getProjectCode());
+			System.err.println(fileResult);
+			request.setAttribute("files", fileResult.getData());
+			request.setAttribute("projects", kpro);
+			request.setAttribute("ratio", ratio);
+			request.setAttribute("per", per);
+			request.setAttribute("projectCode", TOPkpro.get(0).getProjectCode());
+			request.setAttribute("projectLevel", TOPkpro.get(0).getProjectLevel());
+			request.setAttribute("projectName", TOPkpro.get(0).getProjectName());
+		} catch (NumberFormatException e) {
+			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
+			return "view/index";
+		} catch (Exception e) {
+			log.error("文件查询异常,异常原因:【" + e.toString() + "】");
+			return "view/error";
+		}
+		return "view/project_detail";
+	}
+	
 
 
 	/**
@@ -407,6 +437,7 @@ public class FileController extends BaseController {
 			// 获得父类等级
 			String projectParentLevel = StrUtil.isBlank(request.getParameter("project_level")) ? "0"
 					: request.getParameter("project_level");
+			System.err.println("projectParentCode:"+projectParentCode+"----projectParentLevel:"+projectParentLevel);
 			Result<List<KbUser>> userResult = us.selUsersByUserDeptCode(userDeptCode); // 获得员工信息
 			request.setAttribute("userList", userResult.getData());
 			request.setAttribute("projectParentCode", projectParentCode);
