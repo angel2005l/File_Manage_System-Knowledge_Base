@@ -13,7 +13,7 @@
 		<link rel="stylesheet" href="assets/css/xh_application.css" />
 		<script type="text/javascript" src="assets/js/analytics.js" ></script>
 		<link rel="stylesheet" href="assets/css/xh.css" />
-		<link type="text/css" rel="stylesheet" charset="UTF-8" href="assets/css/translateelement.css">
+		<link type="text/css" rel="stylesheet"  href="assets/css/translateelement.css">
 	</head>
 
 	<body class="">
@@ -67,7 +67,7 @@
 							<div class="project-groups">
 
 								<div class="project-tools-right">
-									<a class="create-project">
+									<a class="create-project" href="pro/insProJsp.do">
 										<font style="vertical-align: inherit;">
 											<font style="vertical-align: inherit;">
 												新建项目
