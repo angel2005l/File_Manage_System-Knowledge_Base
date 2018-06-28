@@ -309,34 +309,40 @@
 					alert("123123"+projectCode+"_____"+projectLevel);
 					<%-- var userCode= "<%=session.getAttribute("user_code")%>"; --%>
 					window.location.href="file/pfd.do?project_code="+projectCode+"&project_level="+projectLevel;
-					
-					
 				}
 				function shareProject(projectCode,projectLevel,userCode){
+					<%-- var str = "<%=basePath %>pro/sp.do?project_code="+projectCode+"&project_level="+projectLevel+"user_code="+userCode; --%>
+					var str = "11231";
+					$("#shareUrl").html(str)
 					layer.open({
 					  type: 1,
 					  skin: 'demo-class', //样式类名
-					  area:'auto',
+					  area: ['450px','150px'],
 					  closeBtn: 1,
 					  anim: 0,
 					  shadeClose: true, //开启遮罩关闭
-					  content:"<p>【项目分享链接】：<%=basePath%>pro/sp.do?project_code="+projectCode+"&project_level="+projectLevel+"user_code="+userCode+"</p>"
+					  content:$("#share")
 					})
 				}
 				function shareFile(fileCode,fileLevel,projectCode){
+					<%-- var str = "<%=basePath %>pro/sp.do?file_code="+fileCode+"&file_level="+fileLevel+"project_code="+projectCode; --%>
+					var str = "11231";
+					$("#shareUrl").html(str)
 					layer.open({
 						  type: 1,
 						  skin: 'demo-class', //样式类名
-						  area:'auto',
+						  area: ['450px','150px'],
 						  closeBtn: 1,
 						  anim: 0,
 						  shadeClose: true, //开启遮罩关闭
-						  content:"<p>【文件分享链接】：<%=basePath%>file/sf.do?file_code="+fileCode+"&file_level="+fileLevel+"project_code="+projectCode+"</p>"
+						  content:$("#share")
 						})
 				}
 				
 			</script>
-
+<div id="share" style="display:none;">
+		<span style="font-weight: bold;padding-right: 20px;">分享链接:</span><textarea id="shareUrl" style="border: hidden;resize:none; overflow-y:hidden;width: 400px;height: 40px" disabled="disabled"  rows="4"></textarea>
+</div>
 </body>
 
 </html>
