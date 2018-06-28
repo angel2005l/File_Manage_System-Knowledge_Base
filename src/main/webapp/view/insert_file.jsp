@@ -210,17 +210,26 @@
 		$(function() {
 			$("input[name='file_download']").on("change", function() {
 				var dowloadVal = $(this).val();
-				alert(dowloadVal)
 				changeFileShow(dowloadVal);
+			});
+			$("input[name='file_show']").on("change", function() {
+				var showVal = $(this).val();
+				changeFileDownload(showVal);
 			})
 
-			function changeFileShow(dowloadVal) {
-				var obj = $("input[name='file_show'][value=" + dowloadVal + "]");
-				console.log(obj);
-				obj.prop("checked",false);
-			}
-
 		})
+		function changeFileShow(dowloadVal) {
+			var obj = $("input[name='file_show'][value=" + dowloadVal + "]");
+			if (obj.is(":checked")) {
+				obj.prop("checked", false);
+			}
+		}
+		function changeFileDownload(showFile) {
+			var obj = $("input[name='file_download'][value=" + showFile + "]");
+			if (obj.is(":checked")) {
+				obj.prop("checked", false);
+			}
+		}
 	</script>
 
 </body>
