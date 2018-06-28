@@ -231,29 +231,31 @@
 		}
 
 		function clickBtn() {
-			$("#fileFrom").ajaxSubmit({
-				url : 'file/upFile.do',
-				type : 'post',
-				dataType : 'json',
-				success : function(result) {
-					alert(result.msg);
-					if (result.code == 0) {
-						//parent.location.href='userManage?method=user_sel';
-						//parent.layer.close(index);
-					} else {
-						return;
+			if (checkFile) {
+				$("#fileFrom").ajaxSubmit({
+					url : 'file/upFile.do',
+					type : 'post',
+					dataType : 'json',
+					success : function(result) {
+						alert(result.msg);
+						if (result.code == 0) {
+							//parent.location.href='userManage?method=user_sel';
+							//parent.layer.close(index);
+						} else {
+							return;
+						}
+					},
+					error : function() {
+						alert("服务未响应");
 					}
-				},
-				error : function() {
-					alert("服务未响应");
-				}
-			});
+				});
+			}
 		}
 		function checkFile() {
-			var fileUrl =$("#file_data").val();
-			if(fileUrl==''){
+			var fileUrl = $("#file_data").val();
+			if (fileUrl == '') {
 				alert("请选择文件")
-			}else if (fileUrl.indexOf(" ") >= 0) {
+			} else if (fileUrl.indexOf(" ") >= 0) {
 				alert("文件名不能有空格");
 				return false;
 			}
