@@ -185,4 +185,24 @@ public class ProjectController extends BaseController {
 		return "view/share_project";
 	}
 
+	@RequestMapping("/AllProInMain.do")
+	public String selectAllProInMain(HttpServletRequest request,HttpServletResponse response){
+		
+		List<List<KbProject>> proList=ps.selectAllProInMain();
+		List<KbProject> projectList=new ArrayList<KbProject>();
+		for (List<KbProject> list : proList) {
+			for (KbProject kbProject : list) {
+				projectList.add(kbProject);
+			}
+		}
+//		System.err.println("controller:"+projectList.toString());
+		if(!projectList.isEmpty()){
+			request.setAttribute("ProList", projectList);
+		}else{
+			return "view/not_share";
+		}
+		return "view/xh_kb";
+	}
+	
+	
 }

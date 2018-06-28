@@ -231,8 +231,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	}
 
 	@Override
-	public Map<String, Object> getShareProject(String projectCode, int projectLevel, String userCode)
-			throws SQLException {
+	public Map<String, Object> getShareProject(String projectCode, int projectLevel, String userCode) throws SQLException{
 		// 因为想在项目表层级与文件表层级相同 fileLevel/projectLevel 相同
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		// 查询项目表信息
@@ -246,5 +245,25 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			resultMap.put("shareFiles", shareFiles);
 		}
 		return resultMap;
+	}
+
+	/**
+	 * 查询主界面所有的项目信息
+	 */
+	public List<List<KbProject>> selectAllProInMain() {
+		List<String> formNameList=projectTableMapper.selectAllProFormName();//查询项目表所有的表名
+//		System.err.println("service,selectAllPro:"+formNameList.toString());
+		List<KbProject> kbProjectList=new ArrayList<KbProject>();
+		List<List<KbProject>> proList=new ArrayList<List<KbProject>>();
+		for (String formName : formNameList) {
+			kbProjectList=projectMapper.selectAllPro(formName);
+			proList.add(kbProjectList);
+		}
+		if(!proList.isEmpty()){
+//			System.err.println("service:"+proList.toString());
+			return proList;
+		}
+		log.error("数据为空");
+		return null;
 	}
 }

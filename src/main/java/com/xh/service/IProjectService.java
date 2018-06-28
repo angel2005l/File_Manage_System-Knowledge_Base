@@ -53,4 +53,15 @@ public interface IProjectService {
 	 */
 	public Map<String, Object> getShareProject(String projectCode, int projectLevel, String userCode)
 			throws SQLException;
+	
+	/**
+	 * 
+	 * @Title: selectAllPro  
+	 * @Description: 查询主界面所有的项目信息
+	 * @author 陈专懂 
+	 * @return List<KbProject> 
+	 * @date 2018年6月28日  
+	 * @version 1.0
+	 */
+	public List<List<KbProject>> selectAllProInMain();
 }

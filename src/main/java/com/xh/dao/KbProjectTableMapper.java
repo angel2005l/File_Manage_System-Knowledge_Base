@@ -1,6 +1,7 @@
 package com.xh.dao;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -28,5 +29,16 @@ public interface KbProjectTableMapper {
 
 	// 查询项目分表是否存在
 	public boolean isExistProjectDataTable(String ptName) throws SQLException;
+	
+	/**
+	 * 
+	 * @Title: selectAllProFormName  
+	 * @Description: 查询所有的项目表的表名 
+	 * @author 陈专懂 
+	 * @return List<String> 
+	 * @date 2018年6月28日  
+	 * @version 1.0
+	 */
+	public List<String> selectAllProFormName();
 	
 }

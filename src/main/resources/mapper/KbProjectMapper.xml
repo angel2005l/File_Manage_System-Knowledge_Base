@@ -45,4 +45,9 @@
   <select id="selectProjectByProjectCode" resultMap="BaseResultMap">
   	select <include refid="Base_Column_List" /> from ${projectTableName} where project_code = #{projectCode}
   </select>
+  
+  <select id="selectAllPro" parameterType="string" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from ${formName}
+  </select>
+  
 </mapper>
