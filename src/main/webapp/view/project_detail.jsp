@@ -306,7 +306,7 @@
 				function back(){
 					var projectCode=document.getElementsByName("project_code")[0].value;
 					var projectLevel=document.getElementsByName("project_level")[0].value;
-					alert("123123"+projectCode+"_____"+projectLevel);
+					
 					<%-- var userCode= "<%=session.getAttribute("user_code")%>"; --%>
 					window.location.href="file/pfd.do?project_code="+projectCode+"&project_level="+projectLevel;
 				}

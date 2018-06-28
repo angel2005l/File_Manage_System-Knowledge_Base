@@ -77,5 +77,11 @@
         from information_schema.TABLES
         where table_name =#{tableName}
 	</select>
+	
+	<!-- 查询所有项目表的表名 -->
+  	<select id="selectAllProFormName" resultType="string">
+  		SELECT pt_name from kb_project_table
+  	</select>
+  
   
 </mapper>

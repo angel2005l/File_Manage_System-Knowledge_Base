@@ -59,4 +59,17 @@ public interface KbProjectMapper {
 	public KbProject selectProjectByProjectCode(@Param("projectTableName") String projectTableName,
 			@Param("projectCode") String projectCode) throws SQLException;
 
+	/**
+	 * 
+	 * @Title: selectAllPro  
+	 * @Description: 查询主界面的所有的项目信息 
+	 * @author 陈专懂 
+	 * @return List<KbProject> 
+	 * @date 2018年6月28日  
+	 * @version 1.0
+	 */
+	public List<KbProject> selectAllPro(@Param("formName")String formName);
+	
+
+	
 }
