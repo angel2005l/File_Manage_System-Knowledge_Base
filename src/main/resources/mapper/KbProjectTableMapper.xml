@@ -10,7 +10,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, pt_code, pt_name, project_level, create_user_code, create_time
+    id, pt_code, pt_name, project_level, create_user_code, DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') as create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 'false' as QUERYID,

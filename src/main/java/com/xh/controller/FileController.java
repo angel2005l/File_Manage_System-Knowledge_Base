@@ -84,7 +84,7 @@ public class FileController extends BaseController {
 			// String projectCode = request.getParameter("project_code");
 			String projectLevel = "0";
 			String projectCode = "P201806221307125412";
-			// String userCode = session.getAttribute("userCode").toString();
+			// String userCode = session.getAttribute("user_code").toString();
 			// String userDeptCode = session.getAttribute("userDeptCode").toString();
 			String userDeptCode = "D201806230935390372";
 			String userCode = "820032";

@@ -203,7 +203,6 @@
 			</font>
 		</div>
 	</div>
-	<script type="text/javascript" src="assets/js/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript" src="assets/js/jquery.form.js"></script>
 	<script type="text/javascript">
 		$(function() {
@@ -223,8 +222,8 @@
 				obj.prop("checked", false);
 			}
 		}
-		function changeFileDownload(showFile) {
-			var obj = $("input[name='file_download'][value=" + showFile + "]");
+		function changeFileDownload(showVal) {
+			var obj = $("input[name='file_download'][value=" + showVal + "]");
 			if (obj.is(":checked")) {
 				obj.prop("checked", false);
 			}
