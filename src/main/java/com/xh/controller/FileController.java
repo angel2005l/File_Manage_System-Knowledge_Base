@@ -67,7 +67,7 @@ public class FileController extends BaseController {
 	 * @date 2018年6月22日
 	 * @version 1.0
 	 */
-
+	@Transactional(rollbackFor = { Exception.class })
 	@RequestMapping("/upFile.do")
 	@ResponseBody
 	public Result<Map<String, String>> uploadFile(HttpServletRequest request, HttpSession session,
@@ -108,44 +108,43 @@ public class FileController extends BaseController {
 			List<KbFileUser> kfus = new ArrayList<KbFileUser>();
 			// 下载具有预览的权限加深
 			String[] fileShow = request.getParameterValues("file_show");
-
-			for (String showUserCode : fileShow) {
-				KbFileUser kfu = new KbFileUser();
-				kfu.setFileCode(fileCode);
-				kfu.setFileName(fileName);
-				kfu.setFileType(fileType);
-				kfu.setUserCode(showUserCode);
-				kfu.setFilePermission("onlyread");
-				kfu.setCreateUserCode(userCode);
-				kfu.setCreateTime(DateUtil.curDateYMDHMS());
-				kfus.add(kfu);
+			if (null != fileShow && fileShow.length > 0) {
+				for (String showUserCode : fileShow) {
+					KbFileUser kfu = new KbFileUser();
+					kfu.setFileCode(fileCode);
+					kfu.setFileName(fileName);
+					kfu.setFileType(fileType);
+					kfu.setUserCode(showUserCode);
+					kfu.setFilePermission("onlyread");
+					kfu.setCreateUserCode(userCode);
+					kfu.setCreateTime(DateUtil.curDateYMDHMS());
+					kfus.add(kfu);
+				}
 			}
 			String[] fileDownload = request.getParameterValues("file_download");
-			for (String downloadUserCode : fileDownload) {
-				KbFileUser kfu = new KbFileUser();
-				kfu.setFileCode(fileCode);
-				kfu.setFileName(fileName);
-				kfu.setFileType(fileType);
-				kfu.setUserCode(downloadUserCode);
-				kfu.setFilePermission("download");
-				kfu.setCreateUserCode(userCode);
-				kfu.setCreateTime(DateUtil.curDateYMDHMS());
-				kfus.add(kfu);
+			if (null != fileDownload && fileDownload.length > 0) {
+				for (String downloadUserCode : fileDownload) {
+					KbFileUser kfu = new KbFileUser();
+					kfu.setFileCode(fileCode);
+					kfu.setFileName(fileName);
+					kfu.setFileType(fileType);
+					kfu.setUserCode(downloadUserCode);
+					kfu.setFilePermission("download");
+					kfu.setCreateUserCode(userCode);
+					kfu.setCreateTime(DateUtil.curDateYMDHMS());
+					kfus.add(kfu);
+				}
 			}
-			//
 			Result<Object> insResult = fs.insFile(kf, projectLevel, kfus);
 			Result<Object> insSupResult = fs.insSuperiorUserFileWithOnlyRead(kf, userDeptCode);
-			System.err.println((Result.SUCCESS_0 == insResult.getCode())+"---"+ (Result.SUCCESS_0 == insSupResult.getCode()));
 			if (Result.SUCCESS_0 == insResult.getCode() && Result.SUCCESS_0 == insSupResult.getCode()) {
-				System.err.println("12312");
 				return rtnSuccessResult("文件保存成功");
 			} else {
-				System.err.println("sdsads");
-//				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
 				return rtnFailResult(Result.ERROR_4000, "文件保存失败");
 			}
 		} catch (Exception e) {
-//			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
 			log.error("文件上传服务异常,异常原因【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "文件上传服务异常,请联系系统管理员");
 		}
@@ -278,14 +277,13 @@ public class FileController extends BaseController {
 		// String projectLevel = request.getParameter("project_level");
 		// String projectCode = request.getParameter("project_code");
 		// String userCode = session.getAttribute("user_code").toString();
-		String projectCode = request.getParameter("project_code");
-		String projectLevel = request.getParameter("project_level");
-		String userCode = "820032";
+//		String projectCode = request.getParameter("project_code");
+//		String projectLevel = request.getParameter("project_level");
+//		String userCode = "820032";
 		// String projectParentCode=request.getParameter("project_parent_code");
-		System.err.println("1:" + projectCode + ";---2:" + projectLevel + ";---3:" + userCode);
-		// String projectCode = "P201806221307125412";
-		// String projectLevel = "0";
-		// String userCode = "820032";
+		 String projectCode = "P201806221307125412";
+		 String projectLevel = "0";
+		 String userCode = "820032";
 		// String projectParentCode="-1";
 		try {
 			String obj = ps.selectProjectTableNameByProjectLevel(Integer.parseInt(projectLevel)).getData().toString();// 表名
@@ -314,10 +312,10 @@ public class FileController extends BaseController {
 			request.setAttribute("per", per);
 		} catch (NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
-			return "view/index.jsp";
+			return "view/index";
 		} catch (Exception e) {
 			log.error("文件查询异常,异常原因:【" + e.toString() + "】");
-			return "view/error.jsp";
+			return "view/error";
 		}
 		return "view/project_detail";
 	}
