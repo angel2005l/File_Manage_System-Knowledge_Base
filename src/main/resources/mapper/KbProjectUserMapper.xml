@@ -15,21 +15,18 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, project_code, project_name, project_permission,project_level, user_code, user_name, user_dept_code, 
-    create_user_code, create_time
+    create_user_code, DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') as create_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 'false' as QUERYID,
-    <include refid="Base_Column_List" />
-    from kb_project_user
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <!-- 添加项目用户表 -->
+  <!-- 新增项目信息关联表信息 -->
   	<insert id="insertProjectUser" parameterType="list">
 		insert into kb_project_user (project_code,project_name,project_permission,project_level,user_code,user_name,user_dept_code,create_user_code,create_time)
 		<foreach collection="list" item="userPro" separator="union ">
 			select '${userPro.projectCode}','${userPro.projectName}','${userPro.projectPermission}','${userPro.projectLevel}','${userPro.userCode}','${userPro.userName}','${userPro.userDeptCode}','${userPro.createUserCode}','${userPro.createTime}' from dual
 		</foreach>
 	</insert>
-<!--   		insert into kb_project_user (project_code,project_name,project_permission,user_code,user_name,user_dept_code,create_user_code,create_time) 
-		values (#{projectCode},#{projectName},#{projectPermission},#{userCode},#{userName},#{userDeptCode},#{createUserCode},#{createTime}) -->
+	<!-- 根据用户编码查询用户所关联的信息 -->
+	<select id="selectProjectSimpleInfoByUserCode" parameterType="string" resultType="map">
+		select project_code, project_name, project_level from kb_project_user where user_code =#{userCode}
+	</select>
+
 </mapper>

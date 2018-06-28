@@ -35,8 +35,8 @@ public interface IProjectService {
 	public Result<List<KbProject>> selectAllPro(String formName, String projectCode);
 
 	// 查询所有的根层的项目信息
-	public Result<List<KbProject>> selectAllProByUser(String formName, String projectCode,String userCode);
-	
+	public Result<List<KbProject>> selectAllProByUser(String formName, String projectCode, String userCode);
+
 	/**
 	 * 
 	 * @Title: getShareProject
@@ -53,17 +53,34 @@ public interface IProjectService {
 	 */
 	public Map<String, Object> getShareProject(String projectCode, int projectLevel, String userCode)
 			throws SQLException;
-	
+
 	/**
 	 * 
-	 * @Title: selectAllPro  
+	 * @Title: selectAllPro
 	 * @Description: 查询主界面所有的项目信息
-	 * @author 陈专懂 
-	 * @return List<KbProject> 
-	 * @date 2018年6月28日  
+	 * @author 陈专懂
+	 * @return List<KbProject>
+	 * @date 2018年6月28日
 	 * @version 1.0
 	 */
 	public List<List<KbProject>> selectAllProInMain();
+
+
+	/**
+	 * 
+	 * @Title: selectProjectByUserCode
+	 * @Description: 根据用户编码查询项目的简易信息
+	 * @author 黄官易
+	 * @param userCode
+	 * @return
+	 * @throws Exception
+	 * @return List<KbProject>
+	 * @date 2018年6月28日
+	 * @version 1.0
+	 */
+	public List<Map<String, Object>> selectProjectByUserCode(String userCode) throws Exception;
+
+
 	
 	
 	/**
@@ -77,4 +94,5 @@ public interface IProjectService {
 	 */
 	public List<KbProject> selectSuperiorAllPro(String userCode,String projectCode,int projectLevel) throws SQLException;
 	
+
 }
