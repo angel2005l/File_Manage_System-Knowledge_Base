@@ -65,6 +65,7 @@ public interface IProjectService {
 	 */
 	public List<List<KbProject>> selectAllProInMain();
 
+
 	/**
 	 * 
 	 * @Title: selectProjectByUserCode
@@ -78,5 +79,20 @@ public interface IProjectService {
 	 * @version 1.0
 	 */
 	public List<Map<String, Object>> selectProjectByUserCode(String userCode) throws Exception;
+
+
+	
+	
+	/**
+	 * 
+	 * @Title: selectSuperiorAllPro  
+	 * @Description: 返回功能，查询上级项目下的所有的子项目
+	 * @author 陈专懂 
+	 * @return List<KbProject> 
+	 * @date 2018年6月28日  
+	 * @version 1.0
+	 */
+	public List<KbProject> selectSuperiorAllPro(String userCode,String projectCode,int projectLevel) throws SQLException;
+	
 
 }

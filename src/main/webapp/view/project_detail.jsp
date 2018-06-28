@@ -16,7 +16,7 @@
 </head>
 
 <body class="" style="cursor: auto;">
-
+	
 	<div class="wrapper">
 
 		<div class="header">
@@ -35,7 +35,7 @@
 					<li id="nav-upgrade"></li>
 
 				</ul>
-
+				
 				<div class="command-bar">
 					<div class="search-wrap">
 						<a href="javascript:;" class="link-search" title="搜索"><i
@@ -99,11 +99,11 @@
 										<div class="todolist-actions actions"></div>
 										<h4>
 											<span class="name-non-linkable"> <span
-												class="todolist-rest">admin3</span> <span
+												class="todolist-rest" id="project_name">${projectName }</span> <span
 												style="display: none"><input type="text"
-													value="P201806221307125412" name="project_code" /></span> <!-- 父类的projectCode -->
+													value="${projectCode }" id="project_code" /></span> <!-- 父类的projectCode -->
 												<span style="display: none"><input type="text"
-													value="0" name="project_level" /></span> <!-- 父类的projectLevel -->
+													value="${projectLevel }" id="project_level" /></span> <!-- 父类的projectLevel -->
 											</span>
 
 											<!-- 功能暂不明确 -->
@@ -143,7 +143,7 @@
 																class="todo-rest">${projects.projectName }</span>
 														</span> <span class="content-linkable"> <a
 																class="todo-rest" data-stack="true"
-																href="file/pfd.do?project_code=${projects.projectCode }&project_level=${projects.projectLevel}"
+																href="javascript:;" onclick="into('${projects.projectCode }','${projects.projectLevel}','${projects.projectName }')"
 																name="project_name">${projects.projectName }</a>
 														</span> <!-- <div class="progress-wrap">
 							<span class="progress-pie" title="60%" data-pie="60"></span>
@@ -251,11 +251,18 @@
 
 			</div>
 			<div class="detail-actions">
+	<%-- 			<input type="text" id="project_name1" value="${projectName1 }" style="display:none" />
+				<input type="text" id="project_code1" value="${projectCode1 }" style="display:none" />
+				<input type="text" id="project_level1" value="${projectLevel1 }" style="display:none" /> --%>
+				<div class="item detail-star-action">
+					<a class="detail-action detail-action-star" title="返回上一层"
+						onclick="insertFile()">文件上传</a>
+				</div>
 				<div class="item detail-star-action">
 					<a class="detail-action detail-action-star" title="返回上一层"
 						onclick="back()">返回上一层</a>
 				</div>
-
+				
 				<div class="item">
 					<a class="detail-action detail-action-edit" href="javascript:;">添加子项目</a>
 				</div>
@@ -304,12 +311,23 @@
 				}
 				
 				function back(){
-					var projectCode=document.getElementsByName("project_code")[0].value;
-					var projectLevel=document.getElementsByName("project_level")[0].value;
-					
+					var projectName=document.getElementById("project_name").innerHTML;
+					var projectCode=document.getElementById("project_code").value;
+					var projectLevel=document.getElementById("project_level").value;
+					/* alert("projectName:"+projectName+"-;projectCode:"+projectCode+"-;projectLevel:"+projectLevel); */
 					<%-- var userCode= "<%=session.getAttribute("user_code")%>"; --%>
-					window.location.href="file/pfd.do?project_code="+projectCode+"&project_level="+projectLevel;
+					window.location.href="file/back.do?project_code="+projectCode+"&project_level="+projectLevel+"&project_name="+projectName;
 				}
+ 				function into(projectCode,projectLevel,projectName){
+					window.location.href="file/pfd.do?project_code="+projectCode+"&project_level="+projectLevel+"&project_name="+projectName;
+ 				}
+ 				
+ 				function insertFile(){
+ 					var projectCode=document.getElementById("project_code").value;
+					var projectLevel=document.getElementById("project_level").value;
+					window.location.href="file/insFileJsp.do?project_code="+projectCode+"&project_level="+projectLevel;
+ 				}
+ 				
 				function shareProject(projectCode,projectLevel,userCode){
 					<%-- var str = "<%=basePath %>pro/sp.do?project_code="+projectCode+"&project_level="+projectLevel+"user_code="+userCode; --%>
 					var str = "11231";

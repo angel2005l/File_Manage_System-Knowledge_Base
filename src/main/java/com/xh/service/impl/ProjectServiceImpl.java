@@ -266,6 +266,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 		return null;
 	}
 
+
 	@Override
 	public List<Map<String, Object>> selectProjectByUserCode(String userCode) throws Exception {
 		try {
@@ -276,4 +277,23 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 		}
 
 	}
+
+
+	/**
+	 * 返回功能  项目下所有的子项目
+	 * @throws SQLException 
+	 */
+	public List<KbProject> selectSuperiorAllPro(String userCode, String projectCode,int projectLevel) throws SQLException {
+		String formName=projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);
+		List<KbProject> proList=projectMapper.selectSuperiorAllPro(formName, projectCode, userCode);
+		System.err.println("service:"+proList);
+		if(!proList.isEmpty()){
+			return proList;
+		}else{
+			log.error("数据为空");
+			return null;
+		}
+		
+	}
 }
+

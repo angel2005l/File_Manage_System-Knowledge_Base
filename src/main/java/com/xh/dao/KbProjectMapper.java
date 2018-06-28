@@ -70,6 +70,18 @@ public interface KbProjectMapper {
 	 */
 	public List<KbProject> selectAllPro(@Param("formName")String formName);
 	
-
+	/**
+	 * 
+	 * @Title: selectSuperiorAllPro  
+	 * @Description: 返回功能   查询上级项目下的所有的项目
+	 * @author 陈专懂 
+	 * @return List<KbProject> 
+	 * @date 2018年6月28日  
+	 * @version 1.0
+	 */
+	public List<KbProject> selectSuperiorAllPro(@Param("formName")String formName,@Param("projectCode") String projectCode,@Param("userCode")String userCode);
+	
+	
+	
 	
 }
