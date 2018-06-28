@@ -16,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.aspose.p2cbca448.re;
 import com.xh.base.BaseController;
 import com.xh.base.Constant;
 import com.xh.entity.KbProject;
@@ -253,6 +252,7 @@ public class ProjectController extends BaseController {
 	 * @date 2018年6月28日
 	 * @version 1.0
 	 */
+	@RequestMapping("/index.do")
 	public String index(HttpServletRequest request, HttpSession session) {
 		try {
 			String userCode = session.getAttribute("user_code").toString();// 用户编码

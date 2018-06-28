@@ -84,16 +84,16 @@
 		function login() {
 			if (check()) {
 				$.ajax({
-					url : 'userManage?method=login',
+					url : 'user/login.do',
 					type : 'post',
 					data : {
-						"userName" : $("#userName").val(),
-						"password" : $("#password").val()
+						"user_code" : $("#userName").val(),
+						"user_password" : $("#password").val()
 					},
 					dataType : "json",
 					success : function(result) {
 						if (result.code == 0) {
-							window.location.href = "view/index.jsp";
+							window.location.href = "pro/index.do";
 						} else {
 							alert(result.msg);
 							location.reload();

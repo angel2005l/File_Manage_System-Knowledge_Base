@@ -81,5 +81,4 @@ public final class MD5Util {
 		}
 		return String.valueOf(Encrytion);
 	}
-
 }
