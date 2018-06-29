@@ -314,7 +314,7 @@
 					var projectName=document.getElementById("project_name").innerHTML;
 					var projectCode=document.getElementById("project_code").value;
 					var projectLevel=document.getElementById("project_level").value;
-					/* alert("projectName:"+projectName+"-;projectCode:"+projectCode+"-;projectLevel:"+projectLevel); */
+					alert("projectName:"+projectName+"-;projectCode:"+projectCode+"-;projectLevel:"+projectLevel);
 					<%-- var userCode= "<%=session.getAttribute("user_code")%>"; --%>
 					window.location.href="file/back.do?project_code="+projectCode+"&project_level="+projectLevel+"&project_name="+projectName;
 				}

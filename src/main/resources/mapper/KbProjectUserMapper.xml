@@ -51,5 +51,8 @@
 			(#{kpu.projectCode},#{kpu.projectName},#{kpu.projectPermission},#{kpu.projectLevel},#{kpu.userCode},#{kpu.userName},#{kpu.userDeptCode},#{kpu.createUserCode},#{kpu.createTime})
 		</foreach>
 	</insert>
+	<select id="getParProjectName" resultType="com.xh.entity.KbProjectUser" parameterType="string">
+  		select project_name,project_level from kb_project_user where project_code=#{projectCode}
+  	</select>
 
 </mapper>

@@ -87,7 +87,8 @@ public class FileController extends BaseController {
 			// String userCode = session.getAttribute("user_code").toString();
 			// String userDeptCode = session.getAttribute("userDeptCode").toString();
 			String userDeptCode = "D201806230935390372";
-			String userCode = "820032";
+//			String userCode = "820046";
+			String userCode = session.getAttribute("user_code").toString();// 用户编码
 			Map<String, String> fileMap = ufResult.getData();
 			String fileCode = fileMap.get("fileCode");
 			String fileName = fileMap.get("fileName");
@@ -278,7 +279,8 @@ public class FileController extends BaseController {
 		String projectCode = request.getParameter("project_code");
 		String projectLevel = request.getParameter("project_level");
 		System.err.println("projectCode:"+projectCode+"----projectLevel:"+projectLevel);
-		String userCode = "820032";
+//		String userCode = "820046";
+		String userCode = session.getAttribute("user_code").toString();// 用户编码
 		try {
 			String obj=ps.selectProjectTableNameByProjectLevel(Integer.parseInt(projectLevel)).getData().toString();//获得表名
 			List<KbProject> kpro=ps.selectAllProByUser(obj,projectCode,userCode).getData();
@@ -328,23 +330,19 @@ public class FileController extends BaseController {
 	 */
 	@RequestMapping("/back.do")
 	public String backFileForDetail(HttpServletRequest request, HttpSession session,HttpServletResponse response) {
+		
+		
+		
 		String projectCode = request.getParameter("project_code");
 		int projectLevel = Integer.parseInt(request.getParameter("project_level"));
-		String userCode = "820032";
+		String userCode = session.getAttribute("user_code").toString();// 用户编码
+		
+		System.err.println("-----------------"+projectCode+";----"+projectLevel+";----"+userCode);
 		try {
-			List<KbProject> kpro=ps.selectSuperiorAllPro(userCode, projectCode, projectLevel);
-			int level=0;
-			if(projectLevel==0){
-//				System.err.println("123");
-//				response.sendRedirect("pro/AllProInMain.do");
-				//需要增加跳转主界面
-				level=0;
-			}else{
-				level=projectLevel-1;
-			}
-			List<KbProject> TOPkpro=ps.selectSuperiorAllPro(userCode, projectCode, level);
-			System.err.println("112313123123:"+TOPkpro.get(0).getProjectCode()+",,,231313,,:"+TOPkpro.get(0).getProjectName());
-			System.err.println("list:"+kpro);
+			Map<String,Object> map = ps.selectSuperiorAllPro(userCode, projectCode, projectLevel);
+			System.err.println("map:"+map.toString());
+			List<KbProject> kpro=(List<KbProject>) map.get("list");
+			System.err.println("kpro:"+kpro.toString());
 			double proCount=0;//项目进行中的数量
 			double completed=0;//项目已完成的数量
 			for (KbProject kb : kpro) {
@@ -358,17 +356,17 @@ public class FileController extends BaseController {
 			String ratio=(int)completed+"/"+sum;//已完成项目/项目总数
 			int per=(int) ((completed/sum)*100);//已完成项目所占百分比
 			System.err.println("ratio:"+ratio+";per:"+per);
-
-			Result<List<Map<String, Object>>> fileResult = fs.selectFile(TOPkpro.get(0).getProjectLevel(), userCode,
-					TOPkpro.get(0).getProjectCode());
+			Result<List<Map<String, Object>>> fileResult = fs.selectFile(projectLevel-1, userCode,
+					map.get("code").toString());
 			System.err.println(fileResult);
+			
 			request.setAttribute("files", fileResult.getData());
 			request.setAttribute("projects", kpro);
 			request.setAttribute("ratio", ratio);
 			request.setAttribute("per", per);
-			request.setAttribute("projectCode", TOPkpro.get(0).getProjectCode());
-			request.setAttribute("projectLevel", TOPkpro.get(0).getProjectLevel());
-			request.setAttribute("projectName", TOPkpro.get(0).getProjectName());
+//			request.setAttribute("projectCode", map.get("code").toString());
+//			request.setAttribute("projectLevel", map.get("parProjectLevel").toString());
+//			request.setAttribute("projectName", map.get("parProjectName").toString());
 		} catch (NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
 			return "view/index";

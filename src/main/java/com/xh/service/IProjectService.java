@@ -84,7 +84,7 @@ public interface IProjectService {
 	 * @date 2018年6月28日
 	 * @version 1.0
 	 */
-	public List<KbProject> selectSuperiorAllPro(String userCode, String projectCode, int projectLevel) throws Exception;
+	public Map<String,Object> selectSuperiorAllPro(String userCode, String projectCode, int projectLevel) throws Exception;
 
 	/**
 	 * 

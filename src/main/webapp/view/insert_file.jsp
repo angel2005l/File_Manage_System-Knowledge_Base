@@ -191,10 +191,10 @@
 							</a>
 						</div>
 						<input type="hidden" name="project_level" id="project_level" value="${projectLevel }">
-						<input type="hidden" name="parent_project_level" id="parent_project_level" value="${parentProjectLevel }">
 						<input type="hidden" name="project_code" id="project_code" value="${projectParentCode }">
 						<input type="hidden" name="project_name" id="project_name" value="${projectName }">
 					</form>
+						<input type="hidden" name="parent_project_level" id="parent_project_level" value="${parentProjectLevel }">
 
 				</div>
 			</div>
@@ -249,7 +249,7 @@
 							if(projectLevel == 0){
 								window.location.href="pro/index.do?project_code="+projectCode+"&project_level="+projectLevel; 
 							}else{
-								window.location.href="file/back.do?project_code="+projectCode+"&project_level="+projectLevel+"&project_name="+projectName; 
+								window.location.href="file/pfd.do?project_code="+projectCode+"&project_level="+projectLevel+"&project_name="+projectName; 
 							}
 						} else {
 							return ;

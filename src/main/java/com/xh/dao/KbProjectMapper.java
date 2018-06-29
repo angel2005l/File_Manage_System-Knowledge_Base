@@ -81,7 +81,16 @@ public interface KbProjectMapper {
 	 */
 	public List<KbProject> selectSuperiorAllPro(@Param("formName")String formName,@Param("projectCode") String projectCode,@Param("userCode")String userCode);
 	
+	/**
+	 * 
+	 * @Title: getProjectParentCode  
+	 * @Description: 根据projectCode获取父类的Code  
+	 * @author 陈专懂 
+	 * @return String 
+	 * @date 2018年6月29日  
+	 * @version 1.0
+	 */
+	public String getProjectParentCode(@Param("formName")String formName,@Param("projectCode")String projectCode);
 	
-	
-	
+
 }
