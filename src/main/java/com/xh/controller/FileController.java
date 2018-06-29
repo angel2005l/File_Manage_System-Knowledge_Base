@@ -299,7 +299,7 @@ public class FileController extends BaseController {
 
 			Result<List<Map<String, Object>>> fileResult = fs.selectFile(Integer.parseInt(projectLevel), userCode,
 					projectCode);
-			System.err.println(fileResult);
+//			System.err.println(fileResult);
 			request.setAttribute("files", fileResult.getData());
 			request.setAttribute("projects", kpro);
 			request.setAttribute("ratio", ratio);
@@ -337,12 +337,13 @@ public class FileController extends BaseController {
 			if(projectLevel==0){
 //				System.err.println("123");
 //				response.sendRedirect("pro/AllProInMain.do");
+				//需要增加跳转主界面
 				level=0;
 			}else{
 				level=projectLevel-1;
 			}
 			List<KbProject> TOPkpro=ps.selectSuperiorAllPro(userCode, projectCode, level);
-			System.err.println("1:"+TOPkpro.get(0).getProjectCode()+",,,,,:"+TOPkpro.get(0).getProjectName());
+			System.err.println("112313123123:"+TOPkpro.get(0).getProjectCode()+",,,231313,,:"+TOPkpro.get(0).getProjectName());
 			System.err.println("list:"+kpro);
 			double proCount=0;//项目进行中的数量
 			double completed=0;//项目已完成的数量
@@ -434,6 +435,8 @@ public class FileController extends BaseController {
 			String userDeptCode = "D201806230935390372";
 			// 获得父类编码
 			String projectParentCode = request.getParameter("project_code");
+			// 获得父类名称
+			String projectName = request.getParameter("project_name");
 			// 获得父类等级
 			String projectParentLevel = StrUtil.isBlank(request.getParameter("project_level")) ? "0"
 					: request.getParameter("project_level");
@@ -441,7 +444,9 @@ public class FileController extends BaseController {
 			Result<List<KbUser>> userResult = us.selUsersByUserDeptCode(userDeptCode); // 获得员工信息
 			request.setAttribute("userList", userResult.getData());
 			request.setAttribute("projectParentCode", projectParentCode);
+			request.setAttribute("projectName", projectName);
 			request.setAttribute("projectLevel", Integer.parseInt(projectParentLevel) + 1);
+			request.setAttribute("parentProjectLevel", Integer.parseInt(projectParentLevel));
 		} catch (NumberFormatException | NullPointerException e) {
 			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
 			return "view/login";

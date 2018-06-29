@@ -190,8 +190,10 @@
 							</font>
 							</a>
 						</div>
-						<input type="hidden" name="project_level" value="${projectLevel }">
-						<input type="hidden" name="project_code" value="${projectCode }">
+						<input type="hidden" name="project_level" id="project_level" value="${projectLevel }">
+						<input type="hidden" name="parent_project_level" id="parent_project_level" value="${parentProjectLevel }">
+						<input type="hidden" name="project_code" id="project_code" value="${projectParentCode }">
+						<input type="hidden" name="project_name" id="project_name" value="${projectName }">
 					</form>
 
 				</div>
@@ -230,6 +232,10 @@
 		}
 
 		function clickBtn() {
+			var projectCode=document.getElementById("project_code").value;
+			var projectLevel=document.getElementById("parent_project_level").value;
+			var projectName=document.getElementById("project_name").value;
+			alert("projectCode:"+projectCode+";projectLevel:"+projectLevel+";projectName:"+projectName);
 			if (checkFile) {
 				$("#fileFrom").ajaxSubmit({
 					url : 'file/upFile.do',
@@ -240,8 +246,13 @@
 						if (result.code == 0) {
 							//parent.location.href='userManage?method=user_sel';
 							//parent.layer.close(index);
+							if(projectLevel == 0){
+								window.location.href="pro/index.do?project_code="+projectCode+"&project_level="+projectLevel; 
+							}else{
+								window.location.href="file/back.do?project_code="+projectCode+"&project_level="+projectLevel+"&project_name="+projectName; 
+							}
 						} else {
-							return;
+							return ;
 						}
 					},
 					error : function() {

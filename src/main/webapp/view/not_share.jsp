@@ -61,7 +61,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
         
         function goback(){
-        	window.location.href="pro/AllProInMain.do";
+        	window.location.href="pro/index.do";
         }
         
     </script>

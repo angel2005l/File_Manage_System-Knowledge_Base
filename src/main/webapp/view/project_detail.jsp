@@ -85,10 +85,10 @@
 		</div>
 
 		<div class="container workspace simple-stack simple-stack-transition">
-			<div class="page page-root simple-pjax page-behind" style="">
+<!-- 			<div class="page page-root simple-pjax page-behind" style="">
 				<a class="link-page-behind" data-stack="" href=""
 					data-stack-fluid="">面包屑</a>
-			</div>
+			</div> -->
 			<div class="page page-1 simple-pjax">
 				<div class="page-inner" id="page-todolist">
 					<div class="todos-all">
@@ -325,7 +325,9 @@
  				function insertFile(){
  					var projectCode=document.getElementById("project_code").value;
 					var projectLevel=document.getElementById("project_level").value;
-					window.location.href="file/insFileJsp.do?project_code="+projectCode+"&project_level="+projectLevel;
+					var projectName=document.getElementById("project_name").innerHTML;
+					alert("projectCode:"+projectCode+";projectLevel:"+projectLevel+";projectName:"+projectName);
+					window.location.href="file/insFileJsp.do?project_code="+projectCode+"&project_level="+projectLevel+"&project_name="+projectName;
  				}
  				
 				function shareProject(projectCode,projectLevel,userCode){
