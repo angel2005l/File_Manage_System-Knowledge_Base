@@ -248,15 +248,10 @@
 					type : 'post',
 					dataType : 'json',
 					success : function(result) {
-						alert(result.msg);
 						if (result.code == 0) {
-							if(projectLevel == 0){
-								window.location.href="pro/index.do;
-							}else{
-								window.location.href="file/ 
-							}
+							
 						} else {
-							return ;
+							alert(result.msg)
 						}
 					},
 					error : function() {
