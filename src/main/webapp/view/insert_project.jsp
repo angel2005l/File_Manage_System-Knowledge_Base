@@ -103,7 +103,7 @@
 							style="vertical-align: inherit;">创建新项目</font></font>
 					</h3>
 
-					<form class="form form-invite" action="" method="post">
+					<form id="projectFrom" class="form form-invite" enctype="multipart/form-data">
 						<div class="form-item">
 							<div class="form-field">
 								<input type="text" name="project_name" placeholder="项目名称"
@@ -153,7 +153,8 @@
 										<div class="members member-checkbox-list">
 											<c:forEach var="b" items="${userList }">
 												<label title="${b.userName }" class="member"> <input
-													type="checkbox" name="project_edit" value="${b.userCode },${b.userName }"> <span
+													type="checkbox" name="project_edit"
+													value="${b.userCode },${b.userName }"> <span
 													class="name"><font style="vertical-align: inherit;"><font
 															style="vertical-align: inherit;">${b.userName }</font></font></span>
 												</label>
@@ -180,8 +181,8 @@
 										<div class="members member-checkbox-list">
 											<c:forEach var="b" items="${userList }">
 												<label title="${b.userName }" class="member"> <input
-													type="checkbox" name="project_read" id="" value="${b.userCode }">
-													<span class="name"><font
+													type="checkbox" name="project_read" id=""
+													value="${b.userCode }"> <span class="name"><font
 														style="vertical-align: inherit;"><font
 															style="vertical-align: inherit;">${b.userName }</font></font></span>
 												</label>
@@ -194,9 +195,7 @@
 						</div>
 
 						<div class="form-buttons">
-							<button type="button" class="btn btn-primary"
-								id="btn-create-project" data-disable-with="正在创建..."
-								data-success-text="创建成功">
+							<button type="button" class="btn btn-primary" onclick="clickBtn()" >
 								<font style="vertical-align: inherit;"><font
 									style="vertical-align: inherit;">创建项目</font></font>
 							</button>
@@ -248,8 +247,8 @@
 
 		function clickBtn() {
 			if (checkFile) {
-				$("#fileFrom").ajaxSubmit({
-					url : 'file/upFile.do',
+				$("#projectFrom").ajaxSubmit({
+					url : 'pro/insPro.do',
 					type : 'post',
 					dataType : 'json',
 					success : function(result) {
