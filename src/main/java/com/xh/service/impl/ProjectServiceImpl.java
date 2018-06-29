@@ -28,6 +28,7 @@ import com.xh.entity.KbProjectTable;
 import com.xh.entity.KbProjectUser;
 import com.xh.entity.KbUser;
 import com.xh.service.IProjectService;
+import com.xh.uitl.DateUtil;
 import com.xh.uitl.Result;
 
 /**
@@ -115,43 +116,6 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			return rtnErrorResult(Result.ERROR_6000, "获取项目表文件数据接口异常,请联系系统管理员");
 		}
 	}
-
-	/**
-	 * @Title: insertProject
-	 * @Description: 添加项目及项目用户关联表
-	 * @author 陈专懂
-	 * @return String
-	 * @date 2018年6月22日
-	 * @version 1.0
-	 */
-	@Transactional(rollbackFor = { Exception.class })
-	public Result<Object> insertProject(KbProject kbObj, List<KbProjectUser> listUser, String formName) {
-
-		try {
-			int rtnPro = projectMapper.insertProject(kbObj, formName);
-			int rtnUserPro = proUserMapper.insertProjectUser(listUser);
-
-			if (rtnPro == 1 && rtnUserPro == 1) {
-				return rtnSuccessResult();
-			} else {
-				return rtnErrorResult(Result.ERROR_4000, "添加项目表信息失败");
-			}
-		} catch (SQLException e) {
-			log.error("添加项目表信息接口异常,异常原因:【" + e.toString() + "】");
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
-			return rtnErrorResult(Result.ERROR_6000, "添加项目表信息接口异常,请联系系统管理员");
-		}
-	}
-
-	/*
-	 * public Result<Object> insertProjectOne(Map<String,Object> map) { try { int
-	 * i=projectMapper.insertProject(map); int
-	 * j=proUserMapper.insertProjectUser(map); if(i==1&&j==1){ return
-	 * rtnSuccessResult(); }else{ return rtnErrorResult(Result.ERROR_4000,
-	 * "添加项目表信息失败"); } } catch (SQLException e) { log.error("添加项目表信息接口异常,异常原因:【" +
-	 * e.toString() + "】"); return rtnErrorResult(Result.ERROR_6000,
-	 * "添加项目表信息接口异常,请联系系统管理员"); } }
-	 */
 
 	/**
 	 * @Title: selectUserByUserCode
@@ -266,7 +230,6 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 		return null;
 	}
 
-
 	@Override
 	public List<Map<String, Object>> selectProjectByUserCode(String userCode) throws Exception {
 		try {
@@ -278,22 +241,61 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 
 	}
 
-
 	/**
-	 * 返回功能  项目下所有的子项目
-	 * @throws SQLException 
+	 * 返回功能 项目下所有的子项目
+	 * 
+	 * @throws SQLException
 	 */
-	public List<KbProject> selectSuperiorAllPro(String userCode, String projectCode,int projectLevel) throws SQLException {
-		String formName=projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);
-		List<KbProject> proList=projectMapper.selectSuperiorAllPro(formName, projectCode, userCode);
-		System.err.println("service:"+proList);
-		if(!proList.isEmpty()){
+	public List<KbProject> selectSuperiorAllPro(String userCode, String projectCode, int projectLevel)
+			throws SQLException {
+		String formName = projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);
+		List<KbProject> proList = projectMapper.selectSuperiorAllPro(formName, projectCode, userCode);
+		System.err.println("service:" + proList);
+		if (!proList.isEmpty()) {
 			return proList;
-		}else{
+		} else {
 			log.error("数据为空");
 			return null;
 		}
-		
+
+	}
+
+	@Transactional(rollbackFor = { Exception.class })
+	@Override
+	public Result<Object> insProject(KbProject kp, List<KbProjectUser> kpus) throws Exception {
+		try {
+			// 根据当前的项目信息获得项目等级
+			Integer projectLevel = kp.getProjectLevel();
+			// 根据项目关联关系，获得部门信息保证用户肯定有一个
+			String userDeptCode = kpus.get(0).getUserDeptCode();
+			String projectTableName = projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);// 项目表名称
+			List<KbUser> superiorUserList = userMapper.selectSuperiorUserByUserDeptCode(userDeptCode);
+			if (null != superiorUserList && !superiorUserList.isEmpty()) {
+				for (KbUser kbUser : superiorUserList) {
+					KbProjectUser kpu = new KbProjectUser();
+					kpu.setProjectCode(kp.getProjectCode());
+					kpu.setProjectName(kp.getProjectName());
+					kpu.setProjectPermission("read");
+					kpu.setProjectLevel(projectLevel);
+					kpu.setUserCode(kbUser.getUserCode());
+					kpu.setUserName(kbUser.getUserName());
+					kpu.setUserDeptCode(userDeptCode);
+					kpu.setCreateUserCode("kb_system");
+					kpu.setCreateTime(DateUtil.curDateYMDHMS());
+					kpus.add(kpu);
+				}
+			}
+			int insProNum = projectMapper.insertProject(kp, projectTableName);
+			int insUsersNum = proUserMapper.insertProjectUsers(kpus);
+			if (insProNum > 0 && kpus.size() == insUsersNum) {
+				return rtnSuccessResult("新建项目成功");
+			} else {
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
+				return rtnFailResult(Result.ERROR_4000, "新建项目失败");
+			}
+		} catch (SQLException e) {
+			log.error("新建项目数据接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "新建项目异常,请联系系统管理员");
+		}
 	}
 }
-

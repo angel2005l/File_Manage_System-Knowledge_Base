@@ -9,20 +9,6 @@ import com.xh.entity.KbProjectUser;
 public interface KbProjectUserMapper {
 	/**
 	 * 
-	 * @Title: insertProjectUser
-	 * @Description: 新增项目信息关联表信息
-	 * @author 黄官易
-	 * @param listUser
-	 * @return
-	 * @throws SQLException
-	 * @return int
-	 * @date 2018年6月28日
-	 * @version 1.0
-	 */
-	public int insertProjectUser(List<KbProjectUser> listUser) throws SQLException;
-
-	/**
-	 * 
 	 * @Title: selectProjectSimpleInfoByUserCode
 	 * @Description: 根据用户编码查询用户所关联的信息
 	 * @author 黄官易
@@ -33,5 +19,19 @@ public interface KbProjectUserMapper {
 	 * @version 1.0
 	 */
 	public List<Map<String, Object>> selectProjectSimpleInfoByUserCode(String userCode) throws SQLException;
+
+	/**
+	 * 
+	 * @Title: insertProjectUsers
+	 * @Description: 新增项目信息关联表信息 新版本
+	 * @author 黄官易
+	 * @param kpuList
+	 * @return
+	 * @throws SQLException
+	 * @return int
+	 * @date 2018年6月29日
+	 * @version 1.0
+	 */
+	public int insertProjectUsers(List<KbProjectUser> kpuList) throws SQLException;
 
 }

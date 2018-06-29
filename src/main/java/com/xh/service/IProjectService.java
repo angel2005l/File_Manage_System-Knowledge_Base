@@ -25,9 +25,6 @@ public interface IProjectService {
 	// 根据项目等级查询项目的编号、名字
 	public Result<Object> selectProjectTableNameByProjectLevel(int projectLevel);
 
-	// 添加项目信息
-	public Result<Object> insertProject(KbProject kbObj, List<KbProjectUser> listUser, String formName);
-
 	// 根据员工的编号，查找员工信息
 	public Result<List<KbUser>> selectUserByUserCode(List<String> strList);
 
@@ -51,8 +48,7 @@ public interface IProjectService {
 	 * @date 2018年6月27日
 	 * @version 1.0
 	 */
-	public Map<String, Object> getShareProject(String projectCode, int projectLevel, String userCode)
-			throws SQLException;
+	public Map<String, Object> getShareProject(String projectCode, int projectLevel, String userCode) throws Exception;
 
 	/**
 	 * 
@@ -64,7 +60,6 @@ public interface IProjectService {
 	 * @version 1.0
 	 */
 	public List<List<KbProject>> selectAllProInMain();
-
 
 	/**
 	 * 
@@ -80,19 +75,30 @@ public interface IProjectService {
 	 */
 	public List<Map<String, Object>> selectProjectByUserCode(String userCode) throws Exception;
 
-
-	
-	
 	/**
 	 * 
-	 * @Title: selectSuperiorAllPro  
+	 * @Title: selectSuperiorAllPro
 	 * @Description: 返回功能，查询上级项目下的所有的子项目
-	 * @author 陈专懂 
-	 * @return List<KbProject> 
-	 * @date 2018年6月28日  
+	 * @author 陈专懂
+	 * @return List<KbProject>
+	 * @date 2018年6月28日
 	 * @version 1.0
 	 */
-	public List<KbProject> selectSuperiorAllPro(String userCode,String projectCode,int projectLevel) throws SQLException;
-	
+	public List<KbProject> selectSuperiorAllPro(String userCode, String projectCode, int projectLevel) throws Exception;
+
+	/**
+	 * 
+	 * @Title: insProject
+	 * @Description: 保存项目信息
+	 * @author 黄官易
+	 * @param kp
+	 * @param kpus
+	 * @return
+	 * @throws Exception
+	 * @return Result<Object>
+	 * @date 2018年6月29日
+	 * @version 1.0
+	 */
+	public Result<Object> insProject(KbProject kp, List<KbProjectUser> kpus) throws Exception;
 
 }
