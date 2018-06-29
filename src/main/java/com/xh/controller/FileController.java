@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -67,27 +65,26 @@ public class FileController extends BaseController {
 	 * @date 2018年6月22日
 	 * @version 1.0
 	 */
-	@Transactional(rollbackFor = { Exception.class })
 	@RequestMapping("/upFile.do")
 	@ResponseBody
-	public Result<Map<String, String>> uploadFile(HttpServletRequest request, HttpSession session,
+	public Result<Object> uploadFile(HttpServletRequest request, HttpSession session,
 			@RequestParam("file_data") MultipartFile mf) {
 		try {
 			// 上传文件并写入磁盘保存
 			Result<Map<String, String>> ufResult = fs.uploadFile(mf);
 			if (Result.SUCCESS_0 != ufResult.getCode()) {
-				return ufResult;
+				return rtnFailResult(ufResult.getCode(), ufResult.getMsg());
 			}
 			// 上传并写入文件成功,将文件信息写入数据库
 			String fileInfo = request.getParameter("file_info");
-			// String projectLevel = request.getParameter("project_level");
-			// String projectCode = request.getParameter("project_code");
-			String projectLevel = "0";
-			String projectCode = "P201806221307125412";
-			// String userCode = session.getAttribute("user_code").toString();
-			// String userDeptCode = session.getAttribute("userDeptCode").toString();
-			String userDeptCode = "D201806230935390372";
-			String userCode = "820032";
+			String projectLevel = request.getParameter("project_level");
+			String projectCode = request.getParameter("project_code");
+			// String projectLevel = "0";
+			// String projectCode = "P201806221307125412";
+			String userCode = session.getAttribute("user_code").toString();
+			String userDeptCode = session.getAttribute("userDeptCode").toString();
+			// String userDeptCode = "D201806230935390372";
+			// String userCode = "820032";
 			Map<String, String> fileMap = ufResult.getData();
 			String fileCode = fileMap.get("fileCode");
 			String fileName = fileMap.get("fileName");
@@ -103,48 +100,50 @@ public class FileController extends BaseController {
 			kf.setProjectCode(projectCode);
 			kf.setCreateUserCode(userCode);
 			kf.setCreateTime(DateUtil.curDateYMDHMS());
-
 			// 文件关联关系对象
 			List<KbFileUser> kfus = new ArrayList<KbFileUser>();
 			// 下载具有预览的权限加深
+			// 关联预览权限
 			String[] fileShow = request.getParameterValues("file_show");
 			if (null != fileShow && fileShow.length > 0) {
-				for (String showUserCode : fileShow) {
+				for (String showUser : fileShow) {
+					String[] showUserInfo = showUser.split(",");
 					KbFileUser kfu = new KbFileUser();
 					kfu.setFileCode(fileCode);
 					kfu.setFileName(fileName);
 					kfu.setFileType(fileType);
-					kfu.setUserCode(showUserCode);
+					kfu.setUserCode(showUserInfo[0]);
+					kfu.setUserName(showUserInfo[1]);
 					kfu.setFilePermission("onlyread");
 					kfu.setCreateUserCode(userCode);
+					kfu.setUserDeptCode(userDeptCode);
 					kfu.setCreateTime(DateUtil.curDateYMDHMS());
 					kfus.add(kfu);
 				}
 			}
+			// 关联下载权限
 			String[] fileDownload = request.getParameterValues("file_download");
 			if (null != fileDownload && fileDownload.length > 0) {
-				for (String downloadUserCode : fileDownload) {
+				for (String downloadUser : fileDownload) {
+					String[] downloadUserInfo = downloadUser.split(",");
 					KbFileUser kfu = new KbFileUser();
 					kfu.setFileCode(fileCode);
 					kfu.setFileName(fileName);
 					kfu.setFileType(fileType);
-					kfu.setUserCode(downloadUserCode);
+					kfu.setUserCode(downloadUserInfo[0]);
+					kfu.setUserName(downloadUserInfo[1]);
 					kfu.setFilePermission("download");
 					kfu.setCreateUserCode(userCode);
+					kfu.setUserDeptCode(userDeptCode);
 					kfu.setCreateTime(DateUtil.curDateYMDHMS());
 					kfus.add(kfu);
 				}
 			}
-			Result<Object> insResult = fs.insFile(kf, projectLevel, kfus);
-			Result<Object> insSupResult = fs.insSuperiorUserFileWithOnlyRead(kf, userDeptCode);
-			if (Result.SUCCESS_0 == insResult.getCode() && Result.SUCCESS_0 == insSupResult.getCode()) {
-				return rtnSuccessResult("文件保存成功");
-			} else {
-				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
-				return rtnFailResult(Result.ERROR_4000, "文件保存失败");
-			}
+			return fs.insFile(kf, projectLevel, kfus);
+		} catch (NumberFormatException e) {
+			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
+			return rtnErrorResult(Result.ERROR_6000, "非法登录!");
 		} catch (Exception e) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
 			log.error("文件上传服务异常,异常原因【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "文件上传服务异常,请联系系统管理员");
 		}
@@ -273,33 +272,32 @@ public class FileController extends BaseController {
 	 */
 	@RequestMapping("/pfd.do")
 	public String selectFileForDetail(HttpServletRequest request, HttpSession session) {
-		
 		String projectName = request.getParameter("project_name");
 		String projectCode = request.getParameter("project_code");
 		String projectLevel = request.getParameter("project_level");
-		System.err.println("projectCode:"+projectCode+"----projectLevel:"+projectLevel);
+		System.err.println("projectCode:" + projectCode + "----projectLevel:" + projectLevel);
 		String userCode = "820032";
 		try {
-			String obj=ps.selectProjectTableNameByProjectLevel(Integer.parseInt(projectLevel)).getData().toString();//获得表名
-			List<KbProject> kpro=ps.selectAllProByUser(obj,projectCode,userCode).getData();
-			System.err.println("list:"+kpro);
-			double proCount=0;//项目进行中的数量
-			double completed=0;//项目已完成的数量
+			String obj = ps.selectProjectTableNameByProjectLevel(Integer.parseInt(projectLevel)).getData().toString();// 获得表名
+			List<KbProject> kpro = ps.selectAllProByUser(obj, projectCode, userCode).getData();
+			System.err.println("list:" + kpro);
+			double proCount = 0;// 项目进行中的数量
+			double completed = 0;// 项目已完成的数量
 			for (KbProject kb : kpro) {
-				if(kb.getProjectStatus().equals("progress")){
+				if ("progress".equals(kb.getProjectStatus())) {
 					proCount++;
-				} else {
+				} else if ("completed".equals(kb.getProjectStatus())) {
 					completed++;
 				}
 			}
-			int sum=(int) (proCount+completed);//该项目下所有的项目
-			String ratio=(int)completed+"/"+sum;//已完成项目/项目总数
-			int per=(int) ((completed/sum)*100);//已完成项目所占百分比
-			System.err.println("ratio:"+ratio+";per:"+per);
+			int sum = (int) (proCount + completed);// 该项目下所有的项目
+			String ratio = (int) completed + "/" + sum;// 已完成项目/项目总数
+			int per = (int) ((completed / sum) * 100);// 已完成项目所占百分比
+			System.err.println("ratio:" + ratio + ";per:" + per);
 
 			Result<List<Map<String, Object>>> fileResult = fs.selectFile(Integer.parseInt(projectLevel), userCode,
 					projectCode);
-//			System.err.println(fileResult);
+			// System.err.println(fileResult);
 			request.setAttribute("files", fileResult.getData());
 			request.setAttribute("projects", kpro);
 			request.setAttribute("ratio", ratio);
@@ -316,48 +314,49 @@ public class FileController extends BaseController {
 		}
 		return "view/project_detail";
 	}
-	
+
 	/**
 	 * 
-	 * @Title: backFileForDetail  
+	 * @Title: backFileForDetail
 	 * @Description: 详情单的返回功能（可以和上面的进入下一层方法合并，后续）
-	 * @author 陈专懂 
-	 * @return String 
-	 * @date 2018年6月28日  
+	 * @author 陈专懂
+	 * @return String
+	 * @date 2018年6月28日
 	 * @version 1.0
 	 */
 	@RequestMapping("/back.do")
-	public String backFileForDetail(HttpServletRequest request, HttpSession session,HttpServletResponse response) {
+	public String backFileForDetail(HttpServletRequest request, HttpSession session, HttpServletResponse response) {
 		String projectCode = request.getParameter("project_code");
 		int projectLevel = Integer.parseInt(request.getParameter("project_level"));
 		String userCode = "820032";
 		try {
-			List<KbProject> kpro=ps.selectSuperiorAllPro(userCode, projectCode, projectLevel);
-			int level=0;
-			if(projectLevel==0){
-//				System.err.println("123");
-//				response.sendRedirect("pro/AllProInMain.do");
-				//需要增加跳转主界面
-				level=0;
-			}else{
-				level=projectLevel-1;
+			List<KbProject> kpro = ps.selectSuperiorAllPro(userCode, projectCode, projectLevel);
+			int level = 0;
+			if (projectLevel == 0) {
+				// System.err.println("123");
+				// response.sendRedirect("pro/AllProInMain.do");
+				// 需要增加跳转主界面
+				level = 0;
+			} else {
+				level = projectLevel - 1;
 			}
-			List<KbProject> TOPkpro=ps.selectSuperiorAllPro(userCode, projectCode, level);
-			System.err.println("112313123123:"+TOPkpro.get(0).getProjectCode()+",,,231313,,:"+TOPkpro.get(0).getProjectName());
-			System.err.println("list:"+kpro);
-			double proCount=0;//项目进行中的数量
-			double completed=0;//项目已完成的数量
+			List<KbProject> TOPkpro = ps.selectSuperiorAllPro(userCode, projectCode, level);
+			System.err.println("112313123123:" + TOPkpro.get(0).getProjectCode() + ",,,231313,,:"
+					+ TOPkpro.get(0).getProjectName());
+			System.err.println("list:" + kpro);
+			double proCount = 0;// 项目进行中的数量
+			double completed = 0;// 项目已完成的数量
 			for (KbProject kb : kpro) {
-				if(kb.getProjectStatus().equals("progress")){
+				if (kb.getProjectStatus().equals("progress")) {
 					proCount++;
 				} else {
 					completed++;
 				}
 			}
-			int sum=(int) (proCount+completed);//该项目下所有的项目
-			String ratio=(int)completed+"/"+sum;//已完成项目/项目总数
-			int per=(int) ((completed/sum)*100);//已完成项目所占百分比
-			System.err.println("ratio:"+ratio+";per:"+per);
+			int sum = (int) (proCount + completed);// 该项目下所有的项目
+			String ratio = (int) completed + "/" + sum;// 已完成项目/项目总数
+			int per = (int) ((completed / sum) * 100);// 已完成项目所占百分比
+			System.err.println("ratio:" + ratio + ";per:" + per);
 
 			Result<List<Map<String, Object>>> fileResult = fs.selectFile(TOPkpro.get(0).getProjectLevel(), userCode,
 					TOPkpro.get(0).getProjectCode());
@@ -378,8 +377,6 @@ public class FileController extends BaseController {
 		}
 		return "view/project_detail";
 	}
-	
-
 
 	/**
 	 * 
@@ -430,23 +427,16 @@ public class FileController extends BaseController {
 	@RequestMapping("/insFileJsp.do")
 	public String toInsertFile(HttpServletRequest request, HttpSession session) {
 		try {
-			// 获得部门信息
-			// String userDeptCode = session.getAttribute("user_dept_code").toString();
-			String userDeptCode = "D201806230935390372";
-			// 获得父类编码
-			String projectParentCode = request.getParameter("project_code");
-			// 获得父类名称
-			String projectName = request.getParameter("project_name");
-			// 获得父类等级
+			String userDeptCode = session.getAttribute("user_dept_code").toString();// 获得部门信息
+			// String userDeptCode = "D201806230935390372";// 获得部门信息
+			String projectParentCode = request.getParameter("project_code");// 获得父类编码
+			// String projectName = request.getParameter("project_name"); // 获得父类名称
 			String projectParentLevel = StrUtil.isBlank(request.getParameter("project_level")) ? "0"
-					: request.getParameter("project_level");
-			System.err.println("projectParentCode:"+projectParentCode+"----projectParentLevel:"+projectParentLevel);
+					: request.getParameter("project_level"); // 获得父类等级
 			Result<List<KbUser>> userResult = us.selUsersByUserDeptCode(userDeptCode); // 获得员工信息
 			request.setAttribute("userList", userResult.getData());
-			request.setAttribute("projectParentCode", projectParentCode);
-			request.setAttribute("projectName", projectName);
-			request.setAttribute("projectLevel", Integer.parseInt(projectParentLevel) + 1);
-			request.setAttribute("parentProjectLevel", Integer.parseInt(projectParentLevel));
+			request.setAttribute("projectLevel", projectParentLevel);
+			request.setAttribute("projectCode", projectParentCode);
 		} catch (NumberFormatException | NullPointerException e) {
 			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
 			return "view/login";

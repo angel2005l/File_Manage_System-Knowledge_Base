@@ -28,7 +28,19 @@ public interface KbUserMapper {
 
 	// 根据部门编码查询全部的用户
 	public List<KbUser> selectUsersByUserDeptCode(String userDeptCode) throws SQLException;
-	//根据部门编码查询上级部门的领导层用户
+
+	/**
+	 * 
+	 * @Title: selectSuperiorUserByUserDeptCode
+	 * @Description: 根据部门编码查询上级部门的领导层用户
+	 * @author 黄官易
+	 * @param userDeptCode
+	 * @return
+	 * @throws SQLException
+	 * @return List<KbUser>
+	 * @date 2018年6月29日
+	 * @version 1.0
+	 */
 	public List<KbUser> selectSuperiorUserByUserDeptCode(String userDeptCode) throws SQLException;
 
 }

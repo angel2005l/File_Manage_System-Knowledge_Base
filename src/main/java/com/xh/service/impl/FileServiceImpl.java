@@ -10,7 +10,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +30,6 @@ import com.xh.entity.KbFileUser;
 import com.xh.entity.KbProject;
 import com.xh.entity.KbUser;
 import com.xh.service.IFileService;
-import com.xh.service.IUserService;
 import com.xh.uitl.AsposeUtil;
 import com.xh.uitl.DateUtil;
 import com.xh.uitl.IOUtil;
@@ -57,24 +55,40 @@ public class FileServiceImpl extends BaseService implements IFileService {
 	@Autowired
 	private KbProjectMapper kpm;// 项目接口
 
-	@Autowired
-	@Qualifier("userServiceImpl")
-	private IUserService us;
-
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public Result<Object> insFile(KbFile kf, String projectLevel, List<KbFileUser> kfus) throws Exception {
-		if (!StrUtil.isNaturalNumber(projectLevel)) {
-			return rtnFailResult(Result.ERROR_4000, "项目层级参数不合法");
-		}
 		String fileTableName = "";
 		try {
-			fileTableName = kftm.selectFileTableNameByFileLevel(Integer.parseInt(projectLevel));
+			fileTableName = kftm.selectFileTableNameByFileLevel(kf.getFileLevel());
 		} catch (SQLException e) {
 			log.error("获得文件表信息异常,异常原因【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "获得文件表信息异常,请联系系统管理员");
 		}
 		if (StrUtil.notBlank(fileTableName)) {
+			try {
+				// 根据项目关联关系，获得部门信息
+				String userDeptCode = kfus.get(0).getUserDeptCode();
+				List<KbUser> superiorUserList = kum.selectSuperiorUserByUserDeptCode(userDeptCode);
+				if (null != superiorUserList && !superiorUserList.isEmpty()) {
+					for (KbUser kbUser : superiorUserList) {
+						KbFileUser kfu = new KbFileUser();
+						kfu.setFileCode(kf.getFileCode());
+						kfu.setFileName(kf.getFileName());
+						kfu.setFileType(kf.getFileType());
+						kfu.setUserCode(kbUser.getUserCode());
+						kfu.setUserName(kbUser.getUserName());
+						kfu.setFilePermission("download");
+						kfu.setUserDeptCode(userDeptCode);
+						kfu.setCreateUserCode("kb_system");
+						kfu.setCreateTime(DateUtil.curDateYMDHMS());
+						kfus.add(kfu);
+					}
+				}
+			} catch (SQLException e) {
+				log.error("根据部门编码查询上级部门的领导层用户接口异常,异常原因:【" + e.toString() + "】");
+				return rtnErrorResult(Result.ERROR_6000, "获取上级部门信息异常,请联系系统管理员");
+			}
 			try {
 				// 保存文件主信息
 				int fileNum = kfm.insertFile(kf, fileTableName);
@@ -264,7 +278,7 @@ public class FileServiceImpl extends BaseService implements IFileService {
 
 	@Override
 	public Map<String, Object> getShareFile(String fileCode, int fileLevel, String projectCode) throws Exception {
-		// 因为想在项目表层级与文件表层级相同 fileLevel/projectLevel 相同
+		// 因为现在在项目表层级与文件表层级相同 fileLevel/projectLevel 相同
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		try {
 			// 查询项目信息
