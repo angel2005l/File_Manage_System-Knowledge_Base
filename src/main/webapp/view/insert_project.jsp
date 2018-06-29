@@ -212,6 +212,8 @@
 							value="${projectParentCode }">
 
 					</form>
+					<!-- 不需要提交的隐藏域 -->
+					<input type="hidden" id="userInfo" value="${sessionScope.user_code },${sessionScope.user_name }" />
 				</div>
 			</div>
 		</div>
@@ -224,6 +226,13 @@
 	<script type="text/javascript" src="assets/js/jquery.form.js"></script>
 	<script type="text/javascript">
 		$(function() {
+			//创建人默认为项目参与者
+			var createInfo = $("#userInfo").val();
+			$("input[name='project_edit'][value='"+createInfo+"']").prop("checked","checked").on("change",function(){
+				$(this).prop("checked","checked");
+			})
+			$("input[name='project_read'][value='"+createInfo+"']").prop("disabled","disabled");
+			
 			//控制权限唯一
 			$("input[name='project_edit']").on("change", function() {
 				var editVal = $(this).val();

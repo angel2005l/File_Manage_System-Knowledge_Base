@@ -32,6 +32,6 @@ public interface KbProjectUserMapper {
 	 * @date 2018年6月29日
 	 * @version 1.0
 	 */
-	public int insertProjectUsers(List<KbProjectUser> kpuList) throws SQLException;
+	public int batchInsertProjectUsers(List<KbProjectUser> kpuList) throws SQLException;
 
 }
