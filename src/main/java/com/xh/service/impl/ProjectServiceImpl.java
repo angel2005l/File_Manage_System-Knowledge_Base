@@ -247,13 +247,22 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	 * 
 	 * @throws SQLException
 	 */
-	public List<KbProject> selectSuperiorAllPro(String userCode, String projectCode, int projectLevel)
+	public Map<String,Object> selectSuperiorAllPro(String userCode, String projectCode, int projectLevel)
 			throws SQLException {
-		String formName = projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);
-		List<KbProject> proList = projectMapper.selectSuperiorAllPro(formName, projectCode, userCode);
-		System.err.println("service:" + proList);
-		if (!proList.isEmpty()) {
-			return proList;
+		String formName = projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);//获取表名
+//		获取当前等级项目的父类 code  
+		String parentCode=projectMapper.getProjectParentCode(formName, projectCode);
+//		System.err.println("service:userCode:"+userCode+";projectCode:"+projectCode+";projectLevel:"+projectLevel);
+		KbProjectUser kproUser=proUserMapper.getParProjectName(projectCode);
+		List<KbProject> proList = projectMapper.selectSonProjectByParentCodeAndUserCode(formName, parentCode, userCode);
+		System.err.println("打印应该显示的界面数据："+proList.toString());
+		Map<String,Object> map=new HashMap<String, Object>();
+		map.put("list", proList);
+		map.put("code", parentCode);
+		map.put("parProjectName", kproUser.getProjectName());
+		map.put("parProjectLevel", kproUser.getProjectLevel());
+		if (!map.isEmpty()) {
+			return map;
 		} else {
 			log.error("数据为空");
 			return null;

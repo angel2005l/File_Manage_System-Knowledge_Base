@@ -192,11 +192,21 @@
 						</div>
 						<!-- 当前项目等级（父类） -->
 						<input type="hidden" name="project_level" id="project_level" value="${projectLevel }">
+<<<<<<< HEAD
 						<!-- 当前项目编码（父类）-->
 						<input type="hidden" name="project_code" id="project_code" value="${projectCode }">
+=======
+						<input type="hidden" name="project_code" id="project_code" value="${projectParentCode }">
+						<input type="hidden" name="project_name" id="project_name" value="${projectName }">
+>>>>>>> refs/heads/dev_czd
 					</form>
+<<<<<<< HEAD
 					<!-- 不需要提交的隐藏域 -->
 					<input type="hidden" id="userInfo" value="${sessionScope.user_code },${sessionScope.user_name }" />
+=======
+						<input type="hidden" name="parent_project_level" id="parent_project_level" value="${parentProjectLevel }">
+
+>>>>>>> refs/heads/dev_czd
 				</div>
 			</div>
 		</div>
@@ -249,7 +259,14 @@
 					dataType : 'json',
 					success : function(result) {
 						if (result.code == 0) {
-							
+/* 							//parent.location.href='userManage?method=user_sel';
+							//parent.layer.close(index);
+							if(projectLevel == 0){
+								window.location.href="pro/index.do?project_code="+projectCode+"&project_level="+projectLevel; 
+							}else{
+								window.location.href="file/pfd.do?project_code="+projectCode+"&project_level="+projectLevel+"&project_name="+projectName; 
+							} */
+
 						} else {
 							alert(result.msg)
 						}

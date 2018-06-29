@@ -51,9 +51,13 @@
   </select>
     <!-- 查询上级项目下的所有的项目 -->
   <select id="selectSuperiorAllPro" resultMap="BaseResultMap" parameterType="string">
-  	select <include refid="Base_Column_List" /> from ${formName} where project_parent_code = (SELECT project_parent_code from ${formName} a INNER JOIN kb_project_user b on a.project_code=b.project_code and a.project_code=#{projectCode} and b.user_code=#{userCode})
+  	select <include refid="Base_Column_List" /> from ${formName} 
+  	where project_parent_code = (SELECT project_parent_code from ${formName} a INNER JOIN kb_project_user b 
+  	on a.project_code=b.project_code and a.project_code=#{projectCode} and b.user_code=#{userCode})
   </select>
-  
-  
+  <!-- 查询父类的code -->
+  <select id="getProjectParentCode" resultType="String" parameterType="string">
+  	SELECT project_parent_code from ${formName} where project_code=#{projectCode} 
+  </select>
   
 </mapper>
