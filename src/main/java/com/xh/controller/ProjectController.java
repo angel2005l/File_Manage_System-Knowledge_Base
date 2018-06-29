@@ -174,13 +174,11 @@ public class ProjectController extends BaseController {
 	@ResponseBody
 	public Result<Object> selectAllPro(HttpServletRequest request, HttpServletResponse response) {
 		String obj = ps.selectProjectTableNameByProjectLevel(0).getData().toString();// 表名
-		System.err.println("表名:" + obj);
 		String projectParentCode = "-1";
 		if (obj == null) {
 			return rtnErrorResult(Result.ERROR_4000, "找不到项目根目录");
 		}
 		List<KbProject> list = ps.selectAllPro(obj, projectParentCode).getData();
-		System.err.println("信息：" + list);
 		if (list != null) {
 			return rtnSuccessResult("获取该等级项目信息成功", list);
 		}
@@ -263,7 +261,7 @@ public class ProjectController extends BaseController {
 			Result<List<KbUser>> userResult = us.selUsersByUserDeptCode(userDeptCode); // 获得员工信息
 			request.setAttribute("userList", userResult.getData());
 			request.setAttribute("projectParentCode", projectParentCode);
-			request.setAttribute("projectLevel", Integer.parseInt(projectParentLevel) + 1);
+			request.setAttribute("projectLevel", projectParentLevel);
 		} catch (NumberFormatException | NullPointerException e) {
 			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
 			return "view/login";
