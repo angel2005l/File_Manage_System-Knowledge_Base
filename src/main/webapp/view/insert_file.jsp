@@ -162,7 +162,7 @@
 									<div class="manage-members">
 										<div class="add-member"></div>
 										<div class="members member-checkbox-list">
-											<c:forEach var="b" items="${userList }">
+											<c:forEach var="b" items="${userList }" >
 												<label title="${b.userName }" class="member"> <input
 													type="checkbox" name="file_show" value="${b.userCode }">
 													<span class="name"><font
