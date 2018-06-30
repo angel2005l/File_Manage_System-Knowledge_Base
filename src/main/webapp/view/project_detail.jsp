@@ -100,11 +100,11 @@
 										<div class="todolist-actions actions"></div>
 										<h4>
 											<span class="name-non-linkable"> <span
-												class="todolist-rest" id="project_name">${projectName }</span> <span
+												class="todolist-rest" id="project_name">${projectInfo.projectName }</span> <span
 												style="display: none"><input type="text"
-													value="${projectCode }" id="project_code" /></span> <!-- 父类的projectCode -->
+													value="${projectInfo.projectCode }" id="project_code" /></span> <!-- 父类的projectCode -->
 												<span style="display: none"><input type="text"
-													value="${projectLevel }" id="project_level" /></span> <!-- 父类的projectLevel -->
+													value="${projectInfo.projectLevel }" id="project_level" /></span> <!-- 父类的projectLevel -->
 											</span>
 
 											<!-- 功能暂不明确 -->
@@ -125,7 +125,7 @@
 									</div>
 
 									<ul class="todos todos-uncompleted ui-sortable">
-										<c:forEach var="projects" items="${projects }">
+										<c:forEach var="projects" items="${projectSonInfos }">
 											<c:if test="${projects.projectStatus=='progress' }">
 												<li class="todo">
 													<div class="todo-wrap">
@@ -144,20 +144,14 @@
 																class="todo-rest">${projects.projectName }</span>
 														</span> <span class="content-linkable"> <a
 																class="todo-rest" data-stack="true"
-																href="javascript:;" onclick="into('${projects.projectCode }','${projects.projectLevel}','${projects.projectName }')"
-																name="project_name">${projects.projectName }</a>
+																href="file/pfd.do?project_code=${projects.projectCode }&project_level=${projects.projectLevel}&root_code=${rootCode }"
+																 >${projects.projectName }</a>
 														</span> <!-- <div class="progress-wrap">
 							<span class="progress-pie" title="60%" data-pie="60"></span>
 							<span class="todo-progress" title="总共有 10 个检查项，已完成 6 个">(6/10)</span>
 						</div> -->
-														</span> <span class="todo-detail"> <a
-															class="label todo-assign-due" href="javascript:;"
-															data-request-members="8f766bfdbe614633b7170027e8165a55">
-																<span class="assignee"
-																data-guid="3b3a614642fc499bbce9a48e5c7672aa"
-																data-gavatar="">${projects.createUserCode }</span>
-														</a>
-														</span>
+														</span> <span class="todo-detail"> <a class="label todo-assign-due">${projects.createUserCode } </a></span>
+														
 													</div>
 												</li>
 											</c:if>
@@ -166,7 +160,7 @@
 									</ul>
 									<ul class="todo-new-wrap"></ul>
 
-									<c:forEach var="projects" items="${projects }">
+									<c:forEach var="projects" items="${projectSonInfos }">
 										<c:if test="${projects.projectStatus=='completed' }">
 											<li class="todo completed">
 
@@ -207,7 +201,7 @@
 						</div>
 					</div>
 					<div class="comments streams">
-						<c:forEach var="b" items="${requestScope.files }">
+						<c:forEach var="b" items="${files }">
 							<div class="comment-main">
 								<div class="comment-content editor-style">
 									<p>${b.file_info }</p>
@@ -236,7 +230,7 @@
 																class="link-change-dir">下载</a>
 														</c:if>
 														<a class="link-change-dir"
-															onclick="shareFile('${b.file_code }','${b.file_level }','${sessionScope.user_dept_code }')">分享</a>
+															onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">分享</a>
 													</div>
 												</div>
 											</div>
@@ -252,32 +246,27 @@
 
 			</div>
 			<div class="detail-actions">
-	<%-- 			<input type="text" id="project_name1" value="${projectName1 }" style="display:none" />
-				<input type="text" id="project_code1" value="${projectCode1 }" style="display:none" />
-				<input type="text" id="project_level1" value="${projectLevel1 }" style="display:none" /> --%>
-				<div class="item detail-star-action">
-					<a class="detail-action detail-action-star" title="文件上传"
-						onclick="insertFile()">文件上传</a>
-				</div>
-					<c:if test="${projectLevel!='0' }">			
-					<div class="item detail-star-action">
-					<a class="detail-action detail-action-star" title="返回上一层"
-						onclick="back()">返回上一层</a>
+			<c:if test="${!(rootCode eq projectInfo.projectCode) }">			
+					<div class="item">
+					<a class="detail-action detail-action-star" title="返回上一层" href="file/pfdb.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }&root_code=${rootCode }">返回上一层</a>
 					</div>
 					</c:if>	
-				
 				<div class="item">
-					<a class="detail-action detail-action-edit" href="javascript:;"
-					onclick="insertProject()">添加子项目</a>
+					<a class="detail-action detail-action-star" title="返回首页" href="pro/index.do" >返回首页</a>
+				</div>
+				<div class="item">
+					<a class="detail-action detail-action-star" title="文件上传" href="file/insFileJsp.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }"
+						>文件上传</a>
+				</div>
+				<div class="item">
+					<a class="detail-action detail-action-edit" href="pro/insProJsp.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }" >新增项目</a>
 				</div>
 
 				<div class="item">
 					<!-- 分享项目需要 -->
-					<%-- shareProject('${projects.projectCode}','${projects.projectLevel }','${sessionScope.userCode }') --%>
 					<a class="detail-action detail-action-archive"
-						onclick="shareProject('1','1','1')">分享</a>
+						onclick="shareProject('${projectInfo.projectCode}','${projectInfo.projectLevel }','${sessionScope.user_code }')">分享</a>
 				</div>
-
 			</div>
 		</div>
 		<div class="footer">© 商务智能部</div>
@@ -285,7 +274,7 @@
 	<form id="displayForm" action="build/generic/web/viewer.html"
 		method="get" target="_blank">
 		<input id="displayValues" type="hidden" name="file"
-			value="/xh_bi_b_knowledge_base/file/disPdf.do?file_info=F201806221421466073,新海知识库数据库结构.xlsx" />
+			value="" />
 	</form>
 	<script type="text/javascript" src="assets/js/layer.js"></script>
 	
@@ -314,34 +303,8 @@
 						}
 					})	
 				}
-				
-				function back(){
-					var projectName=document.getElementById("project_name").innerHTML;
-					var projectCode=document.getElementById("project_code").value;
-					var projectLevel=document.getElementById("project_level").value;
-					/* alert("projectName:"+projectName+"-;projectCode:"+projectCode+"-;projectLevel:"+projectLevel); */
-					window.location.href="file/back.do?project_code="+projectCode+"&project_level="+projectLevel+"&project_name="+projectName;
-				}
- 				function into(projectCode,projectLevel,projectName){
-					window.location.href="file/pfd.do?project_code="+projectCode+"&project_level="+projectLevel+"&project_name="+projectName;
- 				}
- 				
- 				function insertFile(){
- 					var projectCode=document.getElementById("project_code").value;
-					var projectLevel=document.getElementById("project_level").value;
-					var projectName=document.getElementById("project_name").innerHTML;
-					window.location.href="file/insFileJsp.do?project_code="+projectCode+"&project_level="+projectLevel+"&project_name="+projectName;
- 				}
- 				function insertProject(){
- 					var projectCode=document.getElementById("project_code").value;
-					var projectLevel=document.getElementById("project_level").value;
-					var projectName=document.getElementById("project_name").innerHTML;
-					window.location.href="pro/insProJsp.do?project_code="+projectCode+"&project_level="+projectLevel;
- 				}
- 				
 				function shareProject(projectCode,projectLevel,userCode){
-					<%-- var str = "<%=basePath %>pro/sp.do?project_code="+projectCode+"&project_level="+projectLevel+"user_code="+userCode; --%>
-					var str = "11231";
+					var str = "<%=basePath %>pro/sp.do?project_code="+projectCode+"&project_level="+projectLevel+"&user_code="+userCode;
 					$("#shareUrl").html(str)
 					layer.open({
 					  type: 1,
@@ -354,8 +317,7 @@
 					})
 				}
 				function shareFile(fileCode,fileLevel,projectCode){
-					<%-- var str = "<%=basePath %>pro/sp.do?file_code="+fileCode+"&file_level="+fileLevel+"project_code="+projectCode; --%>
-					var str = "11231";
+					var str = "<%=basePath %>file/sf.do?file_code="+fileCode+"&file_level="+fileLevel+"&project_code="+projectCode;
 					$("#shareUrl").html(str)
 					layer.open({
 						  type: 1,
@@ -370,7 +332,7 @@
 				
 			</script>
 <div id="share" style="display:none;">
-		<span style="font-weight: bold;padding-right: 20px;">分享链接:</span><textarea id="shareUrl" style="border: hidden;resize:none; overflow-y:hidden;width: 400px;height: 40px" disabled="disabled"  rows="4"></textarea>
+		<span style="font-weight: bold;padding-right: 20px;">分享链接:</span><textarea id="shareUrl" style="border: hidden;resize:none; overflow-y:hidden;width: 400px;height: 60px" disabled="disabled"  rows="4"></textarea>
 </div>
 </body>
 

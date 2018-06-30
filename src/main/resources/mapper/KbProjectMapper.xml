@@ -20,12 +20,6 @@
     id, project_code, project_name, project_type, project_info, project_remark, project_parent_code, 
     project_level, project_status, create_user_code, DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') as create_time, update_user_code, DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') as update_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 'false' as QUERYID,
-    <include refid="Base_Column_List" />
-    from kb_project
-    where id = #{id,jdbcType=INTEGER}
-  </select>
   <!-- 添加项目信息 -->
 	<insert id="insertProject" parameterType="com.xh.entity.KbProject">
 		insert into ${formName} (project_code,project_name,project_type,project_info,project_remark,project_parent_code,project_status,create_user_code,create_time,update_user_code) 
@@ -59,5 +53,23 @@
   <select id="getProjectParentCode" resultType="String" parameterType="string">
   	SELECT project_parent_code from ${formName} where project_code=#{projectCode} 
   </select>
-  
+  <!-- 根据项目编码获得项目信息 -->
+	  <select id="selectProjectInfoByProjectCode" resultMap="BaseResultMap">
+	  		select <include refid="Base_Column_List" /> from ${projectTableName} where project_code = #{projectCode}
+	  </select>
+  <!-- 根据项目编码获得项目名称 -->
+  <select id="selectProjectNameByProjectCode" resultType="string">
+  	select project_name from ${projectTableName} where project_code = #{projectCode}
+  </select>
+  <!-- 根据用户编码/项目编码 查询项目信息集合 -->
+	<select id="selectProjectsByUserCodeAndProjectCode" resultMap="BaseResultMap">
+		SELECT a.id AS id, a.project_code AS project_code, a.project_name AS project_name, a.project_type AS project_type, a.project_info AS project_info, a.project_remark AS project_remark,
+		 a.project_parent_code AS project_parent_code,a.project_level AS project_level, a.project_status AS project_status,
+		  a.create_user_code AS create_user_code, DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') AS create_time, a.update_user_code AS update_user_code, DATE_FORMAT(a.update_time,'%Y-%m-%d %H:%i:%s') AS update_time 
+		  FROM ${projectTableName} a INNER JOIN kb_project_user b ON a.`project_code` = b.`project_code` AND a.`project_parent_code`= #{projectCode} AND b.`user_code`=#{userCode}
+	</select>
+	<!-- 根据项目编码查询父类项目编码 -->
+	<select id="selectSuperiorProjectCodeByProjectCode" resultType="string">
+		select project_parent_code from ${projectTableName} where project_code = #{projectCode}
+	</select>
 </mapper>

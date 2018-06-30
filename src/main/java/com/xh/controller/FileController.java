@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -24,10 +23,8 @@ import com.xh.base.Constant;
 import com.xh.entity.KbFile;
 import com.xh.entity.KbFileTable;
 import com.xh.entity.KbFileUser;
-import com.xh.entity.KbProject;
 import com.xh.entity.KbUser;
 import com.xh.service.IFileService;
-import com.xh.service.IProjectService;
 import com.xh.service.IUserService;
 import com.xh.uitl.DateUtil;
 import com.xh.uitl.IOUtil;
@@ -46,8 +43,6 @@ public class FileController extends BaseController {
 	@Qualifier("fileServiceImpl")
 	private IFileService fs;
 
-	@Autowired
-	private IProjectService ps;
 	@Autowired
 	@Qualifier("userServiceImpl")
 	private IUserService us;
@@ -77,15 +72,11 @@ public class FileController extends BaseController {
 			}
 			// 上传并写入文件成功,将文件信息写入数据库
 			String fileInfo = request.getParameter("file_info");
-			 String projectLevel = request.getParameter("project_level");
-			 String projectCode = request.getParameter("project_code");
-//			String projectLevel = "0";
-//			String projectCode = "P201806221307125412";
-			 String userCode = session.getAttribute("user_code").toString();
-			 String userDeptCode = session.getAttribute("user_dept_code").toString();
-//			String userDeptCode = "D201806230935390372";
-//			String userCode = "820046";
-			Map<String, String> fileMap = ufResult.getData();
+			String projectLevel = request.getParameter("project_level");
+			String projectCode = request.getParameter("project_code");
+			String userCode = session.getAttribute("user_code").toString();
+			String userDeptCode = session.getAttribute("user_dept_code").toString();
+			Map<String, String> fileMap = ufResult.getData();// 文件写入后的信息
 			String fileCode = fileMap.get("fileCode");
 			String fileName = fileMap.get("fileName");
 			String fileType = fileMap.get("fileType");
@@ -96,7 +87,7 @@ public class FileController extends BaseController {
 			kf.setFileInfo(fileInfo);
 			kf.setFileType(fileType);
 			kf.setFileStatus("record");
-			kf.setFileLevel(Integer.parseInt(projectLevel)-1);
+			kf.setFileLevel(Integer.parseInt(projectLevel));
 			kf.setProjectCode(projectCode);
 			kf.setCreateUserCode(userCode);
 			kf.setCreateTime(DateUtil.curDateYMDHMS());
@@ -262,7 +253,7 @@ public class FileController extends BaseController {
 	/**
 	 * 
 	 * @Title: selectFileForDetail
-	 * @Description: 文件查询
+	 * @Description: 详细页展示
 	 * @author 黄官易
 	 * @param request
 	 * @return
@@ -271,38 +262,27 @@ public class FileController extends BaseController {
 	 * @version 1.0
 	 */
 	@RequestMapping("/pfd.do")
-	public String selectFileForDetail(HttpServletRequest request, HttpSession session) {
-		String projectName = request.getParameter("project_name");
+	public String projectFileDetail(HttpServletRequest request, HttpSession session) {
 		String projectCode = request.getParameter("project_code");
 		String projectLevel = request.getParameter("project_level");
 		String userCode = session.getAttribute("user_code").toString();// 用户编码
+		String rootCode = StrUtil.isBlank(request.getParameter("root_code")) ? projectCode
+				: request.getParameter("root_code");// 根路径
 		try {
-			String obj=ps.selectProjectTableNameByProjectLevel(Integer.parseInt(projectLevel)).getData().toString();//获得表名
-			List<KbProject> kpro=ps.selectAllProByUser(obj,projectCode,userCode).getData();
-			int proCount=0;//项目进行中的数量
-			int completed=0;//项目已完成的数量
-			if(null!=kpro&&!kpro.isEmpty()){
-				for (KbProject kb : kpro) {
-					if(kb.getProjectStatus().equals("progress")){
-						proCount++;
-					} else {
-						completed++;
-					}
-				}
+			Result<Map<String, Object>> result = fs.getProjectDetailData(projectCode, Integer.parseInt(projectLevel),
+					userCode);
+			if (Result.SUCCESS_0 == result.getCode()) {
+				Map<String, Object> ResultMap = result.getData();
+				request.setAttribute("files", ResultMap.get("files"));
+				request.setAttribute("projectSonInfos", ResultMap.get("projectSonInfos"));
+				request.setAttribute("ratio", ResultMap.get("ratio"));
+				request.setAttribute("per", ResultMap.get("per"));
+				request.setAttribute("projectInfo", ResultMap.get("projectInfo"));
+				request.setAttribute("rootCode", rootCode);
+			} else {
+				return "view/error";
 			}
-			int sum=proCount+completed;//该项目下所有的项目
-			String ratio=completed+"/"+sum;//已完成项目/项目总数
-			int per=(completed*100)/(sum*100);//已完成项目所占百分比
-			Result<List<Map<String, Object>>> fileResult = fs.selectFile(Integer.parseInt(projectLevel), userCode,
-					projectCode);
-			request.setAttribute("files", fileResult.getData());
-			request.setAttribute("projects", kpro);
-			request.setAttribute("ratio", ratio);
-			request.setAttribute("per", per);
-			request.setAttribute("projectCode", projectCode);
-			request.setAttribute("projectLevel", projectLevel);
-			request.setAttribute("projectName", projectName);
-		} catch (NumberFormatException e) {
+		} catch (NullPointerException | NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
 			return "view/index";
 		} catch (Exception e) {
@@ -314,60 +294,49 @@ public class FileController extends BaseController {
 
 	/**
 	 * 
-	 * @Title: backFileForDetail
-	 * @Description: 详情单的返回功能（可以和上面的进入下一层方法合并，后续）
-	 * @author 陈专懂
+	 * @Title: projectFileDetailBack
+	 * @Description: 详细页展示(返回上一页)
+	 * @author 黄官易
+	 * @param request
+	 * @param session
+	 * @return
 	 * @return String
-	 * @date 2018年6月28日
+	 * @date 2018年6月30日
 	 * @version 1.0
 	 */
-	@RequestMapping("/back.do")
-	public String backFileForDetail(HttpServletRequest request, HttpSession session,HttpServletResponse response) {
+	@RequestMapping("/pfdb.do")
+	public String projectFileDetailBack(HttpServletRequest request, HttpSession session) {
 		String projectCode = request.getParameter("project_code");
-		int projectLevel = Integer.parseInt(request.getParameter("project_level"));
+		String projectLevel = request.getParameter("project_level");
 		String userCode = session.getAttribute("user_code").toString();// 用户编码
-		double proCount=0;//项目进行中的数量
-		double completed=0;//项目已完成的数量
-		String ratio = null;//已完成项目/项目总数
-		int per = 0;//已完成项目所占百分比
-		List<KbProject> kpro = new ArrayList<KbProject>();//实例化一个对象
+		String rootCode = StrUtil.isBlank(request.getParameter("root_code")) ? ""
+				: request.getParameter("root_code");// 根路径
 		try {
-			Map<String,Object> map = ps.selectSuperiorAllPro(userCode, projectCode, projectLevel);
-			Result<List<Map<String, Object>>> fileResult = fs.selectFile(projectLevel-1, userCode,
-					map.get("code").toString());
-			if(null!=map||!map.isEmpty()){
-				kpro=(List<KbProject>) map.get("list");
-				proCount=0;//项目进行中的数量
-				completed=0;//项目已完成的数量
-				for (KbProject kb : kpro) {
-					if(kb.getProjectStatus().equals("progress")){
-						proCount++;
-					} else {
-						completed++;
-					}
+			projectCode = fs.selectSuperiorProjectCodeByProjectCode(Integer.parseInt(projectLevel), projectCode);
+			if (StrUtil.notBlank(projectCode)) {
+				Result<Map<String, Object>> result = fs.getProjectDetailData(projectCode,
+						Integer.parseInt(projectLevel) - 1, userCode);
+				if (Result.SUCCESS_0 == result.getCode()) {
+					Map<String, Object> ResultMap = result.getData();
+					request.setAttribute("files", ResultMap.get("files"));
+					request.setAttribute("projectSonInfos", ResultMap.get("projectSonInfos"));
+					request.setAttribute("ratio", ResultMap.get("ratio"));
+					request.setAttribute("per", ResultMap.get("per"));
+					request.setAttribute("projectInfo", ResultMap.get("projectInfo"));
+					request.setAttribute("rootCode", rootCode);
+					return "view/project_detail";
 				}
 			}
-			int sum=(int) (proCount+completed);//该项目下所有的项目
-			if(sum!=0){
-				ratio=(int)completed+"/"+sum;//已完成项目/项目总数
-				per=(int) ((completed/sum)*100);//已完成项目所占百分比
-			}
-			request.setAttribute("files", fileResult.getData());
-			request.setAttribute("projects", kpro);
-			request.setAttribute("ratio", ratio);
-			request.setAttribute("per", per);
-			request.setAttribute("projectCode", map.get("code").toString());
-			request.setAttribute("projectLevel", map.get("parProjectLevel").toString());
-			request.setAttribute("projectName", map.get("parProjectName").toString());
-		} catch (NumberFormatException e) {
+		} catch (NullPointerException | NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
 			return "view/index";
 		} catch (Exception e) {
 			log.error("文件查询异常,异常原因:【" + e.toString() + "】");
 			return "view/error";
 		}
-		return "view/project_detail";
+		return "view/error";
 	}
+
 	/**
 	 * 
 	 * @Title: shareFile
@@ -418,15 +387,13 @@ public class FileController extends BaseController {
 	public String toInsertFile(HttpServletRequest request, HttpSession session) {
 		try {
 			String userDeptCode = session.getAttribute("user_dept_code").toString();// 获得部门信息
-			// String userDeptCode = "D201806230935390372";// 获得部门信息
-			String projectParentCode = request.getParameter("project_code");// 获得父类编码
-			// String projectName = request.getParameter("project_name"); // 获得父类名称
-			String projectParentLevel = StrUtil.isBlank(request.getParameter("project_level")) ? "0"
+			String projectCode = request.getParameter("project_code");// 获得父类编码
+			String projectLevel = StrUtil.isBlank(request.getParameter("project_level")) ? "0"
 					: request.getParameter("project_level"); // 获得父类等级
 			Result<List<KbUser>> userResult = us.selUsersByUserDeptCode(userDeptCode); // 获得员工信息
 			request.setAttribute("userList", userResult.getData());
-			request.setAttribute("projectLevel", projectParentLevel);
-			request.setAttribute("projectCode", projectParentCode);
+			request.setAttribute("projectLevel", projectLevel);
+			request.setAttribute("projectCode", projectCode);
 		} catch (NumberFormatException | NullPointerException e) {
 			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
 			return "view/login";
@@ -435,4 +402,5 @@ public class FileController extends BaseController {
 		}
 		return "view/insert_file";
 	}
+
 }
