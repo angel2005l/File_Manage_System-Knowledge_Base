@@ -51,8 +51,10 @@
 			(#{kpu.projectCode},#{kpu.projectName},#{kpu.projectPermission},#{kpu.projectLevel},#{kpu.userCode},#{kpu.userName},#{kpu.userDeptCode},#{kpu.createUserCode},#{kpu.createTime})
 		</foreach>
 	</insert>
-	<select id="getParProjectName" resultType="com.xh.entity.KbProjectUser" parameterType="string">
-  		select project_name,project_level from kb_project_user where project_code=#{projectCode}
+	<select id="getParProject" resultMap="BaseResultMap" parameterType="string">
+  		select id, project_code, project_name, project_permission,project_level,
+		user_code, user_name, user_dept_code,
+		create_user_code, DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') as create_time from kb_project_user where project_code=#{projectCode}
   	</select>
 
 </mapper>

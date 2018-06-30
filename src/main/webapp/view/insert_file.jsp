@@ -244,13 +244,7 @@
 					success : function(result) {
 						alert(result.msg);
 						if (result.code == 0) {
-							//parent.location.href='userManage?method=user_sel';
-							//parent.layer.close(index);
-							if(projectLevel == 0){
-								window.location.href="pro/index.do?project_code="+projectCode+"&project_level="+projectLevel; 
-							}else{
 								window.location.href="file/pfd.do?project_code="+projectCode+"&project_level="+projectLevel+"&project_name="+projectName; 
-							}
 						} else {
 							return ;
 						}

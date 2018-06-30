@@ -45,6 +45,6 @@ public interface KbProjectUserMapper {
 	 * @date 2018年6月29日  
 	 * @version 1.0
 	 */
-	public KbProjectUser getParProjectName(@Param("projectCode")String projectCode);
+	public KbProjectUser getParProject(@Param("projectCode")String projectCode);
 
 }
