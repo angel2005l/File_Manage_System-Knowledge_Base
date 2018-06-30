@@ -103,7 +103,8 @@
 							style="vertical-align: inherit;">创建新项目</font></font>
 					</h3>
 
-					<form id="projectFrom" class="form form-invite" enctype="multipart/form-data">
+					<form id="projectFrom" class="form form-invite"
+						enctype="multipart/form-data">
 						<div class="form-item">
 							<div class="form-field">
 								<input type="text" name="project_name" placeholder="项目名称"
@@ -181,9 +182,9 @@
 										<div class="members member-checkbox-list">
 											<c:forEach var="b" items="${userList }">
 												<label title="${b.userName }" class="member"> <input
-													type="checkbox" name="project_read" id=""
-													value="${b.userCode }"> <span class="name"><font
-														style="vertical-align: inherit;"><font
+													type="checkbox" name="project_read"
+													value="${b.userCode },${b.userName }"> <span
+													class="name"><font style="vertical-align: inherit;"><font
 															style="vertical-align: inherit;">${b.userName }</font></font></span>
 												</label>
 											</c:forEach>
@@ -195,7 +196,8 @@
 						</div>
 
 						<div class="form-buttons">
-							<button type="button" class="btn btn-primary" onclick="clickBtn()" >
+							<button type="button" class="btn btn-primary"
+								onclick="clickBtn()">
 								<font style="vertical-align: inherit;"><font
 									style="vertical-align: inherit;">创建项目</font></font>
 							</button>
@@ -210,6 +212,8 @@
 							value="${projectParentCode }">
 
 					</form>
+					<!-- 不需要提交的隐藏域 -->
+					<input type="hidden" id="userInfo" value="${sessionScope.user_code },${sessionScope.user_name }" />
 				</div>
 			</div>
 		</div>
@@ -222,6 +226,13 @@
 	<script type="text/javascript" src="assets/js/jquery.form.js"></script>
 	<script type="text/javascript">
 		$(function() {
+			//创建人默认为项目参与者
+			var createInfo = $("#userInfo").val();
+			$("input[name='project_edit'][value='"+createInfo+"']").prop("checked","checked").on("change",function(){
+				$(this).prop("checked","checked");
+			})
+			$("input[name='project_read'][value='"+createInfo+"']").prop("disabled","disabled");
+			
 			//控制权限唯一
 			$("input[name='project_edit']").on("change", function() {
 				var editVal = $(this).val();
@@ -233,38 +244,36 @@
 			})
 		})
 		function changeFileShow(editVal) {
-			var obj = $("input[name='project_read'][value=" + editVal + "]");
+			var obj = $("input[name='project_read'][value='" + editVal + "']");
 			if (obj.is(":checked")) {
 				obj.prop("checked", false);
 			}
 		}
 		function changeFileDownload(readVal) {
-			var obj = $("input[name='project_edit'][value=" + readVal + "]");
+			var obj = $("input[name='project_edit'][value='" + readVal + "']");
 			if (obj.is(":checked")) {
 				obj.prop("checked", false);
 			}
 		}
 
 		function clickBtn() {
-			if (checkFile) {
-				$("#projectFrom").ajaxSubmit({
-					url : 'pro/insPro.do',
-					type : 'post',
-					dataType : 'json',
-					success : function(result) {
-						alert(result.msg);
-						if (result.code == 0) {
-							//parent.location.href='userManage?method=user_sel';
-							//parent.layer.close(index);
-						} else {
-							return;
-						}
-					},
-					error : function() {
-						alert("服务未响应");
+			$("#projectFrom").ajaxSubmit({
+				url : 'pro/insPro.do',
+				type : 'post',
+				dataType : 'json',
+				success : function(result) {
+					alert(result.msg);
+					if (result.code == 0) {
+						//parent.location.href='userManage?method=user_sel';
+						//parent.layer.close(index);
+					} else {
+						return;
 					}
-				});
-			}
+				},
+				error : function() {
+					alert("服务未响应");
+				}
+			});
 		}
 	</script>
 </body>

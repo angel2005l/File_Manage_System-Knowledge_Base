@@ -135,7 +135,7 @@
 										<div class="members member-checkbox-list">
 											<c:forEach var="b" items="${userList }">
 												<label title="${b.userName }" class="member"> <input
-													type="checkbox" name="file_download" value="${b.userCode }">
+													type="checkbox" name="file_download" value="${b.userCode },${b.userName }">
 													<span class="name"><font
 														style="vertical-align: inherit;"><font
 															style="vertical-align: inherit;">${b.userName }</font></font></span>
@@ -162,9 +162,9 @@
 									<div class="manage-members">
 										<div class="add-member"></div>
 										<div class="members member-checkbox-list">
-											<c:forEach var="b" items="${userList }">
+											<c:forEach var="b" items="${userList }" >
 												<label title="${b.userName }" class="member"> <input
-													type="checkbox" name="file_show" value="${b.userCode }">
+													type="checkbox" name="file_show" value="${b.userCode },${b.userName }">
 													<span class="name"><font
 														style="vertical-align: inherit;"><font
 															style="vertical-align: inherit;">${b.userName }</font></font></span>
@@ -190,12 +190,13 @@
 							</font>
 							</a>
 						</div>
+						<!-- 当前项目等级（父类） -->
 						<input type="hidden" name="project_level" id="project_level" value="${projectLevel }">
-						<input type="hidden" name="project_code" id="project_code" value="${projectParentCode }">
-						<input type="hidden" name="project_name" id="project_name" value="${projectName }">
+						<!-- 当前项目编码（父类）-->
+						<input type="hidden" name="project_code" id="project_code" value="${projectCode }">
 					</form>
-						<input type="hidden" name="parent_project_level" id="parent_project_level" value="${parentProjectLevel }">
-
+					<!-- 不需要提交的隐藏域 -->
+					<input type="hidden" id="userInfo" value="${sessionScope.user_code },${sessionScope.user_name }" />
 				</div>
 			</div>
 		</div>
@@ -208,6 +209,13 @@
 	<script type="text/javascript" src="assets/js/jquery.form.js"></script>
 	<script type="text/javascript">
 		$(function() {
+			//上传文件者默认为项目参与者
+			var createInfo = $("#userInfo").val();
+			$("input[name='file_download'][value='"+createInfo+"']").prop("checked","checked").on("change",function(){
+				$(this).prop("checked","checked");
+			})
+			$("input[name='file_show'][value='"+createInfo+"']").prop("disabled","disabled");
+			
 			//控制权限唯一
 			$("input[name='file_download']").on("change", function() {
 				var dowloadVal = $(this).val();
@@ -218,35 +226,31 @@
 				changeFileDownload(showVal);
 			})
 		})
+		
 		function changeFileShow(dowloadVal) {
-			var obj = $("input[name='file_show'][value=" + dowloadVal + "]");
+			var obj = $("input[name='file_show'][value='" + dowloadVal + "']");
 			if (obj.is(":checked")) {
 				obj.prop("checked", false);
 			}
 		}
 		function changeFileDownload(showVal) {
-			var obj = $("input[name='file_download'][value=" + showVal + "]");
+			var obj = $("input[name='file_download'][value='" + showVal + "']");
 			if (obj.is(":checked")) {
 				obj.prop("checked", false);
 			}
 		}
-
 		function clickBtn() {
-			var projectCode=document.getElementById("project_code").value;
-			var projectLevel=document.getElementById("parent_project_level").value;
-			var projectName=document.getElementById("project_name").value;
-			alert("projectCode:"+projectCode+";projectLevel:"+projectLevel+";projectName:"+projectName);
+			var projectCode = $("#project_code").val();
+			var projectLevel = $("#project_level").val();
 			if (checkFile) {
 				$("#fileFrom").ajaxSubmit({
 					url : 'file/upFile.do',
 					type : 'post',
 					dataType : 'json',
 					success : function(result) {
-						alert(result.msg);
 						if (result.code == 0) {
-								window.location.href="file/pfd.do?project_code="+projectCode+"&project_level="+projectLevel+"&project_name="+projectName; 
 						} else {
-							return ;
+							alert(result.msg)
 						}
 					},
 					error : function() {
