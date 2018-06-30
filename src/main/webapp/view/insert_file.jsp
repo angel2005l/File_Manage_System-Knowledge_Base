@@ -135,7 +135,7 @@
 										<div class="members member-checkbox-list">
 											<c:forEach var="b" items="${userList }">
 												<label title="${b.userName }" class="member"> <input
-													type="checkbox" name="file_download" value="${b.userCode }">
+													type="checkbox" name="file_download" value="${b.userCode },${b.userName }">
 													<span class="name"><font
 														style="vertical-align: inherit;"><font
 															style="vertical-align: inherit;">${b.userName }</font></font></span>
@@ -164,7 +164,7 @@
 										<div class="members member-checkbox-list">
 											<c:forEach var="b" items="${userList }" >
 												<label title="${b.userName }" class="member"> <input
-													type="checkbox" name="file_show" value="${b.userCode }">
+													type="checkbox" name="file_show" value="${b.userCode },${b.userName }">
 													<span class="name"><font
 														style="vertical-align: inherit;"><font
 															style="vertical-align: inherit;">${b.userName }</font></font></span>
@@ -192,21 +192,11 @@
 						</div>
 						<!-- 当前项目等级（父类） -->
 						<input type="hidden" name="project_level" id="project_level" value="${projectLevel }">
-<<<<<<< HEAD
 						<!-- 当前项目编码（父类）-->
 						<input type="hidden" name="project_code" id="project_code" value="${projectCode }">
-=======
-						<input type="hidden" name="project_code" id="project_code" value="${projectParentCode }">
-						<input type="hidden" name="project_name" id="project_name" value="${projectName }">
->>>>>>> refs/heads/dev_czd
 					</form>
-<<<<<<< HEAD
 					<!-- 不需要提交的隐藏域 -->
 					<input type="hidden" id="userInfo" value="${sessionScope.user_code },${sessionScope.user_name }" />
-=======
-						<input type="hidden" name="parent_project_level" id="parent_project_level" value="${parentProjectLevel }">
-
->>>>>>> refs/heads/dev_czd
 				</div>
 			</div>
 		</div>
@@ -238,13 +228,13 @@
 		})
 		
 		function changeFileShow(dowloadVal) {
-			var obj = $("input[name='file_show'][value=" + dowloadVal + "]");
+			var obj = $("input[name='file_show'][value='" + dowloadVal + "']");
 			if (obj.is(":checked")) {
 				obj.prop("checked", false);
 			}
 		}
 		function changeFileDownload(showVal) {
-			var obj = $("input[name='file_download'][value=" + showVal + "]");
+			var obj = $("input[name='file_download'][value='" + showVal + "']");
 			if (obj.is(":checked")) {
 				obj.prop("checked", false);
 			}
