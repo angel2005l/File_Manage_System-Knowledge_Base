@@ -201,7 +201,7 @@
 								<font style="vertical-align: inherit;"><font
 									style="vertical-align: inherit;">创建项目</font></font>
 							</button>
-							<a href="退回主页" class="btn btn-x" data-stack="" data-stack-root="">
+							<a href="javascript:" onclick="self.location=document.referrer;" class="btn btn-x" >
 								<font style="vertical-align: inherit;"> <font
 									style="vertical-align: inherit;">取消</font>
 							</font>
@@ -242,7 +242,7 @@
 				var readVal = $(this).val();
 				changeFileDownload(readVal);
 			})
-		})
+		});
 		function changeFileShow(editVal) {
 			var obj = $("input[name='project_read'][value='" + editVal + "']");
 			if (obj.is(":checked")) {
@@ -264,10 +264,7 @@
 				success : function(result) {
 					alert(result.msg);
 					if (result.code == 0) {
-						//parent.location.href='userManage?method=user_sel';
-						//parent.layer.close(index);
-					} else {
-						return;
+						self.location=document.referrer;
 					}
 				},
 				error : function() {

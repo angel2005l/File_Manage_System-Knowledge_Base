@@ -184,7 +184,7 @@
 									style="vertical-align: inherit;">上传文件</font></font>
 							</button>
 
-							<a href="file/pfd.do?project_code=${projectCode }&project_level=${projectLevel }" class="btn btn-x"> <font
+							<a href="javascript:" onclick="self.location=document.referrer;" class="btn btn-x"> <font
 								style="vertical-align: inherit;"> <font
 									style="vertical-align: inherit;">取消</font>
 							</font>
@@ -250,7 +250,7 @@
 					success : function(result) {
 							alert(result.msg)
 						if (result.code == 0) {
-							window.location.href="file/pfd.do?project_code="+projectCode+"&project_level="+projectLevel
+							self.location=document.referrer;
 						}
 							},
 					error : function() {
