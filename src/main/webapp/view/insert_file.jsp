@@ -184,7 +184,7 @@
 									style="vertical-align: inherit;">上传文件</font></font>
 							</button>
 
-							<a href="退回主页" class="btn btn-x"> <font
+							<a href="file/pfd.do?project_code=${projectCode }&project_level=${projectLevel }" class="btn btn-x"> <font
 								style="vertical-align: inherit;"> <font
 									style="vertical-align: inherit;">取消</font>
 							</font>
@@ -248,11 +248,11 @@
 					type : 'post',
 					dataType : 'json',
 					success : function(result) {
-						if (result.code == 0) {
-						} else {
 							alert(result.msg)
+						if (result.code == 0) {
+							window.location.href="file/pfd.do?project_code="+projectCode+"&project_level="+projectLevel
 						}
-					},
+							},
 					error : function() {
 						alert("服务未响应");
 					}

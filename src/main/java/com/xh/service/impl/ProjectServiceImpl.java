@@ -211,26 +211,6 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 		return resultMap;
 	}
 
-	/**
-	 * 查询主界面所有的项目信息
-	 */
-	public List<List<KbProject>> selectAllProInMain() {
-		List<String> formNameList = projectTableMapper.selectAllProFormName();// 查询项目表所有的表名
-		// System.err.println("service,selectAllPro:"+formNameList.toString());
-		List<KbProject> kbProjectList = new ArrayList<KbProject>();
-		List<List<KbProject>> proList = new ArrayList<List<KbProject>>();
-		for (String formName : formNameList) {
-			kbProjectList = projectMapper.selectAllPro(formName);
-			proList.add(kbProjectList);
-		}
-		if (!proList.isEmpty()) {
-			// System.err.println("service:"+proList.toString());
-			return proList;
-		}
-		log.error("数据为空");
-		return null;
-	}
-
 	@Override
 	public List<Map<String, Object>> selectProjectByUserCode(String userCode) throws Exception {
 		try {
@@ -242,23 +222,19 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 
 	}
 
-	/**
-	 * 返回功能 项目下所有的子项目
-	 * 
-	 * @throws SQLException
-	 */
-	public Map<String,Object> selectSuperiorAllPro(String userCode, String projectCode, int projectLevel)
+	@Override
+	public Map<String, Object> selectSuperiorAllPro(String userCode, String projectCode, int projectLevel)
 			throws SQLException {
-		String formName = projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);//获取表名
-//		获取当前等级项目的父类 code  
-		String parentCode=projectMapper.getProjectParentCode(formName, projectCode);
-		KbProjectUser kproUser=proUserMapper.getParProject(projectCode);
-//		上跳的显示头
-		String parentCodeBi=projectMapper.getProjectParentCode(formName, kproUser.getProjectCode());
-		KbProjectUser kproUserBi=proUserMapper.getParProject(parentCodeBi);
-		
+		String formName = projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);// 获取表名
+		// 获取当前等级项目的父类 code
+		String parentCode = projectMapper.getProjectParentCode(formName, projectCode);
+		KbProjectUser kproUser = proUserMapper.getParProject(projectCode);
+		// 上跳的显示头
+		String parentCodeBi = projectMapper.getProjectParentCode(formName, kproUser.getProjectCode());
+		KbProjectUser kproUserBi = proUserMapper.getParProject(parentCodeBi);
+
 		List<KbProject> proList = projectMapper.selectSonProjectByParentCodeAndUserCode(formName, parentCode, userCode);
-		Map<String,Object> map=new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", proList);
 		map.put("code", parentCode);
 		map.put("parProjectName", kproUserBi.getProjectName());
@@ -307,7 +283,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 				log.error("根据部门编码查询上级部门的领导层用户接口异常,异常原因:【" + e.toString() + "】");
 				return rtnErrorResult(Result.ERROR_6000, "获取上级部门信息异常,请联系系统管理员");
 			}
-			//执行操作 保证数据操作的原子性
+			// 执行操作 保证数据操作的原子性
 			try {
 				int insProNum = projectMapper.insertProject(kp, projectTableName);
 				int insUsersNum = proUserMapper.batchInsertProjectUsers(kpus);
@@ -325,17 +301,42 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 		return rtnFailResult(Result.ERROR_4300, "无相关联数据表信息/该层级未开放,请联系系统管理员");
 	}
 
-	/**
-	 * 
-	 */
-	public String getProjectName(String projectCode) {
-		if(null!=projectCode){
-			KbProjectUser projectUser=proUserMapper.getParProject(projectCode);
-			String projectName=projectUser.getProjectName();
-			return projectName;
-		}else{
-			log.error("新建项目时,projectCode为空导致获取projectName失败");
-			return null;
+	@Override
+	public KbProject selectProjectInfoByProjectCode(int projectLevel, String projectCode) throws Exception {
+		String projectTableName = projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);
+		if (StrUtil.notBlank(projectTableName)) {
+			try {
+				return projectMapper.selectProjectInfoByProjectCode(projectTableName, projectCode);
+			} catch (SQLException e) {
+				log.error("根据项目编码获得项目信息数据接口异常,异常原因:【" + e.toString() + "】");
+			}
 		}
+		return null;
+	}
+
+	@Override
+	public String selectProjectNameByProjectCode(int projectLevel, String projectCode) throws Exception {
+		String projectTableName = projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);
+		if (StrUtil.notBlank(projectTableName)) {
+			try {
+				return projectMapper.selectProjectNameByProjectCode(projectTableName, projectCode);
+			} catch (SQLException e) {
+				log.error("根据项目编码获得项目名称数据接口异常,异常原因:【" + e.toString() + "】");
+			}
+		}
+		return "";
+	}
+
+	@Override
+	public List<KbProject> selectProjects(int projectLevel, String projectCode, String userCode) throws Exception {
+		String projectTableName = projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);
+		if (StrUtil.notBlank(projectTableName)) {
+			try {
+				return projectMapper.selectProjectsByUserCodeAndProjectCode(projectTableName, userCode, projectCode);
+			} catch (SQLException e) {
+				log.error("根据项目编码获得项目名称数据接口异常,异常原因:【" + e.toString() + "】");
+			}
+		}
+		return null;
 	}
 }
