@@ -101,6 +101,7 @@ public class ProjectController extends BaseController {
 			String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService() + StrUtil.getRandom(10000, 4);// 项目编码
 			String userCode = session.getAttribute("user_code").toString();// 创建人编码
 			String userDeptCode = session.getAttribute("user_dept_code").toString();// 创建人所属部门编码
+//			String projectName1=ps.getProjectName(projectCode);
 			KbProject kp = new KbProject();
 			kp.setProjectCode(projectCode);
 			kp.setProjectName(projectName);

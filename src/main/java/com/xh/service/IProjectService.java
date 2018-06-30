@@ -100,5 +100,6 @@ public interface IProjectService {
 	 * @version 1.0
 	 */
 	public Result<Object> insProject(KbProject kp, List<KbProjectUser> kpus) throws Exception;
-
+	
+	public String getProjectName(String projectCode);
 }

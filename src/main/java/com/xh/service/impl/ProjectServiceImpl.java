@@ -252,15 +252,17 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 		String formName = projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);//获取表名
 //		获取当前等级项目的父类 code  
 		String parentCode=projectMapper.getProjectParentCode(formName, projectCode);
-//		System.err.println("service:userCode:"+userCode+";projectCode:"+projectCode+";projectLevel:"+projectLevel);
-		KbProjectUser kproUser=proUserMapper.getParProjectName(projectCode);
+		KbProjectUser kproUser=proUserMapper.getParProject(projectCode);
+//		上跳的显示头
+		String parentCodeBi=projectMapper.getProjectParentCode(formName, kproUser.getProjectCode());
+		KbProjectUser kproUserBi=proUserMapper.getParProject(parentCodeBi);
+		
 		List<KbProject> proList = projectMapper.selectSonProjectByParentCodeAndUserCode(formName, parentCode, userCode);
-		System.err.println("打印应该显示的界面数据："+proList.toString());
 		Map<String,Object> map=new HashMap<String, Object>();
 		map.put("list", proList);
 		map.put("code", parentCode);
-		map.put("parProjectName", kproUser.getProjectName());
-		map.put("parProjectLevel", kproUser.getProjectLevel());
+		map.put("parProjectName", kproUserBi.getProjectName());
+		map.put("parProjectLevel", kproUserBi.getProjectLevel());
 		if (!map.isEmpty()) {
 			return map;
 		} else {
@@ -321,5 +323,19 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			}
 		}
 		return rtnFailResult(Result.ERROR_4300, "无相关联数据表信息/该层级未开放,请联系系统管理员");
+	}
+
+	/**
+	 * 
+	 */
+	public String getProjectName(String projectCode) {
+		if(null!=projectCode){
+			KbProjectUser projectUser=proUserMapper.getParProject(projectCode);
+			String projectName=projectUser.getProjectName();
+			return projectName;
+		}else{
+			log.error("新建项目时,projectCode为空导致获取projectName失败");
+			return null;
+		}
 	}
 }

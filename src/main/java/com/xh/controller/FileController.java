@@ -77,14 +77,14 @@ public class FileController extends BaseController {
 			}
 			// 上传并写入文件成功,将文件信息写入数据库
 			String fileInfo = request.getParameter("file_info");
-			String projectLevel = request.getParameter("project_level");
-			String projectCode = request.getParameter("project_code");
-			// String projectLevel = "0";
-			// String projectCode = "P201806221307125412";
-			String userCode = session.getAttribute("user_code").toString();
-			String userDeptCode = session.getAttribute("userDeptCode").toString();
-			// String userDeptCode = "D201806230935390372";
-			// String userCode = "820032";
+			 String projectLevel = request.getParameter("project_level");
+			 String projectCode = request.getParameter("project_code");
+//			String projectLevel = "0";
+//			String projectCode = "P201806221307125412";
+			 String userCode = session.getAttribute("user_code").toString();
+			 String userDeptCode = session.getAttribute("user_dept_code").toString();
+//			String userDeptCode = "D201806230935390372";
+//			String userCode = "820046";
 			Map<String, String> fileMap = ufResult.getData();
 			String fileCode = fileMap.get("fileCode");
 			String fileName = fileMap.get("fileName");
@@ -96,7 +96,7 @@ public class FileController extends BaseController {
 			kf.setFileInfo(fileInfo);
 			kf.setFileType(fileType);
 			kf.setFileStatus("record");
-			kf.setFileLevel(Integer.parseInt(projectLevel));
+			kf.setFileLevel(Integer.parseInt(projectLevel)-1);
 			kf.setProjectCode(projectCode);
 			kf.setCreateUserCode(userCode);
 			kf.setCreateTime(DateUtil.curDateYMDHMS());
@@ -275,30 +275,26 @@ public class FileController extends BaseController {
 		String projectName = request.getParameter("project_name");
 		String projectCode = request.getParameter("project_code");
 		String projectLevel = request.getParameter("project_level");
-		System.err.println("projectCode:"+projectCode+"----projectLevel:"+projectLevel);
-//		String userCode = "820046";
 		String userCode = session.getAttribute("user_code").toString();// 用户编码
 		try {
-			String obj = ps.selectProjectTableNameByProjectLevel(Integer.parseInt(projectLevel)).getData().toString();// 获得表名
-			List<KbProject> kpro = ps.selectAllProByUser(obj, projectCode, userCode).getData();
-			System.err.println("list:" + kpro);
-			double proCount = 0;// 项目进行中的数量
-			double completed = 0;// 项目已完成的数量
-			for (KbProject kb : kpro) {
-				if ("progress".equals(kb.getProjectStatus())) {
-					proCount++;
-				} else if ("completed".equals(kb.getProjectStatus())) {
-					completed++;
+			String obj=ps.selectProjectTableNameByProjectLevel(Integer.parseInt(projectLevel)).getData().toString();//获得表名
+			List<KbProject> kpro=ps.selectAllProByUser(obj,projectCode,userCode).getData();
+			int proCount=0;//项目进行中的数量
+			int completed=0;//项目已完成的数量
+			if(null!=kpro&&!kpro.isEmpty()){
+				for (KbProject kb : kpro) {
+					if(kb.getProjectStatus().equals("progress")){
+						proCount++;
+					} else {
+						completed++;
+					}
 				}
 			}
-			int sum = (int) (proCount + completed);// 该项目下所有的项目
-			String ratio = (int) completed + "/" + sum;// 已完成项目/项目总数
-			int per = (int) ((completed / sum) * 100);// 已完成项目所占百分比
-			System.err.println("ratio:" + ratio + ";per:" + per);
-
+			int sum=proCount+completed;//该项目下所有的项目
+			String ratio=completed+"/"+sum;//已完成项目/项目总数
+			int per=(completed*100)/(sum*100);//已完成项目所占百分比
 			Result<List<Map<String, Object>>> fileResult = fs.selectFile(Integer.parseInt(projectLevel), userCode,
 					projectCode);
-			// System.err.println(fileResult);
 			request.setAttribute("files", fileResult.getData());
 			request.setAttribute("projects", kpro);
 			request.setAttribute("ratio", ratio);
@@ -330,37 +326,39 @@ public class FileController extends BaseController {
 		String projectCode = request.getParameter("project_code");
 		int projectLevel = Integer.parseInt(request.getParameter("project_level"));
 		String userCode = session.getAttribute("user_code").toString();// 用户编码
-		System.err.println("-----------------"+projectCode+";----"+projectLevel+";----"+userCode);
+		double proCount=0;//项目进行中的数量
+		double completed=0;//项目已完成的数量
+		String ratio = null;//已完成项目/项目总数
+		int per = 0;//已完成项目所占百分比
+		List<KbProject> kpro = new ArrayList<KbProject>();//实例化一个对象
 		try {
 			Map<String,Object> map = ps.selectSuperiorAllPro(userCode, projectCode, projectLevel);
-			System.err.println("map:"+map.toString());
-			List<KbProject> kpro=(List<KbProject>) map.get("list");
-			System.err.println("kpro:"+kpro.toString());
-			double proCount=0;//项目进行中的数量
-			double completed=0;//项目已完成的数量
-			for (KbProject kb : kpro) {
-				if (kb.getProjectStatus().equals("progress")) {
-					proCount++;
-				} else {
-					completed++;
+			Result<List<Map<String, Object>>> fileResult = fs.selectFile(projectLevel-1, userCode,
+					map.get("code").toString());
+			if(null!=map||!map.isEmpty()){
+				kpro=(List<KbProject>) map.get("list");
+				proCount=0;//项目进行中的数量
+				completed=0;//项目已完成的数量
+				for (KbProject kb : kpro) {
+					if(kb.getProjectStatus().equals("progress")){
+						proCount++;
+					} else {
+						completed++;
+					}
 				}
 			}
 			int sum=(int) (proCount+completed);//该项目下所有的项目
-			String ratio=(int)completed+"/"+sum;//已完成项目/项目总数
-			int per=(int) ((completed/sum)*100);//已完成项目所占百分比
-			System.err.println("ratio:"+ratio+";per:"+per);
-//			待修改
-			Result<List<Map<String, Object>>> fileResult = fs.selectFile(projectLevel-1, userCode,
-					map.get("code").toString());
-			System.err.println(fileResult);
-			
+			if(sum!=0){
+				ratio=(int)completed+"/"+sum;//已完成项目/项目总数
+				per=(int) ((completed/sum)*100);//已完成项目所占百分比
+			}
 			request.setAttribute("files", fileResult.getData());
 			request.setAttribute("projects", kpro);
 			request.setAttribute("ratio", ratio);
 			request.setAttribute("per", per);
-//			request.setAttribute("projectCode", map.get("code").toString());
-//			request.setAttribute("projectLevel", map.get("parProjectLevel").toString());
-//			request.setAttribute("projectName", map.get("parProjectName").toString());
+			request.setAttribute("projectCode", map.get("code").toString());
+			request.setAttribute("projectLevel", map.get("parProjectLevel").toString());
+			request.setAttribute("projectName", map.get("parProjectName").toString());
 		} catch (NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
 			return "view/index";
@@ -370,7 +368,6 @@ public class FileController extends BaseController {
 		}
 		return "view/project_detail";
 	}
-
 	/**
 	 * 
 	 * @Title: shareFile

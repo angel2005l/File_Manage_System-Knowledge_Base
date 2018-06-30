@@ -17,6 +17,7 @@
 
 <body class="" style="cursor: auto;">
 	
+	
 	<div class="wrapper">
 
 		<div class="header">
@@ -255,16 +256,19 @@
 				<input type="text" id="project_code1" value="${projectCode1 }" style="display:none" />
 				<input type="text" id="project_level1" value="${projectLevel1 }" style="display:none" /> --%>
 				<div class="item detail-star-action">
-					<a class="detail-action detail-action-star" title="返回上一层"
+					<a class="detail-action detail-action-star" title="文件上传"
 						onclick="insertFile()">文件上传</a>
 				</div>
-				<div class="item detail-star-action">
+					<c:if test="${projectLevel!='0' }">			
+					<div class="item detail-star-action">
 					<a class="detail-action detail-action-star" title="返回上一层"
 						onclick="back()">返回上一层</a>
-				</div>
+					</div>
+					</c:if>	
 				
 				<div class="item">
-					<a class="detail-action detail-action-edit" href="javascript:;">添加子项目</a>
+					<a class="detail-action detail-action-edit" href="javascript:;"
+					onclick="insertProject()">添加子项目</a>
 				</div>
 
 				<div class="item">
@@ -284,6 +288,7 @@
 			value="/xh_bi_b_knowledge_base/file/disPdf.do?file_info=F201806221421466073,新海知识库数据库结构.xlsx" />
 	</form>
 	<script type="text/javascript" src="assets/js/layer.js"></script>
+	
 	<script type="text/javascript">
 				function display(code,name){
 					var str = "/xh_bi_b_knowledge_base/file/disPdf.do?file_info="+code+","+name;
@@ -314,8 +319,7 @@
 					var projectName=document.getElementById("project_name").innerHTML;
 					var projectCode=document.getElementById("project_code").value;
 					var projectLevel=document.getElementById("project_level").value;
-					alert("projectName:"+projectName+"-;projectCode:"+projectCode+"-;projectLevel:"+projectLevel);
-					<%-- var userCode= "<%=session.getAttribute("user_code")%>"; --%>
+					/* alert("projectName:"+projectName+"-;projectCode:"+projectCode+"-;projectLevel:"+projectLevel); */
 					window.location.href="file/back.do?project_code="+projectCode+"&project_level="+projectLevel+"&project_name="+projectName;
 				}
  				function into(projectCode,projectLevel,projectName){
@@ -326,8 +330,13 @@
  					var projectCode=document.getElementById("project_code").value;
 					var projectLevel=document.getElementById("project_level").value;
 					var projectName=document.getElementById("project_name").innerHTML;
-					alert("projectCode:"+projectCode+";projectLevel:"+projectLevel+";projectName:"+projectName);
 					window.location.href="file/insFileJsp.do?project_code="+projectCode+"&project_level="+projectLevel+"&project_name="+projectName;
+ 				}
+ 				function insertProject(){
+ 					var projectCode=document.getElementById("project_code").value;
+					var projectLevel=document.getElementById("project_level").value;
+					var projectName=document.getElementById("project_name").innerHTML;
+					window.location.href="pro/insProJsp.do?project_code="+projectCode+"&project_level="+projectLevel;
  				}
  				
 				function shareProject(projectCode,projectLevel,userCode){
