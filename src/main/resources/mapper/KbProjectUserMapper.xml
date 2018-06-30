@@ -45,8 +45,8 @@
 		project_level from kb_project_user where user_code =#{userCode}
 	</select>
 	<!-- 新增项目信息关联表信息 新版本 -->
-	<insert id="insertProjectUsers" parameterType="list">
-		insert into kb_project_user values
+	<insert id="batchInsertProjectUsers" parameterType="list">
+		insert into kb_project_user(project_code, project_name, project_permission,project_level,user_code, user_name, user_dept_code,create_user_code, create_time) values
 		<foreach collection="list" item="kpu" separator=",">
 			(#{kpu.projectCode},#{kpu.projectName},#{kpu.projectPermission},#{kpu.projectLevel},#{kpu.userCode},#{kpu.userName},#{kpu.userDeptCode},#{kpu.createUserCode},#{kpu.createTime})
 		</foreach>
