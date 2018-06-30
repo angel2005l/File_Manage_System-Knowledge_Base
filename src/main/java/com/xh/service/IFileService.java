@@ -116,8 +116,7 @@ public interface IFileService {
 	 * @date 2018年6月25日
 	 * @version 1.0
 	 */
-	public Result<List<Map<String, Object>>> selectFile(int projectLevel, String userCode, String projectCode)
-			throws Exception;
+	public List<Map<String, Object>> selectFile(int projectLevel, String userCode, String projectCode) throws Exception;
 
 	/**
 	 * 
@@ -134,4 +133,37 @@ public interface IFileService {
 	 * @version 1.0
 	 */
 	public Map<String, Object> getShareFile(String fileCode, int fileLevel, String projectCode) throws Exception;
+
+	/**
+	 * 
+	 * @Title: getProjectDetailData
+	 * @Description: 统一方法 显示详细页所有数据
+	 * @author 黄官易
+	 * @param projectCode
+	 * @param projectLevel
+	 * @param userCode
+	 * @return
+	 * @throws Exception
+	 * @return Result<Map<String,Object>>
+	 * @date 2018年6月30日
+	 * @version 1.0
+	 */
+	public Result<Map<String, Object>> getProjectDetailData(String projectCode, int projectLevel, String userCode)
+			throws Exception;
+
+	/**
+	 * 
+	 * @Title: selectSuperiorProjectCodeByProjectCode
+	 * @Description: 根据项目编码查询父类的项目编码
+	 * @author 黄官易
+	 * @param projectLevel
+	 * @param projectCode
+	 * @return
+	 * @throws Exception
+	 * @return String
+	 * @date 2018年6月30日
+	 * @version 1.0
+	 */
+	public String selectSuperiorProjectCodeByProjectCode(int projectLevel, String projectCode) throws Exception;
+
 }

@@ -264,16 +264,18 @@ public class FileServiceImpl extends BaseService implements IFileService {
 	}
 
 	@Override
-	public Result<List<Map<String, Object>>> selectFile(int projectLevel, String userCode, String projectCode)
+	public List<Map<String, Object>> selectFile(int projectLevel, String userCode, String projectCode)
 			throws Exception {
 		try {
 			String fileTableName = kftm.selectFileTableNameByFileLevel(projectLevel);
-			List<Map<String, Object>> fileInfoList = kfm.selectFileByUserCode(fileTableName, projectCode, userCode);
-			return rtnSuccessResult("", fileInfoList);
+			if (StrUtil.notBlank(fileTableName)) {
+				return kfm.selectFileByUserCode(fileTableName, projectCode, userCode);
+			}
 		} catch (SQLException e) {
 			log.error("根据部门编码查询上级部门的领导层用户,异常信息:【" + e.toString() + "】");
-			return rtnErrorResult(Result.ERROR_6000, "查询系统异常,请联系系统管理员");
+			// return rtnErrorResult(Result.ERROR_6000, "查询系统异常,请联系系统管理员");
 		}
+		return null;
 	}
 
 	@Override
@@ -297,4 +299,78 @@ public class FileServiceImpl extends BaseService implements IFileService {
 		return resultMap;
 	}
 
+	@Override
+	public Result<Map<String, Object>> getProjectDetailData(String projectCode, int projectLevel, String userCode)
+			throws Exception {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+
+		String ratio = "0/0";
+		int progressProject = 0;// 正在进行的项目
+		int completedProject = 0;// 已完成的项目
+		int per = 0;
+		KbProject projectInfo = null;
+		List<KbProject> projectSonInfos = null;
+		List<Map<String, Object>> fileList = null;
+		/*
+		 * 详细页展示： 1.当前项目及其相关项目信息（父项目） 2.子项目（子项目List) 3.该员工所具有权限的文件信息
+		 * 
+		 */
+		try {
+			String projectTableName = kptm.selectProjectTableNameByProjectLevel(projectLevel);// 当前项目表名称
+			if (StrUtil.notBlank(projectTableName)) {
+				// 1.当前项目及其相关项目信息（父项目）
+				projectInfo = kpm.selectProjectByProjectCode(projectTableName, projectCode);
+				if (null != projectInfo) {
+					// 2.子项目（子项目List)
+					String projectSonTableName = kptm.selectProjectTableNameByProjectLevel(projectLevel + 1);
+					if (StrUtil.notBlank(projectSonTableName)) {
+						projectSonInfos = kpm.selectProjectsByUserCodeAndProjectCode(projectSonTableName, userCode,
+								projectCode);
+					}
+					// 进度情况运算
+					if (null != projectSonInfos) {
+						for (int index = 0; index < projectSonInfos.size(); index++) {
+							String projectStatus = projectSonInfos.get(index).getProjectStatus();
+							if ("progress".equals(projectStatus)) {
+								progressProject++;
+							} else if ("completed".equals(projectStatus)) {
+								completedProject++;
+							}
+						}
+						ratio = completedProject + "/" + (progressProject + completedProject);
+						per = (progressProject + completedProject) > 0
+								? (int) (completedProject / (progressProject + completedProject) * 100)
+								: 0;
+					}
+					// 3.该员工所具有权限的文件信息
+					String fileTableName = kftm.selectFileTableNameByFileLevel(projectLevel);
+					fileList = kfm.selectFileByUserCode(fileTableName, projectCode, userCode);
+					resultMap.put("files", fileList);
+					resultMap.put("projectSonInfos", projectSonInfos);
+					resultMap.put("ratio", ratio);
+					resultMap.put("per", per);
+					resultMap.put("projectInfo", projectInfo);
+					return rtnSuccessResult("", resultMap);
+				}
+
+			}
+			return rtnFailResult(Result.ERROR_4000, "无相关联数据表信息/该层级未开放,请联系系统管理员");
+		} catch (SQLException e) {
+			log.error("项目详细页数据接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "查询系统异常,请联系系统管理员");
+		}
+	}
+
+	@Override
+	public String selectSuperiorProjectCodeByProjectCode(int projectLevel, String projectCode) throws Exception {
+		try {
+			String projectTableName = kptm.selectProjectTableNameByProjectLevel(projectLevel);
+			if (StrUtil.notBlank(projectTableName)) {
+				return kpm.selectSuperiorProjectCodeByProjectCode(projectTableName, projectCode);
+			}
+		} catch (SQLException e) {
+			log.error("根据项目编码查询父类项目编码数据接口异常,异常原因:【" + e.toString() + "】");
+		}
+		return "";
+	}
 }

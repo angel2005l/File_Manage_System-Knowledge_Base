@@ -104,5 +104,4 @@ public class UserServiceImpl extends BaseService implements IUserService {
 			return rtnErrorResult(Result.ERROR_6000, "查询系统异常,请联系系统管理员");
 		}
 	}
-
 }
