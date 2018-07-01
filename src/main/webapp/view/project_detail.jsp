@@ -16,8 +16,8 @@
 </head>
 
 <body class="" style="cursor: auto;">
-	
-	
+
+
 	<div class="wrapper">
 
 		<div class="header">
@@ -36,7 +36,7 @@
 					<li id="nav-upgrade"></li>
 
 				</ul>
-				
+
 				<div class="command-bar">
 					<div class="search-wrap">
 						<a href="javascript:;" class="link-search" title="搜索"><i
@@ -86,7 +86,7 @@
 		</div>
 
 		<div class="container workspace simple-stack simple-stack-transition">
-<!-- 			<div class="page page-root simple-pjax page-behind" style="">
+			<!-- 			<div class="page page-root simple-pjax page-behind" style="">
 				<a class="link-page-behind" data-stack="" href=""
 					data-stack-fluid="">面包屑</a>
 			</div> -->
@@ -100,11 +100,12 @@
 										<div class="todolist-actions actions"></div>
 										<h4>
 											<span class="name-non-linkable"> <span
-												class="todolist-rest" id="project_name">${projectInfo.projectName }</span> <span
-												style="display: none"><input type="text"
+												class="todolist-rest" id="project_name">${projectInfo.projectName }</span>
+												<span style="display: none"><input type="text"
 													value="${projectInfo.projectCode }" id="project_code" /></span> <!-- 父类的projectCode -->
 												<span style="display: none"><input type="text"
-													value="${projectInfo.projectLevel }" id="project_level" /></span> <!-- 父类的projectLevel -->
+													value="${projectInfo.projectLevel }" id="project_level" /></span>
+												<!-- 父类的projectLevel -->
 											</span>
 
 											<!-- 功能暂不明确 -->
@@ -144,14 +145,15 @@
 																class="todo-rest">${projects.projectName }</span>
 														</span> <span class="content-linkable"> <a
 																class="todo-rest" data-stack="true"
-																href="file/pfd.do?project_code=${projects.projectCode }&project_level=${projects.projectLevel}&root_code=${rootCode }"
-																 >${projects.projectName }</a>
+																href="file/pfd.do?project_code=${projects.projectCode }&project_level=${projects.projectLevel}&root_code=${rootCode }">${projects.projectName }</a>
 														</span> <!-- <div class="progress-wrap">
 							<span class="progress-pie" title="60%" data-pie="60"></span>
 							<span class="todo-progress" title="总共有 10 个检查项，已完成 6 个">(6/10)</span>
 						</div> -->
-														</span> <span class="todo-detail"> <a class="label todo-assign-due">${projects.createUserCode } </a></span>
-														
+														</span> <span class="todo-detail"> <a
+															class="label todo-assign-due">${projects.createUserCode }
+														</a></span>
+
 													</div>
 												</li>
 											</c:if>
@@ -202,35 +204,37 @@
 					</div>
 					<div class="comments streams">
 						<c:forEach var="b" items="${files }">
-							<div class="comment-main">
-								<div class="comment-content editor-style">
-									<p>${b.file_info }</p>
-								</div>
-								<div class="attachments-preview gallery-wrap">
-									<div class="attachment-list">
-										<div class="images"></div>
-										<div class="others">
-											<div class="attachment">
-												<div class="attachment-thumb">
-													<img
-														src="assets/img/<tag:enum className="FileTypeImgEnum">${b.file_type }</tag:enum>">
-												</div>
-												<div class="attachment-info">
-													<div class="name">
-														<a class="link-download"></a><span class="-rest">${b.file_name }</span></a>
+							<div class="comment">
+								<div class="comment-main">
+									<div class="comment-content editor-style">
+										<p>${b.file_info }</p>
+									</div>
+									<div class="attachments-preview gallery-wrap">
+										<div class="attachment-list">
+											<div class="images"></div>
+											<div class="others">
+												<div class="attachment">
+													<div class="attachment-thumb">
+														<img
+															src="assets/img/<tag:enum className="FileTypeImgEnum">${b.file_type }</tag:enum>">
 													</div>
-													<div class="tags"></div>
-													<div class="control-dir no-dir">
-														<a class="link-change-dir"
-															onclick="display('${b.file_code }','${b.file_name }')"
-															target="_blank">预览</a>
-														<c:if test="${b.file_permission eq 'download' }">
-															<a
-																onclick="downloadFile('${b.file_code }','${b.file_level }')"
-																class="link-change-dir">下载</a>
-														</c:if>
-														<a class="link-change-dir"
-															onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">分享</a>
+													<div class="attachment-info">
+														<div class="name">
+															<a class="link-download"></a><span class="-rest">${b.file_name }</span></a>
+														</div>
+														<div class="tags"></div>
+														<div class="control-dir no-dir">
+															<a class="link-change-dir"
+																onclick="display('${b.file_code }','${b.file_name }')"
+																target="_blank">预览</a>
+															<c:if test="${b.file_permission eq 'download' }">
+																<a
+																	onclick="downloadFile('${b.file_code }','${b.file_level }')"
+																	class="link-change-dir">下载</a>
+															</c:if>
+															<a class="link-change-dir"
+																onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">分享</a>
+														</div>
 													</div>
 												</div>
 											</div>
@@ -246,20 +250,23 @@
 
 			</div>
 			<div class="detail-actions">
-			<c:if test="${!(rootCode eq projectInfo.projectCode) }">			
+				<c:if test="${!(rootCode eq projectInfo.projectCode) }">
 					<div class="item">
-					<a class="detail-action detail-action-star" title="返回上一层" href="file/pfdb.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }&root_code=${rootCode }">返回上一层</a>
+						<a class="detail-action detail-action-star" title="返回上一层"
+							href="file/pfdb.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }&root_code=${rootCode }">返回上一层</a>
 					</div>
-					</c:if>	
+				</c:if>
 				<div class="item">
-					<a class="detail-action detail-action-star" title="返回首页" href="pro/index.do" >返回首页</a>
+					<a class="detail-action detail-action-star" title="返回首页"
+						href="pro/index.do">返回首页</a>
 				</div>
 				<div class="item">
-					<a class="detail-action detail-action-star" title="文件上传" href="file/insFileJsp.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }"
-						>文件上传</a>
+					<a class="detail-action detail-action-star" title="文件上传"
+						href="file/insFileJsp.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }">文件上传</a>
 				</div>
 				<div class="item">
-					<a class="detail-action detail-action-edit" href="pro/insProJsp.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }" >新增项目</a>
+					<a class="detail-action detail-action-edit"
+						href="pro/insProJsp.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }">新增项目</a>
 				</div>
 
 				<div class="item">
@@ -273,11 +280,10 @@
 	</div>
 	<form id="displayForm" action="build/generic/web/viewer.html"
 		method="get" target="_blank">
-		<input id="displayValues" type="hidden" name="file"
-			value="" />
+		<input id="displayValues" type="hidden" name="file" value="" />
 	</form>
 	<script type="text/javascript" src="assets/js/layer.js"></script>
-	
+
 	<script type="text/javascript">
 				function display(code,name){
 					var str = "/xh_bi_b_knowledge_base/file/disPdf.do?file_info="+code+","+name;
@@ -304,7 +310,7 @@
 					})	
 				}
 				function shareProject(projectCode,projectLevel,userCode){
-					var str = "<%=basePath %>pro/sp.do?project_code="+projectCode+"&project_level="+projectLevel+"&user_code="+userCode;
+					var str = "<%=basePath%>pro/sp.do?project_code="+projectCode+"&project_level="+projectLevel+"&user_code="+userCode;
 					$("#shareUrl").html(str)
 					layer.open({
 					  type: 1,
@@ -317,23 +323,28 @@
 					})
 				}
 				function shareFile(fileCode,fileLevel,projectCode){
-					var str = "<%=basePath %>file/sf.do?file_code="+fileCode+"&file_level="+fileLevel+"&project_code="+projectCode;
-					$("#shareUrl").html(str)
-					layer.open({
-						  type: 1,
-						  skin: 'demo-class', //样式类名
-						  area: ['450px','150px'],
-						  closeBtn: 1,
-						  anim: 0,
-						  shadeClose: true, //开启遮罩关闭
-						  content:$("#share")
-						})
-				}
-				
-			</script>
-<div id="share" style="display:none;">
-		<span style="font-weight: bold;padding-right: 20px;">分享链接:</span><textarea id="shareUrl" style="border: hidden;resize:none; overflow-y:hidden;width: 400px;height: 60px" disabled="disabled"  rows="4"></textarea>
-</div>
+					var str = "<%=basePath%>
+		file/sf.do?file_code=" + fileCode
+					+ "&file_level=" + fileLevel + "&project_code="
+					+ projectCode;
+			$("#shareUrl").html(str)
+			layer.open({
+				type : 1,
+				skin : 'demo-class', //样式类名
+				area : [ '450px', '150px' ],
+				closeBtn : 1,
+				anim : 0,
+				shadeClose : true, //开启遮罩关闭
+				content : $("#share")
+			})
+		}
+	</script>
+	<div id="share" style="display: none;">
+		<span style="font-weight: bold; padding-right: 20px;">分享链接:</span>
+		<textarea id="shareUrl"
+			style="border: hidden; resize: none; overflow-y: hidden; width: 400px; height: 60px"
+			disabled="disabled" rows="4"></textarea>
+	</div>
 </body>
 
 </html>
