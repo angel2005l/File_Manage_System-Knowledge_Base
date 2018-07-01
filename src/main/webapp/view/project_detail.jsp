@@ -113,11 +113,8 @@
 												<a class="todolist-rest" data-stack="true" href=""></a>
 											</span>
 											<!-- 进度条 -->
-											<div class="progress-wrap">
 												<span class="progress-pie" title="${per }%"
 													data-pie="${per }"></span> <span class="progress-text">${ratio }</span>
-											</div>
-
 
 											<a href="javascript:;" class="fold"> <i
 												class="twr twr-angle-up"></i>
@@ -160,8 +157,7 @@
 										</c:forEach>
 
 									</ul>
-									<ul class="todo-new-wrap"></ul>
-
+									<ul class="todo-new-wrap">
 									<c:forEach var="projects" items="${projectSonInfos }">
 										<c:if test="${projects.projectStatus=='completed' }">
 											<li class="todo completed">
@@ -201,39 +197,39 @@
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="comments streams">
-						<c:forEach var="b" items="${files }">
-							<div class="comment">
+						<div class="comment-actions">
+							<c:forEach var="b" items="${files }">
+								<div class="comment">
 								<div class="comment-main">
 									<div class="comment-content editor-style">
-										<p>${b.file_info }</p>
-									</div>
-									<div class="attachments-preview gallery-wrap">
+											<p>${b.file_info }</p>
+										</div>
+										<div class="attachments-preview gallery-wrap">
 										<div class="attachment-list">
 											<div class="images"></div>
 											<div class="others">
 												<div class="attachment">
 													<div class="attachment-thumb">
-														<img
-															src="assets/img/<tag:enum className="FileTypeImgEnum">${b.file_type }</tag:enum>">
-													</div>
-													<div class="attachment-info">
+															<img
+																src="assets/img/<tag:enum className="FileTypeImgEnum">${b.file_type }</tag:enum>">
+														</div>
+														<div class="attachment-info">
 														<div class="name">
-															<a class="link-download"></a><span class="-rest">${b.file_name }</span></a>
+															<a class="link-download"><span class="-rest">${b.file_name }</span></a>
 														</div>
 														<div class="tags"></div>
 														<div class="control-dir no-dir">
-															<a class="link-change-dir"
-																onclick="display('${b.file_code }','${b.file_name }')"
-																target="_blank">预览</a>
-															<c:if test="${b.file_permission eq 'download' }">
-																<a
-																	onclick="downloadFile('${b.file_code }','${b.file_level }')"
-																	class="link-change-dir">下载</a>
-															</c:if>
-															<a class="link-change-dir"
-																onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">分享</a>
+																<a class="link-change-dir"
+																	onclick="display('${b.file_code }','${b.file_name }')"
+																	target="_blank">预览</a>
+																<c:if test="${b.file_permission eq 'download' }">
+																	<a
+																		onclick="downloadFile('${b.file_code }','${b.file_level }')"
+																		class="link-change-dir">下载</a>
+																</c:if>
+																<a class="link-change-dir"
+																	onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">分享</a>
+															</div>
 														</div>
 													</div>
 												</div>
@@ -241,9 +237,7 @@
 										</div>
 									</div>
 								</div>
-							</div>
-						</c:forEach>
-						<div class="tpl-comment-actions-menu" style="display: none;">
+							</c:forEach>
 						</div>
 					</div>
 				</div>

@@ -339,7 +339,7 @@ public class FileServiceImpl extends BaseService implements IFileService {
 						}
 						ratio = completedProject + "/" + (progressProject + completedProject);
 						per = (progressProject + completedProject) > 0
-								? (int) (completedProject / (progressProject + completedProject) * 100)
+								? (int) ((float) completedProject / (float) (progressProject + completedProject) * 100)
 								: 0;
 					}
 					// 3.该员工所具有权限的文件信息
