@@ -11,7 +11,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <base href="<%=basePath %>">
 <link rel="stylesheet" media="all" href="assets/css/xh_application.css">
 <link rel="stylesheet" href="assets/css/xh.css" />

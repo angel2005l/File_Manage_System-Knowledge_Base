@@ -7,7 +7,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title>知识库主页信息</title>
+		<title>知识库-主页</title>
 		<meta name="renderer" content="webkit">
 
 		<link rel="stylesheet" href="assets/css/xh_application.css" />

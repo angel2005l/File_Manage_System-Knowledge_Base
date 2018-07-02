@@ -9,7 +9,7 @@
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-<title>知识库（新）</title>
+<title>知识库-项目详情</title>
 <meta name="renderer" content="webkit">
 <link rel="stylesheet" href="assets/theme/default/layer.css" />
 <script src="assets/js/xh_application.js"></script>
@@ -280,7 +280,7 @@
 
 	<script type="text/javascript">
 				function display(code,name){
-					var str = "/xh_bi_b_knowledge_base/file/disPdf.do?file_info="+code+","+name;
+					var str = "file/disPdf.do?file_info="+code+","+name;
 					$("#displayValues").val(str);
 					$("#displayForm").submit();
 				}
@@ -304,8 +304,8 @@
 					})	
 				}
 				function shareProject(projectCode,projectLevel,userCode){
-					var str = "<%=basePath%>pro/sp.do?project_code="+projectCode+"&project_level="+projectLevel+"&user_code="+userCode;
-					$("#shareUrl").html(str)
+					var str = "${pageContext.request.scheme }://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/pro/sp.do?project_code="+projectCode+"&project_level="+projectLevel+"&user_code="+userCode;
+				$("#shareUrl").html(str)
 					layer.open({
 					  type: 1,
 					  skin: 'demo-class', //样式类名
@@ -314,13 +314,10 @@
 					  anim: 0,
 					  shadeClose: true, //开启遮罩关闭
 					  content:$("#share")
-					})
+					}) 
 				}
 				function shareFile(fileCode,fileLevel,projectCode){
-					var str = "<%=basePath%>
-		file/sf.do?file_code=" + fileCode
-					+ "&file_level=" + fileLevel + "&project_code="
-					+ projectCode;
+					var str = "${pageContext.request.scheme }://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/file/sf.do?file_code=" + fileCode+ "&file_level=" + fileLevel + "&project_code="+ projectCode;
 			$("#shareUrl").html(str)
 			layer.open({
 				type : 1,

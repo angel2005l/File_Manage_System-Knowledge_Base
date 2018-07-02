@@ -11,7 +11,7 @@
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-<title>知识库（新） - Tower</title>
+<title>知识库-文件分享</title>
 <meta name="renderer" content="webkit">
 <link rel="stylesheet" media="all" href="assets/css/xh_application.css">
 <link rel="stylesheet" href="assets/css/xh.css" />

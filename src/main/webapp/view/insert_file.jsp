@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-<title></title>
+<title>知识库-上传文件</title>
 <meta name="renderer" content="webkit">
 <link type="text/css" rel="stylesheet"
 	href="assets/css/translateelement.css">
