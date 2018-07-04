@@ -218,8 +218,7 @@
 														<div class="tags"></div>
 														<div class="control-dir no-dir">
 																<a class="link-change-dir"
-																	onclick="display('${b.file_code }','${b.file_name }')"
-																	target="_blank">预览</a>
+																	onclick="display('${b.file_code }','${b.file_name }')">预览</a>
 																<c:if test="${b.file_permission eq 'download' }">
 																	<a
 																		onclick="downloadFile('${b.file_code }','${b.file_level }')"
@@ -272,13 +271,13 @@
 	</div>
 	<form id="displayForm" action="build/generic/web/viewer.html"
 		method="get" target="_blank">
-		<input id="displayValues" type="hidden" name="file" value="" />
+		<input id="displayValues" type="hidden" name="file" />
 	</form>
 	<script type="text/javascript" src="assets/js/layer.js"></script>
 
 	<script type="text/javascript">
 				function display(code,name){
-					var str = "file/disPdf.do?file_info="+code+","+name;
+					var str = "${pageContext.request.contextPath }/file/disPdf.do?file_info="+code+","+name;
 					$("#displayValues").val(str);
 					$("#displayForm").submit();
 				}
