@@ -29,7 +29,7 @@
 			targetPackage="com.xh.dao" targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator> -->
-		<table tableName="kb_operation_log" enableCountByExample="false"
+		<table tableName="kb_project_user" enableCountByExample="false"
 			enableDeleteByPrimaryKey="false" enableUpdateByPrimaryKey="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableInsert="false" enableSelectByExample="false"

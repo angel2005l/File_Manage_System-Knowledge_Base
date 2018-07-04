@@ -21,6 +21,8 @@ public class KbProjectUser {
 
 	private String projectMainName;
 
+	private String projectIsCollect;
+
 	private String createUserCode;
 
 	private String createTime;
@@ -103,6 +105,14 @@ public class KbProjectUser {
 
 	public void setProjectMainName(String projectMainName) {
 		this.projectMainName = projectMainName == null ? null : projectMainName.trim();
+	}
+
+	public String getProjectIsCollect() {
+		return projectIsCollect;
+	}
+
+	public void setProjectIsCollect(String projectIsCollect) {
+		this.projectIsCollect = projectIsCollect == null ? null : projectIsCollect.trim();
 	}
 
 	public String getCreateUserCode() {
