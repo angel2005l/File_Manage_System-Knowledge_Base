@@ -212,9 +212,9 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	}
 
 	@Override
-	public List<Map<String, Object>> selectProjectByUserCode(String userCode) throws Exception {
+	public List<Map<String, Object>> selectProjectByUserCodeAndMethod(String userCode,String method) throws Exception {
 		try {
-			return proUserMapper.selectProjectSimpleInfoByUserCode(userCode);
+			return proUserMapper.selectProjectSimpleInfoByUserCodeAndMethod(userCode,method);
 		} catch (SQLException e) {
 			log.error("根据用户编码查询项目简易信息数据接口异常,异常原因:【" + e.toString() + "】");
 			return null;

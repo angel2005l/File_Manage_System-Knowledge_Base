@@ -62,7 +62,7 @@ public interface IProjectService {
 	 * @date 2018年6月28日
 	 * @version 1.0
 	 */
-	public List<Map<String, Object>> selectProjectByUserCode(String userCode) throws Exception;
+	public List<Map<String, Object>> selectProjectByUserCodeAndMethod(String userCode,String method) throws Exception;
 
 	/**
 	 * 

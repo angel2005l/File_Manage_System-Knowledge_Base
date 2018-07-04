@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.xh.entity.KbProjectUser;
 
 public interface KbProjectUserMapper {
@@ -18,7 +20,7 @@ public interface KbProjectUserMapper {
 	 * @date 2018年6月28日
 	 * @version 1.0
 	 */
-	public List<Map<String, Object>> selectProjectSimpleInfoByUserCode(String userCode) throws SQLException;
+	public List<Map<String, Object>> selectProjectSimpleInfoByUserCodeAndMethod(@Param("userCode") String userCode,@Param("method") String method) throws SQLException;
 
 	/**
 	 * 

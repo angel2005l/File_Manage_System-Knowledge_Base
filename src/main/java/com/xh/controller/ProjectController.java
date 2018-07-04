@@ -57,17 +57,16 @@ public class ProjectController extends BaseController {
 	@ResponseBody
 	public Result<Object> insertProjectTable(HttpServletRequest request, HttpServletResponse response,
 			HttpSession session) {
-		String ptName = request.getParameter("pt_name");
-		String ptLevel = request.getParameter("pt_level");
-		KbProjectTable kpt = new KbProjectTable();
-		kpt.setPtCode(PROJECTTABLETAG + DateUtil.curDateYMDHMSForService()
-				+ StrUtil.getRandom((int) (Math.random() * 1000), 3));
-		kpt.setPtName(TABELTAG + ptName);
-		kpt.setProjectLevel(Integer.parseInt(ptLevel));
-		// kft.setCreateUserCode(session.getAttribute("userCode").toString());
-		kpt.setCreateUserCode("kb_system");
-		kpt.setCreateTime(DateUtil.curDateYMDHMS());
 		try {
+			String ptName = request.getParameter("pt_name");
+			String ptLevel = request.getParameter("pt_level");
+			KbProjectTable kpt = new KbProjectTable();
+			kpt.setPtCode(PROJECTTABLETAG + DateUtil.curDateYMDHMSForService()
+					+ StrUtil.getRandom((int) (Math.random() * 1000), 3));
+			kpt.setPtName(TABELTAG + ptName);
+			kpt.setProjectLevel(Integer.parseInt(ptLevel));
+			kpt.setCreateUserCode(session.getAttribute("userCode").toString());
+			kpt.setCreateTime(DateUtil.curDateYMDHMS());
 			return ps.createProjectList(kpt);
 		} catch (Exception e) {
 			log.error("新增项目表信息及项目表接口异常,异常原因:【" + e.toString() + "】");
@@ -98,7 +97,8 @@ public class ProjectController extends BaseController {
 			String projectParentCode = request.getParameter("project_parent_code");// 项目父类编码
 			String projectParentLevel = request.getParameter("project_level");// 项目父类级别
 			int projectLevel = Integer.parseInt(projectParentLevel) + 1;// 当前项目级别
-			String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService() + StrUtil.getRandom(10000, 4);// 项目编码
+			String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService()
+					+ StrUtil.getRandom((int) (Math.random() * 10000), 4);// 项目编码
 			String userCode = session.getAttribute("user_code").toString();// 创建人编码
 			String userDeptCode = session.getAttribute("user_dept_code").toString();// 创建人所属部门编码
 			KbProject kp = new KbProject();
@@ -269,7 +269,8 @@ public class ProjectController extends BaseController {
 	public String index(HttpServletRequest request, HttpSession session) {
 		try {
 			String userCode = session.getAttribute("user_code").toString();// 用户编码
-			List<Map<String, Object>> result = ps.selectProjectByUserCode(userCode);// 查询用户关联的所有项目
+			String method = request.getParameter("method");
+			List<Map<String, Object>> result = ps.selectProjectByUserCodeAndMethod(userCode,StrUtil.isBlank(method)? "self":method);// 查询用户关联的所有项目
 			request.setAttribute("projectList", result);
 		} catch (NullPointerException e) {
 			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
