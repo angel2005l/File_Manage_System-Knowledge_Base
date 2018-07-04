@@ -1,5 +1,7 @@
 package com.xh.uitl;
 
+import com.xh.pair.FileTypeImgEnum;
+
 public class EnumUtil {
 	/**
 	 * 用反射的方法调用类的方法
@@ -37,7 +39,9 @@ public class EnumUtil {
 				if (code.equals(c))
 					return getInvokeValue(t, "getText");
 			}
-			return "file_extension_file.png";
+			if(FileTypeImgEnum.class.isInstance(ref)) {
+				return "file_extension_file.png";
+			}
 		}
 		return "";
 	}
