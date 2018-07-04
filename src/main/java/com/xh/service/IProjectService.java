@@ -66,18 +66,6 @@ public interface IProjectService {
 
 	/**
 	 * 
-	 * @Title: selectSuperiorAllPro
-	 * @Description: 返回功能，查询上级项目下的所有的子项目
-	 * @author 陈专懂
-	 * @return List<KbProject>
-	 * @date 2018年6月28日
-	 * @version 1.0
-	 */
-	public Map<String, Object> selectSuperiorAllPro(String userCode, String projectCode, int projectLevel)
-			throws Exception;
-
-	/**
-	 * 
 	 * @Title: insProject
 	 * @Description: 保存项目信息
 	 * @author 黄官易

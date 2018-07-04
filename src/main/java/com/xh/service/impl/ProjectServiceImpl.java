@@ -222,32 +222,6 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 
 	}
 
-	@Override
-	public Map<String, Object> selectSuperiorAllPro(String userCode, String projectCode, int projectLevel)
-			throws SQLException {
-		String formName = projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);// 获取表名
-		// 获取当前等级项目的父类 code
-		String parentCode = projectMapper.getProjectParentCode(formName, projectCode);
-		KbProjectUser kproUser = proUserMapper.getParProject(projectCode);
-		// 上跳的显示头
-		String parentCodeBi = projectMapper.getProjectParentCode(formName, kproUser.getProjectCode());
-		KbProjectUser kproUserBi = proUserMapper.getParProject(parentCodeBi);
-
-		List<KbProject> proList = projectMapper.selectSonProjectByParentCodeAndUserCode(formName, parentCode, userCode);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", proList);
-		map.put("code", parentCode);
-		map.put("parProjectName", kproUserBi.getProjectName());
-		map.put("parProjectLevel", kproUserBi.getProjectLevel());
-		if (!map.isEmpty()) {
-			return map;
-		} else {
-			log.error("数据为空");
-			return null;
-		}
-
-	}
-
 	@Transactional(rollbackFor = { Exception.class })
 	@Override
 	public Result<Object> insProject(KbProject kp, List<KbProjectUser> kpus) throws Exception {
