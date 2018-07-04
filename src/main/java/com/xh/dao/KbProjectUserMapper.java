@@ -20,7 +20,8 @@ public interface KbProjectUserMapper {
 	 * @date 2018年6月28日
 	 * @version 1.0
 	 */
-	public List<Map<String, Object>> selectProjectSimpleInfoByUserCodeAndMethod(@Param("userCode") String userCode,@Param("method") String method) throws SQLException;
+	public List<Map<String, Object>> selectProjectSimpleInfoByUserCodeAndMethod(@Param("userCode") String userCode,
+			@Param("method") String method) throws SQLException;
 
 	/**
 	 * 
@@ -36,7 +37,5 @@ public interface KbProjectUserMapper {
 	 */
 
 	public int batchInsertProjectUsers(List<KbProjectUser> kpuList) throws SQLException;
-
-	
 
 }

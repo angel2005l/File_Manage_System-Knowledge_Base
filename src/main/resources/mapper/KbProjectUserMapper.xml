@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mapper.KbProjectUserMapper">
+<mapper namespace="com.xh.dao.KbProjectUserMapper">
   <resultMap id="BaseResultMap" type="com.xh.entity.KbProjectUser">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="project_code" jdbcType="CHAR" property="projectCode" />
@@ -43,12 +43,7 @@
 					and create_user_code = #{userCode}
 				</otherwise>
 			</choose>			
-			
 		</where>
-		
-		
-		
-		 WHERE user_code =#{userCode}
 	</select>
 	<!-- 新增项目信息关联表信息 新版本 -->
 	<insert id="batchInsertProjectUsers" parameterType="list">
