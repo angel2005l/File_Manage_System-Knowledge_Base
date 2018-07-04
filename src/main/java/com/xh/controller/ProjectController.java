@@ -163,30 +163,6 @@ public class ProjectController extends BaseController {
 
 	/**
 	 * 
-	 * @Title: selectAllPro
-	 * @Description: 主页、显示所有的项目
-	 * @author 陈专懂
-	 * @return Result<Object>
-	 * @date 2018年6月25日
-	 * @version 1.0
-	 */
-	@RequestMapping("/selectAllPro.do")
-	@ResponseBody
-	public Result<Object> selectAllPro(HttpServletRequest request, HttpServletResponse response) {
-		String obj = ps.selectProjectTableNameByProjectLevel(0).getData().toString();// 表名
-		String projectParentCode = "-1";
-		if (obj == null) {
-			return rtnErrorResult(Result.ERROR_4000, "找不到项目根目录");
-		}
-		List<KbProject> list = ps.selectAllPro(obj, projectParentCode).getData();
-		if (list != null) {
-			return rtnSuccessResult("获取该等级项目信息成功", list);
-		}
-		return rtnErrorResult(Result.ERROR_4000, "获取该等级项目信息失败，请联系管理员。");
-	}
-
-	/**
-	 * 
 	 * @Title: getShareProject
 	 * @Description: 项目分享
 	 * @author 黄官易
@@ -256,7 +232,7 @@ public class ProjectController extends BaseController {
 	/**
 	 * 
 	 * @Title: index
-	 * @Description: 主页面（当前用户参与的所有项目）
+	 * @Description: 主页面（当前用户参与的所有项目的0级项目）
 	 * @author 黄官易
 	 * @param request
 	 * @param session
@@ -270,7 +246,8 @@ public class ProjectController extends BaseController {
 		try {
 			String userCode = session.getAttribute("user_code").toString();// 用户编码
 			String method = request.getParameter("method");
-			List<Map<String, Object>> result = ps.selectProjectByUserCodeAndMethod(userCode,StrUtil.isBlank(method)? "self":method);// 查询用户关联的所有项目
+			List<Map<String, Object>> result = ps.selectProjectByUserCodeAndMethod(userCode,
+					StrUtil.isBlank(method) ? "self" : method);// 查询用户关联的所有项目
 			request.setAttribute("projectList", result);
 		} catch (NullPointerException e) {
 			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
