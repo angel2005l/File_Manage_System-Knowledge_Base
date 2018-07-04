@@ -4,8 +4,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.xh.entity.KbProjectUser;
 
 public interface KbProjectUserMapper {
@@ -38,15 +36,5 @@ public interface KbProjectUserMapper {
 	public int batchInsertProjectUsers(List<KbProjectUser> kpuList) throws SQLException;
 
 	
-	/**
-	 * 
-	 * @Title: getParProjectName  
-	 * @Description: 获取项目的名字
-	 * @author 陈专懂 
-	 * @return String 
-	 * @date 2018年6月29日  
-	 * @version 1.0
-	 */
-	public KbProjectUser getParProject(@Param("projectCode")String projectCode);
 
 }
