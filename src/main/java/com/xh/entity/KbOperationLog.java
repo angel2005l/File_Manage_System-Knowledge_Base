@@ -1,7 +1,5 @@
 package com.xh.entity;
 
-import java.util.Date;
-
 public class KbOperationLog {
     private Integer id;
 
@@ -13,13 +11,17 @@ public class KbOperationLog {
 
     private String logStatus;
 
+    private String projectCode;
+
+    private String logIsRead;
+
     private String logUserCode;
 
     private String logUserName;
 
     private String createUserCode;
 
-    private Date createTime;
+    private String createTime;
 
     public Integer getId() {
         return id;
@@ -61,6 +63,22 @@ public class KbOperationLog {
         this.logStatus = logStatus == null ? null : logStatus.trim();
     }
 
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode == null ? null : projectCode.trim();
+    }
+
+    public String getLogIsRead() {
+        return logIsRead;
+    }
+
+    public void setLogIsRead(String logIsRead) {
+        this.logIsRead = logIsRead == null ? null : logIsRead.trim();
+    }
+
     public String getLogUserCode() {
         return logUserCode;
     }
@@ -85,11 +103,11 @@ public class KbOperationLog {
         this.createUserCode = createUserCode == null ? null : createUserCode.trim();
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 }
