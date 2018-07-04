@@ -52,4 +52,8 @@
 			(#{kpu.projectCode},#{kpu.projectName},#{kpu.projectPermission},#{kpu.projectLevel},#{kpu.userCode},#{kpu.userName},#{kpu.userDeptCode},#{kpu.createUserCode},#{kpu.createTime})
 		</foreach>
 	</insert>
+	<!-- 查询特定的项目权限 -->
+	<select id="selectProjectPermissionByUserCode" resultType="string">
+		select project_permission from kb_project_user where user_code = #{userCode} and project_code = #{projectCode}
+	</select>
 </mapper>

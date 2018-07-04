@@ -38,4 +38,20 @@ public interface KbProjectUserMapper {
 
 	public int batchInsertProjectUsers(List<KbProjectUser> kpuList) throws SQLException;
 
+	/**
+	 * 
+	 * @Title: selectProjectPermissionByUserCode
+	 * @Description: 查询特定的项目权限
+	 * @author 黄官易
+	 * @param projectCode
+	 * @param userCode
+	 * @return
+	 * @throws SQLException
+	 * @return String
+	 * @date 2018年7月4日
+	 * @version 1.0
+	 */
+	public String selectProjectPermissionByUserCode(@Param("projectCode") String projectCode,
+			@Param("userCode") String userCode) throws SQLException;
+
 }
