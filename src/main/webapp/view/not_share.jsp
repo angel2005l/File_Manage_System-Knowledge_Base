@@ -1,9 +1,6 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%
-String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-%>
-
+<%@ include file="/view/base/base.jsp"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
@@ -13,33 +10,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-	<meta name="description" content="">
-	<meta name="keywords" content="">
-	<meta name="google" value="notranslate">
-	<meta name="apple-itunes-app" content="app-id=1013727678">
-	<meta name="version" content="4.2.3">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
 	<link href="assets/css/404.css" rel="stylesheet">
-    <script>
-	    window.cow = window.cow || {}
+  </head>
+      <script>
+	    window.cow = {}
 	    window.invokeInfo={
-	        needBnt: false,
-	        type: '无权限访问页面',
+	        type: '11',
 	         currentFile: {
-	             guid: 'Nbjj8YfIsrswACw4',
-	             type: '-2'
+	             type: '0'
 	         }
 	    }
     </script>
-	
-  </head>
-  
   <body class="no-permission">
-      
-    
-    
     <div class="error-box error-403-box">
         <div class="no-permission"></div>
         <div class="info-word">
@@ -52,14 +34,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
     
     <script type="text/javascript">
-        var switchAccount = document.getElementById('switch-account');
-
-        if (switchAccount) {
-            var pathname = window.location.pathname;
-            var url = '/logout?next=/login?redirect_url=' + pathname;
-            switchAccount.setAttribute('href', url);
-        }
-        
         function goback(){
         	window.location.href="pro/index.do";
         }
@@ -68,10 +42,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script src="assets/js/vendor.js"></script>
     <script src="assets/js/open_app.js"></script>
     
-    <script>
-        var isLogin = true;
-        var userId = 9064539;
-    </script>
     <script src="assets/js/sensors.js"></script>
   </body>
 </html>

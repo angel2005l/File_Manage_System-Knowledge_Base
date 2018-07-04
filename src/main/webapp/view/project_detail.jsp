@@ -49,15 +49,13 @@
 
 					<div class="notification-info">
 						<a href="javascript:;" id="notification-count" class="label"
-							title="新的通知" data-unread-count="0"
-							data-url="/teams/66fb82b17f5341cbb0f5f39a1064c013/notifications/unread_counts">
+							title="新的通知" >
 							<span class="twr twr-bell-o bell"></span> <span class="num">0</span>
 						</a>
 						<div class="noti-pop">
 							<div class="noti-pop-hd">
 								<b class="title">通知</b> <a class="mark-as-read"
-									id="noti-mark-read" data-loading="true" data-remote="true"
-									rel="nofollow" data-method="post" href=""> <span
+									id="noti-mark-read"> <span
 									class="twr twr twr-check"></span> 全部标记为已读
 								</a>
 							</div>

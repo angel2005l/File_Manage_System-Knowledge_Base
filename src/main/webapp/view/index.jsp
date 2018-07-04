@@ -17,9 +17,7 @@
 	</head>
 
 	<body class="">
-
 		<div class="wrapper">
-
 			<div class="header">
 				<div class="header-container">
 					<h1 class="logo">

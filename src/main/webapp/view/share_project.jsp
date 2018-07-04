@@ -43,16 +43,13 @@
 
 					<div class="notification-info">
 						<a href="javascript:;" id="notification-count" class="label"
-							title="新的通知" data-unread-count="0"
-							data-url="/teams/66fb82b17f5341cbb0f5f39a1064c013/notifications/unread_counts">
+							title="新的通知" >
 							<span class="twr twr-bell-o bell"></span> <span class="num">0</span>
 						</a>
 						<div class="noti-pop">
 							<div class="noti-pop-hd">
 								<b class="title">通知</b> <a class="mark-as-read"
-									id="noti-mark-read" data-loading="true" data-remote="true"
-									rel="nofollow" data-method="post"
-									href="https://tower.im/teams/66fb82b17f5341cbb0f5f39a1064c013/notifications/read_all">
+									id="noti-mark-read">
 									<span class="twr twr twr-check"></span> 全部标记为已读
 								</a>
 							</div>
@@ -61,13 +58,9 @@
 							</div>
 							<div class="noti-pop-empty">- 没有新通知 -</div>
 							<div class="noti-pop-footer">
-								<a class="noti-settings" data-stack="true"
-									data-stack-root="true"
-									href="https://tower.im/members/3b3a614642fc499bbce9a48e5c7672aa/notification_settings">
+								<a class="noti-settings">
 									<i class="twr twr-cog"></i> 通知设置
-								</a> <a class="noti-all-link" data-stack="true"
-									data-stack-root="true"
-									href="https://tower.im/teams/66fb82b17f5341cbb0f5f39a1064c013/notifications">查看全部通知</a>
+								</a> <a class="noti-all-link" data-stack="true">查看全部通知</a>
 							</div>
 						</div>
 					</div>
