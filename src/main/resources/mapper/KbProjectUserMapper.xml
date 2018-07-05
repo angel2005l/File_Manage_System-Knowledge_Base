@@ -44,6 +44,7 @@
 				</otherwise>
 			</choose>			
 		</where>
+		order by create_time desc
 	</select>
 	<!-- 新增项目信息关联表信息 新版本 -->
 	<insert id="batchInsertProjectUsers" parameterType="list">
