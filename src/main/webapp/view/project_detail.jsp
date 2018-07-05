@@ -247,6 +247,7 @@
 					<a class="detail-action detail-action-star" title="返回首页"
 						href="pro/index.do">返回首页</a>
 				</div>
+				<c:if test="${'write' eq projectInfo.projectPermission }">
 				<div class="item">
 					<a class="detail-action detail-action-star" title="文件上传"
 						href="file/insFileJsp.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }">文件上传</a>
@@ -255,7 +256,7 @@
 					<a class="detail-action detail-action-edit"
 						href="pro/insProJsp.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }">新增项目</a>
 				</div>
-
+				</c:if>
 				<div class="item">
 					<!-- 分享项目需要 -->
 					<a class="detail-action detail-action-archive"

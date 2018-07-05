@@ -3,16 +3,12 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans" class="translated-ltr">
-
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<title>知识库-主页</title>
 		<meta name="renderer" content="webkit">
-
-		<link rel="stylesheet" href="assets/css/xh_application.css" />
 		<script type="text/javascript" src="assets/js/analytics.js" ></script>
-		<link rel="stylesheet" href="assets/css/xh.css" />
 		<link type="text/css" rel="stylesheet"  href="assets/css/translateelement.css">
 	</head>
 
@@ -60,7 +56,9 @@
 					<div class="page-inner" id="page-projects" data-page-name="新海科技集团的项目">
 						<div class="projects-tools">
 							<div class="project-groups">
-
+								<a class="project-group" title="我的收藏">我的收藏 <i class="twr twr-star"></i></a>
+								<a class="project-group" title="我的项目">我的项目</a>
+								<a class="project-group" title="参与项目">参与项目</a>	
 								<div class="project-tools-right">
 									<a class="create-project" href="pro/insProJsp.do">
 										<font style="vertical-align: inherit;">
@@ -81,6 +79,7 @@
 						<c:forEach var="b" items="${projectList }" >
 							<a class="project c2 i19" href="file/pfd.do?project_code=${b.project_main_code }&project_level=${b.project_main_level}"> <span class="badge"></span>
 								<span class="name"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">${b.project_main_name }</font></font></span>
+								<span class="pin-icon" title="星标"></span>
 							</a>
 						</c:forEach>
 							
