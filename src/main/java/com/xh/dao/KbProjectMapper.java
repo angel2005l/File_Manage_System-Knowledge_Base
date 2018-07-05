@@ -184,6 +184,19 @@ public interface KbProjectMapper {
 	 */
 	public String selectSuperiorProjectCodeByProjectCode(@Param("projectTableName") String projectTableName,
 			@Param("projectCode") String projectCode) throws SQLException;
-	
-	public Map<String,Object> getProjectAndSonProjectInfos(@Param("projectLevel") int projectLevel,@Param("projectCode") String projectCode ,@Param("userCode") String userCode) throws SQLException;
+	/**
+	 * 
+	 * @Title: selectProjectAndSonProjectInfos  
+	 * @Description: 根据userCode，projectCode查询项目详细
+	 * @author 黄官易
+	 * @param projectLevel
+	 * @param projectCode
+	 * @param userCode
+	 * @return
+	 * @throws SQLException    
+	 * @return Map<String,Object> 
+	 * @date 2018年7月5日  
+	 * @version 1.0
+	 */
+	public Map<String,Object> selectProjectAndSonProjectInfos(@Param("projectLevel") int projectLevel,@Param("projectCode") String projectCode ,@Param("userCode") String userCode) throws SQLException;
 }

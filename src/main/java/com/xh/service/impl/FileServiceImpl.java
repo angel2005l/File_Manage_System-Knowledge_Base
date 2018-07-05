@@ -299,6 +299,7 @@ public class FileServiceImpl extends BaseService implements IFileService {
 		return resultMap;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Result<Map<String, Object>> getProjectDetailData(String projectCode, int projectLevel, String userCode)
 			throws Exception {
@@ -316,21 +317,15 @@ public class FileServiceImpl extends BaseService implements IFileService {
 		 * 
 		 */
 		try {
-			String projectTableName = kptm.selectProjectTableNameByProjectLevel(projectLevel);// 当前项目表名称
-			if (StrUtil.notBlank(projectTableName)) {
-				// 1.当前项目及其相关项目信息（父项目）
-				projectInfo = kpm.selectProjectWithProjectPerssionByProjectCode(projectTableName, projectCode,
-						userCode);
-				Map<String, Object> projectAndSonProjectInfos = kpm.getProjectAndSonProjectInfos(1, projectCode, userCode);
-				System.err.println(projectAndSonProjectInfos);
-				if (null != projectInfo) {
-					// 2.子项目（子项目List)
-					String projectSonTableName = kptm.selectProjectTableNameByProjectLevel(projectLevel + 1);
-					if (StrUtil.notBlank(projectSonTableName)) {
-						projectSonInfos = kpm.selectProjectsByProjectCode(projectSonTableName, projectCode);
-					}
-					// 进度情况运算
-					if (null != projectSonInfos && !projectSonInfos.isEmpty()) {
+			Map<String, Object> projectDataMap = kpm.selectProjectAndSonProjectInfos(projectLevel, projectCode,
+					userCode);// 项目及子项目详细
+			Object projectObj = projectDataMap.get("projectInfo");
+			if (null != projectObj) {
+				projectInfo = (Map<String, Object>) projectObj; // 强转Map
+				Object sonProjectsObj = projectDataMap.get("sonProjectInfos");
+				if (null != sonProjectsObj) {
+					projectSonInfos = (List<KbProject>) sonProjectsObj;// 强转List
+					if (!projectSonInfos.isEmpty()) {
 						for (int index = 0; index < projectSonInfos.size(); index++) {
 							String projectStatus = projectSonInfos.get(index).getProjectStatus();
 							if ("progress".equals(projectStatus)) {
@@ -340,21 +335,20 @@ public class FileServiceImpl extends BaseService implements IFileService {
 							}
 						}
 					}
-					ratio = completedProject + "/" + (progressProject + completedProject);
-					per = (progressProject + completedProject) > 0
-							? (int) ((float) completedProject / (float) (progressProject + completedProject) * 100)
-							: 0;
-					// 3.该员工所具有权限的文件信息
-					String fileTableName = kftm.selectFileTableNameByFileLevel(projectLevel);
-					fileList = kfm.selectFileByUserCode(fileTableName, projectCode, userCode);
-					resultMap.put("files", fileList);
-					resultMap.put("projectSonInfos", projectSonInfos);
-					resultMap.put("ratio", ratio);
-					resultMap.put("per", per);
-					resultMap.put("projectInfo", projectInfo);
-					return rtnSuccessResult("", resultMap);
 				}
-
+				ratio = completedProject + "/" + (progressProject + completedProject);
+				per = (progressProject + completedProject) > 0
+						? (int) ((float) completedProject / (float) (progressProject + completedProject) * 100)
+						: 0;
+				// 3.该员工所具有权限的文件信息
+				String fileTableName = kftm.selectFileTableNameByFileLevel(projectLevel);
+				fileList = kfm.selectFileByUserCode(fileTableName, projectCode, userCode);
+				resultMap.put("files", fileList);
+				resultMap.put("projectSonInfos", projectSonInfos);
+				resultMap.put("ratio", ratio);
+				resultMap.put("per", per);
+				resultMap.put("projectInfo", projectInfo);
+				return rtnSuccessResult("", resultMap);
 			}
 			return rtnFailResult(Result.ERROR_4000, "无相关联数据表信息/该层级未开放,请联系系统管理员");
 		} catch (SQLException e) {

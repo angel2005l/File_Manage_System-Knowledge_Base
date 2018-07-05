@@ -11,6 +11,9 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -407,10 +410,22 @@ public final class IOUtil {
 	 */
 	public static void clearTempPdf(InputStream is, String fileName) {
 		closeInputStream(is);
-		if(StrUtil.notBlank(fileName)) {
+		if (StrUtil.notBlank(fileName)) {
 			IOUtil.deleteFile(realPath + "pdf" + File.separator + fileName);
 		}
 		// IOUtil.deleteNoDirectory(realPath + "pdf/");//太过于危险
 	}
 
+	public static Map<String, Object> Object2Map(Object obj) throws IllegalArgumentException, IllegalAccessException {
+		  Map<String, Object> map = new HashMap<>();
+	        Class<?> clazz = obj.getClass();
+	        System.out.println(clazz);
+	        for (Field field : clazz.getDeclaredFields()) {
+	            field.setAccessible(true);
+	            String fieldName = field.getName();
+	            Object value = field.get(obj);
+	            map.put(fieldName, value);
+	        }
+	        return map;
+	}
 }
