@@ -25,11 +25,11 @@
 			targetProject="src/main/resources">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
-		<!-- <javaClientGenerator type="XMLMAPPER"
+		<javaClientGenerator type="XMLMAPPER"
 			targetPackage="com.xh.dao" targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
-		</javaClientGenerator> -->
-		<table tableName="kb_project_user" enableCountByExample="false"
+		</javaClientGenerator>
+		<table tableName="kb_user_advice" enableCountByExample="false"
 			enableDeleteByPrimaryKey="false" enableUpdateByPrimaryKey="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableInsert="false" enableSelectByExample="false"

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xh.dao.KbUserAdviceMapper" >
+  <resultMap id="BaseResultMap" type="com.xh.entity.KbUserAdvice" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="advice_code" property="adviceCode" jdbcType="CHAR" />
+    <result column="user_code" property="userCode" jdbcType="CHAR" />
+    <result column="log_code" property="logCode" jdbcType="CHAR" />
+    <result column="log_msg" property="logMsg" jdbcType="VARCHAR" />
+    <result column="advice_status" property="adviceStatus" jdbcType="CHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, advice_code, user_code, log_code, log_msg, advice_status, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from kb_user_advice
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+</mapper>

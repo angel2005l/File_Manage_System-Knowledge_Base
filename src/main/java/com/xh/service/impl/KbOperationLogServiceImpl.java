@@ -26,7 +26,6 @@ public class KbOperationLogServiceImpl extends BaseService implements IKbOperati
 	@Autowired
 	private KbOperationLogMapper kbLog;//日志表数据接口
 	
-	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public int addLog(KbOperationLog kblog) {
 		int ret=kbLog.addLog(kblog);//添加日志的返回值
@@ -35,5 +34,12 @@ public class KbOperationLogServiceImpl extends BaseService implements IKbOperati
 		}
 		return ret;
 	}
+
+	@Override
+	public int updateLogByRead(String logUserCode) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 
 }
