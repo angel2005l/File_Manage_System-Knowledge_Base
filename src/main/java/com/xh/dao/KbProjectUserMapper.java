@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.xh.entity.KbProjectUser;
 
 public interface KbProjectUserMapper {
@@ -18,7 +20,8 @@ public interface KbProjectUserMapper {
 	 * @date 2018年6月28日
 	 * @version 1.0
 	 */
-	public List<Map<String, Object>> selectProjectSimpleInfoByUserCode(String userCode) throws SQLException;
+	public List<Map<String, Object>> selectProjectSimpleInfoByUserCodeAndMethod(@Param("userCode") String userCode,
+			@Param("method") String method) throws SQLException;
 
 	/**
 	 * 
@@ -35,6 +38,20 @@ public interface KbProjectUserMapper {
 
 	public int batchInsertProjectUsers(List<KbProjectUser> kpuList) throws SQLException;
 
-	
+	/**
+	 * 
+	 * @Title: selectProjectPermissionByUserCode
+	 * @Description: 查询特定的项目权限
+	 * @author 黄官易
+	 * @param projectCode
+	 * @param userCode
+	 * @return
+	 * @throws SQLException
+	 * @return String
+	 * @date 2018年7月4日
+	 * @version 1.0
+	 */
+	public String selectProjectPermissionByUserCode(@Param("projectCode") String projectCode,
+			@Param("userCode") String userCode) throws SQLException;
 
 }

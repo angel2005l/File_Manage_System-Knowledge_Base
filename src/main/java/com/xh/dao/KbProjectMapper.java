@@ -2,13 +2,26 @@ package com.xh.dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
 import com.xh.entity.KbProject;
 
 public interface KbProjectMapper {
-	// 添加项目信息
+	/**
+	 * 
+	 * @Title: insertProject
+	 * @Description: 添加项目信息
+	 * @author 黄官易
+	 * @param kbObj
+	 * @param formName
+	 * @return
+	 * @throws SQLException
+	 * @return int
+	 * @date 2018年7月4日
+	 * @version 1.0
+	 */
 	public int insertProject(@Param("kb") KbProject kbObj, @Param("formName") String formName) throws SQLException;
 
 	/**
@@ -44,6 +57,22 @@ public interface KbProjectMapper {
 	/**
 	 * 
 	 * @Title: selectProjectByProjectCode
+	 * @Description: 查询特定的项目信息及其权限
+	 * @author 黄官易
+	 * @param projectTableName
+	 * @param projectCode
+	 * @return
+	 * @throws SQLException
+	 * @return KbProject
+	 * @date 2018年6月27日
+	 * @version 1.0
+	 */
+	public Map<String, Object> selectProjectWithProjectPerssionByProjectCode(@Param("projectTableName") String projectTableName,
+			@Param("projectCode") String projectCode, @Param("userCode") String userCode) throws SQLException;
+
+	/**
+	 * 
+	 * @Title: selectProjectByProjectCode
 	 * @Description: 查询特定的项目信息
 	 * @author 黄官易
 	 * @param projectTableName
@@ -56,7 +85,7 @@ public interface KbProjectMapper {
 	 */
 	public KbProject selectProjectByProjectCode(@Param("projectTableName") String projectTableName,
 			@Param("projectCode") String projectCode) throws SQLException;
-
+	
 	/**
 	 * 
 	 * @Title: selectAllPro
@@ -137,21 +166,24 @@ public interface KbProjectMapper {
 	 * @date 2018年6月30日
 	 * @version 1.0
 	 */
-	public List<KbProject> selectProjectsByUserCodeAndProjectCode(@Param("projectTableName") String projectTableName,
-			@Param("userCode") String userCode, @Param("projectCode") String projectCode) throws SQLException;
+	public List<KbProject> selectProjectsByProjectCode(@Param("projectTableName") String projectTableName,
+			@Param("projectCode") String projectCode) throws SQLException;
+
 	/**
 	 * 
-	 * @Title: selectSuperiorProjectCodeByProjectCode  
+	 * @Title: selectSuperiorProjectCodeByProjectCode
 	 * @Description: 根据项目编码查询父类项目编码
 	 * @author 黄官易
 	 * @param projectTableName
 	 * @param projectCode
 	 * @return
-	 * @throws SQLException    
-	 * @return String 
-	 * @date 2018年6月30日  
+	 * @throws SQLException
+	 * @return String
+	 * @date 2018年6月30日
 	 * @version 1.0
 	 */
-	public String selectSuperiorProjectCodeByProjectCode(@Param("projectTableName") String projectTableName,@Param("projectCode") String projectCode)
-			throws SQLException;
+	public String selectSuperiorProjectCodeByProjectCode(@Param("projectTableName") String projectTableName,
+			@Param("projectCode") String projectCode) throws SQLException;
+	
+	public Map<String,Object> getProjectAndSonProjectInfos(@Param("projectLevel") int projectLevel,@Param("projectCode") String projectCode ,@Param("userCode") String userCode) throws SQLException;
 }

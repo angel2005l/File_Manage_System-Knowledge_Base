@@ -308,7 +308,7 @@ public class FileServiceImpl extends BaseService implements IFileService {
 		int progressProject = 0;// 正在进行的项目
 		int completedProject = 0;// 已完成的项目
 		int per = 0;
-		KbProject projectInfo = null;
+		Map<String, Object> projectInfo = null;
 		List<KbProject> projectSonInfos = null;
 		List<Map<String, Object>> fileList = null;
 		/*
@@ -319,16 +319,18 @@ public class FileServiceImpl extends BaseService implements IFileService {
 			String projectTableName = kptm.selectProjectTableNameByProjectLevel(projectLevel);// 当前项目表名称
 			if (StrUtil.notBlank(projectTableName)) {
 				// 1.当前项目及其相关项目信息（父项目）
-				projectInfo = kpm.selectProjectByProjectCode(projectTableName, projectCode);
+				projectInfo = kpm.selectProjectWithProjectPerssionByProjectCode(projectTableName, projectCode,
+						userCode);
+				Map<String, Object> projectAndSonProjectInfos = kpm.getProjectAndSonProjectInfos(1, projectCode, userCode);
+				System.err.println(projectAndSonProjectInfos);
 				if (null != projectInfo) {
 					// 2.子项目（子项目List)
 					String projectSonTableName = kptm.selectProjectTableNameByProjectLevel(projectLevel + 1);
 					if (StrUtil.notBlank(projectSonTableName)) {
-						projectSonInfos = kpm.selectProjectsByUserCodeAndProjectCode(projectSonTableName, userCode,
-								projectCode);
+						projectSonInfos = kpm.selectProjectsByProjectCode(projectSonTableName, projectCode);
 					}
 					// 进度情况运算
-					if (null != projectSonInfos) {
+					if (null != projectSonInfos && !projectSonInfos.isEmpty()) {
 						for (int index = 0; index < projectSonInfos.size(); index++) {
 							String projectStatus = projectSonInfos.get(index).getProjectStatus();
 							if ("progress".equals(projectStatus)) {
@@ -337,11 +339,11 @@ public class FileServiceImpl extends BaseService implements IFileService {
 								completedProject++;
 							}
 						}
-						ratio = completedProject + "/" + (progressProject + completedProject);
-						per = (progressProject + completedProject) > 0
-								? (int) ((float) completedProject / (float) (progressProject + completedProject) * 100)
-								: 0;
 					}
+					ratio = completedProject + "/" + (progressProject + completedProject);
+					per = (progressProject + completedProject) > 0
+							? (int) ((float) completedProject / (float) (progressProject + completedProject) * 100)
+							: 0;
 					// 3.该员工所具有权限的文件信息
 					String fileTableName = kftm.selectFileTableNameByFileLevel(projectLevel);
 					fileList = kfm.selectFileByUserCode(fileTableName, projectCode, userCode);

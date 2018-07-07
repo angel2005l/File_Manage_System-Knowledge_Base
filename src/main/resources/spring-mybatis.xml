@@ -63,6 +63,8 @@
 			value="classpath:mybatis-configuration.xml" />
 		<property name="mapperLocations"
 			value="classpath:mapper/*.xml" />
+		<!-- <property name="configurationProperties"> <props> <prop key="callSettersOnNulls">true</prop> 
+			</props> </property> -->
 	</bean>
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.xh.dao" />

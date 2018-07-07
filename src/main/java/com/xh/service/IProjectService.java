@@ -62,7 +62,7 @@ public interface IProjectService {
 	 * @date 2018年6月28日
 	 * @version 1.0
 	 */
-	public List<Map<String, Object>> selectProjectByUserCode(String userCode) throws Exception;
+	public List<Map<String, Object>> selectProjectByUserCodeAndMethod(String userCode,String method) throws Exception;
 
 	/**
 	 * 
@@ -108,21 +108,5 @@ public interface IProjectService {
 	 * @version 1.0
 	 */
 	public String selectProjectNameByProjectCode(int projectLevel, String projectCode) throws Exception;
-
-	/**
-	 * 
-	 * @Title: selectProjects
-	 * @Description: 获得当前层级的所有根据员工相关的项目信息
-	 * @author 黄官易
-	 * @param projectLevel
-	 * @param superiorProjectCode
-	 * @param userCode
-	 * @return
-	 * @throws Exception
-	 * @return String
-	 * @date 2018年6月30日
-	 * @version 1.0
-	 */
-	public List<KbProject> selectProjects(int projectLevel, String projectCode, String userCode) throws Exception;
 
 }

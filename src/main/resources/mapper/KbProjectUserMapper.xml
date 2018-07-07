@@ -12,27 +12,38 @@
     <result column="user_dept_code" jdbcType="CHAR" property="userDeptCode" />
     <result column="project_main_code" jdbcType="CHAR" property="projectMainCode" />
     <result column="project_main_name" jdbcType="VARCHAR" property="projectMainName" />
+    <result column="project_is_collect" jdbcType="CHAR" property="projectIsCollect" />
     <result column="create_user_code" jdbcType="VARCHAR" property="createUserCode" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
     id, project_code, project_name, project_permission, project_level, user_code, user_name, 
-    user_dept_code, project_main_code, project_main_name, create_user_code, DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') as create_time
+    user_dept_code, project_main_code, project_main_name, project_is_collect, create_user_code, 
+    DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') as create_time
   </sql>
-	<!-- 新增项目信息关联表信息 -->
-	<insert id="insertProjectUser" parameterType="list">
-		insert into kb_project_user
-		(project_code,project_name,project_permission,project_level,user_code,user_name,user_dept_code,create_user_code,create_time)
-		<foreach collection="list" item="userPro" separator="union ">
-			select
-			'${userPro.projectCode}','${userPro.projectName}','${userPro.projectPermission}','${userPro.projectLevel}','${userPro.userCode}','${userPro.userName}','${userPro.userDeptCode}','${userPro.createUserCode}','${userPro.createTime}'
-			from dual
-		</foreach>
-	</insert>
 	<!-- 根据用户编码查询用户所关联的信息 -->
-	<select id="selectProjectSimpleInfoByUserCode" parameterType="string" resultType="map">
-		select project_code, project_name,
-		project_level from kb_project_user where user_code =#{userCode}
+	<select id="selectProjectSimpleInfoByUserCodeAndMethod" resultType="map">
+		SELECT DISTINCT project_main_code,project_main_name,0 as project_main_level FROM kb_project_user
+		<where>
+			<choose>
+				<!-- 收藏 -->
+				<when test="method =='collect'">
+					and project_is_collect ='Y' and user_code = #{userCode}
+				</when>
+				<!-- 我的项目 -->
+				<when test="method =='self'">
+					and create_user_code = #{userCode}
+				</when>
+				<!-- 参与项目 -->
+				<when test="method =='participation'">
+					and user_code = #{userCode}
+				</when>
+				<!-- 默认：我的项目 -->
+				<otherwise>
+					and create_user_code = #{userCode}
+				</otherwise>
+			</choose>			
+		</where>
 	</select>
 	<!-- 新增项目信息关联表信息 新版本 -->
 	<insert id="batchInsertProjectUsers" parameterType="list">
@@ -41,4 +52,8 @@
 			(#{kpu.projectCode},#{kpu.projectName},#{kpu.projectPermission},#{kpu.projectLevel},#{kpu.userCode},#{kpu.userName},#{kpu.userDeptCode},#{kpu.createUserCode},#{kpu.createTime})
 		</foreach>
 	</insert>
+	<!-- 查询特定的项目权限 -->
+	<select id="selectProjectPermissionByUserCode" resultType="string">
+		select project_permission from kb_project_user where user_code = #{userCode} and project_code = #{projectCode}
+	</select>
 </mapper>

@@ -30,14 +30,36 @@
   	select <include refid="Base_Column_List" /> from ${formName}
   	<if test="projectCode!='-1' "> where project_parent_code=#{projectCode}</if> 
   </select>
-	<!-- 查询当前项目下的所有子项目 -->
-  <select id="selectSonProjectByParentCodeAndUserCode" resultMap="BaseResultMap" parameterType="string">
+	<!-- 查询当前项目下的所有子项目 用户 -->
+  <select id="selectSonProjectByParentCodeAndUserCode" resultMap="BaseResultMap">
   	select a.project_code, a.project_name, a.project_type, a.project_info, a.project_remark, a.project_parent_code, 
-    a.project_level, a.project_status, a.create_user_code, a.create_time, a.update_user_code, a.update_time from ${formName} a inner join kb_project_user b on a.project_code=b.project_code and b.user_code=#{userCode} and project_parent_code =#{projectCode}
+    a.project_level, a.project_status, a.create_user_code, DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') as create_time, a.update_user_code,DATE_FORMAT(a.update_time,'%Y-%m-%d %H:%i:%s') as update_time from ${formName} a inner join kb_project_user b on a.project_code=b.project_code and b.user_code=#{userCode} and project_parent_code =#{projectCode}
   </select>
-  <!-- 查询特定的项目信息 -->
+  <resultMap type="map" id="projectUsetInfoResultMap">
+ 	 <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="project_code" property="projectCode" jdbcType="CHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_type" property="projectType" jdbcType="CHAR" />
+    <result column="project_info" property="projectInfo" jdbcType="VARCHAR" />
+    <result column="project_remark" property="projectRemark" jdbcType="VARCHAR" />
+    <result column="project_parent_code" property="projectParentCode" jdbcType="CHAR" />
+    <result column="project_level" property="projectLevel" jdbcType="INTEGER" />
+    <result column="project_status" property="projectStatus" jdbcType="VARCHAR" />
+    <result column="create_user_code" property="createUserCode" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_user_code" property="updateUserCode" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  	<association property="projectPermission" javaType="string" column="{userCode =col1,projectCode =project_code}" select="com.xh.dao.KbProjectUserMapper.selectProjectPermissionByUserCode">
+  	</association>
+  </resultMap>
+  
+  <!-- 查询特定的项目信息及其权限 -->
+  <select id="selectProjectWithProjectPerssionByProjectCode" resultMap="projectUsetInfoResultMap" >
+  	select <include refid="Base_Column_List" />,'${userCode}' as col1 from ${projectTableName}  where project_code = #{projectCode}
+  </select>
+    <!-- 查询特定的项目信息 -->
   <select id="selectProjectByProjectCode" resultMap="BaseResultMap">
-  	select <include refid="Base_Column_List" /> from ${projectTableName} where project_code = #{projectCode}
+  	select <include refid="Base_Column_List" /> from ${projectTableName}  where project_code = #{projectCode}
   </select>
   <!-- 查询主界面所有信息 -->
   <select id="selectAllPro" parameterType="string" resultMap="BaseResultMap">
@@ -62,14 +84,54 @@
   	select project_name from ${projectTableName} where project_code = #{projectCode}
   </select>
   <!-- 根据用户编码/项目编码 查询项目信息集合 -->
-	<select id="selectProjectsByUserCodeAndProjectCode" resultMap="BaseResultMap">
-		SELECT a.id AS id, a.project_code AS project_code, a.project_name AS project_name, a.project_type AS project_type, a.project_info AS project_info, a.project_remark AS project_remark,
+	<select id="selectProjectsByProjectCode" resultMap="BaseResultMap">
+		SELECT DISTINCT a.id AS id, a.project_code AS project_code, a.project_name AS project_name, a.project_type AS project_type, a.project_info AS project_info, a.project_remark AS project_remark,
 		 a.project_parent_code AS project_parent_code,a.project_level AS project_level, a.project_status AS project_status,
 		  a.create_user_code AS create_user_code, DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') AS create_time, a.update_user_code AS update_user_code, DATE_FORMAT(a.update_time,'%Y-%m-%d %H:%i:%s') AS update_time 
-		  FROM ${projectTableName} a INNER JOIN kb_project_user b ON a.`project_code` = b.`project_code` AND a.`project_parent_code`= #{projectCode} AND b.`user_code`=#{userCode}
+		  FROM ${projectTableName} a INNER JOIN kb_project_user b ON a.`project_code` = b.`project_code` AND a.`project_parent_code`= #{projectCode}
 	</select>
 	<!-- 根据项目编码查询父类项目编码 -->
 	<select id="selectSuperiorProjectCodeByProjectCode" resultType="string">
 		select project_parent_code from ${projectTableName} where project_code = #{projectCode}
 	</select>
+	<!-- 测试分界线 -->
+	
+	
+	<resultMap type="map" id="projectLevelForProject">
+		<collection property="data" column="{formName = pt_name,userCode = user_code,projectCode = project_code}" select="selectSonProjectByParentCodeAndUserCode"></collection>
+	</resultMap>
+	
+	<select id="getProject" resultMap="projectLevelForProject">
+		select pt_name,'${userCode}' as user_Code , '${projectCode}' as project_code from kb_project_table where project_level = #{projectLevel}
+	</select>
+	<resultMap type="map" id="test">
+	<association property="projectInfo123" column="{projectTableName = a.pt_name,userCode = user_code,projectCode = project_code}" select="selectProjectWithProjectPerssionByProjectCode"></association>
+	<collection property="sonProjectInfos" column="{formName = b.pt_name,userCode = user_code,projectCode = project_code}" select="selectSonProjectByParentCodeAndUserCode" ></collection>
+	</resultMap>
+	
+	
+	<select id="getProjectAndSonProjectInfos" resultMap="test">
+		 SELECT a.pt_name,b.pt_name,'${userCode}' as user_Code , '${projectCode}' as project_code FROM kb_project_table a LEFT JOIN kb_project_table b ON a.`project_level` +1 = b.`project_level` WHERE a.`project_level`=${projectLevel}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>

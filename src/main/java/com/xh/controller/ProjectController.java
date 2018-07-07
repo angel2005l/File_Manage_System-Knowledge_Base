@@ -58,17 +58,16 @@ public class ProjectController extends BaseController {
 	@ResponseBody
 	public Result<Object> insertProjectTable(HttpServletRequest request, HttpServletResponse response,
 			HttpSession session) {
-		String ptName = request.getParameter("pt_name");
-		String ptLevel = request.getParameter("pt_level");
-		KbProjectTable kpt = new KbProjectTable();
-		kpt.setPtCode(PROJECTTABLETAG + DateUtil.curDateYMDHMSForService()
-				+ StrUtil.getRandom((int) (Math.random() * 1000), 3));
-		kpt.setPtName(TABELTAG + ptName);
-		kpt.setProjectLevel(Integer.parseInt(ptLevel));
-		// kft.setCreateUserCode(session.getAttribute("userCode").toString());
-		kpt.setCreateUserCode("kb_system");
-		kpt.setCreateTime(DateUtil.curDateYMDHMS());
 		try {
+			String ptName = request.getParameter("pt_name");
+			String ptLevel = request.getParameter("pt_level");
+			KbProjectTable kpt = new KbProjectTable();
+			kpt.setPtCode(PROJECTTABLETAG + DateUtil.curDateYMDHMSForService()
+					+ StrUtil.getRandom((int) (Math.random() * 1000), 3));
+			kpt.setPtName(TABELTAG + ptName);
+			kpt.setProjectLevel(Integer.parseInt(ptLevel));
+			kpt.setCreateUserCode(session.getAttribute("userCode").toString());
+			kpt.setCreateTime(DateUtil.curDateYMDHMS());
 			return ps.createProjectList(kpt);
 		} catch (Exception e) {
 			log.error("新增项目表信息及项目表接口异常,异常原因:【" + e.toString() + "】");
@@ -99,9 +98,9 @@ public class ProjectController extends BaseController {
 			// String projectRemark = request.getParameter("project_remark");
 			String projectParentCode = request.getParameter("project_parent_code");// 项目父类编码
 			String projectParentLevel = request.getParameter("project_level");// 项目父类级别
-			String projectCode=request.getParameter("project_code");
 			int projectLevel = Integer.parseInt(projectParentLevel) + 1;// 当前项目级别
-//			String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService() + StrUtil.getRandom(10000, 4);// 项目编码
+			String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService()
+					+ StrUtil.getRandom((int) (Math.random() * 10000), 4);// 项目编码
 			String userCode = session.getAttribute("user_code").toString();// 创建人编码
 			String userDeptCode = session.getAttribute("user_dept_code").toString();// 创建人所属部门编码
 //			//为了@Before获取projectCode，自己存入request
@@ -164,30 +163,6 @@ public class ProjectController extends BaseController {
 			log.error("新增项目异常,异常原因：【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "新增项目异常,请联系系统管理员");
 		}
-	}
-
-	/**
-	 * 
-	 * @Title: selectAllPro
-	 * @Description: 主页、显示所有的项目
-	 * @author 陈专懂
-	 * @return Result<Object>
-	 * @date 2018年6月25日
-	 * @version 1.0
-	 */
-	@RequestMapping("/selectAllPro.do")
-	@ResponseBody
-	public Result<Object> selectAllPro(HttpServletRequest request, HttpServletResponse response) {
-		String obj = ps.selectProjectTableNameByProjectLevel(0).getData().toString();// 表名
-		String projectParentCode = "-1";
-		if (obj == null) {
-			return rtnErrorResult(Result.ERROR_4000, "找不到项目根目录");
-		}
-		List<KbProject> list = ps.selectAllPro(obj, projectParentCode).getData();
-		if (list != null) {
-			return rtnSuccessResult("获取该等级项目信息成功", list);
-		}
-		return rtnErrorResult(Result.ERROR_4000, "获取该等级项目信息失败，请联系管理员。");
 	}
 
 	/**
@@ -265,7 +240,7 @@ public class ProjectController extends BaseController {
 	/**
 	 * 
 	 * @Title: index
-	 * @Description: 主页面（当前用户参与的所有项目）
+	 * @Description: 主页面（当前用户参与的所有项目的0级项目）
 	 * @author 黄官易
 	 * @param request
 	 * @param session
@@ -278,7 +253,9 @@ public class ProjectController extends BaseController {
 	public String index(HttpServletRequest request, HttpSession session) {
 		try {
 			String userCode = session.getAttribute("user_code").toString();// 用户编码
-			List<Map<String, Object>> result = ps.selectProjectByUserCode(userCode);// 查询用户关联的所有项目
+			String method = request.getParameter("method");
+			List<Map<String, Object>> result = ps.selectProjectByUserCodeAndMethod(userCode,
+					StrUtil.isBlank(method) ? "self" : method);// 查询用户关联的所有项目
 			request.setAttribute("projectList", result);
 		} catch (NullPointerException e) {
 			log.error("非法登录,登录IP：" + IpUtil.getIp(request));

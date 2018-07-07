@@ -141,10 +141,7 @@
 														</span> <span class="content-linkable"> <a
 																class="todo-rest" data-stack="true"
 																href="file/pfd.do?project_code=${projects.projectCode }&project_level=${projects.projectLevel}&root_code=${rootCode }">${projects.projectName }</a>
-														</span> <!-- <div class="progress-wrap">
-							<span class="progress-pie" title="60%" data-pie="60"></span>
-							<span class="todo-progress" title="总共有 10 个检查项，已完成 6 个">(6/10)</span>
-						</div> -->
+														</span>
 														</span> <span class="todo-detail"> <a
 															class="label todo-assign-due">${projects.createUserCode }
 														</a></span>
@@ -159,7 +156,6 @@
 									<c:forEach var="projects" items="${projectSonInfos }">
 										<c:if test="${projects.projectStatus=='completed' }">
 											<li class="todo completed">
-
 												<div class="todo-actions actions">
 													<div class="inr" style="display: none;"></div>
 												</div>
@@ -171,7 +167,7 @@
 															<div class="checkbox-tick"
 																style="border-right: 2.52px solid; border-bottom: 2.52px solid;"></div>
 														</div>
-														<input type="checkbox" name="todo-done" checked=""
+														<input type="checkbox" name="todo-done" checked="checked"
 															class="checkbox-input">
 													</div>
 
@@ -218,8 +214,7 @@
 														<div class="tags"></div>
 														<div class="control-dir no-dir">
 																<a class="link-change-dir"
-																	onclick="display('${b.file_code }','${b.file_name }')"
-																	target="_blank">预览</a>
+																	onclick="display('${b.file_code }','${b.file_name }')">预览</a>
 																<c:if test="${b.file_permission eq 'download' }">
 																	<a
 																		onclick="downloadFile('${b.file_code }','${b.file_level }')"
@@ -272,13 +267,13 @@
 	</div>
 	<form id="displayForm" action="build/generic/web/viewer.html"
 		method="get" target="_blank">
-		<input id="displayValues" type="hidden" name="file" value="" />
+		<input id="displayValues" type="hidden" name="file" />
 	</form>
 	<script type="text/javascript" src="assets/js/layer.js"></script>
 
 	<script type="text/javascript">
 				function display(code,name){
-					var str = "file/disPdf.do?file_info="+code+","+name;
+					var str = "${pageContext.request.contextPath }/file/disPdf.do?file_info="+code+","+name;
 					$("#displayValues").val(str);
 					$("#displayForm").submit();
 				}

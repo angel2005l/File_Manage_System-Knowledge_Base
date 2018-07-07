@@ -23,7 +23,6 @@
 					<h1 class="logo">
         <a class="header-team-name" data-stack="true" data-stack-root="true" ><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">新海科技集团</font></font></a>
     </h1>
-
 					<ul class="nav">
 						<li id="nav-project">
 							<a href="">
@@ -55,8 +54,6 @@
 					</div>
 				</div>
 			</div>
-
-
 			<div class="container workspace simple-stack simple-stack-transition">
 				<div class="page page-root simple-pjax">
 
@@ -80,11 +77,10 @@
 
 						<div class="pin-projects ui-sortable">
 						</div>
-
 						<div class="projects grid-view ui-sortable">
 						<c:forEach var="b" items="${projectList }" >
-							<a class="project c2 i19" href="file/pfd.do?project_code=${b.project_code }&project_level=${b.project_level}"> <span class="badge"></span>
-								<span class="name"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">${b.project_name }</font></font></span>
+							<a class="project c2 i19" href="file/pfd.do?project_code=${b.project_main_code }&project_level=${b.project_main_level}"> <span class="badge"></span>
+								<span class="name"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">${b.project_main_name }</font></font></span>
 							</a>
 						</c:forEach>
 							
