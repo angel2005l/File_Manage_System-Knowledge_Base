@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.xh.aop.SystemControllerLog;
 import com.xh.base.BaseController;
 import com.xh.base.Constant;
 import com.xh.entity.KbFile;
@@ -201,6 +202,7 @@ public class FileController extends BaseController {
 	 */
 	@RequestMapping("/disPdf.do")
 	@ResponseBody
+	@SystemControllerLog(description = "在线预览")  
 	public ResponseEntity<byte[]> displayPDF(HttpServletRequest request) {
 		String fileInfo = request.getParameter("file_info");
 		String[] fileInfos = fileInfo.split(",");

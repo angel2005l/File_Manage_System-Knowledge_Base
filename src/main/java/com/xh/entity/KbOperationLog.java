@@ -110,4 +110,12 @@ public class KbOperationLog {
 	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
 	}
+
+	@Override
+	public String toString() {
+		return "KbOperationLog [id=" + id + ", logCode=" + logCode + ", logMsg=" + logMsg + ", logType=" + logType
+				+ ", logStatus=" + logStatus + ", projectCode=" + projectCode + ", logIsRead=" + logIsRead
+				+ ", logUserCode=" + logUserCode + ", logUserName=" + logUserName + ", createUserCode=" + createUserCode
+				+ ", createTime=" + createTime + "]";
+	}
 }

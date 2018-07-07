@@ -24,4 +24,9 @@
     from kb_operation_log
     where id = #{id,jdbcType=INTEGER}
   </select>
+  
+  <insert id="addLog" parameterType="com.xh.entity.KbOperationLog">
+  	INSERT into kb_operation_log (log_code,log_msg,log_type,log_status,project_code,log_is_read,log_user_code,log_user_name,create_user_code,create_time) 
+  	VALUES (#{log.logCode},#{log.logMsg},#{log.logType},#{log.logStatus},#{log.projectCode},#{log.logIsRead},#{log.logUserCode},#{log.logUserName},#{log.createUserCode},#{log.createTime})
+  </insert>
 </mapper>
