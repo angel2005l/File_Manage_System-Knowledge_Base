@@ -78,6 +78,8 @@ public class Result<T> implements Serializable {
 		this.code = code;
 	}
 
+
+
 	public String getMsg() {
 		return msg;
 	}
@@ -92,6 +94,10 @@ public class Result<T> implements Serializable {
 
 	public void setData(T data) {
 		this.data = data;
+	}
+	
+	public String toString() {
+		return "Result [code=" + code + ", msg=" + msg + ", data=" + data + "]";
 	}
 	
 }
