@@ -99,12 +99,13 @@ public class ProjectController extends BaseController {
 			String projectParentCode = request.getParameter("project_parent_code");// 项目父类编码
 			String projectParentLevel = request.getParameter("project_level");// 项目父类级别
 			int projectLevel = Integer.parseInt(projectParentLevel) + 1;// 当前项目级别
-			String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService()
-					+ StrUtil.getRandom((int) (Math.random() * 10000), 4);// 项目编码
+//			String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService()
+//					+ StrUtil.getRandom((int) (Math.random() * 10000), 4);// 项目编码
+			String projectCode=request.getParameter("project_code");
 			String userCode = session.getAttribute("user_code").toString();// 创建人编码
 			String userDeptCode = session.getAttribute("user_dept_code").toString();// 创建人所属部门编码
 //			//为了@Before获取projectCode，自己存入request
-//			request.setAttribute("project_code", projectCode);
+			request.setAttribute("project_code", projectCode);
 			KbProject kp = new KbProject();
 			kp.setProjectCode(projectCode);
 			kp.setProjectName(projectName);

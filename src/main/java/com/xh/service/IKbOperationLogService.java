@@ -23,4 +23,6 @@ public interface IKbOperationLogService {
 	*/
 	public int addLog(KbOperationLog log);
 
+//	public int updateLogByRead(String logUserCode);
+	
 }
