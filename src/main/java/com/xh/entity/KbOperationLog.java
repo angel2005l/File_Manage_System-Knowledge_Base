@@ -111,9 +111,6 @@ public class KbOperationLog {
 		this.createTime = createTime;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return "KbOperationLog [id=" + id + ", logCode=" + logCode + ", logMsg=" + logMsg + ", logType=" + logType
@@ -121,6 +118,4 @@ public class KbOperationLog {
 				+ ", logUserCode=" + logUserCode + ", logUserName=" + logUserName + ", createUserCode=" + createUserCode
 				+ ", createTime=" + createTime + "]";
 	}
-	
-	
 }

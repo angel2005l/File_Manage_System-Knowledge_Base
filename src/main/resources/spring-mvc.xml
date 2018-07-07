@@ -13,9 +13,9 @@
                         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
                         http://www.springframework.org/schema/aop 
         				http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
-    <context:annotation-config/>
-	<aop:aspectj-autoproxy proxy-target-class="true" />  
-	<aop:aspectj-autoproxy/>
+	<context:annotation-config />
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+	<aop:aspectj-autoproxy />
 	<context:component-scan
 		base-package="com.xh.controller" />
 	<context:component-scan
@@ -57,6 +57,7 @@
 		<property name="prefix" value="/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
-	<bean id="kbOperationLogServiceImpl" class="com.xh.service.impl.KbOperationLogServiceImpl"></bean>
+	<bean id="kbOperationLogServiceImpl"
+		class="com.xh.service.impl.KbOperationLogServiceImpl"></bean>
 	<bean id="kbOperationLog" class="com.xh.entity.KbOperationLog"></bean>
 </beans>
