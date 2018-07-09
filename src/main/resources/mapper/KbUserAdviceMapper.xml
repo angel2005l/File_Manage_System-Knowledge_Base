@@ -20,4 +20,15 @@
     from kb_user_advice
     where id = #{id,jdbcType=INTEGER}
   </select>
+  
+  <select id="parentUserCodeByCode" parameterType="string" resultType="string">
+  	SELECT user_code from kb_project_user where project_code = #{parentProjectCode}
+  </select>
+  
+  <insert id="addUserAdvice" parameterType="com.xh.entity.KbUserAdvice">
+  	insert into kb_user_advice (advice_code,user_code,log_code,log_msg,advice_status,create_time) values 
+  	(#{kbUserAdvice.adviceCode},#{kbUserAdvice.userCode},#{kbUserAdvice.logCode},#{kbUserAdvice.logMsg},#{kbUserAdvice.adviceStatus},#{kbUserAdvice.createTime})
+  </insert>
+  
+  
 </mapper>

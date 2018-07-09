@@ -29,7 +29,7 @@ public  @interface SystemControllerLog {
   
     String description()  default "";  
     String logType() default "";
-    boolean isAdvice() default false;
+    String isAdvice() default "false";
 //    String logIsRead() default "N";
 } 
  

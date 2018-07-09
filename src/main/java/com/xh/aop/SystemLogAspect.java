@@ -4,7 +4,9 @@
 package com.xh.aop;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -25,7 +27,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.xh.entity.KbOperationLog;
-import com.xh.service.IKbOperationLogService;
+import com.xh.entity.KbUserAdvice;
+import com.xh.service.IOperationLogService;
 import com.xh.uitl.DateUtil;
 import com.xh.uitl.Result;
 import com.xh.uitl.StrUtil;
@@ -43,7 +46,7 @@ import com.xh.uitl.StrUtil;
 public class SystemLogAspect {
 	// 注入Service用于把日志保存数据库
 	@Resource
-	private IKbOperationLogService kolService;
+	private IOperationLogService kolService;
 	@Autowired
 	KbOperationLog log;
 	// 本地异常日志记录对象
@@ -79,12 +82,17 @@ public class SystemLogAspect {
 		// 设立变量
 		String logStatus = "false";
 		String projectCode = "";
-		String logCode = "L" + DateUtil.curDateYMDHMSForService() + StrUtil.getRandom((int) (Math.random() * 10000), 4);
+		String parentProjectCode = "";// 父类项目的父类项目编码
+		int parentProjectLevel = 0;// 新建项目的父类等级
+		String logCode = "L" + DateUtil.curDateYMDHMSForService() + StrUtil.getRandom((int) (Math.random() * 10000), 4);// 日志编号
+		String logMsg = logUserName + ",操作了:" + getControllerMethodDescription(jp).get("description");// 日志信息
 		Object[] obj = jp.getArgs();
 		for (Object object : obj) {
 			if (object instanceof HttpServletRequest) {
 				request = (HttpServletRequest) object;
 				projectCode = request.getParameter("project_code");
+				parentProjectCode = request.getParameter("project_parent_code");
+				parentProjectLevel = Integer.parseInt(request.getParameter("project_level"));
 			}
 		}
 		try {
@@ -104,9 +112,30 @@ public class SystemLogAspect {
 			System.out.println("方法描述:" + logUserName + ",操作了:" + getControllerMethodDescription(jp).get("description"));
 			System.out.println("请求人:" + logUserName);
 			System.out.println("请求IP:" + ip);
+			// *========数据库通知=========*//
+			if (("true").equals(getControllerMethodDescription(jp).get("isAdvice")) || parentProjectLevel != 0) {
+				List<KbUserAdvice> kbUserAdviceList = new ArrayList<KbUserAdvice>();
+				// 若该level==0，则无上级，不需要通知任何人了，否则通知上级项目的所有组员
+				if (null != parentProjectCode && !parentProjectCode.isEmpty()) {
+					List<String> userCodeList = kolService.parentUserCodeByCode(parentProjectCode);
+					for (String userCode : userCodeList) {
+						KbUserAdvice kbUserAdvice = new KbUserAdvice();
+						kbUserAdvice.setAdviceCode("ADV" + DateUtil.curDateYMDHMSForService()
+								+ StrUtil.getRandom((int) (Math.random() * 100), 2));// 通知编号
+						kbUserAdvice.setLogCode(logCode);
+						kbUserAdvice.setLogMsg(logMsg);
+						kbUserAdvice.setAdviceStatus("N");
+						kbUserAdvice.setCreateTime(DateUtil.curDateYMDHMS());
+						kbUserAdvice.setUserCode(userCode);
+						kbUserAdviceList.add(kbUserAdvice);
+					}
+					kolService.addUserAdvice(kbUserAdviceList);
+				}
+			}
+			;
 			// *========数据库日志=========*//
 			log.setLogCode(logCode);
-			log.setLogMsg(logUserName + ",操作了:" + getControllerMethodDescription(jp).get("description"));
+			log.setLogMsg(logMsg);
 			log.setLogType(getControllerMethodDescription(jp).get("logType"));
 			log.setLogStatus(logStatus);
 			log.setProjectCode(projectCode);
@@ -177,14 +206,17 @@ public class SystemLogAspect {
 		Method[] methods = targetClass.getMethods();
 		String description = "";
 		String logType = "";
+		String isAdvice = "";
 		for (Method method : methods) {
 			if (method.getName().equals(methodName)) {
 				Class[] clazzs = method.getParameterTypes();
 				if (clazzs.length == arguments.length) {
 					description = method.getAnnotation(SystemControllerLog.class).description();
 					logType = method.getAnnotation(SystemControllerLog.class).logType();
+					isAdvice = method.getAnnotation(SystemControllerLog.class).isAdvice();
 					map.put("description", description);
 					map.put("logType", logType);
+					map.put("isAdvice", isAdvice);
 					break;
 				}
 			}
