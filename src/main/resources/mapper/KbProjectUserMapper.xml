@@ -48,21 +48,31 @@
 		order by create_time DESC
 	</select>
 	<!-- 新增项目信息关联表信息 新版本 -->
+	
 	<insert id="batchInsertProjectUsers" >
 			insert into kb_project_user(project_code, project_name, project_permission,project_level,user_code, user_name, user_dept_code,project_main_code,project_main_name,project_is_collect,create_user_code, create_time) values
 			<selectKey keyColumn="project_main_code,project_main_name,project_is_collect" keyProperty="projectMainInfo" order="BEFORE" resultType="map">
-				select  project_main_code,project_main_name,project_is_collect from kb_project_user where user_code = #{userCode} and project_code = #{projectCode}
+				<choose>
+					<when test="projectCode!=null and projectCode!=''">
+						select  project_main_code,project_main_name,project_is_collect from kb_project_user where user_code = #{userCode} and project_code = #{projectCode}
+					</when>
+					<otherwise>
+						select  '' as project_main_code, '' as project_main_name, '' as project_is_collect from dual
+					</otherwise>
+				</choose>
 			</selectKey>
-		<if test="projectCode!=null and projectCode!=''">
-			<foreach collection="kpuList" item="kpu" separator=",">
-				(#{kpu.projectCode},#{kpu.projectName},#{kpu.projectPermission},#{kpu.projectLevel},#{kpu.userCode},#{kpu.userName},#{kpu.userDeptCode},#{projectMainInfo.project_main_code},#{projectMainInfo.project_main_name},#{projectMainInfo.project_is_collect},#{kpu.createUserCode},#{kpu.createTime})
-			</foreach>
-		</if>
-		<if test="projectCode==null or projectCode ==''">
-		<foreach collection="kpuList" item="kpu" separator=",">
-			(#{kpu.projectCode},#{kpu.projectName},#{kpu.projectPermission},#{kpu.projectLevel},#{kpu.userCode},#{kpu.userName},#{kpu.userDeptCode},#{kpu.projectCode},#{kpu.projectName},'N',#{kpu.createUserCode},#{kpu.createTime})
-		</foreach>
-		</if>
+				<choose>
+					<when test="projectCode!=null and projectCode!=''">
+					<foreach collection="kpuList" item="kpu" separator=",">
+						(#{kpu.projectCode},#{kpu.projectName},#{kpu.projectPermission},#{kpu.projectLevel},#{kpu.userCode},#{kpu.userName},#{kpu.userDeptCode},#{projectMainInfo.project_main_code},#{projectMainInfo.project_main_name},#{projectMainInfo.project_is_collect},#{kpu.createUserCode},#{kpu.createTime})
+					</foreach>
+					</when>
+					<otherwise>
+					<foreach collection="kpuList" item="kpu" separator=",">
+						(#{kpu.projectCode},#{kpu.projectName},#{kpu.projectPermission},#{kpu.projectLevel},#{kpu.userCode},#{kpu.userName},#{kpu.userDeptCode},#{kpu.projectCode},#{kpu.projectName},'N',#{kpu.createUserCode},#{kpu.createTime})
+					</foreach>
+					</otherwise>
+				</choose>
 	</insert>
 	<!-- 查询特定的项目权限 -->
 	<select id="selectProjectPermissionByUserCode" resultType="string">
