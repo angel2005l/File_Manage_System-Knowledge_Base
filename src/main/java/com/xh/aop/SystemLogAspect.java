@@ -96,15 +96,15 @@ public class SystemLogAspect {
 			}
 		}
 		try {
-			Object resultObj = jp.proceed(); // 获取被切函数的 返回值
-			@SuppressWarnings("unchecked")
-			Result<Object> res = (Result<Object>) resultObj;
-			if (null != res) {
-				if (res.getCode() == 0) {
-					logStatus = "success";
-				}
-				;
-			}
+//			Object resultObj = jp.proceed(); // 获取被切函数的 返回值
+//			@SuppressWarnings("unchecked")
+//			Result<Object> res = (Result<Object>) resultObj;
+//			if (null != res) {
+//				if (res.getCode() == 0) {
+//					logStatus = "success";
+//				}
+//				;
+//			}
 			// *========控制台输出=========*//
 			System.out.println("=====环绕通知开始=====");
 			System.out.println(
