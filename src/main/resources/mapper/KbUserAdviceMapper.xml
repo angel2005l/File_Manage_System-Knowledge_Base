@@ -30,8 +30,12 @@
   	(#{kbUserAdvice.adviceCode},#{kbUserAdvice.userCode},#{kbUserAdvice.logCode},#{kbUserAdvice.logMsg},#{kbUserAdvice.adviceStatus},#{kbUserAdvice.createTime})
   </insert>
   
-  <select id="getAdviceMsgByUser" parameterType="string" resultMap="com.xh.entity.KbUserAdvice">
+  <select id="getAdviceMsgByUser" parameterType="string" resultMap="BaseResultMap">
   	select <include refid="Base_Column_List" /> from kb_user_advice where user_code=#{userCode} and advice_status='N'
   </select>
+  
+  <update id="updateAdviceStatusByAdviceCode" parameterMap="list">
+	update kb_user_advice set advice_status='Y' where advice_code in <foreach collection="list" item="code" index="index" separator=",">#{code}</foreach>
+  </update>
   
 </mapper>

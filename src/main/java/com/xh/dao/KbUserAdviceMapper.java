@@ -40,6 +40,18 @@ public interface KbUserAdviceMapper {
      * @date 2018年7月9日  
      * @version 1.0
      */
-    public KbUserAdvice getAdviceMsgByUser(@Param("userCode")String userCode);
+    public List<KbUserAdvice> getAdviceMsgByUser(@Param("userCode")String userCode);
+    
+    /**
+     * 
+     * @Title: updateAdviceStatusByAdviceCode  
+     * @Description:已读（修改通知的状态改成Y） 
+     * @author 陈专懂 
+     * @return int 
+     * @date 2018年7月9日  
+     * @version 1.0
+     */
+    public int updateAdviceStatusByAdviceCode(@Param("adviceCode")List<String> adviceCode);
+    
     
 }
