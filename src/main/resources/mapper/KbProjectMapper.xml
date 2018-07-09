@@ -96,13 +96,13 @@
 	<select id="selectSuperiorProjectCodeByProjectCode" resultType="string">
 		select project_parent_code from ${projectTableName} where project_code = #{projectCode}
 	</select>
-	<!-- 测试分界线 -->
+	<!-- 根据userCode，projectCode查询项目详细 -->
 	<resultMap type="map" id="projectInfoAndSonProjectInfosResultMap">
 	<association property="projectInfo" javaType="map" column="{projectTableName = a.pt_name,userCode = user_code,projectCode = project_code}" select="selectProjectWithProjectPerssionByProjectCode"></association>
 	<collection property="sonProjectInfos" column="{formName = b.pt_name,userCode = user_code,projectCode = project_code}" select="selectSonProjectByParentCodeAndUserCode" ></collection>
 	</resultMap>
-	
 	<select id="selectProjectAndSonProjectInfos" resultMap="projectInfoAndSonProjectInfosResultMap">
 		 SELECT a.pt_name,b.pt_name,'${userCode}' as user_Code , '${projectCode}' as project_code FROM kb_project_table a LEFT JOIN kb_project_table b ON a.`project_level` +1 = b.`project_level` WHERE a.`project_level`=${projectLevel}
 	</select>
+	<!-- 测试分界线 -->
 </mapper>
