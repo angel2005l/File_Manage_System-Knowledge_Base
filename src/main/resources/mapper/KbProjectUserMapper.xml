@@ -62,6 +62,8 @@
 		<foreach collection="kpuList" item="kpu" separator=",">
 			(#{kpu.projectCode},#{kpu.projectName},#{kpu.projectPermission},#{kpu.projectLevel},#{kpu.userCode},#{kpu.userName},#{kpu.userDeptCode},#{kpu.projectCode},#{kpu.projectName},'N',#{kpu.createUserCode},#{kpu.createTime})
 		</foreach>
+		
+		
 		</if>
 	</insert>
 	<!-- 查询特定的项目权限 -->
