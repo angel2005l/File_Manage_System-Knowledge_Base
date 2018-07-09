@@ -233,6 +233,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			log.error("获得项目表信息异常,异常原因【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "获得项目表信息异常,请联系系统管理员");
 		}
+
 		if (StrUtil.notBlank(projectTableName)) {
 			try {
 				// 根据项目关联关系，获得部门信息
@@ -260,7 +261,8 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			// 执行操作 保证数据操作的原子性
 			try {
 				int insProNum = projectMapper.insertProject(kp, projectTableName);
-				int insUsersNum = proUserMapper.batchInsertProjectUsers(kpus);
+				int insUsersNum = proUserMapper.batchInsertProjectUsers(kpus, kp.getProjectParentCode(),
+						kp.getCreateUserCode());
 				if (insProNum > 0 && kpus.size() == insUsersNum) {
 					return rtnSuccessResult("新建项目成功");
 				} else {
@@ -299,6 +301,22 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			}
 		}
 		return "";
+	}
+
+	@Transactional(rollbackFor = { Exception.class })
+	@Override
+	public Result<Object> changeCollect(String isCollect, String userCode, String projectMainCode) throws Exception {
+		if (StrUtil.isBlank(isCollect) || StrUtil.isBlank(userCode) || StrUtil.isBlank(projectMainCode)) {
+			return rtnFailResult(Result.ERROR_4000, "收藏失败");
+		}
+		try {
+			proUserMapper.updateCollectByUserCodeAndMainCode(isCollect, userCode, projectMainCode);
+		} catch (SQLException e) {
+			log.error("项目收藏数据接口异常,异常原因:【" + e.toString() + "】");
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			return rtnErrorResult(Result.ERROR_6000, "");
+		}
+		return rtnSuccessResult("收藏成功");
 	}
 
 }

@@ -17,26 +17,20 @@
 
 <body class="" style="cursor: auto;">
 
-
 	<div class="wrapper">
-
 		<div class="header">
 			<div class="header-container">
 				<h1 class="logo">
 					<a class="header-team-name js-show-focus-driver"
 						href="javascript:;">新海科技集团</a>
 				</h1>
-
 				<ul class="nav">
 					<li class="" id="nav-project"><a href="" data-stack=""
 						data-stack-root="">项目</a></li>
 					<li class="" id="nav-me"><a href="" data-stack=""
 						data-stack-root="">我自己</a></li>
-
 					<li id="nav-upgrade"></li>
-
 				</ul>
-
 				<div class="command-bar">
 					<div class="search-wrap">
 						<a href="javascript:;" class="link-search" title="搜索"><i
@@ -46,7 +40,6 @@
 								name="keyword" placeholder="搜索" autocomplete="off">
 						</form>
 					</div>
-
 					<div class="notification-info">
 						<a href="javascript:;" id="notification-count" class="label"
 							title="新的通知" >
@@ -82,7 +75,6 @@
 				</div>
 			</div>
 		</div>
-
 		<div class="container workspace simple-stack simple-stack-transition">
 			<!-- 			<div class="page page-root simple-pjax page-behind" style="">
 				<a class="link-page-behind" data-stack="" href=""
@@ -150,7 +142,6 @@
 												</li>
 											</c:if>
 										</c:forEach>
-
 									</ul>
 									<ul class="todo-new-wrap">
 									<c:forEach var="projects" items="${projectSonInfos }">
@@ -170,7 +161,6 @@
 														<input type="checkbox" name="todo-done" checked="checked"
 															class="checkbox-input">
 													</div>
-
 													<span class="todo-content"> <span class="raw">${projects.projectName }</span>
 														<span class="content-non-linkable"> <span
 															class="todo-rest">${projects.projectName }</span>

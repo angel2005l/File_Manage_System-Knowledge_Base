@@ -36,7 +36,8 @@ public interface KbProjectUserMapper {
 	 * @version 1.0
 	 */
 
-	public int batchInsertProjectUsers(List<KbProjectUser> kpuList) throws SQLException;
+	public int batchInsertProjectUsers(@Param("kpuList") List<KbProjectUser> kpuList,
+			@Param("projectCode") String projectCode, @Param("userCode") String userCode) throws SQLException;
 
 	/**
 	 * 
@@ -53,5 +54,33 @@ public interface KbProjectUserMapper {
 	 */
 	public String selectProjectPermissionByUserCode(@Param("projectCode") String projectCode,
 			@Param("userCode") String userCode) throws SQLException;
+
+	/**
+	 * 
+	 * @Title: selectProjectUserByProjectCodeAndUserCode
+	 * @Description: 根据userCode&projectCode查询用户的主项目信息
+	 * @author 黄官易
+	 * @return
+	 * @throws SQLException
+	 * @return String[]
+	 * @date 2018年7月7日
+	 * @version 1.0
+	 */
+	public String[] selectMainProjectInfoByProjectCodeAndUserCode() throws SQLException;
+
+	/**
+	 * 
+	 * @Title: updateCollectByUserCodeAndMainCode  
+	 * @Description: 根据用户编码和主方法更新收藏  
+	 * @author 黄官易
+	 * @param userCode
+	 * @param projectMainCode
+	 * @return
+	 * @throws SQLException    
+	 * @return int 
+	 * @date 2018年7月9日  
+	 * @version 1.0
+	 */
+	public int updateCollectByUserCodeAndMainCode(@Param("isCollect") String isCollect,@Param("userCode") String userCode,@Param("projectMainCode") String projectMainCode) throws SQLException;
 
 }

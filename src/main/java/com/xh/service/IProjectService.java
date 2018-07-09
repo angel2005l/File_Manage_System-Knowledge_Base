@@ -62,7 +62,7 @@ public interface IProjectService {
 	 * @date 2018年6月28日
 	 * @version 1.0
 	 */
-	public List<Map<String, Object>> selectProjectByUserCodeAndMethod(String userCode,String method) throws Exception;
+	public List<Map<String, Object>> selectProjectByUserCodeAndMethod(String userCode, String method) throws Exception;
 
 	/**
 	 * 
@@ -109,4 +109,19 @@ public interface IProjectService {
 	 */
 	public String selectProjectNameByProjectCode(int projectLevel, String projectCode) throws Exception;
 
+	/**
+	 * 
+	 * @Title: changeCollect
+	 * @Description: 收藏服务接口
+	 * @author 黄官易
+	 * @param isCollect
+	 * @param userCode
+	 * @param projectMainCode
+	 * @return
+	 * @throws Exception
+	 * @return Result<Object>
+	 * @date 2018年7月9日
+	 * @version 1.0
+	 */
+	public Result<Object> changeCollect(String isCollect, String userCode, String projectMainCode) throws Exception;
 }

@@ -57,9 +57,12 @@
 					data-page-name="新海科技集团的项目">
 					<div class="projects-tools">
 						<div class="project-groups">
-							<a class="project-group" title="我的收藏" href="pro/index.do?method=collect">我的收藏 <i
-								class="twr twr-star"></i></a> <a class="project-group" title="我的项目" href="pro/index.do?method=self">我的项目</a>
-							<a class="project-group" title="参与项目" href="pro/index.do?method=participation">参与项目</a>
+							<a class="project-group" title="我的收藏"
+								href="pro/index.do?method=collect">我的收藏 <i
+								class="twr twr-star"></i></a> <a class="project-group" title="我的项目"
+								href="pro/index.do?method=self">我的项目</a> <a
+								class="project-group" title="参与项目"
+								href="pro/index.do?method=participation">参与项目</a>
 							<div class="project-tools-right">
 								<a class="create-project" href="pro/insProJsp.do"> <font
 									style="vertical-align: inherit;"> <font
@@ -72,20 +75,17 @@
 
 					</div>
 
-					<div class="pin-projects ui-sortable"></div>
 					<div class="projects grid-view ui-sortable">
 						<c:forEach var="b" items="${projectList }">
-							<a class="project c2 i19"
-								href="file/pfd.do?project_code=${b.project_main_code }&project_level=${b.project_main_level}">
-								<span class="badge"></span> <span class="name"><font
-									style="vertical-align: inherit;"><font
+							<a class="project pin c2 i19" href="file/pfd.do?project_code=${b.project_main_code }"> <span class="badge"></span>
+								<span class="name"><font style="vertical-align: inherit;"><font
 										style="vertical-align: inherit;">${b.project_main_name }</font></font></span>
-								<span class="pin-icon" title="星标"></span>
+								<span
+								class="pin-icon<c:if test="${b.project_is_collect =='Y' }">-c</c:if>"
+								title="星标" main_code="${b.project_main_code }"></span> <!-- onclick="isCollect('${b.project_main_code }')" -->
 							</a>
 						</c:forEach>
-
 					</div>
-
 					<div class="projects-footer">
 						<!--<a href="https://tower.im/teams/66fb82b17f5341cbb0f5f39a1064c013/project_templates" data-stack="" data-visible-to="member">
 								<font style="vertical-align: inherit;">
@@ -111,5 +111,33 @@
 			</font>
 		</div>
 	</div>
+	<script type="text/javascript">
+		$(".pin-icon,.pin-icon-c").click(function(event) {
+			
+			var collectObj = $(this);
+			var mainProjectCode = collectObj.attr("main_code");
+			
+			var className = collectObj.attr("class");
+			className =  className == 'pin-icon' ? "pin-icon-c":"pin-icon"
+			var isCollect = className == 'pin-icon-c' ? "Y":"N"
+			if (mainProjectCode != undefined && mainProjectCode != '') {
+				$.ajax({
+					url:'pro/collect.do',
+					type:'post',
+					data:{"is_collect":isCollect,"project_main_code":mainProjectCode},
+					dateType:'json',
+					success:function(result){
+						collectObj.attr("class",className);
+					},
+					error:function(){
+						alert("服务器未响应");
+					}
+				})
+			}
+			//阻止冒泡
+			event.stopPropagation(); 
+			event.preventDefault();
+		})
+	</script>
 </body>
 </html>

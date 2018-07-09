@@ -23,7 +23,8 @@
   </sql>
 	<!-- 根据用户编码查询用户所关联的信息 -->
 	<select id="selectProjectSimpleInfoByUserCodeAndMethod" resultType="map">
-		SELECT DISTINCT project_main_code,project_main_name,0 as project_main_level FROM kb_project_user
+		<!-- SELECT DISTINCT project_main_code,project_main_name,0 as project_main_level FROM kb_project_user -->
+		SELECT DISTINCT project_main_code,project_main_name,project_is_collect FROM kb_project_user
 		<where>
 			<choose>
 				<!-- 收藏 -->
@@ -32,7 +33,7 @@
 				</when>
 				<!-- 我的项目 -->
 				<when test="method =='self'">
-					and create_user_code = #{userCode}
+					 and user_code = #{userCode} and create_user_code = #{userCode}
 				</when>
 				<!-- 参与项目 -->
 				<when test="method =='participation'">
@@ -40,21 +41,35 @@
 				</when>
 				<!-- 默认：我的项目 -->
 				<otherwise>
-					and create_user_code = #{userCode}
+					and user_code = #{userCode} and create_user_code = #{userCode} 
 				</otherwise>
 			</choose>			
 		</where>
-		order by create_time desc
+		order by create_time DESC
 	</select>
 	<!-- 新增项目信息关联表信息 新版本 -->
-	<insert id="batchInsertProjectUsers" parameterType="list">
-		insert into kb_project_user(project_code, project_name, project_permission,project_level,user_code, user_name, user_dept_code,create_user_code, create_time) values
-		<foreach collection="list" item="kpu" separator=",">
-			(#{kpu.projectCode},#{kpu.projectName},#{kpu.projectPermission},#{kpu.projectLevel},#{kpu.userCode},#{kpu.userName},#{kpu.userDeptCode},#{kpu.createUserCode},#{kpu.createTime})
+	<insert id="batchInsertProjectUsers" >
+		<selectKey keyColumn="project_main_code,project_main_name,project_is_collect" keyProperty="projectMainInfo" order="BEFORE" resultType="map">
+			select  project_main_code,project_main_name,project_is_collect from kb_project_user where user_code = #{userCode} and project_code = #{projectCode}
+		</selectKey>
+		insert into kb_project_user(project_code, project_name, project_permission,project_level,user_code, user_name, user_dept_code,project_main_code,project_main_name,project_is_collect,create_user_code, create_time) values
+		<if test="projectMainInfo.project_main_code != null and projectMainInfo.project_main_code !=''">
+		<foreach collection="kpuList" item="kpu" separator=",">
+			(#{kpu.projectCode},#{kpu.projectName},#{kpu.projectPermission},#{kpu.projectLevel},#{kpu.userCode},#{kpu.userName},#{kpu.userDeptCode},#{projectMainInfo.project_main_code},#{projectMainInfo.project_main_name},#{projectMainInfo.project_is_collect},#{kpu.createUserCode},#{kpu.createTime})
 		</foreach>
+		</if>
+		<if test="projectMainInfo.project_main_code == null or projectMainInfo.project_main_code ==''">
+		<foreach collection="kpuList" item="kpu" separator=",">
+			(#{kpu.projectCode},#{kpu.projectName},#{kpu.projectPermission},#{kpu.projectLevel},#{kpu.userCode},#{kpu.userName},#{kpu.userDeptCode},#{kpu.projectCode},#{kpu.projectName},'N',#{kpu.createUserCode},#{kpu.createTime})
+		</foreach>
+		</if>
 	</insert>
 	<!-- 查询特定的项目权限 -->
 	<select id="selectProjectPermissionByUserCode" resultType="string">
 		select project_permission from kb_project_user where user_code = #{userCode} and project_code = #{projectCode}
 	</select>
+	<!-- 根据用户编码和主方法更新收藏   -->
+	<update id="updateCollectByUserCodeAndMainCode">
+		UPDATE kb_project_user SET project_is_collect=#{isCollect } WHERE user_code = #{userCode} AND project_main_code=#{projectMainCode }
+	</update>
 </mapper>
