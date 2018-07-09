@@ -57,7 +57,7 @@
 		<property name="prefix" value="/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
-	<bean id="kbOperationLogServiceImpl"
+	<bean id="OperationLogServiceImpl"
 		class="com.xh.service.impl.OperationLogServiceImpl"></bean>
 	<bean id="kbOperationLog" class="com.xh.entity.KbOperationLog"></bean>
 </beans>
