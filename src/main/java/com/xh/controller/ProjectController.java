@@ -86,7 +86,7 @@ public class ProjectController extends BaseController {
 	 * @date 2018年6月28日
 	 * @version 1.0
 	 */
-	@SystemControllerLog(description = "新增项目表信息及项目员工表信息",logType= "insert",isAdvice="true" )
+	@SystemControllerLog(description = "新增项目表信息及项目员工表信息", logType = "insert", isAdvice = "true")
 	@RequestMapping("/insPro.do")
 	@ResponseBody
 	public Result<Object> addProject(HttpServletRequest request, HttpSession session) {
@@ -99,12 +99,12 @@ public class ProjectController extends BaseController {
 			String projectParentCode = request.getParameter("project_parent_code");// 项目父类编码
 			String projectParentLevel = request.getParameter("project_level");// 项目父类级别
 			int projectLevel = Integer.parseInt(projectParentLevel) + 1;// 当前项目级别
-//			String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService()
-//					+ StrUtil.getRandom((int) (Math.random() * 10000), 4);// 项目编码
-			String projectCode=request.getParameter("project_code");
+			// String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService()
+			// + StrUtil.getRandom((int) (Math.random() * 10000), 4);// 项目编码
+			String projectCode = request.getParameter("project_code");
 			String userCode = session.getAttribute("user_code").toString();// 创建人编码
 			String userDeptCode = session.getAttribute("user_dept_code").toString();// 创建人所属部门编码
-//			//为了@Before获取projectCode，自己存入request
+			// //为了@Before获取projectCode，自己存入request
 			request.setAttribute("project_code", projectCode);
 			KbProject kp = new KbProject();
 			kp.setProjectCode(projectCode);
@@ -213,7 +213,7 @@ public class ProjectController extends BaseController {
 	 * @date 2018年6月27日
 	 * @version 1.0
 	 */
-//	@SystemControllerLog(description = "跳转至添加项目界面",logType= "goto")
+	// @SystemControllerLog(description = "跳转至添加项目界面",logType= "goto")
 	@RequestMapping("/insProJsp.do")
 	public String toInsertProject(HttpServletRequest request, HttpSession session) {
 		try {
@@ -223,12 +223,13 @@ public class ProjectController extends BaseController {
 			String projectParentLevel = StrUtil.isBlank(request.getParameter("project_level")) ? "-1"
 					: request.getParameter("project_level");// 获得父类等级
 			Result<List<KbUser>> userResult = us.selUsersByUserDeptCode(userDeptCode); // 获得员工信息
-			//为了@Before获取projectCode，自己存入request
-			String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService() + StrUtil.getRandom((int) (Math.random() * 10000), 4);// 项目编码
+			// 为了@Before获取projectCode，自己存入request
+			String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService()
+					+ StrUtil.getRandom((int) (Math.random() * 10000), 4);// 项目编码
 			request.setAttribute("userList", userResult.getData());
 			request.setAttribute("projectParentCode", projectParentCode);
 			request.setAttribute("projectLevel", projectParentLevel);
-			request.setAttribute("projectCode", projectCode);//为了获取projectCode
+			request.setAttribute("projectCode", projectCode);// 为了获取projectCode
 		} catch (NumberFormatException | NullPointerException e) {
 			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
 			return "view/login";
@@ -267,4 +268,29 @@ public class ProjectController extends BaseController {
 		return "view/index";
 	}
 
+	/**
+	 * 
+	 * @Title: changeCollect
+	 * @Description: 收藏/取消收藏项目
+	 * @author 黄官易
+	 * @param request
+	 * @param session
+	 * @return
+	 * @return Result<Object>
+	 * @date 2018年7月9日
+	 * @version 1.0
+	 */
+	@RequestMapping("/collect.do")
+	@ResponseBody
+	public Result<Object> changeCollect(HttpServletRequest request, HttpSession session) {
+		try {
+			String isCollect = request.getParameter("is_collect");
+			String projectMainCode = request.getParameter("project_main_code");
+			String userCode = session.getAttribute("user_code").toString();
+			return ps.changeCollect(isCollect, userCode, projectMainCode);
+		} catch (Exception e) {
+			log.error("收藏/取消收藏项目异常,异常原因：【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "收藏失败");
+		}
+	}
 }
