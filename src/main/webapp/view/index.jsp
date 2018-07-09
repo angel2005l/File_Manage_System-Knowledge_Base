@@ -77,7 +77,7 @@
 
 					<div class="projects grid-view ui-sortable">
 						<c:forEach var="b" items="${projectList }">
-							<a class="project pin c2 i19" href="file/pfd.do?project_code=${b.project_main_code }"> <span class="badge"></span>
+							<a class="project pin c2 i19" href="file/pfd.do?project_code=${b.project_main_code }&project_level=0"> <span class="badge"></span>
 								<span class="name"><font style="vertical-align: inherit;"><font
 										style="vertical-align: inherit;">${b.project_main_name }</font></font></span>
 								<span
