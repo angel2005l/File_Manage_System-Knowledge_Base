@@ -273,7 +273,6 @@ public class FileServiceImpl extends BaseService implements IFileService {
 			}
 		} catch (SQLException e) {
 			log.error("根据部门编码查询上级部门的领导层用户,异常信息:【" + e.toString() + "】");
-			// return rtnErrorResult(Result.ERROR_6000, "查询系统异常,请联系系统管理员");
 		}
 		return null;
 	}

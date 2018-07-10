@@ -104,5 +104,15 @@
 	<select id="selectProjectAndSonProjectInfos" resultMap="projectInfoAndSonProjectInfosResultMap">
 		 SELECT a.pt_name,b.pt_name,'${userCode}' as user_Code , '${projectCode}' as project_code FROM kb_project_table a LEFT JOIN kb_project_table b ON a.`project_level` +1 = b.`project_level` WHERE a.`project_level`=${projectLevel}
 	</select>
+	<!-- 更新项目状态 -->
+	<update id="updateProjectStatus">
+		<selectKey keyColumn="pt_name" order="BEFORE" keyProperty="pt_name" resultType="string">
+			SELECT  pt_name FROM kb_project_table WHERE project_level=#{projectLevel}
+		</selectKey>
+		update ${pt_name} a inner join kb_project_user b on a.project_code = b.project_code and b.user_code = #{userCode} <set>
+			a.project_status = #{projectStatus},a.update_user_code=#{userCode}
+		</set> where a.project_code=#{projectCode} and a.project_status='progress' and b.project_permission = 'write'
+	</update>
+	
 	<!-- 测试分界线 -->
 </mapper>

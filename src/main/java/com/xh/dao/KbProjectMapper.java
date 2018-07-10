@@ -67,8 +67,9 @@ public interface KbProjectMapper {
 	 * @date 2018年6月27日
 	 * @version 1.0
 	 */
-	public Map<String, Object> selectProjectWithProjectPerssionByProjectCode(@Param("projectTableName") String projectTableName,
-			@Param("projectCode") String projectCode, @Param("userCode") String userCode) throws SQLException;
+	public Map<String, Object> selectProjectWithProjectPerssionByProjectCode(
+			@Param("projectTableName") String projectTableName, @Param("projectCode") String projectCode,
+			@Param("userCode") String userCode) throws SQLException;
 
 	/**
 	 * 
@@ -85,7 +86,7 @@ public interface KbProjectMapper {
 	 */
 	public KbProject selectProjectByProjectCode(@Param("projectTableName") String projectTableName,
 			@Param("projectCode") String projectCode) throws SQLException;
-	
+
 	/**
 	 * 
 	 * @Title: selectAllPro
@@ -184,19 +185,37 @@ public interface KbProjectMapper {
 	 */
 	public String selectSuperiorProjectCodeByProjectCode(@Param("projectTableName") String projectTableName,
 			@Param("projectCode") String projectCode) throws SQLException;
+
 	/**
 	 * 
-	 * @Title: selectProjectAndSonProjectInfos  
+	 * @Title: selectProjectAndSonProjectInfos
 	 * @Description: 根据userCode，projectCode查询项目详细
 	 * @author 黄官易
 	 * @param projectLevel
 	 * @param projectCode
 	 * @param userCode
 	 * @return
-	 * @throws SQLException    
-	 * @return Map<String,Object> 
-	 * @date 2018年7月5日  
+	 * @throws SQLException
+	 * @return Map<String,Object>
+	 * @date 2018年7月5日
 	 * @version 1.0
 	 */
-	public Map<String,Object> selectProjectAndSonProjectInfos(@Param("projectLevel") int projectLevel,@Param("projectCode") String projectCode ,@Param("userCode") String userCode) throws SQLException;
+	public Map<String, Object> selectProjectAndSonProjectInfos(@Param("projectLevel") int projectLevel,
+			@Param("projectCode") String projectCode, @Param("userCode") String userCode) throws SQLException;
+
+	/**
+	 * 
+	 * @Title: updateProjectStatus
+	 * @Description: 更新项目状态
+	 * @author 黄官易
+	 * @param projectCode
+	 * @param userCode
+	 * @return
+	 * @throws SQLException
+	 * @return int
+	 * @date 2018年7月10日
+	 * @version 1.0
+	 */
+	public int updateProjectStatus(@Param("projectLevel") int projectLevel,@Param("projectCode") String projectCode,@Param("projectStatus") String projectStatus, @Param("userCode") String userCode)
+			throws SQLException;
 }

@@ -16,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.xh.aop.SystemControllerLog;
 import com.xh.base.BaseController;
 import com.xh.base.Constant;
 import com.xh.entity.KbProject;
@@ -290,9 +289,43 @@ public class ProjectController extends BaseController {
 			String projectMainCode = request.getParameter("project_main_code");
 			String userCode = session.getAttribute("user_code").toString();
 			return ps.changeCollect(isCollect, userCode, projectMainCode);
+		} catch (NullPointerException e) {
+			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
 		} catch (Exception e) {
 			log.error("收藏/取消收藏项目异常,异常原因：【" + e.toString() + "】");
-			return rtnErrorResult(Result.ERROR_6000, "收藏失败");
 		}
+		return rtnErrorResult(Result.ERROR_6000, "收藏失败");
+	}
+
+	/**
+	 * 
+	 * @Title: changeProjectStatus
+	 * @Description: 完成项目按钮
+	 * @author 黄官易
+	 * @param request
+	 * @param session
+	 * @return
+	 * @return Result<Object>
+	 * @date 2018年7月10日
+	 * @version 1.0
+	 */
+	@RequestMapping("/priStatus.do")
+	@ResponseBody
+	public Result<Object> changeProjectStatus(HttpServletRequest request, HttpSession session) {
+		try {
+			// 订单号
+			String projectCode = request.getParameter("project_code");
+			// 员工编号
+			String userCode = session.getAttribute("user_code").toString();
+			// 项目等级
+			String projectLevel = request.getParameter("project_level");
+			// 主体方法
+			return ps.changeProjectStatus(Integer.parseInt(projectLevel), projectCode, userCode);
+		} catch (NullPointerException e) {
+			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
+		} catch (Exception e) {
+			log.error("项目状态更新异常,异常原因:【" + e.toString() + "】");
+		}
+		return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
 	}
 }

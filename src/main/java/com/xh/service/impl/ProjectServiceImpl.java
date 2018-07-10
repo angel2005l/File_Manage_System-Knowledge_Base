@@ -319,4 +319,22 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 		return rtnSuccessResult("收藏成功");
 	}
 
+	@Transactional(rollbackFor = {Exception.class})
+	@Override
+	public Result<Object> changeProjectStatus(int projectLevel, String projectCode, String userCode) throws Exception {
+		try {
+			int uptNum = projectMapper.updateProjectStatus(projectLevel, projectCode, "completed", userCode);
+			if (uptNum < 1) {
+				return rtnFailResult(Result.ERROR_4000, "状态更改失败（您可能不是项目参与者）");
+			} else if (uptNum == 1) {
+				return rtnSuccessResult("状态更改成功");
+			} else {
+				return rtnFailResult(Result.ERROR_4000, "状态更改失败");
+			}
+		} catch (SQLException e) {
+			log.error("项目状态更新数据接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
+		}
+	}
+
 }

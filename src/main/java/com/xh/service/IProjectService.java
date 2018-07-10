@@ -124,4 +124,20 @@ public interface IProjectService {
 	 * @version 1.0
 	 */
 	public Result<Object> changeCollect(String isCollect, String userCode, String projectMainCode) throws Exception;
+
+	/**
+	 * 
+	 * @Title: changeProjectStatus
+	 * @Description: TODO(这里用一句话描述这个方法的作用)
+	 * @author 黄官易
+	 * @param projectLevel
+	 * @param projectCode
+	 * @param userCode
+	 * @return
+	 * @throws Exception
+	 * @return Result<Object>
+	 * @date 2018年7月10日
+	 * @version 1.0
+	 */
+	public Result<Object> changeProjectStatus(int projectLevel, String projectCode, String userCode) throws Exception;
 }

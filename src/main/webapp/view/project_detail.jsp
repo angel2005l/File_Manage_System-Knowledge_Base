@@ -110,7 +110,7 @@
 											<c:if test="${projects.projectStatus=='progress' }">
 												<li class="todo">
 													<div class="todo-wrap">
-														<div class="simple-checkbox"
+														<div class="simple-checkbox noChecked" project_code='${projects.projectCode }' project_level='${projects.projectLevel}'
 															style="height: 18px; width: 18px;">
 															<div class="checkbox-container"
 																style="border: 1.8px solid;">
@@ -245,8 +245,26 @@
 	<script type="text/javascript" src="assets/js/layer.js"></script>
 
 	<script type="text/javascript">
-			$(".simple-checkbox").on('click',function(){
-				$(this).addClass("checked")				
+			$(".noChecked").on('click',function(){
+				var checkedObj = $(this);
+				$.ajax({
+					url:'pro/priStatus.do',
+					type:'post',
+					data:{'project_code':checkedObj.attr("project_code"),'project_level':checkedObj.attr("project_level")},
+					dataType:'json',
+					success:function(result){
+						if(result.code ==0){
+						//checkedObj.addClass("checked");				
+						location.reload();
+						}else{
+							alert(result.msg);	
+						}
+					},
+					error:function(){
+						alert("服务器未响应")
+					}
+					
+				})
 			})
 	
 				function display(code,name){
