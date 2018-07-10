@@ -6358,7 +6358,7 @@ html.simple-gallery-active {
 .attachment-list>.attachment .attachment-info .name, .attachment-list .images .attachment .attachment-info .name
 	{
 	margin: 10px 0 4px;
-	line-height: 16px;
+	line-height: 20px;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis
@@ -6367,7 +6367,7 @@ html.simple-gallery-active {
 .attachment-list>.attachment .attachment-info .name a, .attachment-list .images .attachment .attachment-info .name a
 	{
 	display: none;
-	font-size: 14px;
+	font-size: 15px;
 	color: #333
 }
 
@@ -6457,17 +6457,26 @@ html.simple-gallery-active {
 
 .attachment-list .others .attachment .attachment-info .name {
 	display: block;
-	margin: 5px 0;
-	line-height: 12px;
+	margin: 0px 0;
+	line-height: 20px;
 	overflow: hidden;
-	white-space: nowrap;
 	text-overflow: ellipsis
 }
 
 .attachment-list .others .attachment .attachment-info .name a {
 	display: none;
-	font-size: 12px;
+	font-size: 14px;
 	color: #333
+}
+.attachment-list .others .attachment .attachment-info .name p {
+  	word-wrap: break-word; 
+	word-break: normal;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+	font-size: 15px;
+	color: #333;
 }
 
 .attachment-list .others .attachment .attachment-info .name .link-download
