@@ -16,6 +16,8 @@ import javax.ws.rs.NotFoundException;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -69,8 +71,8 @@ public class SystemLogAspect {
 	 *            切点
 	 * @throws Throwable
 	 */
-	@Around("controllerAspect()")
-	public void doAround(ProceedingJoinPoint jp) throws Throwable {
+	@After("controllerAspect()")
+	public void doAround(JoinPoint jp) throws Throwable {//JoinPoint point    ProceedingJoinPoint jp
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
 				.getRequest();
 		HttpSession session = request.getSession();
@@ -84,6 +86,7 @@ public class SystemLogAspect {
 		String projectCode = "";
 		String parentProjectCode = "";// 父类项目的父类项目编码
 		int parentProjectLevel = 0;// 新建项目的父类等级
+		int code = -1;
 		String logCode = "L" + DateUtil.curDateYMDHMSForService() + StrUtil.getRandom((int) (Math.random() * 10000), 4);// 日志编号
 		String logMsg = logUserName + ",操作了:" + getControllerMethodDescription(jp).get("description");// 日志信息
 		Object[] obj = jp.getArgs();
@@ -93,18 +96,13 @@ public class SystemLogAspect {
 				projectCode = request.getParameter("project_code");
 				parentProjectCode = request.getParameter("project_parent_code");
 				parentProjectLevel = Integer.parseInt(request.getParameter("project_level"));
+				code=(int) request.getAttribute("log_status");
 			}
 		}
 		try {
-//			Object resultObj = jp.proceed(); // 获取被切函数的 返回值
-//			@SuppressWarnings("unchecked")
-//			Result<Object> res = (Result<Object>) resultObj;
-//			if (null != res) {
-//				if (res.getCode() == 0) {
-//					logStatus = "success";
-//				}
-//				;
-//			}
+			if(code == 0) {
+				logStatus = "success";
+			}
 			// *========控制台输出=========*//
 			System.out.println("=====环绕通知开始=====");
 			System.out.println(
@@ -153,42 +151,15 @@ public class SystemLogAspect {
 			logger.error("异常信息:{}", e.getMessage());
 		}
 	}
-
-	// @Before("controllerAspect()")
-	// public void doBefore(JoinPoint point) {
-	// HttpServletRequest request =
-	// ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-	// HttpSession session = request.getSession();
-	// System.out.println("====前置通知开始=====");
-	// session.setAttribute("test", "session测试");
-	// System.out.println("====前置通知结束=====");
-	// }
-
-	// @After("controllerAspect()")
-	// public void doAfter(JoinPoint point) {
-	// HttpServletRequest request =
-	// ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-	// HttpSession session = request.getSession();
-	// String projecrCode=request.getAttribute("project_code").toString();
-	// System.out.println("====后置通知开始=====");
-	// System.out.println("----projectCode:"+projecrCode);
-	// System.out.println("-------------ing...-------------------");
-	// System.out.println("=====后置通知结束=====获取session测试的值:"+session.getAttribute("test").toString());
-	// }
-
-	//// @AfterReturning(pointcut="controllerAspect",returning="logCode")
-	// @AfterReturning(
-	// pointcut="execution(* com.xh.aop.SystemControllerLog.*(..))",
-	// returning="logCode")
-	// public void doAfterReturning(JoinPoint point, Object logCode) {
-	// HttpServletRequest request =
-	//// ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-	// HttpSession session = request.getSession();
-	// System.out.println("====后置Return通知开始=====");
-	// System.out.println("获取@Around中的返回值："+logCode);
-	// System.out.println("=====后置Return通知结束=====获取session测试的值:"+session.getAttribute("test").toString());
-	//
-	// }
+//	 @AfterReturning("controllerAspect()")
+//	 public void doAfterReturning(JoinPoint point, Object logCode) {
+//	 HttpServletRequest request =((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+//	 HttpSession session = request.getSession();
+//	 System.out.println("====后置Return通知开始=====");
+//	 System.out.println("获取@Around中的返回值："+logCode);
+//	 System.out.println("=====后置Return通知结束=====获取session测试的值:"+session.getAttribute("test").toString());
+//	
+//	 }
 	/**
 	 * 获取注解中对方法的描述信息 用于Controller层注解
 	 * 

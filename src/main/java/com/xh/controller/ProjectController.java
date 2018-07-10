@@ -1,5 +1,6 @@
 package com.xh.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.JavaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +27,9 @@ import com.xh.entity.KbProject;
 import com.xh.entity.KbProjectTable;
 import com.xh.entity.KbProjectUser;
 import com.xh.entity.KbUser;
+import com.xh.entity.KbUserAdvice;
 import com.xh.service.IProjectService;
+import com.xh.service.IUserAdviceService;
 import com.xh.service.IUserService;
 import com.xh.uitl.DateUtil;
 import com.xh.uitl.IpUtil;
@@ -43,7 +50,9 @@ public class ProjectController extends BaseController {
 	@Autowired
 	@Qualifier("userServiceImpl")
 	private IUserService us;// 用户服务层
-
+	@Autowired
+	@Qualifier("userAdviceServiceImpl")
+	private IUserAdviceService ads;
 	/**
 	 * 
 	 * @Title: insertProjectTable
@@ -157,7 +166,9 @@ public class ProjectController extends BaseController {
 					kpuList.add(kpu);
 				}
 			}
-			return ps.insProject(kp, kpuList);
+			Result<Object> obj=ps.insProject(kp, kpuList);
+			request.setAttribute("log_status", obj.getCode());
+			return obj;
 		} catch (NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
 			return rtnErrorResult(Result.ERROR_6000, "非法登录!");
@@ -260,6 +271,9 @@ public class ProjectController extends BaseController {
 			List<Map<String, Object>> result = ps.selectProjectByUserCodeAndMethod(userCode,
 					StrUtil.isBlank(method) ? "self" : method);// 查询用户关联的所有项目
 			request.setAttribute("projectList", result);
+			List<KbUserAdvice> adList=ads.getAdviceMsgByUser(userCode);
+			request.setAttribute("adNum", adList.size());
+			request.setAttribute("adviceMsg", adList);
 		} catch (NullPointerException e) {
 			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
 			return "view/login";
@@ -327,5 +341,14 @@ public class ProjectController extends BaseController {
 			log.error("项目状态更新异常,异常原因:【" + e.toString() + "】");
 		}
 		return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
+	}
+	@RequestMapping("/isRead.do")
+	@ResponseBody
+	public Result<Object> isReadAdviceMsg(HttpServletRequest request, HttpSession session) throws JsonParseException, JsonMappingException, IOException{
+		String list=request.getParameter("list");
+		ObjectMapper mapper= new ObjectMapper();
+		JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, String.class);
+		List<String> advCodeList=mapper.readValue(list, jt);
+		return ads.updateAdviceStatusByAdviceCode(advCodeList);
 	}
 }
