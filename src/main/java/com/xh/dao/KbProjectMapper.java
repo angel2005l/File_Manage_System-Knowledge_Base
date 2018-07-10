@@ -216,6 +216,9 @@ public interface KbProjectMapper {
 	 * @date 2018年7月10日
 	 * @version 1.0
 	 */
-	public int updateProjectStatus(@Param("projectLevel") int projectLevel,@Param("projectCode") String projectCode,@Param("projectStatus") String projectStatus, @Param("userCode") String userCode)
-			throws SQLException;
+	public int updateProjectStatus(@Param("projectLevel") int projectLevel, @Param("projectCode") String projectCode,
+			@Param("projectStatus") String projectStatus, @Param("userCode") String userCode) throws SQLException;
+
+	public int selectSonProject(@Param("formName") String formName, @Param("projectCode") String projectCode,
+			@Param("userCode") String userCode) throws SQLException;
 }

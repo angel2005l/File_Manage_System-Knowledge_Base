@@ -309,7 +309,7 @@ public class FileServiceImpl extends BaseService implements IFileService {
 		int completedProject = 0;// 已完成的项目
 		int per = 0;
 		Map<String, Object> projectInfo = null;
-		List<KbProject> projectSonInfos = null;
+		List<Map<String,Object>> projectSonInfos = null;
 		List<Map<String, Object>> fileList = null;
 		/*
 		 * 详细页展示： 1.当前项目及其相关项目信息（父项目） 2.子项目（子项目List) 3.该员工所具有权限的文件信息
@@ -323,10 +323,10 @@ public class FileServiceImpl extends BaseService implements IFileService {
 				projectInfo = (Map<String, Object>) projectObj; // 强转Map
 				Object sonProjectsObj = projectDataMap.get("sonProjectInfos");
 				if (null != sonProjectsObj) {
-					projectSonInfos = (List<KbProject>) sonProjectsObj;// 强转List
+					projectSonInfos = (List<Map<String,Object>>) sonProjectsObj;// 强转List
 					if (!projectSonInfos.isEmpty()) {
 						for (int index = 0; index < projectSonInfos.size(); index++) {
-							String projectStatus = projectSonInfos.get(index).getProjectStatus();
+							String projectStatus = projectSonInfos.get(index).get("projectStatus")+"";
 							if ("progress".equals(projectStatus)) {
 								progressProject++;
 							} else if ("completed".equals(projectStatus)) {

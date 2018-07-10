@@ -77,11 +77,7 @@
 			</div>
 		</div>
 		<div class="container workspace simple-stack simple-stack-transition">
-			<!-- 			<div class="page page-root simple-pjax page-behind" style="">
-				<a class="link-page-behind" data-stack="" href=""
-					data-stack-fluid="">面包屑</a>
-			</div> -->
-			<div class="page page-1 simple-pjax">
+			<div class="page page-0 simple-pjax">
 				<div class="page-inner" id="page-todolist">
 					<div class="todos-all">
 						<div class="todolists-wrap">
@@ -124,9 +120,10 @@
 																href="file/pfd.do?project_code=${projects.projectCode }&project_level=${projects.projectLevel}&root_code=${rootCode }">${projects.projectName }</a>
 														</span>
 														</span> <span class="todo-detail"> <a
-															class="label todo-assign-due">${projects.createUserCode }
+															class="label todo-assign-due">${projects.createUserName }
+														</a><a
+															class="label todo-assign-due"><fmt:parseDate value="${projects.createTime }" var="parsedEmpDate" /><fmt:formatDate value="${parsedEmpDate }" pattern="yyyy-MM-dd" />
 														</a></span>
-
 													</div>
 												</li>
 											</c:if>
@@ -149,13 +146,15 @@
 														</div>
 													</div>
 													<span class="todo-content">
-														<span class="content-linkable"> <a
-															class="todo-rest" data-stack="true">${projects.projectName }</a>
+														<span class="content-linkable">
+														 <a class="todo-rest" data-stack="true"
+																href="file/pfd.do?project_code=${projects.projectCode }&project_level=${projects.projectLevel}&root_code=${rootCode }">${projects.projectName }</a>
 														</span>
-													</span>
-													<span class="todo-detail"> 
-														<span class="label completed-member">${projects.createUserCode }</span>
-													</span>
+														</span> <span class="todo-detail"> <a
+															class="label todo-assign-due">${projects.updateUserName }
+														</a><a
+															class="label todo-assign-due"><fmt:parseDate value="${projects.updateTime }" var="parsedEmpDate" /><fmt:formatDate value="${parsedEmpDate }" pattern="yyyy-MM-dd" />
+														</a></span>
 												</div>
 											</li>
 										</c:if>
