@@ -6466,6 +6466,7 @@ html.simple-gallery-active {
 .attachment-list .others .attachment .attachment-info .name a {
 	display: none;
 	font-size: 14px;
+	font-weight:bold;
 	color: #333
 }
 .attachment-list .others .attachment .attachment-info .name p {

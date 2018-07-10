@@ -12,7 +12,8 @@
 <title>知识库-项目详情</title>
 <meta name="renderer" content="webkit">
 <link rel="stylesheet" href="assets/theme/default/layer.css" />
-<script src="assets/js/xh_application.js"></script>
+<style type="text/css">
+</style>
 </head>
 
 <body class="" style="cursor: auto;">
@@ -98,17 +99,9 @@
 												<!-- 父类的projectLevel -->
 											</span>
 
-											<!-- 功能暂不明确 -->
-											<span class="name"> <span class="todolist-todos-count"></span>
-												<a class="todolist-rest" data-stack="true" href=""></a>
-											</span>
 											<!-- 进度条 -->
 												<span class="progress-pie" title="${per }%"
 													data-pie="${per }"></span> <span class="progress-text">${ratio }</span>
-
-											<a href="javascript:;" class="fold"> <i
-												class="twr twr-angle-up"></i>
-											</a>
 										</h4>
 									</div>
 
@@ -124,14 +117,10 @@
 																<div class="checkbox-tick"
 																	style="border-right: 2.52px solid; border-bottom: 2.52px solid;"></div>
 															</div>
-															<input type="checkbox" name="todo-done"
-																class="checkbox-input" style="display: none;">
 														</div>
-														<span class="todo-content"> <span class="raw">${projects.projectName }</span>
-															<span class="content-non-linkable"> <span
-																class="todo-rest">${projects.projectName }</span>
-														</span> <span class="content-linkable"> <a
-																class="todo-rest" data-stack="true"
+														<span class="todo-content">
+														 <span class="content-linkable">
+														 <a class="todo-rest" data-stack="true"
 																href="file/pfd.do?project_code=${projects.projectCode }&project_level=${projects.projectLevel}&root_code=${rootCode }">${projects.projectName }</a>
 														</span>
 														</span> <span class="todo-detail"> <a
@@ -158,20 +147,14 @@
 															<div class="checkbox-tick"
 																style="border-right: 2.52px solid; border-bottom: 2.52px solid;"></div>
 														</div>
-														<input type="checkbox" name="todo-done" checked="checked"
-															class="checkbox-input">
 													</div>
-													<span class="todo-content"> <span class="raw">${projects.projectName }</span>
-														<span class="content-non-linkable"> <span
-															class="todo-rest">${projects.projectName }</span>
-													</span> <span class="content-linkable"> <a
-															class="todo-rest" data-stack="true" href="">${projects.projectName }</a>
-													</span> <!-- <div class="progress-wrap">
-							<span class="progress-pie" title="100%" data-pie="100"></span>
-							<span class="todo-progress" title="总共有 1 个检查项，已完成 1 个">(1/1)</span>
-						</div> --> <!-- <i class="twr twr-description" title="任务描述"></i> -->
-													</span> <span class="todo-detail"> <span
-														class="label completed-member">${projects.createUserCode }</span>
+													<span class="todo-content">
+														<span class="content-linkable"> <a
+															class="todo-rest" data-stack="true">${projects.projectName }</a>
+														</span>
+													</span>
+													<span class="todo-detail"> 
+														<span class="label completed-member">${projects.createUserCode }</span>
 													</span>
 												</div>
 											</li>
@@ -185,21 +168,20 @@
 							<c:forEach var="b" items="${files }">
 								<div class="comment">
 								<div class="comment-main">
-									<div class="comment-content editor-style">
-											<p>${b.file_info }</p>
-										</div>
-										<div class="attachments-preview gallery-wrap">
+									
+									<div class="attachments-preview gallery-wrap">
 										<div class="attachment-list">
-											<div class="images"></div>
 											<div class="others">
 												<div class="attachment">
 													<div class="attachment-thumb">
 															<img
 																src="assets/img/<tag:enum className="FileTypeImgEnum">${b.file_type }</tag:enum>">
 														</div>
-														<div class="attachment-info">
+													<div class="attachment-info">
 														<div class="name">
 															<a class="link-download"><span class="-rest">${b.file_name }</span></a>
+															<p class=" detail">${b.file_info }</p>
+															<%-- <p class="detail-p"><a class="link-download">${b.file_info }</a></p> --%>
 														</div>
 														<div class="tags"></div>
 														<div class="control-dir no-dir">
@@ -263,6 +245,10 @@
 	<script type="text/javascript" src="assets/js/layer.js"></script>
 
 	<script type="text/javascript">
+			$(".simple-checkbox").on('click',function(){
+				$(this).addClass("checked")				
+			})
+	
 				function display(code,name){
 					var str = "${pageContext.request.contextPath }/file/disPdf.do?file_info="+code+","+name;
 					$("#displayValues").val(str);
