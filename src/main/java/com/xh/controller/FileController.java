@@ -202,7 +202,7 @@ public class FileController extends BaseController {
 	 */
 	@RequestMapping("/disPdf.do")
 	@ResponseBody
-	@SystemControllerLog(description = "在线预览")  
+	@SystemControllerLog(description = "在线预览")
 	public ResponseEntity<byte[]> displayPDF(HttpServletRequest request) {
 		String fileInfo = request.getParameter("file_info");
 		String[] fileInfos = fileInfo.split(",");
@@ -265,12 +265,12 @@ public class FileController extends BaseController {
 	 */
 	@RequestMapping("/pfd.do")
 	public String projectFileDetail(HttpServletRequest request, HttpSession session) {
-		String projectCode = request.getParameter("project_code");
-		String projectLevel = request.getParameter("project_level");
-		String userCode = session.getAttribute("user_code").toString();// 用户编码
-		String rootCode = StrUtil.isBlank(request.getParameter("root_code")) ? projectCode
-				: request.getParameter("root_code");// 根路径
 		try {
+			String projectCode = request.getParameter("project_code");
+			String projectLevel = request.getParameter("project_level");
+			String userCode = session.getAttribute("user_code").toString();// 用户编码
+			String rootCode = StrUtil.isBlank(request.getParameter("root_code")) ? projectCode
+					: request.getParameter("root_code");// 根路径
 			Result<Map<String, Object>> result = fs.getProjectDetailData(projectCode, Integer.parseInt(projectLevel),
 					userCode);
 			if (Result.SUCCESS_0 == result.getCode()) {
@@ -286,7 +286,7 @@ public class FileController extends BaseController {
 			}
 		} catch (NullPointerException | NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
-			return "view/index";
+			return "view/login";
 		} catch (Exception e) {
 			log.error("文件查询异常,异常原因:【" + e.toString() + "】");
 			return "view/error";
@@ -308,12 +308,12 @@ public class FileController extends BaseController {
 	 */
 	@RequestMapping("/pfdb.do")
 	public String projectFileDetailBack(HttpServletRequest request, HttpSession session) {
-		String projectCode = request.getParameter("project_code");
-		String projectLevel = request.getParameter("project_level");
-		String userCode = session.getAttribute("user_code").toString();// 用户编码
-		String rootCode = StrUtil.isBlank(request.getParameter("root_code")) ? ""
-				: request.getParameter("root_code");// 根路径
 		try {
+			String projectCode = request.getParameter("project_code");
+			String projectLevel = request.getParameter("project_level");
+			String userCode = session.getAttribute("user_code").toString();// 用户编码
+			String rootCode = StrUtil.isBlank(request.getParameter("root_code")) ? ""
+					: request.getParameter("root_code");// 根路径
 			projectCode = fs.selectSuperiorProjectCodeByProjectCode(Integer.parseInt(projectLevel), projectCode);
 			if (StrUtil.notBlank(projectCode)) {
 				Result<Map<String, Object>> result = fs.getProjectDetailData(projectCode,
@@ -331,7 +331,7 @@ public class FileController extends BaseController {
 			}
 		} catch (NullPointerException | NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
-			return "view/index";
+			return "view/login";
 		} catch (Exception e) {
 			log.error("文件查询异常,异常原因:【" + e.toString() + "】");
 			return "view/error";

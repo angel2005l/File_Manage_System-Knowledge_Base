@@ -81,12 +81,14 @@ public class ProjectController extends BaseController {
 	 * @Description: 新增项目表信息及项目员工表信息
 	 * @author 黄官易
 	 * @param request
+	 * @param session
 	 * @return
 	 * @return Result<Object>
-	 * @date 2018年6月28日
+	 * @date 2018年7月10日
 	 * @version 1.0
 	 */
-	@SystemControllerLog(description = "新增项目表信息及项目员工表信息", logType = "insert", isAdvice = "true")
+	// @SystemControllerLog(description = "新增项目表信息及项目员工表信息", logType = "insert",
+	// isAdvice = "true")
 	@RequestMapping("/insPro.do")
 	@ResponseBody
 	public Result<Object> addProject(HttpServletRequest request, HttpSession session) {
