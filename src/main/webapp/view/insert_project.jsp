@@ -268,7 +268,7 @@
 						self.location=document.referrer;
 					}
 				},
-				error : function() {
+				error : function(result) {
 					alert("服务未响应");
 				}
 			});

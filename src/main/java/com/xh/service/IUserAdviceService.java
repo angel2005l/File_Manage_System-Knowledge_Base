@@ -8,6 +8,7 @@ import java.util.List;
 
 
 import com.xh.entity.KbUserAdvice;
+import com.xh.uitl.Result;
 
 /**
  * @author 陈专懂
@@ -36,5 +37,5 @@ public interface IUserAdviceService {
 	 * @date 2018年7月9日  
 	 * @version 1.0
 	 */
-	public int updateAdviceStatusByAdviceCode(List<String> adviceCode);
+	public Result<Object> updateAdviceStatusByAdviceCode(List<String> adviceCode);
 }

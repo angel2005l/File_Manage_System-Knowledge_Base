@@ -51,7 +51,7 @@ public interface KbUserAdviceMapper {
      * @date 2018年7月9日  
      * @version 1.0
      */
-    public int updateAdviceStatusByAdviceCode(@Param("adviceCode")List<String> adviceCode);
+    public int updateAdviceStatusByAdviceCode(@Param("adviceCode")String adviceCode);
     
     
 }

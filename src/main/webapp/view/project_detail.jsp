@@ -40,31 +40,41 @@
 								name="keyword" placeholder="搜索" autocomplete="off">
 						</form>
 					</div>
-					<div class="notification-info">
-						<a href="javascript:;" id="notification-count" class="label"
-							title="新的通知" >
-							<span class="twr twr-bell-o bell"></span> <span class="num">0</span>
-						</a>
-						<div class="noti-pop">
-							<div class="noti-pop-hd">
-								<b class="title">通知</b> <a class="mark-as-read"
-									id="noti-mark-read"> <span
-									class="twr twr twr-check"></span> 全部标记为已读
-								</a>
-							</div>
-							<div class="noti-pop-list-wrap">
-								<div class="noti-pop-list notification-list"></div>
-							</div>
-							<div class="noti-pop-empty">- 没有新通知 -</div>
-							<div class="noti-pop-footer">
-								<a class="noti-settings" data-stack="true"
-									data-stack-root="true" href=""> <i class="twr twr-cog"></i>
-									通知设置
-								</a> <a class="noti-all-link" data-stack="true"
-									data-stack-root="true" href="">查看全部通知</a>
-							</div>
-						</div>
-					</div>
+				<div class="notification-info">
+					<!-- 如果有未读的  显示label unread  否则显示label -->
+					<c:if test="${adNum!=0 }">
+			        <span id="notification-count" class="label unread" title="新的通知" data-unread-count="0" data-url="" onclick="change()">
+			          <span class="twr twr-bell-o bell"></span>
+			          <span class="num">${adNum }</span>
+			        </span>
+			        <div class="noti-pop" id="thediv" style="display:none;">
+			          <div class="noti-pop-hd">
+			            <b class="title">通知</b>
+			            <a class="simple-loading" id="noti-mark-read" data-loading="true" data-remote="true" data-method="post" style="padding-left: 250px" href="javascript:;" onclick="allread()">
+			              <span class="twr twr twr-check"></span>全部标记为已读</a>          
+			          </div>
+			          <div class="noti-pop-list-wrap">
+				            <div class="noti-pop-list notification-list" style="display: block;">
+			            	<c:forEach var="adv" items="${adviceMsg }">
+								<span>${adv.logMsg }</span><span class="adviceCode" style="display: none">${adv.adviceCode }</span><br>         		
+			            	</c:forEach>
+				            </div>
+			          </div>
+			        </div>
+      			</c:if>
+				<c:if test="${adNum==0 }">
+			        <span id="notification-count" class="label" title="新的通知" data-unread-count="0" data-url="" onclick="change()">
+			          <span class="twr twr-bell-o bell"></span>
+			          <span class="num">${adNum }</span>
+			        </span>
+			        <div class="noti-pop" id="thediv" style="display:none;">
+			          <div class="noti-pop-hd">
+			            <b class="title">通知</b>         
+			          </div>
+			          <div class="noti-pop-empty">- 没有新通知 -</div>
+			        </div>
+      			</c:if>
+      			</div>
 					<div class="account-info">
 						<div class="member-settings">
 							<a class="link-member-menu" href="javascript:;"
@@ -312,6 +322,29 @@
 				shadeClose : true, //开启遮罩关闭
 				content : $("#share")
 			})
+		}
+		
+		function change(){
+			if(document.getElementById("thediv").style.display=='none'){
+				document.getElementById("thediv").style.display='block';
+			}else{
+				document.getElementById("thediv").style.display='none';
+			}
+		}
+		function allread(){
+			var list=[];
+			for(var i=0;i<document.getElementsByClassName("adviceCode").length;i++){
+				list.push(document.getElementsByClassName("adviceCode")[i].innerHTML)
+			};
+			$.ajax({
+				url:'pro/isRead.do',
+				type:'post',
+				data:"list="+JSON.stringify(list),
+				dateType:'json',
+				success:function(){
+					location.reload(true);
+				}
+			})		
 		}
 	</script>
 	<div id="share" style="display: none;">
