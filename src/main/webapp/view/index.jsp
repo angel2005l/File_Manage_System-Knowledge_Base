@@ -48,18 +48,19 @@
 					</div>
 				<div class="notification-info">
 					<!-- 如果有未读的  显示label unread  否则显示label -->
-			        <span id="notification-count" title="新的通知" data-unread-count="0" data-url="" onclick="change()">
+			        <a id="notification-count" title="新的通知" onclick="change()" href="javascript:;">
 			          <span class="twr twr-bell-o bell"></span>
 			          <span class="num" id="num"></span>
-			        </span>
+			        </a>
 			        <div class="noti-pop" id="thediv" style="display:none;">
 			          <div class="noti-pop-hd">
 			            <b class="title">通知</b>
-			            <a class="simple-loading" id="noti-mark-read" data-loading="true" data-remote="true" data-method="post" style="padding-left: 250px" href="javascript:;" onclick="allread()">
+			            <a class="mark-as-read" id="noti-mark-read" href="javascript:;" onclick="allread()">
 			              <span class="twr twr twr-check"></span>全部标记为已读</a>          
 			          </div>
 			          <div class="noti-pop-list-wrap">
-				            <div class="noti-pop-list notification-list" style="display: block;" id="msg">
+				            <div class="noti-pop-list notification-list" style="display: block;">
+				            	<div class="notice unread"><a class="link" id="msg"></a></div>
 				            </div>
 			          </div>
 			        </div>
