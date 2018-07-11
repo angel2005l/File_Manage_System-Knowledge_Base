@@ -151,6 +151,8 @@ public class FileServiceImpl extends BaseService implements IFileService {
 	public Result<Map<String, String>> uploadFile(MultipartFile mf) throws Exception {
 		if (!mf.isEmpty()) {
 			String oldFileName = mf.getOriginalFilename();
+			if(oldFileName.length()>32)
+				return rtnFailResult(Result.ERROR_4000, "上传文件名(含后缀)超过最大限度（32个字符）");
 			String suffix = StrUtil.strToLower(oldFileName.substring(oldFileName.lastIndexOf(".")));
 			String newFileName = FILETAG + DateUtil.curDateYMDHMSForService()
 					+ StrUtil.getRandom((int) (Math.random() * 10000), 4);
