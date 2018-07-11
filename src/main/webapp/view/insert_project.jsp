@@ -210,8 +210,6 @@
 						<input type="hidden" name="project_level" value="${projectLevel }">
 						<input type="hidden" name="project_parent_code"
 							value="${projectParentCode }">
-						<input type="hidden" name="project_code"
-							value="${projectCode }">
 					</form>
 					<!-- 不需要提交的隐藏域 -->
 					<input type="hidden" id="userInfo" value="${sessionScope.user_code },${sessionScope.user_name }" />
