@@ -28,7 +28,6 @@ import com.xh.entity.KbProject;
 import com.xh.entity.KbProjectTable;
 import com.xh.entity.KbProjectUser;
 import com.xh.entity.KbUser;
-import com.xh.entity.KbUserAdvice;
 import com.xh.service.IProjectService;
 import com.xh.service.IUserAdviceService;
 import com.xh.service.IUserService;
@@ -175,7 +174,6 @@ public class ProjectController extends BaseController {
 			return rtnErrorResult(Result.ERROR_6000, "新增项目异常,请联系系统管理员");
 		}
 	}
-
 	/**
 	 * 
 	 * @Title: getShareProject
@@ -265,9 +263,6 @@ public class ProjectController extends BaseController {
 			List<Map<String, Object>> result = ps.selectProjectByUserCodeAndMethod(userCode,
 					StrUtil.isBlank(method) ? "self" : method);// 查询用户关联的所有项目
 			request.setAttribute("projectList", result);
-			List<KbUserAdvice> adList=ads.getAdviceMsgByUser(userCode);
-			request.setAttribute("adNum", adList.size());
-			request.setAttribute("adviceMsg", adList);
 		} catch (NullPointerException e) {
 			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
 			return "view/login";

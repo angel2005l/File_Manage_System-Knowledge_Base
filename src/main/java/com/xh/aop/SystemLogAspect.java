@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -68,8 +67,8 @@ public class SystemLogAspect {
 	 *            切点
 	 * @throws Throwable
 	 */
-	@AfterReturning(pointcut="controllerAspect()",returning="result")
-	public void doAround(JoinPoint jp,Result<Object> result) throws Throwable {
+	@AfterReturning(pointcut = "controllerAspect()", returning = "result")
+	public void doAround(JoinPoint jp, Result<Object> result) throws Throwable {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
 				.getRequest();
 		HttpSession session = request.getSession();
@@ -83,7 +82,7 @@ public class SystemLogAspect {
 		String projectCode = "";
 		String parentProjectCode = "";// 父类项目的父类项目编码
 		int parentProjectLevel = 0;// 新建项目的父类等级
-		int code =result.getCode();
+		int code = result.getCode();
 		String logCode = "L" + DateUtil.curDateYMDHMSForService() + StrUtil.getRandom((int) (Math.random() * 10000), 4);// 日志编号
 		String logMsg = logUserName + ",操作了:" + getControllerMethodDescription(jp).get("description");// 日志信息
 		String errorLogMsg = "";// 异常的信息抓取
@@ -155,13 +154,13 @@ public class SystemLogAspect {
 		}
 	}
 
-//	 @AfterReturning(pointcut="controllerAspect()",returning="result")
-//	 public void doAfterReturning(JoinPoint point, Result<Object> result) {
-//	 System.out.println("====后置Return通知开始=====");
-//	 System.out.println("获取@After中的返回值："+result);
-//	 System.out.println("=====后置Return通知结束=====");
-//	
-//	 }
+	// @AfterReturning(pointcut="controllerAspect()",returning="result")
+	// public void doAfterReturning(JoinPoint point, Result<Object> result) {
+	// System.out.println("====后置Return通知开始=====");
+	// System.out.println("获取@After中的返回值："+result);
+	// System.out.println("=====后置Return通知结束=====");
+	//
+	// }
 	/**
 	 * 获取注解中对方法的描述信息 用于Controller层注解
 	 * 

@@ -25,9 +25,7 @@ import com.xh.entity.KbFile;
 import com.xh.entity.KbFileTable;
 import com.xh.entity.KbFileUser;
 import com.xh.entity.KbUser;
-import com.xh.entity.KbUserAdvice;
 import com.xh.service.IFileService;
-import com.xh.service.IUserAdviceService;
 import com.xh.service.IUserService;
 import com.xh.uitl.DateUtil;
 import com.xh.uitl.IOUtil;
@@ -50,9 +48,6 @@ public class FileController extends BaseController {
 	@Qualifier("userServiceImpl")
 	private IUserService us;
 
-	@Autowired
-	@Qualifier("userAdviceServiceImpl")
-	private IUserAdviceService ads;
 	/**
 	 * 
 	 * @Title: uploadFile
@@ -286,9 +281,6 @@ public class FileController extends BaseController {
 				request.setAttribute("per", ResultMap.get("per"));
 				request.setAttribute("projectInfo", ResultMap.get("projectInfo"));
 				request.setAttribute("rootCode", rootCode);
-				List<KbUserAdvice> adList=ads.getAdviceMsgByUser(userCode);
-				request.setAttribute("adNum", adList.size());
-				request.setAttribute("adviceMsg", adList);
 			} else {
 				return "view/error";
 			}
