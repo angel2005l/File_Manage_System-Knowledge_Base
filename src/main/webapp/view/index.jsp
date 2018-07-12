@@ -13,7 +13,7 @@
 	href="assets/css/translateelement.css">
 </head>
 
-<body>
+<body onload="toload()">
 	<div class="wrapper">
 		<div class="header">
 			<div class="header-container">
@@ -46,49 +46,25 @@
 								name="keyword" placeholder="搜索" autocomplete="off">
 						</form>
 					</div>
-					<div class="notification-info">
-						<!-- 如果有未读的  显示label unread  否则显示label -->
-						<c:if test="${adNum!=0 }">
-							<span id="notification-count" class="label unread" title="新的通知"
-								data-unread-count="0" data-url="" onclick="change()"> <span
-								class="twr twr-bell-o bell"></span> <span class="num">${adNum }</span>
-							</span>
-							<div class="noti-pop" id="thediv" style="display: none;">
-								<div class="noti-pop-hd">
-									<b class="title">通知</b> <a class="simple-loading"
-										id="noti-mark-read" data-loading="true" data-remote="true"
-										data-method="post" style="padding-left: 250px"
-										href="javascript:;" onclick="allread()"> <span
-										class="twr twr twr-check"></span>全部标记为已读
-									</a>
-								</div>
-								<div class="noti-pop-list-wrap">
-									<div class="noti-pop-list notification-list"
-										style="display: block;">
-										<c:forEach var="adv" items="${adviceMsg }">
-											<span>${adv.logMsg }</span>
-											<span class="adviceCode" style="display: none">${adv.adviceCode }</span>
-											<br>
-										</c:forEach>
-									</div>
-								</div>
-							</div>
-						</c:if>
-						<c:if test="${adNum==0 }">
-							<span id="notification-count" class="label" title="新的通知"
-								data-unread-count="0" data-url="" onclick="change()"> <span
-								class="twr twr-bell-o bell"></span> <span class="num">${adNum }</span>
-							</span>
-							<div class="noti-pop" id="thediv" style="display: none;">
-								<div class="noti-pop-hd">
-									<b class="title">通知</b>
-								</div>
-								<div class="noti-pop-empty">- 没有新通知 -</div>
-							</div>
-						</c:if>
-					</div>
-					<div class="account-info">
-					</div>
+				<div class="notification-info">
+					<!-- 如果有未读的  显示label unread  否则显示label -->
+			        <a id="notification-count" title="新的通知" onclick="change()" href="javascript:;">
+			          <span class="twr twr-bell-o bell"></span>
+			          <span class="num" id="num"></span>
+			        </a>
+			        <div class="noti-pop" id="thediv" style="display:none;">
+			          <div class="noti-pop-hd">
+			            <b class="title">通知</b>
+			            <a class="mark-as-read" id="noti-mark-read" href="javascript:;" onclick="allread()">
+			              <span class="twr twr twr-check"></span>全部标记为已读</a>          
+			          </div>
+			          <div class="noti-pop-list-wrap">
+				            <div class="noti-pop-list notification-list" style="display: block;">
+				            	<div class="notice unread"><a class="link" id="msg"></a></div>
+				            </div>
+			          </div>
+			        </div>
+      			</div>
 				</div>
 			</div>
 		</div>
@@ -177,19 +153,39 @@
 		function allread() {
 			var list = [];
 			for (var i = 0; i < document.getElementsByClassName("adviceCode").length; i++) {
-				list
-						.push(document.getElementsByClassName("adviceCode")[i].innerHTML)
+				list.push(document.getElementsByClassName("adviceCode")[i].innerHTML);
 			}
-			;
 			$.ajax({
-				url : 'pro/isRead.do',
-				type : 'post',
-				data : "list=" + JSON.stringify(list),
-				dateType : 'json',
-				success : function() {
-					location.reload(true);
+				url:'pro/isRead.do',
+				type:'post',
+				data:"list="+JSON.stringify(list),
+				dateType:'json',
+				success:function(){
+					toload();
 				}
 			})
+		}
+		function toload(){
+			$.ajax({
+				url:'index/getAllMsg.do',
+				type:'post',
+				data:"",//发送服务器的数据
+    			dataType:"json",//返会值的类型
+				success:function(data){
+					$('#num').html(data.adNum);
+			        var str="";
+					if(data.adNum!=0){
+						document.getElementById("notification-count").className='label unread';
+						for(var i=0;i<data.adviceMsg.length;i++){
+							str+="<span class='title'><span class='target'>"+data.adviceMsg[i].logMsg+"</span><span class='adviceCode' style='display: none'>"+data.adviceMsg[i].adviceCode+"</span></span><hr style='margin:0px 0px 3px 0px'>";
+						};
+						document.getElementById("msg").innerHTML=str;
+					}else{
+						document.getElementById("notification-count").className='label';
+						document.getElementById("msg").innerHTML="<span style='width:100%;text-align:center;display:block;'>- 没有新通知 -</span>";
+					}
+				}
+			})	
 		}
 	</script>
 </body>

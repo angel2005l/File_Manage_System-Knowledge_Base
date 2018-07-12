@@ -21,13 +21,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xh.aop.SystemControllerLog;
 import com.xh.base.BaseController;
 import com.xh.base.Constant;
 import com.xh.entity.KbProject;
 import com.xh.entity.KbProjectTable;
 import com.xh.entity.KbProjectUser;
 import com.xh.entity.KbUser;
-import com.xh.entity.KbUserAdvice;
 import com.xh.service.IProjectService;
 import com.xh.service.IUserAdviceService;
 import com.xh.service.IUserService;
@@ -95,8 +95,7 @@ public class ProjectController extends BaseController {
 	 * @date 2018年7月10日
 	 * @version 1.0
 	 */
-	// @SystemControllerLog(description = "新增项目表信息及项目员工表信息", logType = "insert",
-	// isAdvice = "true")
+	@SystemControllerLog(description = "新增项目表信息及项目员工表信息", logType = "insert",isAdvice = "true")
 	@RequestMapping("/insPro.do")
 	@ResponseBody
 	public Result<Object> addProject(HttpServletRequest request, HttpSession session) {
@@ -109,12 +108,11 @@ public class ProjectController extends BaseController {
 			String projectParentCode = request.getParameter("project_parent_code");// 项目父类编码
 			String projectParentLevel = request.getParameter("project_level");// 项目父类级别
 			int projectLevel = Integer.parseInt(projectParentLevel) + 1;// 当前项目级别
-			// String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService()
-			// + StrUtil.getRandom((int) (Math.random() * 10000), 4);// 项目编码
-			String projectCode = request.getParameter("project_code");
 			String userCode = session.getAttribute("user_code").toString();// 创建人编码
 			String userDeptCode = session.getAttribute("user_dept_code").toString();// 创建人所属部门编码
-			// //为了@Before获取projectCode，自己存入request
+			// 为了获取projectCode，自己存入request
+			String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService()
+					+ StrUtil.getRandom((int) (Math.random() * 10000), 4);// 项目编码
 			request.setAttribute("project_code", projectCode);
 			KbProject kp = new KbProject();
 			kp.setProjectCode(projectCode);
@@ -166,9 +164,8 @@ public class ProjectController extends BaseController {
 					kpuList.add(kpu);
 				}
 			}
-			Result<Object> obj=ps.insProject(kp, kpuList);
-			request.setAttribute("log_status", obj.getCode());
-			return obj;
+			Result<Object> result=ps.insProject(kp, kpuList);
+			return result;
 		} catch (NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
 			return rtnErrorResult(Result.ERROR_6000, "非法登录!");
@@ -177,7 +174,6 @@ public class ProjectController extends BaseController {
 			return rtnErrorResult(Result.ERROR_6000, "新增项目异常,请联系系统管理员");
 		}
 	}
-
 	/**
 	 * 
 	 * @Title: getShareProject
@@ -235,13 +231,9 @@ public class ProjectController extends BaseController {
 			String projectParentLevel = StrUtil.isBlank(request.getParameter("project_level")) ? "-1"
 					: request.getParameter("project_level");// 获得父类等级
 			Result<List<KbUser>> userResult = us.selUsersByUserDeptCode(userDeptCode); // 获得员工信息
-			// 为了@Before获取projectCode，自己存入request
-			String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService()
-					+ StrUtil.getRandom((int) (Math.random() * 10000), 4);// 项目编码
 			request.setAttribute("userList", userResult.getData());
 			request.setAttribute("projectParentCode", projectParentCode);
 			request.setAttribute("projectLevel", projectParentLevel);
-			request.setAttribute("projectCode", projectCode);// 为了获取projectCode
 		} catch (NumberFormatException | NullPointerException e) {
 			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
 			return "view/login";
@@ -271,9 +263,6 @@ public class ProjectController extends BaseController {
 			List<Map<String, Object>> result = ps.selectProjectByUserCodeAndMethod(userCode,
 					StrUtil.isBlank(method) ? "self" : method);// 查询用户关联的所有项目
 			request.setAttribute("projectList", result);
-			List<KbUserAdvice> adList=ads.getAdviceMsgByUser(userCode);
-			request.setAttribute("adNum", adList.size());
-			request.setAttribute("adviceMsg", adList);
 		} catch (NullPointerException e) {
 			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
 			return "view/login";
