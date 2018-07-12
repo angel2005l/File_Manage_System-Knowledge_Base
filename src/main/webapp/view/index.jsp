@@ -33,9 +33,7 @@
 								style="vertical-align: inherit;">我自己</font>
 						</font>
 					</a></li>
-
 					<li id="nav-upgrade"></li>
-			
 				</ul>
 				<div class="command-bar">
 					<div class="search-wrap">
@@ -48,11 +46,11 @@
 					</div>
 				<div class="notification-info">
 					<!-- 如果有未读的  显示label unread  否则显示label -->
-			        <a id="notification-count" title="新的通知" onclick="change()" href="javascript:;">
+			        <a id="notification-count" title="新的通知" onclick="intoclick()" href="javascript:;">
 			          <span class="twr twr-bell-o bell"></span>
 			          <span class="num" id="num"></span>
 			        </a>
-			        <div class="noti-pop" id="thediv" style="display:none;">
+			        <div class="noti-pop" id="thediv" style="display:none;" tabindex="0" onblur="losePoint()">
 			          <div class="noti-pop-hd">
 			            <b class="title">通知</b>
 			            <a class="mark-as-read" id="noti-mark-read" href="javascript:;" onclick="allread()">
@@ -138,12 +136,16 @@
 			event.preventDefault();
 		})
 		
-		function change(){
+		function intoclick(){
 			if(document.getElementById("thediv").style.display=='none'){
 				document.getElementById("thediv").style.display='block';
+				document.getElementById("thediv").focus();
 			}else{
 				document.getElementById("thediv").style.display='none';
 			}
+		}
+		function losePoint(){
+			document.getElementById("thediv").style.display='none';
 		}
 		function allread(){
 			var list=[];
