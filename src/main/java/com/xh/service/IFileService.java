@@ -148,7 +148,7 @@ public interface IFileService {
 	 * @date 2018年6月30日
 	 * @version 1.0
 	 */
-	public Result<Map<String, Object>> getProjectDetailData(String projectCode, int projectLevel, String userCode)
+	public Result<Map<String, Object>> getProjectDetailData(String projectCode, int projectLevel, String userCode,Map<String,String> fileSelMap)
 			throws Exception;
 
 	/**

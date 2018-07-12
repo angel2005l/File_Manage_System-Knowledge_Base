@@ -37,66 +37,12 @@
 					</a></li>
 					<li id="nav-upgrade"></li>
 				</ul>
-				<div class="command-bar">
-					<div class="search-wrap">
-						<a href="javascript:;" class="link-search" title="搜索"><i
-							class="twr twr-search"></i></a>
-						<form id="form-search" class="form" method="get" action="">
-							<input id="txt-search" type="text" class="keyword no-border"
-								name="keyword" placeholder="搜索" autocomplete="off">
-						</form>
-					</div>
-					<div class="notification-info">
-						<a href="javascript:;" id="notification-count" class="label"
-							title="新的通知" data-unread-count="0"
-							data-url="/teams/66fb82b17f5341cbb0f5f39a1064c013/notifications/unread_counts">
-							<span class="twr twr-bell-o bell"></span> <span class="num"><font
-								style="vertical-align: inherit;"><font
-									style="vertical-align: inherit;">0</font></font></span>
-						</a>
-						<div class="noti-pop">
-							<div class="noti-pop-hd">
-								<b class="title"><font style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;">通知</font></font></b> <a
-									class="mark-as-read" id="noti-mark-read" data-loading="true"
-									data-remote="true" rel="nofollow" data-method="post"
-									href="https://tower.im/teams/66fb82b17f5341cbb0f5f39a1064c013/notifications/read_all">
-									<span class="twr twr twr-check"></span> <font
-									style="vertical-align: inherit;"> <font
-										style="vertical-align: inherit;"> 全部标记为已读 </font>
-								</font>
-								</a>
-							</div>
-							<div class="noti-pop-list-wrap">
-								<div class="noti-pop-list notification-list"></div>
-							</div>
-							<div class="noti-pop-empty">
-								<font style="vertical-align: inherit;"> <font
-									style="vertical-align: inherit;">- 没有新通知 -</font>
-								</font>
-							</div>
-							<div class="noti-pop-footer">
-								<a class="noti-settings" data-stack="true"
-									data-stack-root="true" href=""> <i class="twr twr-cog"></i>
-									<font style="vertical-align: inherit;"> <font
-										style="vertical-align: inherit;">通知设置 </font>
-								</font>
-								</a> <a class="noti-all-link" data-stack="true"
-									data-stack-root="true" href=""> <font
-									style="vertical-align: inherit;"> <font
-										style="vertical-align: inherit;">查看全部通知</font>
-								</font>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 
 
 		<div class="container workspace simple-stack simple-stack-transition">
-			<div class="page page-1 simple-pjax">
+			<div class="page page-0 simple-pjax">
 				<div class="page-inner" id="page-new-project" data-page-name="创建新项目">
 					<h3 class="page-title">
 						<font style="vertical-align: inherit;"><font

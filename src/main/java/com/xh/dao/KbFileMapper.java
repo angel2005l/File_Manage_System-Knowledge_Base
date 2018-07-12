@@ -41,6 +41,25 @@ public interface KbFileMapper {
 
 	/**
 	 * 
+	 * @Title: selectFileByParams
+	 * @Description: 根据员工编码查询当前项目下的特定文件
+	 * @author 黄官易
+	 * @param fileTableName
+	 * @param projectCode
+	 * @param userCode
+	 * @param fileSelMap
+	 * @return
+	 * @throws SQLException
+	 * @return List<Map<String,Object>>
+	 * @date 2018年7月11日
+	 * @version 1.0
+	 */
+	public List<Map<String, Object>> selectFileByParams(@Param("fileTableName") String fileTableName,
+			@Param("projectCode") String projectCode, @Param("userCode") String userCode,
+			@Param("fileSelMap") Map<String, String> fileSelMap) throws SQLException;
+
+	/**
+	 * 
 	 * @Title: selectFileCount
 	 * @Description: 根据员工编码查询当前项目下的所有文件行数
 	 * @param fileName

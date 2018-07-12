@@ -151,7 +151,7 @@ public class FileServiceImpl extends BaseService implements IFileService {
 	public Result<Map<String, String>> uploadFile(MultipartFile mf) throws Exception {
 		if (!mf.isEmpty()) {
 			String oldFileName = mf.getOriginalFilename();
-			if(oldFileName.length()>32)
+			if (oldFileName.length() > 32)
 				return rtnFailResult(Result.ERROR_4000, "上传文件名(含后缀)超过最大限度（32个字符）");
 			String suffix = StrUtil.strToLower(oldFileName.substring(oldFileName.lastIndexOf(".")));
 			String newFileName = FILETAG + DateUtil.curDateYMDHMSForService()
@@ -302,8 +302,8 @@ public class FileServiceImpl extends BaseService implements IFileService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Result<Map<String, Object>> getProjectDetailData(String projectCode, int projectLevel, String userCode)
-			throws Exception {
+	public Result<Map<String, Object>> getProjectDetailData(String projectCode, int projectLevel, String userCode,
+			Map<String, String> fileSelMap) throws Exception {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
 		String ratio = "0/0";
@@ -311,7 +311,7 @@ public class FileServiceImpl extends BaseService implements IFileService {
 		int completedProject = 0;// 已完成的项目
 		int per = 0;
 		Map<String, Object> projectInfo = null;
-		List<Map<String,Object>> projectSonInfos = null;
+		List<Map<String, Object>> projectSonInfos = null;
 		List<Map<String, Object>> fileList = null;
 		/*
 		 * 详细页展示： 1.当前项目及其相关项目信息（父项目） 2.子项目（子项目List) 3.该员工所具有权限的文件信息
@@ -325,10 +325,10 @@ public class FileServiceImpl extends BaseService implements IFileService {
 				projectInfo = (Map<String, Object>) projectObj; // 强转Map
 				Object sonProjectsObj = projectDataMap.get("sonProjectInfos");
 				if (null != sonProjectsObj) {
-					projectSonInfos = (List<Map<String,Object>>) sonProjectsObj;// 强转List
+					projectSonInfos = (List<Map<String, Object>>) sonProjectsObj;// 强转List
 					if (!projectSonInfos.isEmpty()) {
 						for (int index = 0; index < projectSonInfos.size(); index++) {
-							String projectStatus = projectSonInfos.get(index).get("projectStatus")+"";
+							String projectStatus = projectSonInfos.get(index).get("projectStatus") + "";
 							if ("progress".equals(projectStatus)) {
 								progressProject++;
 							} else if ("completed".equals(projectStatus)) {
@@ -343,7 +343,7 @@ public class FileServiceImpl extends BaseService implements IFileService {
 						: 0;
 				// 3.该员工所具有权限的文件信息
 				String fileTableName = kftm.selectFileTableNameByFileLevel(projectLevel);
-				fileList = kfm.selectFileByUserCode(fileTableName, projectCode, userCode);
+				fileList = kfm.selectFileByParams(fileTableName, projectCode, userCode, DateManager(fileSelMap));
 				resultMap.put("files", fileList);
 				resultMap.put("projectSonInfos", projectSonInfos);
 				resultMap.put("ratio", ratio);
@@ -356,6 +356,31 @@ public class FileServiceImpl extends BaseService implements IFileService {
 			log.error("项目详细页数据接口异常,异常原因:【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "查询系统异常,请联系系统管理员");
 		}
+	}
+
+	/**
+	 * 
+	 * @Title: DateManager
+	 * @Description: 当其中一个日期为空时默认查询7天间隔的数据
+	 * @author 黄官易
+	 * @param obj
+	 * @return
+	 * @return Map<String,String>
+	 * @date 2018年7月11日
+	 * @version 1.0
+	 */
+	private Map<String, String> DateManager(Map<String, String> obj) {
+		String startTime = obj.get("startDate");
+		String endTime = obj.get("endDate");
+
+		if (StrUtil.isBlank(startTime) && StrUtil.isBlank(endTime)) {
+			return obj;
+		} else if (StrUtil.isBlank(startTime)) {
+			obj.put("startDate", DateUtil.addDay(endTime, -7));
+		} else if (StrUtil.isBlank(endTime)) {
+			obj.put("endDate", DateUtil.addDay(startTime, 7));
+		}
+		return obj;
 	}
 
 	@Override

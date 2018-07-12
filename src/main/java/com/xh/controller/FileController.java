@@ -1,6 +1,7 @@
 package com.xh.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -276,8 +277,15 @@ public class FileController extends BaseController {
 			String userCode = session.getAttribute("user_code").toString();// 用户编码
 			String rootCode = StrUtil.isBlank(request.getParameter("root_code")) ? projectCode
 					: request.getParameter("root_code");// 根路径
+			Map<String,String> fileSelMap = new HashMap<String,String>();
+			String fileName = request.getParameter("form_file_name");
+			String startDate = request.getParameter("form_start_date");
+			String endDate = request.getParameter("form_end_date");
+			fileSelMap.put("fileName", fileName);
+			fileSelMap.put("startDate", startDate);
+			fileSelMap.put("endDate", endDate);
 			Result<Map<String, Object>> result = fs.getProjectDetailData(projectCode, Integer.parseInt(projectLevel),
-					userCode);
+					userCode,fileSelMap);
 			if (Result.SUCCESS_0 == result.getCode()) {
 				Map<String, Object> ResultMap = result.getData();
 				request.setAttribute("files", ResultMap.get("files"));
@@ -325,7 +333,7 @@ public class FileController extends BaseController {
 			projectCode = fs.selectSuperiorProjectCodeByProjectCode(Integer.parseInt(projectLevel), projectCode);
 			if (StrUtil.notBlank(projectCode)) {
 				Result<Map<String, Object>> result = fs.getProjectDetailData(projectCode,
-						Integer.parseInt(projectLevel) - 1, userCode);
+						Integer.parseInt(projectLevel) - 1, userCode,null);
 				if (Result.SUCCESS_0 == result.getCode()) {
 					Map<String, Object> ResultMap = result.getData();
 					request.setAttribute("files", ResultMap.get("files"));

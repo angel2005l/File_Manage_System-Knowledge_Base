@@ -11,13 +11,15 @@
 
 <title>知识库-项目详情</title>
 <meta name="renderer" content="webkit">
+<link rel="stylesheet" href="assets/css/bootstrap.min.css"> 
+<link rel="stylesheet" href="assets/css/bootstrap/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" media="all" href="assets/css/xh_application.css">
 <link rel="stylesheet" href="assets/theme/default/layer.css" />
 <style type="text/css">
 </style>
 </head>
 
 <body class="" style="cursor: auto;">
-
 	<div class="wrapper">
 		<div class="header">
 			<div class="header-container">
@@ -33,56 +35,44 @@
 					<li id="nav-upgrade"></li>
 				</ul>
 				<div class="command-bar">
-					<div class="search-wrap">
-						<a href="javascript:;" class="link-search" title="搜索"><i
-							class="twr twr-search"></i></a>
-						<form id="form-search" class="form" method="get">
-							<input id="txt-search" type="text" class="keyword no-border"
-								name="keyword" placeholder="搜索" autocomplete="off">
-						</form>
+					<div class="notification-info">
+						<!-- 如果有未读的  显示label unread  否则显示label -->
+						<span id="notification-count" class="label" title="新的通知" onclick="change()"> <span
+							class="twr twr-bell-o bell"></span> <span class="num">${adNum }</span>
+						</span>
+						<c:choose>
+							<c:when test="${adNum!=0 }">
+								<div class="noti-pop" id="thediv" style="display: none;">
+									<div class="noti-pop-hd">
+										<b class="title">通知</b> <a class="simple-loading"
+											id="noti-mark-read" data-loading="true" data-remote="true"
+											data-method="post" style="padding-left: 250px" onclick="allread()"> <span
+											class="twr twr twr-check"></span>全部标记为已读
+										</a>
+									</div>
+									<div class="noti-pop-list-wrap">
+										<div class="noti-pop-list notification-list"
+											style="display: block;">
+											<c:forEach var="adv" items="${adviceMsg }">
+												<span>${adv.logMsg }</span>
+												<span class="adviceCode" style="display: none">${adv.adviceCode }</span>
+												<br>
+											</c:forEach>
+										</div>
+									</div>
+								</div>
+							</c:when>
+							<c:otherwise>
+								<div class="noti-pop" id="thediv" style="display: none;">
+									<div class="noti-pop-hd">
+										<b class="title">通知</b>
+									</div>
+									<div class="noti-pop-empty">- 没有新通知 -</div>
+								</div>
+							</c:otherwise>
+						</c:choose>
 					</div>
-				<div class="notification-info">
-					<!-- 如果有未读的  显示label unread  否则显示label -->
-					<c:if test="${adNum!=0 }">
-			        <span id="notification-count" class="label unread" title="新的通知" data-unread-count="0" data-url="" onclick="change()">
-			          <span class="twr twr-bell-o bell"></span>
-			          <span class="num">${adNum }</span>
-			        </span>
-			        <div class="noti-pop" id="thediv" style="display:none;">
-			          <div class="noti-pop-hd">
-			            <b class="title">通知</b>
-			            <a class="simple-loading" id="noti-mark-read" data-loading="true" data-remote="true" data-method="post" style="padding-left: 250px" href="javascript:;" onclick="allread()">
-			              <span class="twr twr twr-check"></span>全部标记为已读</a>          
-			          </div>
-			          <div class="noti-pop-list-wrap">
-				            <div class="noti-pop-list notification-list" style="display: block;">
-			            	<c:forEach var="adv" items="${adviceMsg }">
-								<span>${adv.logMsg }</span><span class="adviceCode" style="display: none">${adv.adviceCode }</span><br>         		
-			            	</c:forEach>
-				            </div>
-			          </div>
-			        </div>
-      			</c:if>
-				<c:if test="${adNum==0 }">
-			        <span id="notification-count" class="label" title="新的通知" data-unread-count="0" data-url="" onclick="change()">
-			          <span class="twr twr-bell-o bell"></span>
-			          <span class="num">${adNum }</span>
-			        </span>
-			        <div class="noti-pop" id="thediv" style="display:none;">
-			          <div class="noti-pop-hd">
-			            <b class="title">通知</b>         
-			          </div>
-			          <div class="noti-pop-empty">- 没有新通知 -</div>
-			        </div>
-      			</c:if>
-      			</div>
-					<div class="account-info">
-						<div class="member-settings">
-							<a class="link-member-menu" href="javascript:;"
-								data-new-feature="false"> <span class="twr twr-caret-down"></span>
-							</a>
-						</div>
-					</div>
+					<div class="account-info"></div>
 				</div>
 			</div>
 		</div>
@@ -106,8 +96,8 @@
 											</span>
 
 											<!-- 进度条 -->
-												<span class="progress-pie" title="${per }%"
-													data-pie="${per }"></span> <span class="progress-text">${ratio }</span>
+											<span class="progress-pie" title="${per }%"
+												data-pie="${per }"></span> <span class="progress-text">${ratio }</span>
 										</h4>
 									</div>
 
@@ -116,7 +106,9 @@
 											<c:if test="${projects.projectStatus=='progress' }">
 												<li class="todo">
 													<div class="todo-wrap">
-														<div class="simple-checkbox noChecked" project_code='${projects.projectCode }' project_level='${projects.projectLevel}'
+														<div class="simple-checkbox noChecked"
+															project_code='${projects.projectCode }'
+															project_level='${projects.projectLevel}'
 															style="height: 18px; width: 18px;">
 															<div class="checkbox-container"
 																style="border: 1.8px solid;">
@@ -124,76 +116,93 @@
 																	style="border-right: 2.52px solid; border-bottom: 2.52px solid;"></div>
 															</div>
 														</div>
-														<span class="todo-content">
-														 <span class="content-linkable">
-														 <a class="todo-rest" data-stack="true"
+														<span class="todo-content"> <span
+															class="content-linkable"> <a class="todo-rest"
+																data-stack="true"
 																href="file/pfd.do?project_code=${projects.projectCode }&project_level=${projects.projectLevel}&root_code=${rootCode }">${projects.projectName }</a>
 														</span>
 														</span> <span class="todo-detail"> <a
 															class="label todo-assign-due">${projects.createUserName }
-														</a><a
-															class="label todo-assign-due"><fmt:parseDate value="${projects.createTime }" var="parsedEmpDate" /><fmt:formatDate value="${parsedEmpDate }" pattern="yyyy-MM-dd" />
-														</a></span>
+														</a><a class="label todo-assign-due"><fmt:parseDate
+																	value="${projects.createTime }" var="parsedEmpDate" />
+																<fmt:formatDate value="${parsedEmpDate }"
+																	pattern="yyyy-MM-dd" /> </a></span>
 													</div>
 												</li>
 											</c:if>
 										</c:forEach>
 									</ul>
 									<ul class="todo-new-wrap">
-									<c:forEach var="projects" items="${projectSonInfos }">
-										<c:if test="${projects.projectStatus=='completed' }">
-											<li class="todo completed">
-												<div class="todo-actions actions">
-													<div class="inr" style="display: none;"></div>
-												</div>
-												<div class="todo-wrap">
-													<div class="simple-checkbox checked"
-														style="height: 18px; width: 18px;">
-														<div class="checkbox-container"
-															style="border: 1.8px solid;">
-															<div class="checkbox-tick"
-																style="border-right: 2.52px solid; border-bottom: 2.52px solid;"></div>
-														</div>
+										<c:forEach var="projects" items="${projectSonInfos }">
+											<c:if test="${projects.projectStatus=='completed' }">
+												<li class="todo completed">
+													<div class="todo-actions actions">
+														<div class="inr" style="display: none;"></div>
 													</div>
-													<span class="todo-content">
-														<span class="content-linkable">
-														 <a class="todo-rest" data-stack="true"
+													<div class="todo-wrap">
+														<div class="simple-checkbox checked"
+															style="height: 18px; width: 18px;">
+															<div class="checkbox-container"
+																style="border: 1.8px solid;">
+																<div class="checkbox-tick"
+																	style="border-right: 2.52px solid; border-bottom: 2.52px solid;"></div>
+															</div>
+														</div>
+														<span class="todo-content"> <span
+															class="content-linkable"> <a class="todo-rest"
 																href="file/pfd.do?project_code=${projects.projectCode }&project_level=${projects.projectLevel}&root_code=${rootCode }">${projects.projectName }</a>
 														</span>
 														</span> <span class="todo-detail"> <a
 															class="label todo-assign-due">${projects.updateUserName }
-														</a><a
-															class="label todo-assign-due"><fmt:parseDate value="${projects.updateTime }" var="parsedEmpDate" /><fmt:formatDate value="${parsedEmpDate }" pattern="yyyy-MM-dd" />
-														</a></span>
-												</div>
-											</li>
-										</c:if>
-									</c:forEach>
+														</a><a class="label todo-assign-due"><fmt:parseDate
+																	value="${projects.updateTime }" var="parsedEmpDate" />
+																<fmt:formatDate value="${parsedEmpDate }"
+																	pattern="yyyy-MM-dd" /> </a></span>
+													</div>
+												</li>
+											</c:if>
+										</c:forEach>
 									</ul>
 								</div>
 							</div>
 						</div>
 						<div class="comment-actions">
-							<c:forEach var="b" items="${files }">
-								<div class="comment">
-								<div class="comment-main">
-									
-									<div class="attachments-preview gallery-wrap">
-										<div class="attachment-list">
-											<div class="others">
-												<div class="attachment">
-													<div class="attachment-thumb">
+							<div class="comment">
+								<div class="search-wrap">
+									<form id="search" method="post"
+										action="file/pfd.do">
+										<input  type="text" class="keyword" style="display: inline;width: 150px; margin-right: 20px; "
+											name="form_file_name" placeholder="请输入文件关键字名" autocomplete="off">
+										<input  type="text" class="keyword form_datetime" style="display: inline;width: 100px; margin-right: 20px;"
+											name="form_start_date" placeholder="起始时间" autocomplete="off" readonly="readonly">
+										<input  type="text" class="keyword form_datetime" style="display: inline;width: 100px; margin-right: 20px;"
+											name="form_end_date" placeholder="终止时间" autocomplete="off" readonly="readonly">
+											<input type="hidden" name="project_code" value="${projects.projectCode }">
+											<input type="hidden" name="project_level" value="${projects.projectLevel}">
+											<input type="hidden" name="root_code" value="${rootCode }">
+										<button type="button" class="btn btn-primary" style="float: right;" onclick="formSubmit()">
+											<font style="vertical-align: inline;">筛选</font>
+										</button>
+									</form>
+								</div>
+								<c:forEach var="b" items="${files }">
+									<div class="comment-main">
+										<div class="attachments-preview gallery-wrap">
+											<div class="attachment-list">
+												<div class="others">
+													<div class="attachment">
+														<div class="attachment-thumb">
 															<img
 																src="assets/img/<tag:enum className="FileTypeImgEnum">${b.file_type }</tag:enum>">
 														</div>
-													<div class="attachment-info">
-														<div class="name">
-															<a class="link-download"><span class="-rest">${b.file_name }</span></a>
-															<p class=" detail">${b.file_info }</p>
-															<%-- <p class="detail-p"><a class="link-download">${b.file_info }</a></p> --%>
-														</div>
-														<div class="tags"></div>
-														<div class="control-dir no-dir">
+														<div class="attachment-info">
+															<div class="name">
+																<a class="link-download"><span class="-rest">${b.file_name }</span></a>
+																<p class=" detail">${b.file_info }</p>
+																<%-- <p class="detail-p"><a class="link-download">${b.file_info }</a></p> --%>
+															</div>
+															<div class="tags"></div>
+															<div class="control-dir no-dir">
 																<a class="link-change-dir"
 																	onclick="display('${b.file_code }','${b.file_name }')">预览</a>
 																<c:if test="${b.file_permission eq 'download' }">
@@ -210,8 +219,8 @@
 											</div>
 										</div>
 									</div>
-								</div>
-							</c:forEach>
+								</c:forEach>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -229,14 +238,14 @@
 						href="pro/index.do">返回首页</a>
 				</div>
 				<c:if test="${'write' eq projectInfo.projectPermission }">
-				<div class="item">
-					<a class="detail-action detail-action-star" title="文件上传"
-						href="file/insFileJsp.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }">文件上传</a>
-				</div>
-				<div class="item">
-					<a class="detail-action detail-action-edit"
-						href="pro/insProJsp.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }">新增项目</a>
-				</div>
+					<div class="item">
+						<a class="detail-action detail-action-star" title="文件上传"
+							href="file/insFileJsp.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }">文件上传</a>
+					</div>
+					<div class="item">
+						<a class="detail-action detail-action-edit"
+							href="pro/insProJsp.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }">新增项目</a>
+					</div>
 				</c:if>
 				<div class="item">
 					<!-- 分享项目需要 -->
@@ -252,69 +261,92 @@
 		<input id="displayValues" type="hidden" name="file" />
 	</form>
 	<script type="text/javascript" src="assets/js/layer.js"></script>
-
+	<script type="text/javascript" src="assets/js/bootstrap-datetimepicker.js"></script>
+	<script type="text/javascript" src="assets/js/bootstrap-datetimepicker.zh-CN.js"></script>
 	<script type="text/javascript">
-			$(".noChecked").on('click',function(){
-				var checkedObj = $(this);
-				$.ajax({
-					url:'pro/priStatus.do',
-					type:'post',
-					data:{'project_code':checkedObj.attr("project_code"),'project_level':checkedObj.attr("project_level")},
-					dataType:'json',
-					success:function(result){
-						if(result.code ==0){
+		$('.form_datetime').datetimepicker({
+			language: 'zh-CN',
+			weekStart: 1,//星期几为周一
+			autoclose: 1,
+			startView: 4,
+			minView: 2,
+			maxView: 4,
+			todayHighlight: true,
+			todayBtn:true,
+			format:"yyyy-mm-dd" 
+		});
+	
+		
+		function checkDate(){
+			
+		}
+		
+		function formSubmit(){
+			$('#search').submit();
+		}
+		
+	
+		$(".noChecked").on('click', function() {
+			var checkedObj = $(this);
+			$.ajax({
+				url : 'pro/priStatus.do',
+				type : 'post',
+				data : {
+					'project_code' : checkedObj.attr("project_code"),
+					'project_level' : checkedObj.attr("project_level")
+				},
+				dataType : 'json',
+				success : function(result) {
+					if (result.code == 0) {
 						//checkedObj.addClass("checked");				
 						location.reload();
-						}else{
-							alert(result.msg);	
-						}
-					},
-					error:function(){
-						alert("服务器未响应")
+					} else {
+						alert(result.msg);
 					}
-					
-				})
-			})
-	
-				function display(code,name){
-					var str = "${pageContext.request.contextPath }/file/disPdf.do?file_info="+code+","+name;
-					$("#displayValues").val(str);
-					$("#displayForm").submit();
+				},
+				error : function() {
+					alert("服务器未响应")
 				}
-				
-				function downloadFile(code,level){
-					$.ajax({
-						url:"file/downloadCheck.do",
-						type:"post",
-						data:{"file_code":code,"file_level":level},
-						dataType:'json',
-						success:function(data){
-							if(data.code ===0){
-								window.location.href="file/downloadFile.do?file_name="+data.data;
-							}else{
+
+			})
+		})
+
+		function display(code, name) {
+			var str = "${pageContext.request.contextPath }/file/disPdf.do?file_info="
+					+ code + "," + name;
+			$("#displayValues").val(str);
+			$("#displayForm").submit();
+		}
+
+		function downloadFile(code, level) {
+			$
+					.ajax({
+						url : "file/downloadCheck.do",
+						type : "post",
+						data : {
+							"file_code" : code,
+							"file_level" : level
+						},
+						dataType : 'json',
+						success : function(data) {
+							if (data.code === 0) {
+								window.location.href = "file/downloadFile.do?file_name="
+										+ data.data;
+							} else {
 								alert(data.msg);
 							}
 						},
-						error:function(){
+						error : function() {
 							alert("error");
 						}
-					})	
-				}
-				function shareProject(projectCode,projectLevel,userCode){
-					var str = "${pageContext.request.scheme }://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/pro/sp.do?project_code="+projectCode+"&project_level="+projectLevel+"&user_code="+userCode;
-				$("#shareUrl").html(str)
-					layer.open({
-					  type: 1,
-					  skin: 'demo-class', //样式类名
-					  area: ['450px','150px'],
-					  closeBtn: 1,
-					  anim: 0,
-					  shadeClose: true, //开启遮罩关闭
-					  content:$("#share")
-					}) 
-				}
-				function shareFile(fileCode,fileLevel,projectCode){
-					var str = "${pageContext.request.scheme }://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/file/sf.do?file_code=" + fileCode+ "&file_level=" + fileLevel + "&project_code="+ projectCode;
+					})
+		}
+		function shareProject(projectCode, projectLevel, userCode) {
+			var str = "${pageContext.request.scheme }://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/pro/sp.do?project_code="
+					+ projectCode
+					+ "&project_level="
+					+ projectLevel
+					+ "&user_code=" + userCode;
 			$("#shareUrl").html(str)
 			layer.open({
 				type : 1,
@@ -326,28 +358,48 @@
 				content : $("#share")
 			})
 		}
-		
-		function change(){
-			if(document.getElementById("thediv").style.display=='none'){
-				document.getElementById("thediv").style.display='block';
-			}else{
-				document.getElementById("thediv").style.display='none';
+		function shareFile(fileCode, fileLevel, projectCode) {
+			var str = "${pageContext.request.scheme }://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/file/sf.do?file_code="
+					+ fileCode
+					+ "&file_level="
+					+ fileLevel
+					+ "&project_code="
+					+ projectCode;
+			$("#shareUrl").html(str)
+			layer.open({
+				type : 1,
+				skin : 'demo-class', //样式类名
+				area : [ '450px', '150px' ],
+				closeBtn : 1,
+				anim : 0,
+				shadeClose : true, //开启遮罩关闭
+				content : $("#share")
+			})
+		}
+
+		function change() {
+			if (document.getElementById("thediv").style.display == 'none') {
+				document.getElementById("thediv").style.display = 'block';
+			} else {
+				document.getElementById("thediv").style.display = 'none';
 			}
 		}
-		function allread(){
-			var list=[];
-			for(var i=0;i<document.getElementsByClassName("adviceCode").length;i++){
-				list.push(document.getElementsByClassName("adviceCode")[i].innerHTML)
-			};
+		function allread() {
+			var list = [];
+			for (var i = 0; i < document.getElementsByClassName("adviceCode").length; i++) {
+				list
+						.push(document.getElementsByClassName("adviceCode")[i].innerHTML)
+			}
+			;
 			$.ajax({
-				url:'pro/isRead.do',
-				type:'post',
-				data:"list="+JSON.stringify(list),
-				dateType:'json',
-				success:function(){
+				url : 'pro/isRead.do',
+				type : 'post',
+				data : "list=" + JSON.stringify(list),
+				dateType : 'json',
+				success : function() {
 					location.reload(true);
 				}
-			})		
+			})
 		}
 	</script>
 	<div id="share" style="display: none;">

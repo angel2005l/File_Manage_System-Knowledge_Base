@@ -248,6 +248,25 @@ public final class DateUtil {
 
 	/**
 	 * 
+	 * @Title: addDay
+	 * @Description: 根据特定年月日增加响应天数
+	 * @author 黄官易
+	 * @param startDate
+	 * @param day
+	 * @return
+	 * @return String
+	 * @date 2018年7月11日
+	 * @version 1.0
+	 */
+	public static String addDay(String startDate, int day) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(curDate(startDate, DateUtil.YMD));
+		calendar.add(Calendar.DAY_OF_YEAR, day);
+		return dateFormat.format(calendar.getTime());
+	}
+
+	/**
+	 * 
 	 * @Title: curTimestampByStr
 	 * @Description: 根据日期时间字符串转化为日期时间对象
 	 * @param date
