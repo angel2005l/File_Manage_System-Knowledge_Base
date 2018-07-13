@@ -17,7 +17,6 @@
 <link rel="stylesheet" href="assets/css/xh.css" />
 <script src="assets/js/analytics.js"></script>
 
-<script src="assets/js/xh_application.js"></script>
 </head>
 
 <body class="" style="cursor: auto;">
@@ -146,6 +145,18 @@
 		</div>
 	</div>
 	<div class="footer">© 商务智能部</div>
+	<form id="displayForm" action="build/generic/web/viewer.html"
+		method="get" target="_blank">
+		<input id="displayValues" type="hidden" name="file" />
+	</form>
+	<script type="text/javascript">
+	function display(code, name) {
+		var str = "${pageContext.request.contextPath }/file/disPdf.do?file_info="
+				+ code + "," + name;
+		$("#displayValues").val(str);
+		$("#displayForm").submit();
+	}
+	</script>
 </body>
 
 </html>

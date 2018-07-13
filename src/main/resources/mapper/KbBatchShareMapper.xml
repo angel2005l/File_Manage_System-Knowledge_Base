@@ -1,30 +1,80 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xh.dao.KbBatchShareMapper" >
-  <resultMap id="BaseResultMap" type="com.xh.entity.KbBatchShare" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="share_code" property="shareCode" jdbcType="CHAR" />
-    <result column="project_code" property="projectCode" jdbcType="CHAR" />
-    <result column="project_level" property="projectLevel" jdbcType="INTEGER" />
-    <result column="share_time" property="shareTime" jdbcType="DATE" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="create_user_code" property="createUserCode" jdbcType="CHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xh.dao.KbBatchShareMapper">
+  <resultMap id="BaseResultMap" type="com.xh.entity.KbBatchShare">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="share_code" jdbcType="CHAR" property="shareCode" />
+    <result column="project_code" jdbcType="CHAR" property="projectCode" />
+    <result column="project_level" jdbcType="INTEGER" property="projectLevel" />
+    <result column="share_date" jdbcType="DATE" property="shareDate" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user_code" jdbcType="CHAR" property="createUserCode" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.xh.entity.KbBatchShare" extends="BaseResultMap" >
-    <result column="file_codes" property="fileCodes" jdbcType="LONGVARCHAR" />
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xh.entity.KbBatchShare">
+    <result column="file_codes" jdbcType="LONGVARCHAR" property="fileCodes" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    id, share_code, project_code, project_level, share_time, create_time, create_user_code
+  <sql id="Base_Column_List">
+    id, share_code, project_code, project_level, share_date, create_time, create_user_code
   </sql>
-  <sql id="Blob_Column_List" >
+  <sql id="Blob_Column_List">
     file_codes
   </sql>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
-    select 'false' as QUERYID,
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from kb_batch_share
-    where id = #{id,jdbcType=INTEGER}
+  <!-- 新增分享信息  -->
+  <insert id="insertBatchShare" parameterType="com.xh.entity.KbBatchShare">
+  	insert into kb_batch_share(share_code, project_code, project_level, file_codes, share_date, create_time, create_user_code)  values(#{shareCode},#{projectCode},#{projectLevel},#{fileCodes},#{shareTime},#{createTime},#{createUserCode})
+  </insert>
+  
+  <resultMap id="BaseResultMapWithShareData" type="map">
+  	<association column="{projectCode=a.project_code,ptName=c.pt_name}" property="project" javaType="com.xh.entity.KbProject" select="selectProjectByCode" />
+  	<collection column="{fileCodes=a.file_codes,ftName=b.ft_name}" property="files" select="selectfileByCodes" />
+  </resultMap>
+  
+  <!-- 根据分享码查询分享信息 -->
+  <select id="selectBatchShareByShareCode" parameterType="string" resultMap="BaseResultMapWithShareData">
+  		SELECT a.`project_code`,a.`file_codes`,b.`ft_name`,c.`pt_name` FROM kb_batch_share a INNER JOIN kb_file_table b ON a.`project_level` = b.`file_level` INNER JOIN kb_project_table c ON a.`project_level` = c.`project_level` WHERE a.`share_code` =#{shareCode} AND DATEDIFF(CURDATE(),a.`share_date`)&lt;7
+  </select>
+  
+  <resultMap id="BaseResultMapWithProject" type="com.xh.entity.KbProject">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="project_code" jdbcType="CHAR" property="projectCode" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="project_type" jdbcType="CHAR" property="projectType" />
+    <result column="project_info" jdbcType="VARCHAR" property="projectInfo" />
+    <result column="project_remark" jdbcType="VARCHAR" property="projectRemark" />
+    <result column="project_parent_code" jdbcType="CHAR" property="projectParentCode" />
+    <result column="project_level" jdbcType="INTEGER" property="projectLevel" />
+    <result column="project_status" jdbcType="VARCHAR" property="projectStatus" />
+    <result column="create_user_code" jdbcType="VARCHAR" property="createUserCode" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_user_code" jdbcType="VARCHAR" property="updateUserCode" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_project_Column_List">
+    id, project_code, project_name,project_type, project_info, project_remark, project_parent_code, 
+    project_level, project_status, create_user_code, DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') as create_time, update_user_code, DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') as update_time
+  </sql>
+  <!-- 查询项目信息 -->
+  <select id="selectProjectByCode" resultMap="BaseResultMapWithProject">
+  	select <include refid="Base_project_Column_List" /> from ${ptName} where project_code = #{projectCode}
+  </select>
+    <resultMap id="BaseResultMapWithFile" type="com.xh.entity.KbFile">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="file_code" jdbcType="CHAR" property="fileCode" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="file_info" jdbcType="VARCHAR" property="fileInfo" />
+    <result column="file_type" jdbcType="VARCHAR" property="fileType" />
+    <result column="file_status" jdbcType="VARCHAR" property="fileStatus" />
+    <result column="file_level" jdbcType="INTEGER" property="fileLevel" />
+    <result column="project_code" jdbcType="CHAR" property="projectCode" />
+    <result column="create_user_code" jdbcType="VARCHAR" property="createUserCode" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_file_Column_List">
+    id, file_code, file_name, file_info, file_type, file_status, file_level, project_code, 
+    create_user_code, DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') as create_time
+  </sql>
+  <!-- 查询文件集合信息 -->
+  <select id="selectfileByCodes" resultMap="BaseResultMapWithFile">
+  	select <include refid="Base_file_Column_List" /> from ${ftName} where file_code in <foreach collection="fileCodes.split(',')" item="fileCode" open="(" separator="," close=")">#{fileCode}</foreach>
   </select>
 </mapper>

@@ -9,7 +9,7 @@ public class KbBatchShare {
 
     private Integer projectLevel;
 
-    private String shareTime;
+    private String shareDate;
 
     private String createTime;
 
@@ -49,24 +49,23 @@ public class KbBatchShare {
         this.projectLevel = projectLevel;
     }
 
-   
-	public String getShareTime() {
-		return shareTime;
-	}
+    public String getShareDate() {
+        return shareDate;
+    }
 
-	public void setShareTime(String shareTime) {
-		this.shareTime = shareTime;
-	}
+    public void setShareDate(String shareDate) {
+        this.shareDate = shareDate;
+    }
 
-	public String getCreateTime() {
-		return createTime;
-	}
+    public String getCreateTime() {
+        return createTime;
+    }
 
-	public void setCreateTime(String createTime) {
-		this.createTime = createTime;
-	}
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
 
-	public String getCreateUserCode() {
+    public String getCreateUserCode() {
         return createUserCode;
     }
 
