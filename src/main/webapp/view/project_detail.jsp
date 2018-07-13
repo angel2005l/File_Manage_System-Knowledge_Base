@@ -177,8 +177,8 @@
 											name="form_start_date" placeholder="起始时间" autocomplete="off" readonly="readonly">
 										<input  type="text" class="keyword form_datetime" style="display: inline;width: 100px; margin-right: 20px;"
 											name="form_end_date" placeholder="终止时间" autocomplete="off" readonly="readonly">
-											<input type="hidden" name="project_code" value="${projects.projectCode }">
-											<input type="hidden" name="project_level" value="${projects.projectLevel}">
+											<input type="hidden" name="project_code" value="${projectInfo.projectCode }">
+											<input type="hidden" name="project_level" value="${projectInfo.projectLevel}">
 											<input type="hidden" name="root_code" value="${rootCode }">
 										<button type="button" class="btn btn-primary" style="float: right;" onclick="formSubmit()">
 											<font style="vertical-align: inline;">筛选</font>

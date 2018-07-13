@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.xh.entity.KbBatchShare;
 import com.xh.entity.KbFile;
 import com.xh.entity.KbFileTable;
 import com.xh.entity.KbFileUser;
@@ -148,8 +149,8 @@ public interface IFileService {
 	 * @date 2018年6月30日
 	 * @version 1.0
 	 */
-	public Result<Map<String, Object>> getProjectDetailData(String projectCode, int projectLevel, String userCode,Map<String,String> fileSelMap)
-			throws Exception;
+	public Result<Map<String, Object>> getProjectDetailData(String projectCode, int projectLevel, String userCode,
+			Map<String, String> fileSelMap) throws Exception;
 
 	/**
 	 * 
@@ -165,4 +166,32 @@ public interface IFileService {
 	 * @version 1.0
 	 */
 	public String selectSuperiorProjectCodeByProjectCode(int projectLevel, String projectCode) throws Exception;
+
+	/**
+	 * 
+	 * @Title: insBatchProject
+	 * @Description: 新增批量分享
+	 * @author 黄官易
+	 * @param kbs
+	 * @return
+	 * @throws Exception
+	 * @return Result<String>
+	 * @date 2018年7月12日
+	 * @version 1.0
+	 */
+	public Result<String> insBatchProject(KbBatchShare kbs) throws Exception;
+
+/**
+ * 
+ * @Title: selectShareFilesData  
+ * @Description: 根据分享编码查询分享信息
+ * @author 黄官易
+ * @param shareCode
+ * @return
+ * @throws Exception    
+ * @return Result<Map<String,Object>> 
+ * @date 2018年7月12日  
+ * @version 1.0
+ */
+	public Result<Map<String, Object>> selectShareFilesData(String shareCode) throws Exception;
 }

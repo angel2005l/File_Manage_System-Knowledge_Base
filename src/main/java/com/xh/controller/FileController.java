@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.xh.aop.SystemControllerLog;
 import com.xh.base.BaseController;
 import com.xh.base.Constant;
+import com.xh.entity.KbBatchShare;
 import com.xh.entity.KbFile;
 import com.xh.entity.KbFileTable;
 import com.xh.entity.KbFileUser;
@@ -272,7 +273,7 @@ public class FileController extends BaseController {
 			String userCode = session.getAttribute("user_code").toString();// 用户编码
 			String rootCode = StrUtil.isBlank(request.getParameter("root_code")) ? projectCode
 					: request.getParameter("root_code");// 根路径
-			Map<String,String> fileSelMap = new HashMap<String,String>();
+			Map<String, String> fileSelMap = new HashMap<String, String>();
 			String fileName = request.getParameter("form_file_name");
 			String startDate = request.getParameter("form_start_date");
 			String endDate = request.getParameter("form_end_date");
@@ -280,7 +281,7 @@ public class FileController extends BaseController {
 			fileSelMap.put("startDate", startDate);
 			fileSelMap.put("endDate", endDate);
 			Result<Map<String, Object>> result = fs.getProjectDetailData(projectCode, Integer.parseInt(projectLevel),
-					userCode,fileSelMap);
+					userCode, fileSelMap);
 			if (Result.SUCCESS_0 == result.getCode()) {
 				Map<String, Object> ResultMap = result.getData();
 				request.setAttribute("files", ResultMap.get("files"));
@@ -325,7 +326,7 @@ public class FileController extends BaseController {
 			projectCode = fs.selectSuperiorProjectCodeByProjectCode(Integer.parseInt(projectLevel), projectCode);
 			if (StrUtil.notBlank(projectCode)) {
 				Result<Map<String, Object>> result = fs.getProjectDetailData(projectCode,
-						Integer.parseInt(projectLevel) - 1, userCode,null);
+						Integer.parseInt(projectLevel) - 1, userCode, null);
 				if (Result.SUCCESS_0 == result.getCode()) {
 					Map<String, Object> ResultMap = result.getData();
 					request.setAttribute("files", ResultMap.get("files"));
@@ -411,6 +412,59 @@ public class FileController extends BaseController {
 			log.error("跳转项目添加页面异常,异常原因:【" + e.toString() + "】");
 		}
 		return "view/insert_file";
+	}
+
+	// 批量分享生成链接
+	// 并且返回分享码
+	@RequestMapping("/insShareFiles.do")
+	@ResponseBody
+	public Result<String> getBatchShare(HttpServletRequest request, HttpSession session) {
+		// 获得项目编号
+		String projectCode = request.getParameter("project_code");
+		// 获得项目层级
+		String projectLevel = request.getParameter("project_level");
+		// 获得文件S编号
+		String fileCodes = request.getParameter("file_codes");
+		try {
+			KbBatchShare kbs = new KbBatchShare();
+			kbs.setShareCode(
+					"SHA" + DateUtil.curDateYMDHMSForService() + StrUtil.getRandom((int) (Math.random() * 100), 2));
+			kbs.setProjectCode(projectCode);
+			kbs.setFileCodes(fileCodes);
+			kbs.setProjectLevel(Integer.parseInt(projectLevel));
+			kbs.setShareDate(DateUtil.curDateYMD());
+			kbs.setCreateTime(DateUtil.curDateYMDHMS());
+			kbs.setCreateUserCode(session.getAttribute("user_code").toString());
+			return fs.insBatchProject(kbs);
+		} catch (NullPointerException e) {
+			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
+			return rtnErrorResult(Result.ERROR_6000, "登录信息已失效,请重新登录");
+		} catch (Exception e) {
+			log.error("新增文件批量分享信息异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
+		}
+	}
+	// 根据分享编码查询分享信息
+	@RequestMapping("/shareFiles.do")
+	public String selectShareFilesData(HttpServletRequest request) {
+		String shareCode = request.getParameter("share_code");
+		try {
+			shareCode = "SHA2018071215521211";
+			Result<Map<String, Object>> resultData = fs.selectShareFilesData(shareCode);
+			if(Result.SUCCESS_0 == resultData.getCode()) {
+				Map<String, Object> dataMap = resultData.getData();
+				request.setAttribute("shareProject", dataMap.get("project"));
+				request.setAttribute("shareFiles", dataMap.get("files"));
+				return "view/share_files";
+			}else {
+				request.setAttribute("result", resultData);
+				return "view/error";
+			}
+		} catch (Exception e) {
+			log.error("文件批量分享异常,异常原因:【"+e.toString()+"】");
+			request.setAttribute("result", rtnErrorResult(Result.ERROR_6000, "系统异常,请联系系统管理员"));
+			return "view/error";
+		}
 	}
 
 }

@@ -18,12 +18,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.xh.base.BaseService;
 import com.xh.base.Constant;
+import com.xh.dao.KbBatchShareMapper;
 import com.xh.dao.KbFileMapper;
 import com.xh.dao.KbFileTableMapper;
 import com.xh.dao.KbFileUserMapper;
 import com.xh.dao.KbProjectMapper;
 import com.xh.dao.KbProjectTableMapper;
 import com.xh.dao.KbUserMapper;
+import com.xh.entity.KbBatchShare;
 import com.xh.entity.KbFile;
 import com.xh.entity.KbFileTable;
 import com.xh.entity.KbFileUser;
@@ -54,6 +56,8 @@ public class FileServiceImpl extends BaseService implements IFileService {
 	private KbProjectTableMapper kptm;// 项目表接口
 	@Autowired
 	private KbProjectMapper kpm;// 项目接口
+	@Autowired
+	private KbBatchShareMapper kbsm; // 批量分享接口
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -394,5 +398,31 @@ public class FileServiceImpl extends BaseService implements IFileService {
 			log.error("根据项目编码查询父类项目编码数据接口异常,异常原因:【" + e.toString() + "】");
 		}
 		return "";
+	}
+
+	@Override
+	public Result<String> insBatchProject(KbBatchShare kbs) throws Exception {
+		try {
+			return kbsm.insertBatchShare(kbs) > 0 ? rtnSuccessResult("", kbs.getShareCode())
+					: rtnFailResult(Result.ERROR_4300, "分享链接创建失败");
+		} catch (SQLException e) {
+			log.error("新增分享信息数据接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
+		}
+	}
+
+	@Override
+	public Result<Map<String, Object>> selectShareFilesData(String shareCode) throws Exception {
+		if (StrUtil.isBlank(shareCode)) {
+			return rtnFailResult(Result.ERROR_4000, "无效的分享链接");
+		}
+		try {
+			Map<String, Object> shareData = kbsm.selectBatchShareByShareCode(shareCode);
+			return null != shareData && !shareData.isEmpty() ? rtnSuccessResult("", shareData)
+					: rtnFailResult(Result.ERROR_4000, "分享链接不存在或已过期");
+		} catch (SQLException e) {
+			log.error("批量文件分享数据接口异常,异常原因：【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
+		}
 	}
 }
