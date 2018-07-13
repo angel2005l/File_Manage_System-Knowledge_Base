@@ -334,6 +334,7 @@ public class ProjectController extends BaseController {
 		}
 		return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
 	}
+	
 	@RequestMapping("/isRead.do")
 	@ResponseBody
 	public Result<Object> isReadAdviceMsg(HttpServletRequest request, HttpSession session) throws JsonParseException, JsonMappingException, IOException{
