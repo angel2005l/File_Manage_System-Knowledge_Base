@@ -84,9 +84,11 @@ public class SystemLogAspect {
 		int parentProjectLevel = 0;// 新建项目的父类等级
 		int code = result.getCode();
 		String logCode = "L" + DateUtil.curDateYMDHMSForService() + StrUtil.getRandom((int) (Math.random() * 10000), 4);// 日志编号
-		String logMsg = logUserName + ",操作了:" + getControllerMethodDescription(jp).get("description");// 日志信息
 		String errorLogMsg = "";// 异常的信息抓取
-		String isAdvice = getControllerMethodDescription(jp).get("isAdvice");
+		Map<String, String> logMap = getControllerMethodDescription(jp);
+		String isAdvice = logMap.get("isAdvice");
+		String isType = logMap.get("logType");
+		String logEventvalue= "";
 		// 获取request值
 		Object[] obj = jp.getArgs();
 		for (Object object : obj) {
@@ -96,8 +98,10 @@ public class SystemLogAspect {
 				parentProjectCode = request.getParameter("project_parent_code");
 				parentProjectLevel = Integer.parseInt(request.getParameter("project_level"));
 				errorLogMsg = logUserName + ",操作时出现异常，异常信息为：" + result.getMsg();
-			}
+				logEventvalue = (String) request.getAttribute("log_event_value");
+				}
 		}
+		String logMsg = logUserName + "," + logMap.get("description")+(StrUtil.isBlank(logEventvalue)?"":"【"+logEventvalue+"】");// 日志信息
 		try {
 			if (code == 0) {
 				logStatus = "success";
@@ -113,24 +117,29 @@ public class SystemLogAspect {
 //			System.out.println("请求人:" + logUserName);
 //			System.out.println("请求IP:" + ip);
 			// *========数据库通知=========*//
-			if (("true").equals(isAdvice) || parentProjectLevel != 0) {
+			if (("true").equals(isAdvice)) {
 				List<KbUserAdvice> kbUserAdviceList = new ArrayList<KbUserAdvice>();
+				List<String> userCodeList=new ArrayList<String>();
 				// 若该level==0，则无上级，不需要通知任何人了，否则通知上级项目的所有组员
-				if (null != parentProjectCode && !parentProjectCode.isEmpty()) {
-					List<String> userCodeList = kolService.parentUserCodeByCode(parentProjectCode).getData();
-					for (String userCode : userCodeList) {
-						KbUserAdvice kbUserAdvice = new KbUserAdvice();
-						kbUserAdvice.setAdviceCode("ADV" + DateUtil.curDateYMDHMSForService()
-								+ StrUtil.getRandom((int) (Math.random() * 100), 2));// 通知编号
-						kbUserAdvice.setLogCode(logCode);
-						kbUserAdvice.setLogMsg(logMsg);
-						kbUserAdvice.setAdviceStatus("N");
-						kbUserAdvice.setCreateTime(DateUtil.curDateYMDHMS());
-						kbUserAdvice.setUserCode(userCode);
-						kbUserAdviceList.add(kbUserAdvice);
+				if("insertProject".equals(isType)|| parentProjectLevel != 0){
+					if (StrUtil.notBlank(parentProjectCode)) {
+						userCodeList = kolService.parentUserCodeByCode(parentProjectCode).getData();
 					}
-					kolService.addUserAdvice(kbUserAdviceList);
+				}else if("insertFile".equals(isType)){
+					userCodeList = kolService.parentUserCodeByCode(projectCode).getData();
 				}
+				for (String userCode : userCodeList) {
+					KbUserAdvice kbUserAdvice = new KbUserAdvice();
+					kbUserAdvice.setAdviceCode("ADV" + DateUtil.curDateYMDHMSForService()
+							+ StrUtil.getRandom((int) (Math.random() * 100), 2));// 通知编号
+					kbUserAdvice.setLogCode(logCode);
+					kbUserAdvice.setLogMsg(logMsg);
+					kbUserAdvice.setAdviceStatus("N");
+					kbUserAdvice.setCreateTime(DateUtil.curDateYMDHMS());
+					kbUserAdvice.setUserCode(userCode);
+					kbUserAdviceList.add(kbUserAdvice);
+				}
+				kolService.addUserAdvice(kbUserAdviceList);
 			}
 			;
 			// *========数据库日志=========*//

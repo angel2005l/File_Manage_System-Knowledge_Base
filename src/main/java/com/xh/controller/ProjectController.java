@@ -86,7 +86,7 @@ public class ProjectController extends BaseController {
 	/**
 	 * 
 	 * @Title: addProject
-	 * @Description: 新增项目表信息及项目员工表信息
+	 * @Description: 新增项目信息及项目员工信息
 	 * @author 黄官易
 	 * @param request
 	 * @param session
@@ -95,7 +95,7 @@ public class ProjectController extends BaseController {
 	 * @date 2018年7月10日
 	 * @version 1.0
 	 */
-	@SystemControllerLog(description = "新增项目表信息及项目员工表信息", logType = "insert",isAdvice = "true")
+	@SystemControllerLog(description = "创建项目", logType = "insertProject",isAdvice = "true")
 	@RequestMapping("/insPro.do")
 	@ResponseBody
 	public Result<Object> addProject(HttpServletRequest request, HttpSession session) {
@@ -114,6 +114,7 @@ public class ProjectController extends BaseController {
 			String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService()
 					+ StrUtil.getRandom((int) (Math.random() * 10000), 4);// 项目编码
 			request.setAttribute("project_code", projectCode);
+			request.setAttribute("log_event_value", projectName);
 			KbProject kp = new KbProject();
 			kp.setProjectCode(projectCode);
 			kp.setProjectName(projectName);

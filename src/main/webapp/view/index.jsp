@@ -24,10 +24,10 @@
 				<div class="command-bar">
 				<div class="notification-info" id="both">
 					<!-- 如果有未读的  显示label unread  否则显示label -->
-			        <a id="notification-count" title="新的通知" onclick="intoclick()" href="javascript:;" class="label">
+			        <span id="notification-count" title="新的通知" onclick="intoclick()" class="label">
 			          <span class="twr twr-bell-o bell"></span>
 			          <span class="num" id="num"></span>
-			        </a>
+			        </span>
 			        <div class="noti-pop" id="thediv" style="display:none;" onblur="losePoint()"><!-- tabindex="0" -->
 			          <div class="noti-pop-hd">
 			            <b class="title">通知</b>

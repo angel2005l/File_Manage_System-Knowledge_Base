@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.aspectj.lang.annotation.AfterReturning;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,7 @@ public class FileController extends BaseController {
 	 * @date 2018年6月22日
 	 * @version 1.0
 	 */
+	@SystemControllerLog(description = "新增文件", logType = "insertFile",isAdvice = "true")
 	@RequestMapping("/upFile.do")
 	@ResponseBody
 	public Result<Object> uploadFile(HttpServletRequest request, HttpSession session,
@@ -133,7 +135,10 @@ public class FileController extends BaseController {
 					kfus.add(kfu);
 				}
 			}
-			return fs.insFile(kf, projectLevel, kfus);
+			request.setAttribute("project_code", projectCode);
+			request.setAttribute("log_event_value", fileName);
+			Result<Object> result=fs.insFile(kf, projectLevel, kfus);
+			return result;
 		} catch (NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
 			return rtnErrorResult(Result.ERROR_6000, "非法登录!");
