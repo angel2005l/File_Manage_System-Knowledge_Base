@@ -352,9 +352,8 @@ public class FileServiceImpl extends BaseService implements IFileService {
 				resultMap.put("ratio", ratio);
 				resultMap.put("per", per);
 				resultMap.put("projectInfo", projectInfo);
-				return rtnSuccessResult("", resultMap);
 			}
-			return rtnFailResult(Result.ERROR_4000, "无相关联数据表信息/该层级未开放,请联系系统管理员");
+			return rtnSuccessResult("", resultMap);
 		} catch (SQLException e) {
 			log.error("项目详细页数据接口异常,异常原因:【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "查询系统异常,请联系系统管理员");

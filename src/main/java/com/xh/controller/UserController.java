@@ -56,10 +56,22 @@ public class UserController extends BaseController {
 			return rtnErrorResult(Result.ERROR_6000, "员工登陆异常,请联系管理员");
 		}
 	}
-	
-	
-	
-	
-	
+
+	/**
+	 * 
+	 * @Title: logout
+	 * @Description: 登出
+	 * @author 黄官易
+	 * @param session
+	 * @return
+	 * @return String
+	 * @date 2018年7月14日
+	 * @version 1.0
+	 */
+	@RequestMapping("/logout.do")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "view/login";
+	}
 
 }

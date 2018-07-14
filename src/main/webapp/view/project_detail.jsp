@@ -1,4 +1,5 @@
 <%@ include file="/view/base/base.jsp"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -26,14 +27,12 @@
 			<div class="header-container">
 				<h1 class="logo">
 					<a class="header-team-name js-show-focus-driver"
-						href="javascript:;"><font style="vertical-align: inherit;"><font
+						href="pro/index.do?method=participation"><font style="vertical-align: inherit;"><font
 							style="vertical-align: inherit;">新海科技集团</font></font></a>
 				</h1>
 				<ul class="nav">
-					<li class="" id="nav-project"><a href="" data-stack=""
-						data-stack-root="">项目</a></li>
-					<li class="" id="nav-me"><a href="" data-stack=""
-						data-stack-root="">我自己</a></li>
+					<li class="" id="nav-project"><a href="pro/index.do?method=participation">项目</a></li>
+					<li class="" id="nav-me"><a href="pro/index.do?method=self">我自己</a></li>
 					<li id="nav-upgrade"></li>
 				</ul>
 				<div class="command-bar">
@@ -43,7 +42,7 @@
 			          <span class="twr twr-bell-o bell"></span>
 			          <span class="num" id="num"></span>
 			        </a>
-			        <div class="noti-pop" id="thediv" style="display:none;" onblur="losePoint()"><!-- tabindex="0" -->
+			        <div class="noti-pop" id="thediv" style="display:none;" onblur="losePoint()">
 			          <div class="noti-pop-hd">
 			            <b class="title">通知</b>
 			            <a class="mark-as-read" id="noti-mark-read" href="javascript:;" onclick="allread()">
@@ -56,7 +55,9 @@
 			          </div>
 			        </div>
       			</div>
-      			<div class="account-info"></div>
+      			<div class="account-info">
+      				<a class="detail-action" href="user/logout.do">登出</a>
+      			</div>
 				</div>
 			</div>
 		</div>
@@ -221,6 +222,7 @@
 										</div>
 									</div>
 								</c:forEach>
+								<c:if test="${fn:length(files)>0 }">
 								<button id="batch_download" type="button" class="btn btn-reject"
 									style="float: left;">
 									<font style="vertical-align: inline;">批量下载</font>
@@ -237,6 +239,7 @@
 									style="float: left;">
 									<font style="vertical-align: inline;">批量分享</font>
 								</button>
+								</c:if>
 							</div>
 						</div>
 					</div>

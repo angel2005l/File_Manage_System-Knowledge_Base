@@ -18,7 +18,7 @@
 		<div class="header">
 			<div class="header-container">
 				<h1 class="logo">
-					<a class="header-team-name"><font style="vertical-align: inherit;"><font
+					<a class="header-team-name" href="pro/index.do?method=participation"><font style="vertical-align: inherit;"><font
 							style="vertical-align: inherit;">新海科技集团</font></font></a>
 				</h1>
 				<div class="command-bar">
@@ -41,7 +41,9 @@
 			          </div>
 			        </div>
       			</div>
-      			<div class="account-info"></div>
+      			<div class="account-info">
+      				<a class="detail-action" href="user/logout.do">登出</a>
+      			</div>
 				</div>
 			</div>
 		</div>
