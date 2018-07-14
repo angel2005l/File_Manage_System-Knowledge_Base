@@ -1,5 +1,6 @@
 package com.xh.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -19,7 +20,7 @@ public interface KbUserAdviceMapper {
      * @date 2018年7月9日  
      * @version 1.0
      */
-    public List<String> parentUserCodeByCode(@Param("parentProjectCode")String parentProjectCode);
+    public List<String> parentUserCodeByCode(@Param("parentProjectCode")String parentProjectCode) throws SQLException;
     /**
      * 
      * @Title: addUserAdvice  
@@ -29,7 +30,7 @@ public interface KbUserAdviceMapper {
      * @date 2018年7月9日  
      * @version 1.0
      */
-    public int addUserAdvice(@Param("kbUserAdvice")KbUserAdvice kbUserAdvice);
+    public int addUserAdvice(@Param("kbUserAdvice")KbUserAdvice kbUserAdvice) throws SQLException;
     
     /**
      * 
@@ -40,7 +41,7 @@ public interface KbUserAdviceMapper {
      * @date 2018年7月9日  
      * @version 1.0
      */
-    public List<KbUserAdvice> getAdviceMsgByUser(@Param("userCode")String userCode);
+    public List<KbUserAdvice> getAdviceMsgByUser(@Param("userCode")String userCode) throws SQLException;
     
     /**
      * 
@@ -51,7 +52,7 @@ public interface KbUserAdviceMapper {
      * @date 2018年7月9日  
      * @version 1.0
      */
-    public int updateAdviceStatusByAdviceCode(@Param("adviceCode")String adviceCode);
+    public int updateAdviceStatusByAdviceCode(@Param("adviceCode")String adviceCode) throws SQLException;
     
     
 }

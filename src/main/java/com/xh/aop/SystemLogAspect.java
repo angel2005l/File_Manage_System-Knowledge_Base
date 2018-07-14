@@ -117,7 +117,7 @@ public class SystemLogAspect {
 				List<KbUserAdvice> kbUserAdviceList = new ArrayList<KbUserAdvice>();
 				// 若该level==0，则无上级，不需要通知任何人了，否则通知上级项目的所有组员
 				if (null != parentProjectCode && !parentProjectCode.isEmpty()) {
-					List<String> userCodeList = kolService.parentUserCodeByCode(parentProjectCode);
+					List<String> userCodeList = kolService.parentUserCodeByCode(parentProjectCode).getData();
 					for (String userCode : userCodeList) {
 						KbUserAdvice kbUserAdvice = new KbUserAdvice();
 						kbUserAdvice.setAdviceCode("ADV" + DateUtil.curDateYMDHMSForService()

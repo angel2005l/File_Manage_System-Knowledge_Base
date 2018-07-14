@@ -334,10 +334,15 @@ public class ProjectController extends BaseController {
 	@RequestMapping("/isRead.do")
 	@ResponseBody
 	public Result<Object> isReadAdviceMsg(HttpServletRequest request, HttpSession session) throws JsonParseException, JsonMappingException, IOException{
-		String list=request.getParameter("list");
-		ObjectMapper mapper= new ObjectMapper();
-		JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, String.class);
-		List<String> advCodeList=mapper.readValue(list, jt);
-		return ads.updateAdviceStatusByAdviceCode(advCodeList);
+		try {
+			String list=request.getParameter("list");
+			ObjectMapper mapper= new ObjectMapper();
+			JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, String.class);
+			List<String> advCodeList=mapper.readValue(list, jt);
+			return ads.updateAdviceStatusByAdviceCode(advCodeList);
+		} catch (Exception e) {
+			log.error("已读业务方法异常，异常原因【"+e.toString()+"】");
+			return rtnErrorResult(Result.ERROR_6000, "修改为已读业务异常，请联系管理员");
+		}
 	}
 }

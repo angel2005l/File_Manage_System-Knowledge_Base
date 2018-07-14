@@ -22,6 +22,7 @@ import com.xh.entity.KbUserAdvice;
 import com.xh.service.IUserAdviceService;
 import com.xh.uitl.AsposeUtil;
 import com.xh.uitl.IOUtil;
+import com.xh.uitl.Result;
 
 @Controller
 @RequestMapping("/index")
@@ -58,13 +59,19 @@ public class IndexController extends BaseController{
 	
 	@RequestMapping("/getAllMsg.do")
 	@ResponseBody
-	public JSONObject getAllAdvice(HttpServletRequest request,HttpSession session,HttpServletResponse response){
+	public Result<JSONObject> getAllAdvice(HttpServletRequest request,HttpSession session,HttpServletResponse response){
 			String userCode = session.getAttribute("user_code").toString();// 用户编码
-			List<KbUserAdvice> adList=ads.getAdviceMsgByUser(userCode);
-			JSONObject obj=new JSONObject();
-			obj.put("adNum",adList.size());
-			obj.put("adviceMsg",adList);
-			return obj;
+			try {
+				List<KbUserAdvice> adList = ads.getAdviceMsgByUser(userCode).getData();
+				JSONObject obj=new JSONObject();
+				obj.put("adNum",adList.size());
+				obj.put("adviceMsg",adList);
+				return rtnSuccessResult("通知数据查询成功", obj);
+			} catch (Exception e) {
+				log.error("通知查询方法业务方法异常，异常原因【"+e.toString()+"】");
+				return rtnErrorResult(Result.ERROR_6000, "查询通知异常,请联系管理员");
+			}
+
 	}
 
 }
