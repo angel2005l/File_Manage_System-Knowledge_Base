@@ -18,32 +18,10 @@
 		<div class="header">
 			<div class="header-container">
 				<h1 class="logo">
-					<a class="header-team-name" data-stack="true"
-						data-stack-root="true"><font style="vertical-align: inherit;"><font
+					<a class="header-team-name"><font style="vertical-align: inherit;"><font
 							style="vertical-align: inherit;">新海科技集团</font></font></a>
 				</h1>
-				<ul class="nav">
-					<li id="nav-project"><a href=""> <font
-							style="vertical-align: inherit;"> <font
-								style="vertical-align: inherit;">项目</font>
-						</font>
-					</a></li>
-					<li class="" id="nav-me"><a href=""> <font
-							style="vertical-align: inherit;"> <font
-								style="vertical-align: inherit;">我自己</font>
-						</font>
-					</a></li>
-					<li id="nav-upgrade"></li>
-				</ul>
 				<div class="command-bar">
-<!-- 					<div class="search-wrap">
-						<a href="javascript:;" class="link-search" title="搜索"><i
-							class="twr twr-search"></i></a>
-						<form id="form-search" class="form" method="get">
-							<input id="txt-search" type="text" class="keyword no-border"
-								name="keyword" placeholder="搜索" autocomplete="off">
-						</form>
-					</div> -->
 				<div class="notification-info" id="both">
 					<!-- 如果有未读的  显示label unread  否则显示label -->
 			        <a id="notification-count" title="新的通知" onclick="intoclick()" href="javascript:;" class="label">
@@ -63,6 +41,7 @@
 			          </div>
 			        </div>
       			</div>
+      			<div class="account-info"></div>
 				</div>
 			</div>
 		</div>

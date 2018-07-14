@@ -373,6 +373,9 @@ public class FileServiceImpl extends BaseService implements IFileService {
 	 * @version 1.0
 	 */
 	private Map<String, String> DateManager(Map<String, String> obj) {
+		if(null==obj){
+			return obj;
+		}
 		String startTime = obj.get("startDate");
 		String endTime = obj.get("endDate");
 
