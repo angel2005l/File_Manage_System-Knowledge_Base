@@ -2,14 +2,10 @@ package com.xh.uitl;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -297,36 +293,6 @@ public final class IOUtil {
 			}
 		}
 		return true;
-	}
-
-	/**
-	 * 
-	 * @Title: deepClone
-	 * @Description: 深度克隆对象
-	 * @param obj
-	 * @return
-	 * @author: MR.H
-	 * @return: T
-	 *
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> T deepClone(Object obj) {
-		if (null == obj) {
-			return null;
-		}
-		// 将对象写入流中
-		ByteArrayOutputStream bo = new ByteArrayOutputStream();
-		try {
-			ObjectOutputStream oo = new ObjectOutputStream(bo);
-			oo.writeObject(obj);
-			// 将对象从流中读出来
-			ByteArrayInputStream bi = new ByteArrayInputStream(bo.toByteArray());
-			ObjectInputStream oi = new ObjectInputStream(bi);
-			return (T) oi.readObject();
-		} catch (IOException | ClassNotFoundException e) {
-			log.error("IO工具类【deepClone】方法异常,异常原因:" + e.toString());
-			return null;
-		}
 	}
 
 	/**

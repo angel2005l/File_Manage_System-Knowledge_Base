@@ -106,12 +106,12 @@ public class SystemLogAspect {
 				isAdvice = "false";
 			}
 			// *========控制台输出=========*//
-			System.out.println("=====后置returning通知开始=====");
-			System.out.println(
-					"请求方法:" + (jp.getTarget().getClass().getName() + "." + jp.getSignature().getName() + "()"));
-			System.out.println("方法描述:" + logUserName + ",操作了:" + getControllerMethodDescription(jp).get("description"));
-			System.out.println("请求人:" + logUserName);
-			System.out.println("请求IP:" + ip);
+//			System.out.println("=====后置returning通知开始=====");
+//			System.out.println(
+//					"请求方法:" + (jp.getTarget().getClass().getName() + "." + jp.getSignature().getName() + "()"));
+//			System.out.println("方法描述:" + logUserName + ",操作了:" + getControllerMethodDescription(jp).get("description"));
+//			System.out.println("请求人:" + logUserName);
+//			System.out.println("请求IP:" + ip);
 			// *========数据库通知=========*//
 			if (("true").equals(isAdvice) || parentProjectLevel != 0) {
 				List<KbUserAdvice> kbUserAdviceList = new ArrayList<KbUserAdvice>();
@@ -146,7 +146,7 @@ public class SystemLogAspect {
 			log.setCreateTime(DateUtil.curDateYMDHMS());
 			// 保存数据库
 			kolService.addLog(log);
-			System.out.println("=====后置returning通知结束=====");
+//			System.out.println("=====后置returning通知结束=====");
 		} catch (Exception e) {
 			// 记录本地异常日志
 			logger.error("==通知异常==");
