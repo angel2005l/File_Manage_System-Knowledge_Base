@@ -172,12 +172,23 @@
 							<div class="comment">
 								<div class="search-wrap">
 									<form id="search" method="post" action="file/pfd.do">
-										<input type="text" class="keyword" style="display: inline; width: 150px; margin-right: 20px;" name="form_file_name" placeholder="请输入文件关键字名" autocomplete="off"> 
-										<input type="text" class="keyword form_datetime" style="display: inline; width: 100px; margin-right: 20px;" name="form_start_date" placeholder="起始时间" autocomplete="off" readonly="readonly"> 
-										<input type="text" class="keyword form_datetime" style="display: inline; width: 100px; margin-right: 20px;" name="form_end_date" placeholder="终止时间" autocomplete="off" readonly="readonly"> 
-										<input type="hidden" name="project_code" value="${projectInfo.projectCode }">
-										<input type="hidden" name="project_level" value="${projectInfo.projectLevel}">
-										<input type="hidden" name="root_code" value="${rootCode }">
+										<input type="text" class="keyword"
+											style="display: inline; width: 150px; margin-right: 20px;"
+											name="form_file_name" placeholder="请输入文件关键字名"
+											autocomplete="off"> <input type="text"
+											class="keyword form_datetime"
+											style="display: inline; width: 100px; margin-right: 20px;"
+											name="form_start_date" placeholder="起始时间" autocomplete="off"
+											readonly="readonly"> <input type="text"
+											class="keyword form_datetime"
+											style="display: inline; width: 100px; margin-right: 20px;"
+											name="form_end_date" placeholder="终止时间" autocomplete="off"
+											readonly="readonly"> <input id="hidden_project_code"
+											type="hidden" name="project_code"
+											value="${projectInfo.projectCode }"> <input
+											id="hidden_project_level" type="hidden" name="project_level"
+											value="${projectInfo.projectLevel}"> <input
+											type="hidden" name="root_code" value="${rootCode }">
 										<button type="button" class="btn btn-primary"
 											style="float: right;" onclick="formSubmit()">
 											<font style="vertical-align: inline;">筛选</font>
@@ -191,14 +202,17 @@
 												<div class="others">
 													<div class="attachment">
 														<div class="attachment-thumb" style="width: 70px">
-															<div class="simple-checkbox noChecked batch-file-check" style="margin-bottom: 50px; display: none;" file_code="${b.file_code }" >
+															<div class="simple-checkbox noChecked batch-file-check"
+																style="margin-bottom: 50px; display: none;"
+																file_code="${b.file_code }">
 																<div class="checkbox-container"
 																	style="border: 1.8px solid;">
 																	<div class="checkbox-tick"
 																		style="border-right: 2.52px solid; border-bottom: 2.52px solid;"></div>
 																</div>
 															</div>
-															<img src="assets/img/<tag:enum className="FileTypeImgEnum">${b.file_type }</tag:enum>" />
+															<img
+																src="assets/img/<tag:enum className="FileTypeImgEnum">${b.file_type }</tag:enum>" />
 														</div>
 														<div class="attachment-info">
 															<div class="name">
@@ -225,10 +239,22 @@
 										</div>
 									</div>
 								</c:forEach>
-								<button id="batch_download" type="button" class="btn btn-reject" style="float: left;" ><font style="vertical-align: inline;">批量下载</font></button>
-								<button id="batch_enter" type="button" class="btn btn-reject" style="float: left; display: none" batch_method="" ><font style="vertical-align: inline;">确定</font></button>
-								<button id="batch_cancel" type="button" class="btn btn-reject" style="float: left;display: none"  ><font style="vertical-align: inline;">取消</font></button>
-								<button id="batch_share" type="button" class="btn btn-reject" style="float: left;"><font style="vertical-align: inline;">批量分享</font></button>
+								<button id="batch_download" type="button" class="btn btn-reject"
+									style="float: left;">
+									<font style="vertical-align: inline;">批量下载</font>
+								</button>
+								<button id="batch_enter" type="button" class="btn btn-reject"
+									style="float: left; display: none" batch_method="">
+									<font style="vertical-align: inline;">确定</font>
+								</button>
+								<button id="batch_cancel" type="button" class="btn btn-reject"
+									style="float: left; display: none">
+									<font style="vertical-align: inline;">取消</font>
+								</button>
+								<button id="batch_share" type="button" class="btn btn-reject"
+									style="float: left;">
+									<font style="vertical-align: inline;">批量分享</font>
+								</button>
 							</div>
 						</div>
 					</div>
@@ -275,7 +301,7 @@
 	<script type="text/javascript"
 		src="assets/js/bootstrap-datetimepicker.zh-CN.js"></script>
 	<script type="text/javascript">
-		$("#batch_download,#batch_share").on("click",function(){
+		$("#batch_download").on("click",function(){
 			var bfcObj = $(".batch-file-check");
 			var displayValue = bfcObj.css("display");
 			if("none" ==displayValue){
@@ -307,17 +333,32 @@
 				alert("文件未选择");
 			}else {
 				fileCodes = fileCodes.substr(0,fileCodes.length-1);
-				console.log(fileCodes);
 			}
 			switch (batchMethod) {
 			case "1":
-				
+				//批量下载
+				downloadFiles(fileCodes,$('#hidden_project_level').val())
 				break;
 			case "2":
-				
+				//批量分享
+				$.ajax({
+					url:"file/insShareFiles.do",
+					type:'post',
+					data:{'project_code':$('#hidden_project_code').val(),'project_level':$('#hidden_project_level').val(),'file_codes':fileCodes},
+					dataType:'json',
+					success:function(result){
+						if(result.code==0){
+							shareFiles(result.data)
+						}else{
+							alert(result.msg);
+						}
+					},
+					error:function(){
+						alert("服务器未响应");
+					}
+				});
 				break;
 			}
-			
 		})
 		
 		$(".batch-file-check").on("click",function(){
@@ -388,8 +429,7 @@
 		}
 
 		function downloadFile(code, level) {
-			$
-					.ajax({
+			$.ajax({
 						url : "file/downloadCheck.do",
 						type : "post",
 						data : {
@@ -399,6 +439,7 @@
 						dataType : 'json',
 						success : function(data) {
 							if (data.code === 0) {
+								alert(data.data);
 								window.location.href = "file/downloadFile.do?file_name="
 										+ data.data;
 							} else {
@@ -406,10 +447,54 @@
 							}
 						},
 						error : function() {
-							alert("error");
+							alert("服务器未响应")
 						}
 					})
 		}
+		
+		function downloadFileCheck(code, level){
+			var resultArray =new Array(2);
+			resultArray[0] = -1;
+			resultArray[1] = "";
+			$.ajax({
+				url : "file/downloadCheck.do",
+				type : "post",
+				async: false,
+				data : {
+					"file_code" : code,
+					"file_level" : level
+				},
+				dataType : 'json',
+				success :function(result){
+					resultArray[0] = result.code;
+					resultArray[1] = result.data;
+					},
+				error:function(){
+					alert("服务器未响应");
+					
+				}
+				})
+				return resultArray;
+		}
+		
+		function downloadFiles(fileCodes,level) {
+			var fileCodesArray =  fileCodes.split(",");
+			$.each(fileCodesArray,function(index,vaule){
+				 var result = downloadFileCheck(vaule,level);
+				if(result[0]==0){
+					//window.location.href = "file/downloadFile.do?file_name="+ result[1];
+					console.log("1");
+					//window.open("file/downloadFile.do?file_name="+ result[1],"_parent");
+					
+					
+					var newWin = window.open("file/downloadFile.do?file_name="+ result[1],"target");
+					//window.open = "file/downloadFile.do?file_name="+ result[1];
+					//window.open("file/downloadFile.do?file_name="+ result[1]);
+				} 
+			})			
+		}
+		
+		
 		function shareProject(projectCode, projectLevel, userCode) {
 			var str = "${pageContext.request.scheme }://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/pro/sp.do?project_code="
 					+ projectCode
@@ -445,6 +530,21 @@
 				content : $("#share")
 			})
 		}
+		
+		function shareFiles(shareCode) {
+			var str = "${pageContext.request.scheme }://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/file/shareFiles.do?share_code="+ shareCode;
+			$("#shareUrl").html(str)
+			layer.open({
+				type : 1,
+				skin : 'demo-class', //样式类名
+				area : [ '450px', '150px' ],
+				closeBtn : 1,
+				anim : 0,
+				shadeClose : true, //开启遮罩关闭
+				content : $("#share")
+			})
+		}
+		
 
 		function change() {
 			if (document.getElementById("thediv").style.display == 'none') {
@@ -456,10 +556,8 @@
 		function allread() {
 			var list = [];
 			for (var i = 0; i < document.getElementsByClassName("adviceCode").length; i++) {
-				list
-						.push(document.getElementsByClassName("adviceCode")[i].innerHTML)
+				list.push(document.getElementsByClassName("adviceCode")[i].innerHTML);
 			}
-			;
 			$.ajax({
 				url : 'pro/isRead.do',
 				type : 'post',
