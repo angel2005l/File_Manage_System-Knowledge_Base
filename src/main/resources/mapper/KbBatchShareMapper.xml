@@ -21,7 +21,7 @@
   </sql>
   <!-- 新增分享信息  -->
   <insert id="insertBatchShare" parameterType="com.xh.entity.KbBatchShare">
-  	insert into kb_batch_share(share_code, project_code, project_level, file_codes, share_date, create_time, create_user_code)  values(#{shareCode},#{projectCode},#{projectLevel},#{fileCodes},#{shareTime},#{createTime},#{createUserCode})
+  	insert into kb_batch_share(share_code, project_code, project_level, file_codes, share_date, create_time, create_user_code)  values(#{shareCode},#{projectCode},#{projectLevel},#{fileCodes},#{shareDate},#{createTime},#{createUserCode})
   </insert>
   
   <resultMap id="BaseResultMapWithShareData" type="map">

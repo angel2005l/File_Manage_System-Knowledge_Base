@@ -196,17 +196,17 @@ public class ProjectController extends BaseController {
 			if (!shareMap.isEmpty()) {
 				request.setAttribute("shareProject", shareMap.get("shareProject"));
 				request.setAttribute("shareFiles", shareMap.get("shareFiles"));
-			} else {
-				return "view/not_share";
-			}
+				return "view/share_project";
+			} 
+			request.setAttribute("error", rtnErrorResult(Result.ERROR_6000, "糟糕，分享项目不存在"));
 		} catch (NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
-			return "view/not_share";
+			request.setAttribute("error", rtnErrorResult(Result.ERROR_4300, "分享链接不合法"));
 		} catch (Exception e) {
 			log.error("文件查询异常,异常原因:【" + e.toString() + "】");
-			return "view/not_share";
+			request.setAttribute("error", rtnErrorResult(Result.ERROR_6000, "系统异常,请联系系统管理员"));
 		}
-		return "view/share_project";
+		return "view/error";
 	}
 
 	/**
@@ -221,7 +221,6 @@ public class ProjectController extends BaseController {
 	 * @date 2018年6月27日
 	 * @version 1.0
 	 */
-	// @SystemControllerLog(description = "跳转至添加项目界面",logType= "goto")
 	@RequestMapping("/insProJsp.do")
 	public String toInsertProject(HttpServletRequest request, HttpSession session) {
 		try {
@@ -234,13 +233,15 @@ public class ProjectController extends BaseController {
 			request.setAttribute("userList", userResult.getData());
 			request.setAttribute("projectParentCode", projectParentCode);
 			request.setAttribute("projectLevel", projectParentLevel);
+			return "view/insert_project";
 		} catch (NumberFormatException | NullPointerException e) {
 			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
 			return "view/login";
 		} catch (Exception e) {
 			log.error("跳转项目添加页面异常,异常原因:【" + e.toString() + "】");
+			request.setAttribute("error", rtnErrorResult(Result.ERROR_6000, "系统异常,请联系系统管理员"));
+			return "view/error";
 		}
-		return "view/insert_project";
 	}
 
 	/**
@@ -268,6 +269,8 @@ public class ProjectController extends BaseController {
 			return "view/login";
 		} catch (Exception e) {
 			log.error("主页面（当前用户参与的所有项目）查询异常,异常原因:【" + e.toString() + "】");
+			request.setAttribute("error", rtnErrorResult(Result.ERROR_6000, "系统异常,请联系系统管理员"));
+			return "view/error";
 		}
 		return "view/index";
 	}
@@ -331,6 +334,7 @@ public class ProjectController extends BaseController {
 		}
 		return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
 	}
+	
 	@RequestMapping("/isRead.do")
 	@ResponseBody
 	public Result<Object> isReadAdviceMsg(HttpServletRequest request, HttpSession session) throws JsonParseException, JsonMappingException, IOException{

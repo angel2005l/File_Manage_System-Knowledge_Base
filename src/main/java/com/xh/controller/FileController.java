@@ -290,17 +290,17 @@ public class FileController extends BaseController {
 				request.setAttribute("per", ResultMap.get("per"));
 				request.setAttribute("projectInfo", ResultMap.get("projectInfo"));
 				request.setAttribute("rootCode", rootCode);
-			} else {
-				return "view/error";
+				return "view/project_detail";
 			}
+				request.setAttribute("error", result);
 		} catch (NullPointerException | NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
 			return "view/login";
 		} catch (Exception e) {
 			log.error("文件查询异常,异常原因:【" + e.toString() + "】");
-			return "view/error";
+			request.setAttribute("error", rtnErrorResult(Result.ERROR_6000, "系统异常,请联系系统管理员"));
 		}
-		return "view/project_detail";
+		return "view/error";
 	}
 
 	/**
@@ -323,7 +323,7 @@ public class FileController extends BaseController {
 			String userCode = session.getAttribute("user_code").toString();// 用户编码
 			String rootCode = StrUtil.isBlank(request.getParameter("root_code")) ? ""
 					: request.getParameter("root_code");// 根路径
-			projectCode = fs.selectSuperiorProjectCodeByProjectCode(Integer.parseInt(projectLevel), projectCode);
+			projectCode = fs.selectSuperiorProjectCodeByProjectCode(Integer.parseInt(projectLevel), projectCode);//赋值 父类项目编码
 			if (StrUtil.notBlank(projectCode)) {
 				Result<Map<String, Object>> result = fs.getProjectDetailData(projectCode,
 						Integer.parseInt(projectLevel) - 1, userCode, null);
@@ -337,13 +337,16 @@ public class FileController extends BaseController {
 					request.setAttribute("rootCode", rootCode);
 					return "view/project_detail";
 				}
+				request.setAttribute("error", result);
+			}else {
+				request.setAttribute("error", rtnErrorResult(Result.ERROR_6000, "项目不存在,请联系系统管理员"));
 			}
 		} catch (NullPointerException | NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
 			return "view/login";
 		} catch (Exception e) {
 			log.error("文件查询异常,异常原因:【" + e.toString() + "】");
-			return "view/error";
+			request.setAttribute("error", rtnErrorResult(Result.ERROR_6000, "系统异常,请联系系统管理员"));
 		}
 		return "view/error";
 	}
@@ -369,17 +372,19 @@ public class FileController extends BaseController {
 			if (!shareMap.isEmpty()) {
 				request.setAttribute("shareProject", shareMap.get("shareProject"));
 				request.setAttribute("shareFile", shareMap.get("shareFile"));
+				return "view/share_file";
 			} else {
-				return "view/not_share";
+				request.setAttribute("error", rtnErrorResult(Result.SUCCESS_0, "糟糕，分享文件不存在"));
 			}
 		} catch (NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
-			return "view/not_share";
+			request.setAttribute("error", rtnErrorResult(Result.ERROR_4300, "分享链接不合法"));
+			return "view/error";
 		} catch (Exception e) {
 			log.error("文件查询异常,异常原因:【" + e.toString() + "】");
-			return "view/not_share";
+			request.setAttribute("error", rtnErrorResult(Result.ERROR_6000, "系统异常,请联系系统管理员"));
 		}
-		return "view/share_file";
+		return "view/error";
 	}
 
 	/**
@@ -449,7 +454,6 @@ public class FileController extends BaseController {
 	public String selectShareFilesData(HttpServletRequest request) {
 		String shareCode = request.getParameter("share_code");
 		try {
-			shareCode = "SHA2018071215521211";
 			Result<Map<String, Object>> resultData = fs.selectShareFilesData(shareCode);
 			if(Result.SUCCESS_0 == resultData.getCode()) {
 				Map<String, Object> dataMap = resultData.getData();
@@ -457,12 +461,12 @@ public class FileController extends BaseController {
 				request.setAttribute("shareFiles", dataMap.get("files"));
 				return "view/share_files";
 			}else {
-				request.setAttribute("result", resultData);
+				request.setAttribute("error", resultData);
 				return "view/error";
 			}
 		} catch (Exception e) {
 			log.error("文件批量分享异常,异常原因:【"+e.toString()+"】");
-			request.setAttribute("result", rtnErrorResult(Result.ERROR_6000, "系统异常,请联系系统管理员"));
+			request.setAttribute("error", rtnErrorResult(Result.ERROR_6000, "系统异常,请联系系统管理员"));
 			return "view/error";
 		}
 	}

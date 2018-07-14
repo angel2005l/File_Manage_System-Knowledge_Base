@@ -217,7 +217,7 @@ public class FileServiceImpl extends BaseService implements IFileService {
 			break;
 		case ".ppt":
 		case ".pptx":
-			// 暂未开放，敬请期待
+			pdfFileName = AsposeUtil.ppt2PDFStr(fileRootPath);
 			break;
 		default:
 			log.error("未知文件转换PDF错误,错误文件类型【" + suffix + "】");
@@ -235,7 +235,6 @@ public class FileServiceImpl extends BaseService implements IFileService {
 	@Transactional(rollbackFor = { Exception.class })
 	@Override
 	public Result<Object> insSuperiorUserFileWithOnlyRead(KbFile kf, String userDeptCode) throws Exception {
-
 		List<KbUser> superiorUsers = kum.selectSuperiorUserByUserDeptCode(userDeptCode);
 		if (null == superiorUsers || superiorUsers.isEmpty()) {
 			return rtnSuccessResult();

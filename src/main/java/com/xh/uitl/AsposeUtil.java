@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.context.ContextLoader;
 
 import com.aspose.cells.Workbook;
+import com.aspose.slides.Presentation;
 import com.aspose.words.Document;
 import com.aspose.words.License;
 import com.aspose.words.SaveFormat;
@@ -267,7 +268,7 @@ public class AsposeUtil {
 		FileInputStream is = null;
 		FileInputStream pdfFileIs = null;
 		// 加载许可证
-		if (getLicenseWithWord()) {
+		if (getLicenseWithExcel()) {
 			// 获得文件对象
 			try {
 				File file = new File(realPath + filePath);
@@ -305,7 +306,7 @@ public class AsposeUtil {
 	public static String excel2PDFStr(InputStream is) {
 		String pdfPath = "";
 		// 加载许可证
-		if (getLicenseWithWord()) {
+		if (getLicenseWithExcel()) {
 			// 获得文件对象
 			try {
 				Workbook wk = new Workbook(is);
@@ -339,7 +340,7 @@ public class AsposeUtil {
 	public static InputStream excel2PDFStream(InputStream is) {
 		FileInputStream pdfFileIs = null;
 		// 加载许可证
-		if (getLicenseWithWord()) {
+		if (getLicenseWithExcel()) {
 			// 获得文件对象
 			try {
 				Workbook wk = new Workbook(is);
@@ -355,6 +356,175 @@ public class AsposeUtil {
 						is.close();
 					} catch (IOException e) {
 						log.error("Aspose工具类【excel2PDFStream(InputStream)】方法关闭输入流异常,异常原因:【" + e.toString() + "】");
+					}
+				}
+			}
+		}
+		return pdfFileIs;
+	}
+	
+	//*****************************************************
+	/**
+	 * 
+	 * @Title: getLicenseWithPpt  
+	 * @Description: 获得许可证Ppt
+	 * @author 黄官易
+	 * @return    
+	 * @return boolean 
+	 * @date 2018年7月14日  
+	 * @version 1.0
+	 */
+	public static boolean getLicenseWithPpt() {
+		boolean result = false;
+		try {
+			InputStream is = Resources.getResourceAsStream("license/license_ppt.xml");
+			com.aspose.slides.License license = new com.aspose.slides.License();
+			license.setLicense(is);
+			result = true;
+		} catch (Exception e) {
+			log.error("加载ppt许可失败,失败原因：【" + e.toString() + "】");
+		}
+		return result;
+	}
+
+	/**
+	 * 
+	 * @Title: excel2PDFStr
+	 * @Description: 根据文件路径 转化ppt文件返回路径
+	 * @param filePath
+	 * @return
+	 * @author: MR.H
+	 * @date 2018年6月22日
+	 * @return: String
+	 *
+	 */
+	public static String ppt2PDFStr(String filePath) {
+		String pdfPath = "";
+		FileInputStream is = null;
+		try {
+			if (getLicenseWithPpt()) {
+				File file = new File(realPath + filePath);
+				is = new FileInputStream(file);
+				Presentation pst = new Presentation(is);
+				pdfPath = realPath + "pdf" + File.separator + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				pst.save(pdfPath, com.aspose.slides.SaveFormat.Pdf);
+			}
+		} catch (Exception e) {
+			log.error("Aspose工具类【ppt2PDFStr(String)】方法异常,异常原因:【" + e.toString() + "】");
+		} finally {
+			if (null != is) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					log.error("Aspose工具类【ppt2PDFStr(String)】方法关闭输入流异常,异常原因:【" + e.toString() + "】");
+				}
+			}
+		}
+		return pdfPath;
+	}
+
+	/**
+	 * 
+	 * @Title: ppt2PDFtream
+	 * @Description: 根据文件路径 转化ppt文件返回输入流对象
+	 * @param filePath
+	 * @return
+	 * @author: MR.H
+	 * @return: InputStream
+	 *
+	 */
+	public static InputStream ppt2PDFtream(String filePath) {
+		FileInputStream is = null;
+		FileInputStream pdfFileIs = null;
+		// 加载许可证
+		if (getLicenseWithPpt()) {
+			// 获得文件对象
+			try {
+				File file = new File(realPath + filePath);
+				is = new FileInputStream(file);
+				Presentation pst = new Presentation(is);
+				String pdfPath = realPath + "pdf" + File.separator + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				pst.save(pdfPath, com.aspose.slides.SaveFormat.Pdf);
+				File filePdf = new File(pdfPath);
+				pdfFileIs = new FileInputStream(filePdf);
+			} catch (Exception e) {
+				log.error("Aspose工具类【ppt2PDFtream(String)】方法异常,异常原因:【" + e.toString() + "】");
+			} finally {
+				if (null != is) {
+					try {
+						is.close();
+					} catch (IOException e) {
+						log.error("Aspose工具类【ppt2PDFtream(String)】方法关闭输入流异常,异常原因:【" + e.toString() + "】");
+					}
+				}
+			}
+		}
+		return pdfFileIs;
+	}
+
+	/**
+	 * 
+	 * @Title: ppt2PDFStr
+	 * @Description: 根据输入流 转化ppt文件返回路径
+	 * @param is
+	 * @return
+	 * @author: MR.H
+	 * @return: String
+	 *
+	 */
+	public static String ppt2PDFStr(InputStream is) {
+		String pdfPath = "";
+		// 加载许可证
+		if (getLicenseWithPpt()) {
+			// 获得文件对象
+			try {
+				Presentation pst = new Presentation(is);
+				pdfPath = realPath + "pdf" + File.separator + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				pst.save(pdfPath, com.aspose.slides.SaveFormat.Pdf);
+			} catch (Exception e) {
+				log.error("Aspose工具类【ppt2PDFStr(InputStream)】方法异常,异常原因:【" + e.toString() + "】");
+			} finally {
+				if (null != is) {
+					try {
+						is.close();
+					} catch (IOException e) {
+						log.error("Aspose工具类【ppt2PDFStr(InputStream)】方法关闭输入流异常,异常原因:【" + e.toString() + "】");
+					}
+				}
+			}
+		}
+		return pdfPath;
+	}
+
+	/**
+	 * 
+	 * @Title: ppt2PDFStream
+	 * @Description: 根据输入流 转化ppt文件返回输入流对象
+	 * @param is
+	 * @return
+	 * @author: MR.H
+	 * @return: InputStream
+	 *
+	 */
+	public static InputStream ppt2PDFStream(InputStream is) {
+		FileInputStream pdfFileIs = null;
+		// 加载许可证
+		if (getLicenseWithPpt()) {
+			// 获得文件对象
+			try {
+				Presentation pst = new Presentation(is);
+				String pdfPath = realPath + "pdf" + File.separator + DateUtil.curDateYMDHMSSForService() + ".pdf";
+				pst.save(pdfPath, com.aspose.slides.SaveFormat.Pdf);
+				File filePdf = new File(pdfPath);
+				pdfFileIs = new FileInputStream(filePdf);
+			} catch (Exception e) {
+				log.error("Aspose工具类【ppt2PDFStream(InputStream)】方法异常,异常原因:【" + e.toString() + "】");
+			} finally {
+				if (null != is) {
+					try {
+						is.close();
+					} catch (IOException e) {
+						log.error("Aspose工具类【ppt2PDFStream(InputStream)】方法关闭输入流异常,异常原因:【" + e.toString() + "】");
 					}
 				}
 			}

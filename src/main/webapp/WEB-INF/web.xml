@@ -58,4 +58,8 @@
 	<welcome-file-list>
 		<welcome-file>view/login.jsp</welcome-file>
 	</welcome-file-list>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/view/error/404.jsp</location>
+	</error-page>
 </web-app>
