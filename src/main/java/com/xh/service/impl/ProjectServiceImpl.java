@@ -106,7 +106,6 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 		// 可以再添加一层校验，校验查询传入的等级是否超过最高等级
 		try {
 			int projectLevel = level + 1;
-			// System.err.println("level："+projectLevel);
 			String ptName = projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);
 			if (ptName == null) {
 				return rtnErrorResult(Result.ERROR_4000, "该表不存在或该层级已为最低层级");
@@ -150,12 +149,8 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	 * @version 1.0
 	 */
 	public Result<List<KbProject>> selectAllPro(String formName, String projectCode) {
-		System.err.println("projectParentCode:" + projectCode);
-		System.err.println("formName:" + formName);
-		List<KbProject> kbp;
 		try {
-			kbp = projectMapper.selectSonProjectByParentCode(formName, projectCode);
-			System.err.println("service:" + kbp);
+			List<KbProject>	kbp = projectMapper.selectSonProjectByParentCode(formName, projectCode);
 			if (kbp.isEmpty()) {
 				return rtnErrorResult(Result.ERROR_4000, "数据表中没有数据");
 			}
@@ -176,13 +171,8 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	 * @version 1.0
 	 */
 	public Result<List<KbProject>> selectAllProByUser(String formName, String projectCode, String userCode) {
-		// System.err.println("projectParentCode:" + projectCode);
-		// System.err.println("formName:" + formName);
-		// System.err.println("userCode:" + userCode);
-		List<KbProject> kbp;
 		try {
-			kbp = projectMapper.selectSonProjectByParentCodeAndUserCode(formName, projectCode, userCode);
-			// System.err.println("service:" + kbp);
+			List<KbProject>	kbp = projectMapper.selectSonProjectByParentCodeAndUserCode(formName, projectCode, userCode);
 			if (kbp.isEmpty()) {
 				return rtnErrorResult(Result.ERROR_4000, "数据表中没有数据");
 			}

@@ -24,7 +24,6 @@ public class UserServiceImpl extends BaseService implements IUserService {
 	private KbUserMapper kum; // 员工数据库操作对象
 
 	@Override
-
 	public Result<KbUser> login(String userCode, String userPassword) throws Exception {
 		try {
 			KbUser userInfo = kum.selectUserByUserCode(userCode);// 根据员工编码查询员工信息
