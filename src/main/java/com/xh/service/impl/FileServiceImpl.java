@@ -169,10 +169,10 @@ public class FileServiceImpl extends BaseService implements IFileService {
 			case ".docx":
 			case ".ppt":
 			case ".pptx":
-			case ".jpe":
-			case ".jpeg":
-			case ".jpg":
-			case ".png":
+//			case ".jpe":
+//			case ".jpeg":
+//			case ".jpg":
+//			case ".png":
 				IOUtil.uploadFile(mf, FILEPATH, newFileName + suffix);
 				result.put("fileCode", newFileName);
 				result.put("fileName", oldFileName);
