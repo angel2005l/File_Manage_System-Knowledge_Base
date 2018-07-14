@@ -25,8 +25,9 @@ public interface IUserAdviceService {
 	 * @return KbUserAdvice 
 	 * @date 2018年7月9日  
 	 * @version 1.0
+	 * @throws Exception 
 	 */
-	public List<KbUserAdvice> getAdviceMsgByUser(String userCode);
+	public Result<List<KbUserAdvice>> getAdviceMsgByUser(String userCode) throws Exception;
 	
 	/**
 	 * 
@@ -37,5 +38,5 @@ public interface IUserAdviceService {
 	 * @date 2018年7月9日  
 	 * @version 1.0
 	 */
-	public Result<Object> updateAdviceStatusByAdviceCode(List<String> adviceCode);
+	public Result<Object> updateAdviceStatusByAdviceCode(List<String> adviceCode) throws Exception;
 }

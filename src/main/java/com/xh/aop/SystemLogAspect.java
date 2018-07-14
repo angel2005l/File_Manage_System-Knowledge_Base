@@ -117,7 +117,7 @@ public class SystemLogAspect {
 				List<KbUserAdvice> kbUserAdviceList = new ArrayList<KbUserAdvice>();
 				// 若该level==0，则无上级，不需要通知任何人了，否则通知上级项目的所有组员
 				if (null != parentProjectCode && !parentProjectCode.isEmpty()) {
-					List<String> userCodeList = kolService.parentUserCodeByCode(parentProjectCode);
+					List<String> userCodeList = kolService.parentUserCodeByCode(parentProjectCode).getData();
 					for (String userCode : userCodeList) {
 						KbUserAdvice kbUserAdvice = new KbUserAdvice();
 						kbUserAdvice.setAdviceCode("ADV" + DateUtil.curDateYMDHMSForService()
@@ -174,14 +174,14 @@ public class SystemLogAspect {
 		String targetName = joinPoint.getTarget().getClass().getName();
 		String methodName = joinPoint.getSignature().getName();
 		Object[] arguments = joinPoint.getArgs();
-		Class targetClass = Class.forName(targetName);
+		Class<?> targetClass = Class.forName(targetName);
 		Method[] methods = targetClass.getMethods();
 		String description = "";
 		String logType = "";
 		String isAdvice = "";
 		for (Method method : methods) {
 			if (method.getName().equals(methodName)) {
-				Class[] clazzs = method.getParameterTypes();
+				Class<?>[] clazzs = method.getParameterTypes();
 				if (clazzs.length == arguments.length) {
 					description = method.getAnnotation(SystemControllerLog.class).description();
 					logType = method.getAnnotation(SystemControllerLog.class).logType();

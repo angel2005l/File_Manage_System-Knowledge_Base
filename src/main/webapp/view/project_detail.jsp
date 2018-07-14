@@ -20,13 +20,14 @@
 </style>
 </head>
 
-<body class="" style="cursor: auto;">
+<body onload="toload()">
 	<div class="wrapper">
 		<div class="header">
 			<div class="header-container">
 				<h1 class="logo">
 					<a class="header-team-name js-show-focus-driver"
-						href="javascript:;">新海科技集团</a>
+						href="javascript:;"><font style="vertical-align: inherit;"><font
+							style="vertical-align: inherit;">新海科技集团</font></font></a>
 				</h1>
 				<ul class="nav">
 					<li class="" id="nav-project"><a href="" data-stack=""
@@ -36,45 +37,26 @@
 					<li id="nav-upgrade"></li>
 				</ul>
 				<div class="command-bar">
-					<div class="notification-info">
-						<!-- 如果有未读的  显示label unread  否则显示label -->
-						<span id="notification-count" class="label" title="新的通知"
-							onclick="change()"> <span class="twr twr-bell-o bell"></span>
-							<span class="num">${adNum }</span>
-						</span>
-						<c:choose>
-							<c:when test="${adNum!=0 }">
-								<div class="noti-pop" id="thediv" style="display: none;">
-									<div class="noti-pop-hd">
-										<b class="title">通知</b> <a class="simple-loading"
-											id="noti-mark-read" data-loading="true" data-remote="true"
-											data-method="post" style="padding-left: 250px"
-											onclick="allread()"> <span class="twr twr twr-check"></span>全部标记为已读
-										</a>
-									</div>
-									<div class="noti-pop-list-wrap">
-										<div class="noti-pop-list notification-list"
-											style="display: block;">
-											<c:forEach var="adv" items="${adviceMsg }">
-												<span>${adv.logMsg }</span>
-												<span class="adviceCode" style="display: none">${adv.adviceCode }</span>
-												<br>
-											</c:forEach>
-										</div>
-									</div>
-								</div>
-							</c:when>
-							<c:otherwise>
-								<div class="noti-pop" id="thediv" style="display: none;">
-									<div class="noti-pop-hd">
-										<b class="title">通知</b>
-									</div>
-									<div class="noti-pop-empty">- 没有新通知 -</div>
-								</div>
-							</c:otherwise>
-						</c:choose>
-					</div>
-					<div class="account-info"></div>
+				<div class="notification-info" id="both">
+					<!-- 如果有未读的  显示label unread  否则显示label -->
+			        <a id="notification-count" title="新的通知" onclick="intoclick()" href="javascript:;" class="label">
+			          <span class="twr twr-bell-o bell"></span>
+			          <span class="num" id="num"></span>
+			        </a>
+			        <div class="noti-pop" id="thediv" style="display:none;" onblur="losePoint()"><!-- tabindex="0" -->
+			          <div class="noti-pop-hd">
+			            <b class="title">通知</b>
+			            <a class="mark-as-read" id="noti-mark-read" href="javascript:;" onclick="allread()">
+			              <span class="twr twr twr-check"></span>全部标记为已读</a>          
+			          </div>
+			          <div class="noti-pop-list-wrap">
+				            <div class="noti-pop-list notification-list" style="display: block;">
+				            	<div class="notice unread"><a class="link" id="msg"></a></div>
+				            </div>
+			          </div>
+			        </div>
+      			</div>
+      			<div class="account-info"></div>
 				</div>
 			</div>
 		</div>
@@ -545,29 +527,61 @@
 			})
 		}
 		
-
-		function change() {
-			if (document.getElementById("thediv").style.display == 'none') {
-				document.getElementById("thediv").style.display = 'block';
-			} else {
-				document.getElementById("thediv").style.display = 'none';
-			}
+		function intoclick(){
+			$("#thediv").toggle();
 		}
-		function allread() {
-			var list = [];
-			for (var i = 0; i < document.getElementsByClassName("adviceCode").length; i++) {
-				list.push(document.getElementsByClassName("adviceCode")[i].innerHTML);
-			}
+		function losePoint(){
+			$("#thediv").hide();
+		}
+		function allread(){
+			var list=[];
+			for(var i=0;i<$(".adviceCode").length;i++){
+				list.push($(".adviceCode")[i].innerHTML)
+			};
 			$.ajax({
-				url : 'pro/isRead.do',
-				type : 'post',
-				data : "list=" + JSON.stringify(list),
-				dateType : 'json',
-				success : function() {
-					location.reload(true);
+				url:'pro/isRead.do',
+				type:'post',
+				data:"list="+JSON.stringify(list),
+				dateType:'json',
+				success:function(){
+					toload();
 				}
 			})
 		}
+		function toload(){
+			$.ajax({
+				url:'index/getAllMsg.do',
+				type:'post',
+				data:"",//发送服务器的数据
+    			dataType:"json",//返会值的类型
+				success:function(data){
+			        var str="";
+					if(data.data.adNum!=0){
+						$('#num').html(data.data.adNum);
+						$("#notification-count").attr("class", "label unread");
+						for(var i=0;i<data.data.adviceMsg.length;i++){
+							str+="<span class='title'><span class='target'>"+data.data.adviceMsg[i].logMsg+"</span><span class='adviceCode' style='display: none'>"+data.data.adviceMsg[i].adviceCode+"</span></span><hr style='margin:0px 0px 3px 0px'>";
+						};
+						$("#msg").html(str);
+					}else{
+						$("#notification-count").attr("class", "label");
+						$("#msg").html("<span style='width:100%;text-align:center;display:block;'>- 没有新通知 -</span>");
+					}
+				}
+			})	
+		}
+		$(document).bind('click', function(e) {
+				var e = e || window.event; //浏览器兼容性 
+				var elem = e.target || e.srcElement;
+				while (elem) { //循环判断至跟节点，防止点击的是div子元素 
+					if (elem.id && elem.id == 'both') {
+						return;
+					}
+					elem = elem.parentNode;
+				}
+				$('#thediv').css('display', 'none'); //点击的不是div或其子元素 
+			});
+
 	</script>
 	<div id="share" style="display: none;">
 		<span style="font-weight: bold; padding-right: 20px;">分享链接:</span>

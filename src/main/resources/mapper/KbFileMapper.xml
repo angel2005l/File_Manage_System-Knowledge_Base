@@ -29,14 +29,16 @@
   
   <select id="selectFileByParams" resultType="map">
   	  	SELECT a.id ,a.file_code,a.file_name,a.file_info,a.file_type,a.create_time,a.file_level,b.file_permission FROM ${fileTableName} a INNER JOIN kb_file_user b ON a.file_code = b.file_code AND b.user_code = #{userCode} AND a.project_code = #{projectCode} 
-  	  	<where>
-  	  		<if test="fileSelMap.fileName!=null and fileSelMap.fileName!=''">
-  	  			and locate (#{fileSelMap.fileName}, a.file_name)>0
-  	  		</if>
-  	  		<if test="fileSelMap.startDate!=null and fileSelMap.startDate!=''">
-  	  			and TIMESTAMPDIFF(HOUR,#{fileSelMap.startDate},a.create_time) &gt;= 0 and  TIMESTAMPDIFF(HOUR,#{fileSelMap.endDate},a.create_time) &lt; 24
-  	  		</if>
-  	  	</where>
+  	  	<if test="fileSelMap!=null">
+	  	  	<where>
+	  	  		<if test="fileSelMap.fileName!=null and fileSelMap.fileName!=''">
+	  	  			and locate (#{fileSelMap.fileName}, a.file_name)>0
+	  	  		</if>
+	  	  		<if test="fileSelMap.startDate!=null and fileSelMap.startDate!=''">
+	  	  			and TIMESTAMPDIFF(HOUR,#{fileSelMap.startDate},a.create_time) &gt;= 0 and  TIMESTAMPDIFF(HOUR,#{fileSelMap.endDate},a.create_time) &lt; 24
+	  	  		</if>
+	  	  	</where>
+  	  	</if>
   </select>
   
   

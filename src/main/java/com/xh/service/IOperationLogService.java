@@ -37,8 +37,9 @@ public interface IOperationLogService {
 	 * @return List<String> 
 	 * @date 2018年7月9日  
 	 * @version 1.0
+	 * @throws Exception 
 	 */
-	public List<String> parentUserCodeByCode(String parentProjectCode);
+	public Result<List<String>> parentUserCodeByCode(String parentProjectCode) throws Exception;
 	
-	public Result<Object> addUserAdvice(List<KbUserAdvice> kbUserAdvice);
+	public Result<Object> addUserAdvice(List<KbUserAdvice> kbUserAdvice) throws Exception;
 }
