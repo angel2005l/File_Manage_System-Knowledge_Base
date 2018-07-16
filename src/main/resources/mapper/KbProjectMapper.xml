@@ -97,9 +97,15 @@
 		select project_parent_code from ${projectTableName} where project_code = #{projectCode}
 	</select>
 	<!-- 根据userCode，projectCode查询项目详细 -->
+	<resultMap type="map" id="projectInfoResultMap">
+		<association property="projectInfo" javaType="map" column="{projectTableName = pt_name,userCode = user_code,projectCode = project_code}" select="selectProjectWithProjectPerssionByProjectCode"></association>
+	</resultMap>
+	<select id="selectProjectInfo" resultMap="projectInfoResultMap">
+		SELECT pt_name,'${userCode}' as user_Code , '${projectCode}' as project_code FROM kb_project_table WHERE project_level=${projectLevel}
+	</select>
 	<resultMap type="map" id="projectInfoAndSonProjectInfosResultMap">
-	<association property="projectInfo" javaType="map" column="{projectTableName = a.pt_name,userCode = user_code,projectCode = project_code}" select="selectProjectWithProjectPerssionByProjectCode"></association>
-	<collection property="sonProjectInfos" column="{formName = b.pt_name,userCode = user_code,projectCode = project_code}" select="selectSonProject" ></collection>
+		<association property="projectInfo" javaType="map" column="{projectTableName = a.pt_name,userCode = user_code,projectCode = project_code}" select="selectProjectWithProjectPerssionByProjectCode"></association>
+		<collection property="sonProjectInfos" column="{formName = b.pt_name,userCode = user_code,projectCode = project_code}" select="selectSonProject" ></collection>
 	</resultMap>
 	<select id="selectProjectAndSonProjectInfos" resultMap="projectInfoAndSonProjectInfosResultMap">
 		 SELECT a.pt_name,b.pt_name,'${userCode}' as user_Code , '${projectCode}' as project_code FROM kb_project_table a LEFT JOIN kb_project_table b ON a.`project_level` +1 = b.`project_level` WHERE a.`project_level`=${projectLevel}
@@ -121,14 +127,13 @@
   	</resultMap>
   	
 		<!-- 查询当前项目下的所有子项目 用户 新版本 -->
- 	<select id="selectSonProject" resultMap="ProjectInfosResultMap">
-  		<if test="formName!=null and formName!=''">
-  			SELECT a.id AS id, a.project_code AS project_code, a.project_name AS project_name,a.project_type AS project_type, a.project_parent_code AS project_parent_code, 
+ 	<select id="selectSonProject" resultMap="ProjectInfosResultMap" >
+  			SELECT  a.id AS id, a.project_code AS project_code, a.project_name AS project_name,a.project_type AS project_type, a.project_parent_code AS project_parent_code, 
    a.project_level AS project_level, a.project_status AS project_status, a.create_user_code AS create_user_code, DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') AS create_time, a.update_user_code AS update_user_code,
    DATE_FORMAT(a.update_time,'%Y-%m-%d %H:%i:%s') AS update_time,b.user_name AS create_user_name,c.user_name AS update_user_name
    FROM ${formName} a INNER JOIN kb_user b ON a.`create_user_code` = b.`user_code` INNER JOIN kb_user c ON a.update_user_code = c.user_code  WHERE a.project_parent_code= #{projectCode}
-    	</if>
   	</select>
+  	
 	
 	<!-- 更新项目状态 -->
 	<update id="updateProjectStatus">

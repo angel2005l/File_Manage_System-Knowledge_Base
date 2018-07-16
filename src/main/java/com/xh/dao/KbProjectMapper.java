@@ -221,4 +221,20 @@ public interface KbProjectMapper {
 
 	public int selectSonProject(@Param("formName") String formName, @Param("projectCode") String projectCode,
 			@Param("userCode") String userCode) throws SQLException;
+	/**
+	 * 
+	 * @Title: projectInfoResultMap  
+	 * @Description:  根据userCode，projectCode查询项目详细
+	 * @author 黄官易
+	 * @param projectLevel
+	 * @param projectCode
+	 * @param userCode
+	 * @return
+	 * @throws SQLException    
+	 * @return int 
+	 * @date 2018年7月16日  
+	 * @version 1.0
+	 */
+	public Map<String,Object> selectProjectInfo(@Param("projectLevel") int projectLevel, @Param("projectCode") String projectCode,
+			@Param("userCode") String userCode) throws SQLException;
 }
