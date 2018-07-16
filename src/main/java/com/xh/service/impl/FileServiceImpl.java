@@ -169,10 +169,10 @@ public class FileServiceImpl extends BaseService implements IFileService {
 			case ".docx":
 			case ".ppt":
 			case ".pptx":
-//			case ".jpe":
-//			case ".jpeg":
-//			case ".jpg":
-//			case ".png":
+				// case ".jpe":
+				// case ".jpeg":
+				// case ".jpg":
+				// case ".png":
 				IOUtil.uploadFile(mf, FILEPATH, newFileName + suffix);
 				result.put("fileCode", newFileName);
 				result.put("fileName", oldFileName);
@@ -316,13 +316,18 @@ public class FileServiceImpl extends BaseService implements IFileService {
 		Map<String, Object> projectInfo = null;
 		List<Map<String, Object>> projectSonInfos = null;
 		List<Map<String, Object>> fileList = null;
+		Map<String, Object> projectDataMap = null;
 		/*
 		 * 详细页展示： 1.当前项目及其相关项目信息（父项目） 2.子项目（子项目List) 3.该员工所具有权限的文件信息
 		 * 
 		 */
 		try {
-			Map<String, Object> projectDataMap = kpm.selectProjectAndSonProjectInfos(projectLevel, projectCode,
-					userCode);// 项目及子项目详细
+
+			if (kptm.isExistProjectTable(projectLevel + 1)) {
+				projectDataMap = kpm.selectProjectAndSonProjectInfos(projectLevel, projectCode, userCode);// 项目及子项目详细
+			}else {
+				projectDataMap = kpm.selectProjectInfo(projectLevel, projectCode, userCode);
+			}
 			Object projectObj = projectDataMap.get("projectInfo");
 			if (null != projectObj) {
 				projectInfo = (Map<String, Object>) projectObj; // 强转Map
@@ -372,7 +377,7 @@ public class FileServiceImpl extends BaseService implements IFileService {
 	 * @version 1.0
 	 */
 	private Map<String, String> DateManager(Map<String, String> obj) {
-		if(null==obj){
+		if (null == obj) {
 			return obj;
 		}
 		String startTime = obj.get("startDate");
