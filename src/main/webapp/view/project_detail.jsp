@@ -199,7 +199,10 @@
 														</div>
 														<div class="attachment-info">
 															<div class="name">
-																<a class="link-download"><span class="-rest">${b.file_name }</span></a>
+																<a class="link-download"><span class="-rest">${b.file_name }</span>
+																</a>
+																<span style="font-size: 10px;padding-left: 40px">${b.user_name }</span>
+																<span style="font-size: 8px;padding-left: 10px">${b.create_time }</span>
 																<p class=" detail">${b.file_info }</p>
 																<%-- <p class="detail-p"><a class="link-download">${b.file_info }</a></p> --%>
 															</div>

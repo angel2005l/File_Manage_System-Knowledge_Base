@@ -28,7 +28,7 @@
   </select>
   
   <select id="selectFileByParams" resultType="map">
-  	  	SELECT a.id ,a.file_code,a.file_name,a.file_info,a.file_type,a.create_time,a.file_level,b.file_permission FROM ${fileTableName} a INNER JOIN kb_file_user b ON a.file_code = b.file_code AND b.user_code = #{userCode} AND a.project_code = #{projectCode} 
+  	  	SELECT a.id ,a.file_code,a.file_name,a.file_info,a.file_type,a.create_time,a.file_level,b.file_permission,b.user_name FROM ${fileTableName} a INNER JOIN kb_file_user b ON a.file_code = b.file_code AND b.user_code = #{userCode} AND a.project_code = #{projectCode} 
   	  	<if test="fileSelMap!=null">
 	  	  	<where>
 	  	  		<if test="fileSelMap.fileName!=null and fileSelMap.fileName!=''">
