@@ -4,7 +4,7 @@ public enum FileTypeImgEnum {
 
 	ASP(".asp","file_extension_asp.png"),
 	C(".c","file_extension_c.png"),
-	DOC(".doc","file_extension_doc"),
+	DOC(".doc","file_extension_doc.png"),
 	DOCX(".docx","file_extension_docx.png"),
 	DWG(".dwg","file_extension_dwg.png"),
 	EXE(".exe","file_extension_exe.png"),
