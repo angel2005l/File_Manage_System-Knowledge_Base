@@ -332,6 +332,7 @@
 					data:{'project_code':$('#hidden_project_code').val(),'project_level':$('#hidden_project_level').val(),'file_codes':fileCodes},
 					dataType:'json',
 					success:function(result){
+						cancelBtnBatch();
 						if(result.code==0){
 							shareFiles(result.data)
 						}else{
@@ -355,11 +356,15 @@
 		})
 		
 		$("#batch_cancel").on("click",function(){
+			cancelBtnBatch();
+		})
+		
+		function cancelBtnBatch(){
 			$(".batch-file-check").removeClass("checked").addClass("noChecked").css("display","none");
 			$("#batch_enter").css("display","none").attr("batch_method","");
 			$("#batch_cancel").css("display","none").attr("batch_method","")
 			$("#batch_download,#batch_share").css("display","");
-		})
+		}
 		
 		$('.form_datetime').datetimepicker({
 			language : 'zh-CN',
@@ -373,9 +378,9 @@
 			format : "yyyy-mm-dd"
 		});
 
-		function checkDate() {
+	/* 	function checkDate() {
 
-		}
+		} */
 
 		function formSubmit() {
 			$('#search').submit();
@@ -464,19 +469,26 @@
 		
 		function downloadFiles(fileCodes,level) {
 			var fileCodesArray =  fileCodes.split(",");
-			$.each(fileCodesArray,function(index,vaule){
+			for(var index=0;index <fileCodesArray.length;index++){
+				var vaule = fileCodesArray[index];
+				 var result = downloadFileCheck(vaule,level);
+				console.log(result[1]);
+					if(result[0]==0){
+						if(index == (fileCodesArray.length-1)){
+							window.open("file/downloadFile.do?file_name="+ result[1],"_self");
+						}else{
+							window.open("file/downloadFile.do?file_name="+ result[1]);
+						}
+					}
+			}
+		/* 	$.each(fileCodesArray,function(index,vaule){
 				 var result = downloadFileCheck(vaule,level);
 				if(result[0]==0){
-					//window.location.href = "file/downloadFile.do?file_name="+ result[1];
-					console.log("1");
-					//window.open("file/downloadFile.do?file_name="+ result[1],"_parent");
-					
-					
-					var newWin = window.open("file/downloadFile.do?file_name="+ result[1],"target");
-					//window.open = "file/downloadFile.do?file_name="+ result[1];
-					//window.open("file/downloadFile.do?file_name="+ result[1]);
-				} 
-			})			
+					console.log(result[1]);
+					window.open("file/downloadFile.do?file_name="+ result[1],"_self");
+				}
+			})	 */
+			cancelBtnBatch();
 		}
 		
 		
@@ -584,6 +596,16 @@
 				}
 				$('#thediv').css('display', 'none'); //点击的不是div或其子元素 
 			});
+		 //参数n为休眠时间，单位为毫秒:
+	    function sleep(n) {
+	        var start = new Date().getTime();
+	        //  console.log('休眠前：' + start);
+	        while (true) {
+	            if (new Date().getTime() - start > n) {
+	                break;
+	            }
+	        }
+	        }
 
 	</script>
 	<div id="share" style="display: none;">
