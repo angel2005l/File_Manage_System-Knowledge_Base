@@ -53,6 +53,7 @@ public class ProjectController extends BaseController {
 	@Autowired
 	@Qualifier("userAdviceServiceImpl")
 	private IUserAdviceService ads;
+
 	/**
 	 * 
 	 * @Title: insertProjectTable
@@ -95,7 +96,7 @@ public class ProjectController extends BaseController {
 	 * @date 2018年7月10日
 	 * @version 1.0
 	 */
-	@SystemControllerLog(description = "创建项目", logType = "insertProject",isAdvice = "true")
+	@SystemControllerLog(description = "创建项目", logType = "insertProject", isAdvice = "true")
 	@RequestMapping("/insPro.do")
 	@ResponseBody
 	public Result<Object> addProject(HttpServletRequest request, HttpSession session) {
@@ -165,7 +166,7 @@ public class ProjectController extends BaseController {
 					kpuList.add(kpu);
 				}
 			}
-			Result<Object> result=ps.insProject(kp, kpuList);
+			Result<Object> result = ps.insProject(kp, kpuList);
 			return result;
 		} catch (NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
@@ -175,6 +176,7 @@ public class ProjectController extends BaseController {
 			return rtnErrorResult(Result.ERROR_6000, "新增项目异常,请联系系统管理员");
 		}
 	}
+
 	/**
 	 * 
 	 * @Title: getShareProject
@@ -198,7 +200,7 @@ public class ProjectController extends BaseController {
 				request.setAttribute("shareProject", shareMap.get("shareProject"));
 				request.setAttribute("shareFiles", shareMap.get("shareFiles"));
 				return "view/share_project";
-			} 
+			}
 			request.setAttribute("error", rtnErrorResult(Result.ERROR_6000, "糟糕，分享项目不存在"));
 		} catch (NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
@@ -335,19 +337,58 @@ public class ProjectController extends BaseController {
 		}
 		return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
 	}
-	
+
+	// 需要重写的通知已读接口
 	@RequestMapping("/isRead.do")
 	@ResponseBody
-	public Result<Object> isReadAdviceMsg(HttpServletRequest request, HttpSession session) throws JsonParseException, JsonMappingException, IOException{
+	public Result<Object> isReadAdviceMsg(HttpServletRequest request, HttpSession session)
+			throws JsonParseException, JsonMappingException, IOException {
 		try {
-			String list=request.getParameter("list");
-			ObjectMapper mapper= new ObjectMapper();
+			String list = request.getParameter("list");
+			ObjectMapper mapper = new ObjectMapper();
 			JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, String.class);
-			List<String> advCodeList=mapper.readValue(list, jt);
+			List<String> advCodeList = mapper.readValue(list, jt);
 			return ads.updateAdviceStatusByAdviceCode(advCodeList);
 		} catch (Exception e) {
-			log.error("已读业务方法异常，异常原因【"+e.toString()+"】");
+			log.error("已读业务方法异常，异常原因:【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "修改为已读业务异常，请联系管理员");
 		}
 	}
+
+	/**
+	 * 
+	 * @Title: delProject  
+	 * @Description: 删除项目
+	 * @author 黄官易
+	 * @param request
+	 * @param session
+	 * @return    
+	 * @return Result<Object> 
+	 * @date 2018年7月21日  
+	 * @version 1.0
+	 */
+	public Result<Object> delProject(HttpServletRequest request, HttpSession session) {
+		// 获得项目编码
+		String projectCode = request.getParameter("project_code");
+		String projectLevel = request.getParameter("project_level");
+		// 操作人
+		try {
+		String userCode = session.getAttribute("user_code").toString();//如果为null 返回登录页面
+		return ps.delProject(Integer.parseInt(projectLevel), projectCode, userCode);
+		}catch(NullPointerException e) {
+			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
+			return rtnFailResult(Result.ERROR_4200, "");
+		}catch (Exception e) {
+			log.error("删除项目异常,异常原因:【"+e.toString()+"】");
+			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
+		}
+	}
+
+	// 项目锁定
+	public Result<Object> lockProject(HttpServletRequest request) {
+		// 项目编码
+
+		return null;
+	}
+
 }

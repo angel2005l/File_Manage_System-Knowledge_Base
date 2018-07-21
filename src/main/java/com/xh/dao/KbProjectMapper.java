@@ -221,10 +221,27 @@ public interface KbProjectMapper {
 
 	public int selectSonProject(@Param("formName") String formName, @Param("projectCode") String projectCode,
 			@Param("userCode") String userCode) throws SQLException;
+
 	/**
 	 * 
-	 * @Title: projectInfoResultMap  
-	 * @Description:  根据userCode，projectCode查询项目详细
+	 * @Title: projectInfoResultMap
+	 * @Description: 根据userCode，projectCode查询项目详细
+	 * @author 黄官易
+	 * @param projectLevel
+	 * @param projectCode
+	 * @param userCode
+	 * @return
+	 * @throws SQLException
+	 * @return int
+	 * @date 2018年7月16日
+	 * @version 1.0
+	 */
+	public Map<String, Object> selectProjectInfo(@Param("projectLevel") int projectLevel,
+			@Param("projectCode") String projectCode, @Param("userCode") String userCode) throws SQLException;
+	/**
+	 * 
+	 * @Title: delProject  
+	 * @Description: 删除项目
 	 * @author 黄官易
 	 * @param projectLevel
 	 * @param projectCode
@@ -232,9 +249,24 @@ public interface KbProjectMapper {
 	 * @return
 	 * @throws SQLException    
 	 * @return int 
-	 * @date 2018年7月16日  
+	 * @date 2018年7月21日  
 	 * @version 1.0
 	 */
-	public Map<String,Object> selectProjectInfo(@Param("projectLevel") int projectLevel, @Param("projectCode") String projectCode,
-			@Param("userCode") String userCode) throws SQLException;
+	public int delProject(@Param("projectLevel") int projectLevel,@Param("projectCode") String projectCode,@Param("userCode") String userCode) throws SQLException;
+	/**
+	 * 
+	 * @Title: lockProject  
+	 * @Description: 锁定项目
+	 * @author 黄官易
+	 * @param projectLevel
+	 * @param projectCode
+	 * @param userCode
+	 * @return
+	 * @throws SQLException    
+	 * @return int 
+	 * @date 2018年7月21日  
+	 * @version 1.0
+	 */
+	public int lockProject(@Param("projectLevel") int projectLevel,@Param("projectCode") String projectCode,@Param("userCode") String userCode) throws SQLException;
+
 }

@@ -128,7 +128,7 @@ public interface IProjectService {
 	/**
 	 * 
 	 * @Title: changeProjectStatus
-	 * @Description: TODO(这里用一句话描述这个方法的作用)
+	 * @Description: 项目完成状态更新
 	 * @author 黄官易
 	 * @param projectLevel
 	 * @param projectCode
@@ -140,4 +140,35 @@ public interface IProjectService {
 	 * @version 1.0
 	 */
 	public Result<Object> changeProjectStatus(int projectLevel, String projectCode, String userCode) throws Exception;
+	/**
+	 * 
+	 * @Title: delProject  
+	 * @Description: 删除项目
+	 * @author 黄官易
+	 * @param projectLevel
+	 * @param projectCode
+	 * @param userCode
+	 * @return
+	 * @throws Exception    
+	 * @return Result<Object> 
+	 * @date 2018年7月21日  
+	 * @version 1.0
+	 */
+	public Result<Object> delProject(int projectLevel, String projectCode, String userCode) throws Exception;
+	/**
+	 * 
+	 * @Title: lockProject  
+	 * @Description: 锁定项目  
+	 * @author 黄官易
+	 * @param projectLevel
+	 * @param projectCode
+	 * @param userCode
+	 * @return
+	 * @throws Exception    
+	 * @return Result<Object> 
+	 * @date 2018年7月21日  
+	 * @version 1.0
+	 */
+	public Result<Object> lockProject(int projectLevel, String projectCode, String userCode) throws Exception;
+
 }

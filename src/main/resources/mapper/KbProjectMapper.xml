@@ -133,8 +133,6 @@
    DATE_FORMAT(a.update_time,'%Y-%m-%d %H:%i:%s') AS update_time,b.user_name AS create_user_name,c.user_name AS update_user_name
    FROM ${formName} a INNER JOIN kb_user b ON a.`create_user_code` = b.`user_code` INNER JOIN kb_user c ON a.update_user_code = c.user_code  WHERE a.project_parent_code= #{projectCode}
   	</select>
-  	
-	
 	<!-- 更新项目状态 -->
 	<update id="updateProjectStatus">
 		<selectKey keyColumn="pt_name" order="BEFORE" keyProperty="pt_name" resultType="string">
@@ -144,6 +142,19 @@
 			a.project_status = #{projectStatus},a.update_user_code=#{userCode}
 		</set> where a.project_code=#{projectCode} and a.project_status='progress' and b.project_permission = 'write'
 	</update>
-	
+	<!-- 删除项目 -->
+	<update id="delProject" >
+		<selectKey keyColumn="pt_name" order="BEFORE" keyProperty="pt_name" resultType="string">
+			SELECT pt_name FROM kb_project_table WHERE project_level=#{projectLevel}
+		</selectKey>
+		update ${pt_name} set project_status = 'canceled' ,update_user_code = #{userCode} where project_code = #{projectCode} and (TIMESTAMPDIFF(MINUTE,create_time,NOW()) &lt;=30 or project_status = 'locked')
+	</update>
+	<!-- 锁定项目 -->
+	<update id="lockProject">
+		<selectKey keyColumn="pt_name" order="BEFORE" keyProperty="pt_name" resultType="string">
+			SELECT pt_name FROM kb_project_table WHERE project_level=#{projectLevel}
+		</selectKey>
+		update ${pt_name} set project_status = 'locked' ,update_user_code = #{userCode} where project_code = #{projectCode}
+	</update>
 	<!-- 测试分界线 -->
 </mapper>

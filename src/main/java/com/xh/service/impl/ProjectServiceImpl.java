@@ -42,13 +42,13 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class); // 日志对象
 
 	@Autowired
-	private KbProjectMapper projectMapper; // 项目基础表
+	private KbProjectMapper kpm; // 项目基础表
 	@Autowired
-	private KbProjectTableMapper projectTableMapper; // 项目表关联表
+	private KbProjectTableMapper kptm; // 项目表关联表
 	@Autowired
-	private KbUserMapper userMapper; // 用户信息表
+	private KbUserMapper kum; // 用户信息表
 	@Autowired
-	private KbProjectUserMapper proUserMapper;// 项目用户关联表
+	private KbProjectUserMapper kpum;// 项目用户关联表
 	@Autowired
 	private KbFileTableMapper kftm;// 文件用户关联表
 	@Autowired
@@ -70,14 +70,13 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 		}
 		try {
 			// 判断项目是否存在
-			if (projectTableMapper.isExistProjectTable(kbpt.getProjectLevel())
-					|| projectTableMapper.isExistProjectDataTable(kbpt.getPtName())) {
+			if (kptm.isExistProjectTable(kbpt.getProjectLevel()) || kptm.isExistProjectDataTable(kbpt.getPtName())) {
 				return rtnFailResult(Result.ERROR_4000, "该项目层级已存在或项目表名重复");
 			}
 			// 新增项目表信息
-			int flag = projectTableMapper.insertProject(kbpt);
+			int flag = kptm.insertProject(kbpt);
 			// 创建项目表
-			int createProjectTable = projectTableMapper.createProjectTable(kbpt.getPtName(), kbpt.getProjectLevel());
+			int createProjectTable = kptm.createProjectTable(kbpt.getPtName(), kbpt.getProjectLevel());
 			if (flag > 0 && createProjectTable == 0) {
 				return rtnSuccessResult("项目表创建成功");
 			} else {
@@ -106,7 +105,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 		// 可以再添加一层校验，校验查询传入的等级是否超过最高等级
 		try {
 			int projectLevel = level + 1;
-			String ptName = projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);
+			String ptName = kptm.selectProjectTableNameByProjectLevel(projectLevel);
 			if (ptName == null) {
 				return rtnErrorResult(Result.ERROR_4000, "该表不存在或该层级已为最低层级");
 			}
@@ -129,7 +128,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 		List<KbUser> list = new ArrayList<KbUser>();
 		try {
 			for (int i = 0; i < strList.size(); i++) {
-				KbUser user = userMapper.selectUserByUserCode(strList.get(i));
+				KbUser user = kum.selectUserByUserCode(strList.get(i));
 				list.add(user);
 			}
 		} catch (SQLException e) {
@@ -150,7 +149,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	 */
 	public Result<List<KbProject>> selectAllPro(String formName, String projectCode) {
 		try {
-			List<KbProject>	kbp = projectMapper.selectSonProjectByParentCode(formName, projectCode);
+			List<KbProject> kbp = kpm.selectSonProjectByParentCode(formName, projectCode);
 			if (kbp.isEmpty()) {
 				return rtnErrorResult(Result.ERROR_4000, "数据表中没有数据");
 			}
@@ -172,7 +171,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	 */
 	public Result<List<KbProject>> selectAllProByUser(String formName, String projectCode, String userCode) {
 		try {
-			List<KbProject>	kbp = projectMapper.selectSonProjectByParentCodeAndUserCode(formName, projectCode, userCode);
+			List<KbProject> kbp = kpm.selectSonProjectByParentCodeAndUserCode(formName, projectCode, userCode);
 			if (kbp.isEmpty()) {
 				return rtnErrorResult(Result.ERROR_4000, "数据表中没有数据");
 			}
@@ -189,8 +188,8 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 		// 因为想在项目表层级与文件表层级相同 fileLevel/projectLevel 相同
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		// 查询项目表信息
-		String projectTableName = projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);
-		KbProject shareProject = projectMapper.selectProjectByProjectCode(projectTableName, projectCode);
+		String projectTableName = kptm.selectProjectTableNameByProjectLevel(projectLevel);
+		KbProject shareProject = kpm.selectProjectByProjectCode(projectTableName, projectCode);
 		// 查询文件表信息
 		String fileTableName = kftm.selectFileTableNameByFileLevel(projectLevel);
 		List<Map<String, Object>> shareFiles = kfm.selectFileByUserCode(fileTableName, projectCode, userCode);
@@ -204,7 +203,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	@Override
 	public List<Map<String, Object>> selectProjectByUserCodeAndMethod(String userCode, String method) throws Exception {
 		try {
-			return proUserMapper.selectProjectSimpleInfoByUserCodeAndMethod(userCode, method);
+			return kpum.selectProjectSimpleInfoByUserCodeAndMethod(userCode, method);
 		} catch (SQLException e) {
 			log.error("根据用户编码查询项目简易信息数据接口异常,异常原因:【" + e.toString() + "】");
 			return null;
@@ -218,7 +217,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 		String projectTableName = "";
 		Integer projectLevel = kp.getProjectLevel(); // 根据当前的项目信息获得项目等级
 		try {
-			projectTableName = projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);// 项目表名称
+			projectTableName = kptm.selectProjectTableNameByProjectLevel(projectLevel);// 项目表名称
 		} catch (SQLException e) {
 			log.error("获得项目表信息异常,异常原因【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "获得项目表信息异常,请联系系统管理员");
@@ -228,7 +227,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			try {
 				// 根据项目关联关系，获得部门信息
 				String userDeptCode = kpus.get(0).getUserDeptCode();
-				List<KbUser> superiorUserList = userMapper.selectSuperiorUserByUserDeptCode(userDeptCode);
+				List<KbUser> superiorUserList = kum.selectSuperiorUserByUserDeptCode(userDeptCode);
 				if (null != superiorUserList && !superiorUserList.isEmpty()) {
 					for (KbUser kbUser : superiorUserList) {
 						KbProjectUser kpu = new KbProjectUser();
@@ -250,9 +249,8 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			}
 			// 执行操作 保证数据操作的原子性
 			try {
-				int insProNum = projectMapper.insertProject(kp, projectTableName);
-				int insUsersNum = proUserMapper.batchInsertProjectUsers(kpus, kp.getProjectParentCode(),
-						kp.getCreateUserCode());
+				int insProNum = kpm.insertProject(kp, projectTableName);
+				int insUsersNum = kpum.batchInsertProjectUsers(kpus, kp.getProjectParentCode(), kp.getCreateUserCode());
 				if (insProNum > 0 && kpus.size() == insUsersNum) {
 					return rtnSuccessResult("新建项目成功");
 				} else {
@@ -269,10 +267,10 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 
 	@Override
 	public KbProject selectProjectInfoByProjectCode(int projectLevel, String projectCode) throws Exception {
-		String projectTableName = projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);
+		String projectTableName = kptm.selectProjectTableNameByProjectLevel(projectLevel);
 		if (StrUtil.notBlank(projectTableName)) {
 			try {
-				return projectMapper.selectProjectInfoByProjectCode(projectTableName, projectCode);
+				return kpm.selectProjectInfoByProjectCode(projectTableName, projectCode);
 			} catch (SQLException e) {
 				log.error("根据项目编码获得项目信息数据接口异常,异常原因:【" + e.toString() + "】");
 			}
@@ -282,10 +280,10 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 
 	@Override
 	public String selectProjectNameByProjectCode(int projectLevel, String projectCode) throws Exception {
-		String projectTableName = projectTableMapper.selectProjectTableNameByProjectLevel(projectLevel);
+		String projectTableName = kptm.selectProjectTableNameByProjectLevel(projectLevel);
 		if (StrUtil.notBlank(projectTableName)) {
 			try {
-				return projectMapper.selectProjectNameByProjectCode(projectTableName, projectCode);
+				return kpm.selectProjectNameByProjectCode(projectTableName, projectCode);
 			} catch (SQLException e) {
 				log.error("根据项目编码获得项目名称数据接口异常,异常原因:【" + e.toString() + "】");
 			}
@@ -300,7 +298,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			return rtnFailResult(Result.ERROR_4000, "收藏失败");
 		}
 		try {
-			proUserMapper.updateCollectByUserCodeAndMainCode(isCollect, userCode, projectMainCode);
+			kpum.updateCollectByUserCodeAndMainCode(isCollect, userCode, projectMainCode);
 		} catch (SQLException e) {
 			log.error("项目收藏数据接口异常,异常原因:【" + e.toString() + "】");
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -309,11 +307,11 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 		return rtnSuccessResult("收藏成功");
 	}
 
-	@Transactional(rollbackFor = {Exception.class})
+	@Transactional(rollbackFor = { Exception.class })
 	@Override
 	public Result<Object> changeProjectStatus(int projectLevel, String projectCode, String userCode) throws Exception {
 		try {
-			int uptNum = projectMapper.updateProjectStatus(projectLevel, projectCode, "completed", userCode);
+			int uptNum = kpm.updateProjectStatus(projectLevel, projectCode, "completed", userCode);
 			if (uptNum < 1) {
 				return rtnFailResult(Result.ERROR_4000, "状态更改失败（您可能不是项目参与者）");
 			} else if (uptNum == 1) {
@@ -323,6 +321,33 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			}
 		} catch (SQLException e) {
 			log.error("项目状态更新数据接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
+		}
+	}
+
+	@Override
+	public Result<Object> delProject(int projectLevel, String projectCode, String userCode) throws Exception {
+		// 删除项目
+		/*
+		 * 1.当正常的项目，超过30分钟的无法删除 2.当时锁定项目时，拥有删除无实现限制
+		 */
+		try {
+			return kpm.delProject(projectLevel, projectCode, userCode) > 0 ? rtnSuccessResult("项目删除成功")
+					: rtnFailResult(Result.ERROR_4300, "项目删除失败");
+		} catch (SQLException e) {
+			log.error("删除项目数据接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
+		}
+	}
+
+	@Override
+	public Result<Object> lockProject(int projectLevel, String projectCode, String userCode) throws Exception {
+		// 锁定项目
+		try {
+			return kpm.lockProject(projectLevel, projectCode, userCode) > 0 ? rtnSuccessResult("项目已锁定")
+					: rtnFailResult(Result.ERROR_4300, "项目锁定失败");
+		} catch (SQLException e) {
+			log.error("锁定项目数据接口异常,异常原因:【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
 		}
 	}

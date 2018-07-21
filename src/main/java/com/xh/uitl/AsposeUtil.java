@@ -550,10 +550,8 @@ public class AsposeUtil {
 		FileChannel outputChannel = null;
 		try {
 			pdfPath = realPath + "pdf" + File.separator + DateUtil.curDateYMDHMSSForService() + ".pdf";// 临时文件名称
-			System.err.println(filePath);
 			// 使用fileChannel
 			File inputFile = new File(realPath + filePath);
-			System.err.println(inputFile.exists());
 			if (inputFile.exists()) {
 				// 文件是否存在
 				inputChannel = new FileInputStream(inputFile).getChannel();
