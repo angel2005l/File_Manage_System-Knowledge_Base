@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.aspectj.lang.annotation.AfterReturning;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +41,7 @@ public class FileController extends BaseController {
 	private static final Logger log = LoggerFactory.getLogger(FileController.class);// 日志对象
 	private static final String FILETABLETAG = Constant.FILETABLETAG;// 文件表标识头
 	private static final String TABELTAG = Constant.TABELTAG;// 数据库表标识头
+	private static final String SHARETAG = Constant.SHARETAG;// 分享标识头
 
 	@Autowired
 	@Qualifier("fileServiceImpl")
@@ -64,7 +64,7 @@ public class FileController extends BaseController {
 	 * @date 2018年6月22日
 	 * @version 1.0
 	 */
-	@SystemControllerLog(description = "新增文件", logType = "insertFile",isAdvice = "true")
+	@SystemControllerLog(description = "新增文件", logType = "insertFile", isAdvice = "true")
 	@RequestMapping("/upFile.do")
 	@ResponseBody
 	public Result<Object> uploadFile(HttpServletRequest request, HttpSession session,
@@ -137,7 +137,7 @@ public class FileController extends BaseController {
 			}
 			request.setAttribute("project_code", projectCode);
 			request.setAttribute("log_event_value", fileName);
-			Result<Object> result=fs.insFile(kf, projectLevel, kfus);
+			Result<Object> result = fs.insFile(kf, projectLevel, kfus);
 			return result;
 		} catch (NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
@@ -224,6 +224,30 @@ public class FileController extends BaseController {
 
 	/**
 	 * 
+	 * @Title: displaImg
+	 * @Description: 预览图片
+	 * @author 黄官易
+	 * @param request
+	 * @return
+	 * @return Result<String>
+	 * @date 2018年7月21日
+	 * @version 1.0
+	 */
+	@RequestMapping("/disImg.do")
+	@ResponseBody
+	public Result<String> displayImg(HttpServletRequest request) {
+		String fileInfo = request.getParameter("file_info");
+		String[] fileInfos = fileInfo.split(",");
+		try {
+			return fs.getImgUrlStr("../upload", fileInfos[0], fileInfos[1]);
+		} catch (Exception e) {
+			log.error("预览文件接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员 ");
+		}
+	}
+
+	/**
+	 * 
 	 * @Title: insFileTable
 	 * @Description: 新增文件表信息及文件表入口方法
 	 * @author 黄官易
@@ -297,7 +321,7 @@ public class FileController extends BaseController {
 				request.setAttribute("rootCode", rootCode);
 				return "view/project_detail";
 			}
-				request.setAttribute("error", result);
+			request.setAttribute("error", result);
 		} catch (NullPointerException | NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
 			return "view/login";
@@ -328,7 +352,8 @@ public class FileController extends BaseController {
 			String userCode = session.getAttribute("user_code").toString();// 用户编码
 			String rootCode = StrUtil.isBlank(request.getParameter("root_code")) ? ""
 					: request.getParameter("root_code");// 根路径
-			projectCode = fs.selectSuperiorProjectCodeByProjectCode(Integer.parseInt(projectLevel), projectCode);//赋值 父类项目编码
+			projectCode = fs.selectSuperiorProjectCodeByProjectCode(Integer.parseInt(projectLevel), projectCode);// 赋值
+																													// 父类项目编码
 			if (StrUtil.notBlank(projectCode)) {
 				Result<Map<String, Object>> result = fs.getProjectDetailData(projectCode,
 						Integer.parseInt(projectLevel) - 1, userCode, null);
@@ -343,7 +368,7 @@ public class FileController extends BaseController {
 					return "view/project_detail";
 				}
 				request.setAttribute("error", result);
-			}else {
+			} else {
 				request.setAttribute("error", rtnErrorResult(Result.ERROR_6000, "项目不存在,请联系系统管理员"));
 			}
 		} catch (NullPointerException | NumberFormatException e) {
@@ -438,7 +463,7 @@ public class FileController extends BaseController {
 		try {
 			KbBatchShare kbs = new KbBatchShare();
 			kbs.setShareCode(
-					"SHA" + DateUtil.curDateYMDHMSForService() + StrUtil.getRandom((int) (Math.random() * 100), 2));
+					SHARETAG + DateUtil.curDateYMDHMSForService() + StrUtil.getRandom((int) (Math.random() * 100), 2));
 			kbs.setProjectCode(projectCode);
 			kbs.setFileCodes(fileCodes);
 			kbs.setProjectLevel(Integer.parseInt(projectLevel));
@@ -454,25 +479,59 @@ public class FileController extends BaseController {
 			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
 		}
 	}
-	// 根据分享编码查询分享信息
+
+	/**
+	 * 
+	 * @Title: selectShareFilesData
+	 * @Description: 根据分享编码查询分享信息
+	 * @author 黄官易
+	 * @param request
+	 * @return
+	 * @return String
+	 * @date 2018年7月19日
+	 * @version 1.0
+	 */
 	@RequestMapping("/shareFiles.do")
 	public String selectShareFilesData(HttpServletRequest request) {
 		String shareCode = request.getParameter("share_code");
 		try {
 			Result<Map<String, Object>> resultData = fs.selectShareFilesData(shareCode);
-			if(Result.SUCCESS_0 == resultData.getCode()) {
+			if (Result.SUCCESS_0 == resultData.getCode()) {
 				Map<String, Object> dataMap = resultData.getData();
 				request.setAttribute("shareProject", dataMap.get("project"));
 				request.setAttribute("shareFiles", dataMap.get("files"));
 				return "view/share_files";
-			}else {
+			} else {
 				request.setAttribute("error", resultData);
 				return "view/error";
 			}
 		} catch (Exception e) {
-			log.error("文件批量分享异常,异常原因:【"+e.toString()+"】");
+			log.error("文件批量分享异常,异常原因:【" + e.toString() + "】");
 			request.setAttribute("error", rtnErrorResult(Result.ERROR_6000, "系统异常,请联系系统管理员"));
 			return "view/error";
+		}
+	}
+
+	/**
+	 * 
+	 * @Title: deleteTempImg
+	 * @Description: 销毁临时图片文件
+	 * @author 黄官易
+	 * @param request
+	 * @return
+	 * @return Result<Object>
+	 * @date 2018年7月21日
+	 * @version 1.0
+	 */
+	@RequestMapping("/delTempImg.do")
+	@ResponseBody
+	public Result<Object> delTempImg(HttpServletRequest request) {
+		String filePath = request.getParameter("delete_file_path");// 获得以相对路径的图片路径
+		try {
+			return fs.deleteTempImg(filePath);
+		} catch (Exception e) {
+			log.error("销毁临时图片文件接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "");
 		}
 	}
 
