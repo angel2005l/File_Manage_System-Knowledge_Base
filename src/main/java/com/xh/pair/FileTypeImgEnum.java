@@ -21,7 +21,8 @@ public enum FileTypeImgEnum {
 	TXT(".txt","file_extension_txt.png"),
 	XLS(".xls","file_extension_xls.png"),
 	XLSX(".xlsx","file_extension_xlsx.png"),
-	ZIP(".zip","file_extension_zip.png");
+	ZIP(".zip","file_extension_zip.png"),
+	PDF(".pdf","file_extension_pdf.png");
 	
 	
 	

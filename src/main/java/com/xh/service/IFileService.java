@@ -90,6 +90,19 @@ public interface IFileService {
 
 	/**
 	 * 
+	 * @Title: getImgUrlStr
+	 * @Description: 获得图片的临时路径
+	 * @author 黄官易
+	 * @return
+	 * @throws Exception
+	 * @return String
+	 * @date 2018年7月20日
+	 * @version 1.0
+	 */
+	public Result<String> getImgUrlStr(String filePath, String fileCode, String fileName) throws Exception;
+
+	/**
+	 * 
 	 * @Title: insSuperiorUserFileWithOnlyRead
 	 * @Description: 新增文件上级预览权限
 	 * @author 黄官易
@@ -181,17 +194,31 @@ public interface IFileService {
 	 */
 	public Result<String> insBatchProject(KbBatchShare kbs) throws Exception;
 
-/**
- * 
- * @Title: selectShareFilesData  
- * @Description: 根据分享编码查询分享信息
- * @author 黄官易
- * @param shareCode
- * @return
- * @throws Exception    
- * @return Result<Map<String,Object>> 
- * @date 2018年7月12日  
- * @version 1.0
- */
+	/**
+	 * 
+	 * @Title: selectShareFilesData
+	 * @Description: 根据分享编码查询分享信息
+	 * @author 黄官易
+	 * @param shareCode
+	 * @return
+	 * @throws Exception
+	 * @return Result<Map<String,Object>>
+	 * @date 2018年7月12日
+	 * @version 1.0
+	 */
 	public Result<Map<String, Object>> selectShareFilesData(String shareCode) throws Exception;
+
+	/**
+	 * 
+	 * @Title: deleteTempImg
+	 * @Description: 删除临时图片文件
+	 * @author 黄官易
+	 * @param filePath
+	 * @return
+	 * @throws Exception
+	 * @return Result<Object>
+	 * @date 2018年7月21日
+	 * @version 1.0
+	 */
+	public Result<Object> deleteTempImg(String filePath) throws Exception;
 }

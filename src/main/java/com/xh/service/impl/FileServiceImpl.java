@@ -169,18 +169,19 @@ public class FileServiceImpl extends BaseService implements IFileService {
 			case ".docx":
 			case ".ppt":
 			case ".pptx":
-				// case ".jpe":
-				// case ".jpeg":
-				// case ".jpg":
-				// case ".png":
+			case ".pdf":
+			case ".jpe":
+			case ".jpeg":
+			case ".jpg":
+			case ".png":
 				IOUtil.uploadFile(mf, FILEPATH, newFileName + suffix);
-				result.put("fileCode", newFileName);
-				result.put("fileName", oldFileName);
-				result.put("fileType", suffix);
 				break;
 			default:
 				return rtnFailResult(Result.ERROR_4300, "暂时不支持【" + suffix + "】该类型文件格式");
 			}
+			result.put("fileCode", newFileName);
+			result.put("fileName", oldFileName);
+			result.put("fileType", suffix);
 			return rtnSuccessResult("", result);
 		}
 		return rtnFailResult(Result.ERROR_4000, "文件数据为空,上传失败");
@@ -219,7 +220,11 @@ public class FileServiceImpl extends BaseService implements IFileService {
 		case ".pptx":
 			pdfFileName = AsposeUtil.ppt2PDFStr(fileRootPath);
 			break;
+		case ".pdf":
+			pdfFileName = AsposeUtil.showPDFStr(fileRootPath);
+			break;
 		default:
+			// 将会有更多的文件格式通过这里进行预览，敬请期待
 			log.error("未知文件转换PDF错误,错误文件类型【" + suffix + "】");
 			return null;
 		}
@@ -230,6 +235,27 @@ public class FileServiceImpl extends BaseService implements IFileService {
 		ResponseEntity<byte[]> downloadFile = IOUtil.downloadFile("pdf", pdfFileName);
 		IOUtil.clearTempPdf(null, pdfFileName);
 		return downloadFile;
+	}
+
+	@Override
+	public Result<String> getImgUrlStr(String filePath, String fileCode, String fileName) throws Exception {
+		String suffix = fileName.substring(fileName.lastIndexOf("."));
+		String tempImgName = "";
+		String fileRootPath = filePath + File.separator + fileCode + suffix;// 获得文件路径
+		switch (suffix) {
+		case ".jpe":
+		case ".jpeg":
+		case ".jpg":
+		case ".png":
+			tempImgName = AsposeUtil.showImgStr(fileRootPath, suffix);
+			break;
+		default:
+			// 将会有更多的文件格式通过这里进行预览，敬请期待
+			log.error("未知文件转换PDF错误,错误文件类型【" + suffix + "】");
+			return rtnFailResult(Result.ERROR_4300, "现不支持【" + suffix + "】文件类型的转换");
+		}
+		return StrUtil.isBlank(tempImgName) ? rtnFailResult(Result.ERROR_4000, "文件信息不存在/服务器异常,请联系系统管理员")
+				: rtnSuccessResult("", tempImgName);
 	}
 
 	@Transactional(rollbackFor = { Exception.class })
@@ -325,7 +351,7 @@ public class FileServiceImpl extends BaseService implements IFileService {
 
 			if (kptm.isExistProjectTable(projectLevel + 1)) {
 				projectDataMap = kpm.selectProjectAndSonProjectInfos(projectLevel, projectCode, userCode);// 项目及子项目详细
-			}else {
+			} else {
 				projectDataMap = kpm.selectProjectInfo(projectLevel, projectCode, userCode);
 			}
 			Object projectObj = projectDataMap.get("projectInfo");
@@ -430,5 +456,11 @@ public class FileServiceImpl extends BaseService implements IFileService {
 			log.error("批量文件分享数据接口异常,异常原因：【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
 		}
+	}
+
+	@Override
+	public Result<Object> deleteTempImg(String filePath) throws Exception {
+		return IOUtil.deleteFile(IOUtil.realPath + filePath) ? rtnSuccessResult()
+				: rtnFailResult(Result.ERROR_4000, "临时文件删除失败");
 	}
 }
