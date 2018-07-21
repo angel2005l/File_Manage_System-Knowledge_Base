@@ -1,5 +1,5 @@
 <%@ include file="/view/base/base.jsp"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -17,6 +17,7 @@
 	href="assets/css/bootstrap/bootstrap-datetimepicker.min.css">
 <link rel="stylesheet" media="all" href="assets/css/xh_application.css">
 <link rel="stylesheet" href="assets/theme/default/layer.css" />
+<link rel="stylesheet" href="assets/css/viewer.css" />
 <style type="text/css">
 </style>
 </head>
@@ -27,37 +28,44 @@
 			<div class="header-container">
 				<h1 class="logo">
 					<a class="header-team-name js-show-focus-driver"
-						href="pro/index.do?method=participation"><font style="vertical-align: inherit;"><font
+						href="pro/index.do?method=participation"><font
+						style="vertical-align: inherit;"><font
 							style="vertical-align: inherit;">新海科技集团</font></font></a>
 				</h1>
 				<ul class="nav">
-					<li class="" id="nav-project"><a href="pro/index.do?method=participation">项目</a></li>
+					<li class="" id="nav-project"><a
+						href="pro/index.do?method=participation">项目</a></li>
 					<li class="" id="nav-me"><a href="pro/index.do?method=self">我自己</a></li>
 					<li id="nav-upgrade"></li>
 				</ul>
 				<div class="command-bar">
-				<div class="notification-info" id="both">
-					<!-- 如果有未读的  显示label unread  否则显示label -->
-			        <span id="notification-count" title="新的通知" onclick="intoclick()" class="label">
-			          <span class="twr twr-bell-o bell"></span>
-			          <span class="num" id="num"></span>
-			        </span>
-			        <div class="noti-pop" id="thediv" style="display:none;" onblur="losePoint()">
-			          <div class="noti-pop-hd">
-			            <b class="title">通知</b>
-			            <a class="mark-as-read" id="noti-mark-read" href="javascript:;" onclick="allread()">
-			              <span class="twr twr twr-check"></span>全部标记为已读</a>          
-			          </div>
-			          <div class="noti-pop-list-wrap">
-				            <div class="noti-pop-list notification-list" style="display: block;">
-				            	<div class="notice unread"><span class="link" id="msg"></span></div>
-				            </div>
-			          </div>
-			        </div>
-      			</div>
-      			<div class="account-info">
-      				<a class="detail-action" href="user/logout.do">登出</a>
-      			</div>
+					<div class="notification-info" id="both">
+						<!-- 如果有未读的  显示label unread  否则显示label -->
+						<span id="notification-count" title="新的通知" onclick="intoclick()"
+							class="label"> <span class="twr twr-bell-o bell"></span> <span
+							class="num" id="num"></span>
+						</span>
+						<div class="noti-pop" id="thediv" style="display: none;"
+							onblur="losePoint()">
+							<div class="noti-pop-hd">
+								<b class="title">通知</b> <a class="mark-as-read"
+									id="noti-mark-read" href="javascript:;" onclick="allread()">
+									<span class="twr twr twr-check"></span>全部标记为已读
+								</a>
+							</div>
+							<div class="noti-pop-list-wrap">
+								<div class="noti-pop-list notification-list"
+									style="display: block;">
+									<div class="notice unread">
+										<span class="link" id="msg"></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="account-info">
+						<a class="detail-action" href="user/logout.do">登出</a>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -194,22 +202,20 @@
 																		style="border-right: 2.52px solid; border-bottom: 2.52px solid;"></div>
 																</div>
 															</div>
-															<img
+															<img class = "tempImg" data-src
 																src="assets/img/<tag:enum className="FileTypeImgEnum">${b.file_type }</tag:enum>" />
 														</div>
 														<div class="attachment-info">
 															<div class="name">
 																<a class="link-download"><span class="-rest">${b.file_name }</span>
-																</a>
-																<span style="font-size: 10px;padding-left: 40px">${b.user_name }</span>
-																<span style="font-size: 8px;padding-left: 10px">${b.create_time }</span>
+																</a> <span style="font-size: 10px; padding-left: 40px">${b.user_name }</span>
+																<span style="font-size: 8px; padding-left: 10px">${b.create_time }</span>
 																<p class=" detail">${b.file_info }</p>
 																<%-- <p class="detail-p"><a class="link-download">${b.file_info }</a></p> --%>
 															</div>
 															<div class="tags"></div>
 															<div class="control-dir no-dir">
-																<a class="link-change-dir"
-																	onclick="display('${b.file_code }','${b.file_name }')">预览</a>
+																<a class="link-change-dir displayBtn"  data-info = "${b.file_type },${b.file_code },${b.file_name }"  >预览</a>
 																<c:if test="${b.file_permission eq 'download' }">
 																	<a
 																		onclick="downloadFile('${b.file_code }','${b.file_level }')"
@@ -226,22 +232,22 @@
 									</div>
 								</c:forEach>
 								<c:if test="${fn:length(files)>0 }">
-								<button id="batch_download" type="button" class="btn btn-reject"
-									style="float: left;">
-									<font style="vertical-align: inline;">批量下载</font>
-								</button>
-								<button id="batch_enter" type="button" class="btn btn-reject"
-									style="float: left; display: none" batch_method="">
-									<font style="vertical-align: inline;">确定</font>
-								</button>
-								<button id="batch_cancel" type="button" class="btn btn-reject"
-									style="float: left; display: none">
-									<font style="vertical-align: inline;">取消</font>
-								</button>
-								<button id="batch_share" type="button" class="btn btn-reject"
-									style="float: left;">
-									<font style="vertical-align: inline;">批量分享</font>
-								</button>
+									<button id="batch_download" type="button"
+										class="btn btn-reject" style="float: left;">
+										<font style="vertical-align: inline;">批量下载</font>
+									</button>
+									<button id="batch_enter" type="button" class="btn btn-reject"
+										style="float: left; display: none" batch_method="">
+										<font style="vertical-align: inline;">确定</font>
+									</button>
+									<button id="batch_cancel" type="button" class="btn btn-reject"
+										style="float: left; display: none">
+										<font style="vertical-align: inline;">取消</font>
+									</button>
+									<button id="batch_share" type="button" class="btn btn-reject"
+										style="float: left;">
+										<font style="vertical-align: inline;">批量分享</font>
+									</button>
 								</c:if>
 							</div>
 						</div>
@@ -284,91 +290,97 @@
 		<input id="displayValues" type="hidden" name="file" />
 	</form>
 	<script type="text/javascript" src="assets/js/layer.js"></script>
+	<script type="text/javascript" src="assets/js/viewer.js"></script>
 	<script type="text/javascript"
 		src="assets/js/bootstrap-datetimepicker.js"></script>
 	<script type="text/javascript"
 		src="assets/js/bootstrap-datetimepicker.zh-CN.js"></script>
 	<script type="text/javascript">
-		$("#batch_download").on("click",function(){
+		$("#batch_download").on("click", function() {
 			var bfcObj = $(".batch-file-check");
 			var displayValue = bfcObj.css("display");
-			if("none" ==displayValue){
-				bfcObj.css("display","");
-				$(this).css("display","none");
-				$("#batch_enter").css("display","").attr("batch_method","1");
-				$("#batch_cancel").css("display","");
+			if ("none" == displayValue) {
+				bfcObj.css("display", "");
+				$(this).css("display", "none");
+				$("#batch_enter").css("display", "").attr("batch_method", "1");
+				$("#batch_cancel").css("display", "");
 			}
 		})
-		
-		$("#batch_share").on("click",function(){
+
+		$("#batch_share").on("click", function() {
 			var bfcObj = $(".batch-file-check");
 			var displayValue = bfcObj.css("display");
-			if("none" ==displayValue){
-				bfcObj.css("display","");
-				$(this).css("display","none");
-				$("#batch_enter").css("display","").attr("batch_method","2");
-				$("#batch_cancel").css("display","");
+			if ("none" == displayValue) {
+				bfcObj.css("display", "");
+				$(this).css("display", "none");
+				$("#batch_enter").css("display", "").attr("batch_method", "2");
+				$("#batch_cancel").css("display", "");
 			}
 		})
-		
-		$("#batch_enter").on("click",function(){
+
+		$("#batch_enter").on("click", function() {
 			var batchMethod = $(this).attr("batch_method");
 			var fileCodes = "";
-			$(".batch-file-check.checked").each(function(){
-				fileCodes  += $(this).attr("file_code")+",";
+			$(".batch-file-check.checked").each(function() {
+				fileCodes += $(this).attr("file_code") + ",";
 			})
-			if(fileCodes.length <2){
+			if (fileCodes.length < 2) {
 				alert("文件未选择");
-			}else {
-				fileCodes = fileCodes.substr(0,fileCodes.length-1);
+			} else {
+				fileCodes = fileCodes.substr(0, fileCodes.length - 1);
 			}
 			switch (batchMethod) {
 			case "1":
 				//批量下载
-				downloadFiles(fileCodes,$('#hidden_project_level').val())
+				downloadFiles(fileCodes, $('#hidden_project_level').val())
 				break;
 			case "2":
 				//批量分享
 				$.ajax({
-					url:"file/insShareFiles.do",
-					type:'post',
-					data:{'project_code':$('#hidden_project_code').val(),'project_level':$('#hidden_project_level').val(),'file_codes':fileCodes},
-					dataType:'json',
-					success:function(result){
+					url : "file/insShareFiles.do",
+					type : 'post',
+					data : {
+						'project_code' : $('#hidden_project_code').val(),
+						'project_level' : $('#hidden_project_level').val(),
+						'file_codes' : fileCodes
+					},
+					dataType : 'json',
+					success : function(result) {
 						cancelBtnBatch();
-						if(result.code==0){
+						if (result.code == 0) {
 							shareFiles(result.data)
-						}else{
+						} else {
 							alert(result.msg);
 						}
 					},
-					error:function(){
+					error : function() {
 						alert("服务器未响应");
 					}
 				});
 				break;
 			}
 		})
-		
-		$(".batch-file-check").on("click",function(){
-			if($(this).hasClass("noChecked")){
+
+		$(".batch-file-check").on("click", function() {
+			if ($(this).hasClass("noChecked")) {
 				$(this).removeClass("noChecked").addClass("checked");
-			}else{
+			} else {
 				$(this).removeClass("checked").addClass("noChecked");
 			}
 		})
-		
-		$("#batch_cancel").on("click",function(){
+
+		$("#batch_cancel").on("click", function() {
 			cancelBtnBatch();
 		})
-		
-		function cancelBtnBatch(){
-			$(".batch-file-check").removeClass("checked").addClass("noChecked").css("display","none");
-			$("#batch_enter").css("display","none").attr("batch_method","");
-			$("#batch_cancel").css("display","none").attr("batch_method","")
-			$("#batch_download,#batch_share").css("display","");
+
+		function cancelBtnBatch() {
+			$(".batch-file-check").removeClass("checked").addClass("noChecked")
+					.css("display", "none");
+			$("#batch_enter").css("display", "none").attr("batch_method", "");
+			$("#batch_cancel").css("display", "none").attr("batch_method", "")
+			$("#batch_download,#batch_share").css("display", "");
 		}
-		
+
 		$('.form_datetime').datetimepicker({
 			language : 'zh-CN',
 			weekStart : 1,//星期几为周一
@@ -381,9 +393,9 @@
 			format : "yyyy-mm-dd"
 		});
 
-	/* 	function checkDate() {
+		/* 	function checkDate() {
 
-		} */
+			} */
 
 		function formSubmit() {
 			$('#search').submit();
@@ -414,11 +426,74 @@
 			})
 		})
 
-		function display(code, name) {
-			var str = "${pageContext.request.contextPath }/file/disPdf.do?file_info="
-					+ code + "," + name;
-			$("#displayValues").val(str);
-			$("#displayForm").submit();
+		$(".displayBtn").on("click",function(){
+			var obj = $(this);
+			var dataStr = obj.attr("data-info");
+			var fileInfos = dataStr.split(",");
+			display(fileInfos[0],fileInfos[1],fileInfos[2],obj);
+		})
+		
+		function display(suffix, code, name,obj) {
+			//需要进行分类
+			switch (suffix) {
+			case ".xls":
+			case ".xlsx":
+			case ".doc":
+			case ".docx":
+			case ".ppt":
+			case ".pptx":
+			case ".pdf":
+				var str = "${pageContext.request.contextPath }/file/disPdf.do?file_info="
+						+ code + "," + name;
+				$("#displayValues").val(str);
+				$("#displayForm").submit();
+				break;
+			case ".jpe":
+			case ".jpeg":
+			case ".jpg":
+			case ".png":
+				var imgObj = obj.parent().parent().parent().find(".tempImg");
+				var file_info = code+","+name
+			 	$.ajax({
+					url:"file/disImg.do",
+					data:{"file_info":file_info},
+					type:"post",
+					dataType:"json",
+					success :function(result){
+						if(result.code ==0){
+							imgObj.attr("data-src", result.data);
+							imgObj.viewer({
+								url : 'data-src',
+								hide : function(e) {
+									$.ajax({
+										url:'file/delTempImg.do',
+										type:'post',
+										data:{"delete_file_path":result.data},
+										dataType:"json",
+										success:function(){
+											return ;	
+										}
+									})
+									imgObj.viewer('destroy')
+								},
+								navbar : false,
+								title : false,
+								keyboard : false,
+							}).viewer("view");
+						} else {
+							alert(result.msg);
+						}
+					},
+					error : function() {
+						alert("服务未响应");
+					}
+				})
+				break;
+			default:
+				alert("不支持的文件格式");
+				break;
+			}
+
 		}
 
 		function downloadFile(code, level) {
@@ -444,57 +519,51 @@
 						}
 					})
 		}
-		
-		function downloadFileCheck(code, level){
-			var resultArray =new Array(2);
+
+		function downloadFileCheck(code, level) {
+			var resultArray = new Array(2);
 			resultArray[0] = -1;
 			resultArray[1] = "";
 			$.ajax({
 				url : "file/downloadCheck.do",
 				type : "post",
-				async: false,
+				async : false,
 				data : {
 					"file_code" : code,
 					"file_level" : level
 				},
 				dataType : 'json',
-				success :function(result){
+				success : function(result) {
 					resultArray[0] = result.code;
 					resultArray[1] = result.data;
-					},
-				error:function(){
+				},
+				error : function() {
 					alert("服务器未响应");
-					
+
 				}
-				})
-				return resultArray;
+			})
+			return resultArray;
 		}
-		
-		function downloadFiles(fileCodes,level) {
-			var fileCodesArray =  fileCodes.split(",");
-			for(var index=0;index <fileCodesArray.length;index++){
+
+		function downloadFiles(fileCodes, level) {
+			var fileCodesArray = fileCodes.split(",");
+			for (var index = 0; index < fileCodesArray.length; index++) {
 				var vaule = fileCodesArray[index];
-				 var result = downloadFileCheck(vaule,level);
+				var result = downloadFileCheck(vaule, level);
 				console.log(result[1]);
-					if(result[0]==0){
-						if(index == (fileCodesArray.length-1)){
-							window.open("file/downloadFile.do?file_name="+ result[1],"_self");
-						}else{
-							window.open("file/downloadFile.do?file_name="+ result[1]);
-						}
+				if (result[0] == 0) {
+					if (index == (fileCodesArray.length - 1)) {
+						window.open("file/downloadFile.do?file_name="
+								+ result[1], "_self");
+					} else {
+						window.open("file/downloadFile.do?file_name="
+								+ result[1]);
 					}
-			}
-		/* 	$.each(fileCodesArray,function(index,vaule){
-				 var result = downloadFileCheck(vaule,level);
-				if(result[0]==0){
-					console.log(result[1]);
-					window.open("file/downloadFile.do?file_name="+ result[1],"_self");
 				}
-			})	 */
+			}
 			cancelBtnBatch();
 		}
-		
-		
+
 		function shareProject(projectCode, projectLevel, userCode) {
 			var str = "${pageContext.request.scheme }://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/pro/sp.do?project_code="
 					+ projectCode
@@ -530,9 +599,10 @@
 				content : $("#share")
 			})
 		}
-		
+
 		function shareFiles(shareCode) {
-			var str = "${pageContext.request.scheme }://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/file/shareFiles.do?share_code="+ shareCode;
+			var str = "${pageContext.request.scheme }://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/file/shareFiles.do?share_code="
+					+ shareCode;
 			$("#shareUrl").html(str)
 			layer.open({
 				type : 1,
@@ -544,72 +614,81 @@
 				content : $("#share")
 			})
 		}
-		
-		function intoclick(){
+
+		function intoclick() {
 			$("#thediv").toggle();
 		}
-		function losePoint(){
+		function losePoint() {
 			$("#thediv").hide();
 		}
-		function allread(){
-			var list=[];
-			for(var i=0;i<$(".adviceCode").length;i++){
+		function allread() {
+			var list = [];
+			for (var i = 0; i < $(".adviceCode").length; i++) {
 				list.push($(".adviceCode")[i].innerHTML)
-			};
+			}
+			;
 			$.ajax({
-				url:'pro/isRead.do',
-				type:'post',
-				data:"list="+JSON.stringify(list),
-				dateType:'json',
-				success:function(){
+				url : 'pro/isRead.do',
+				type : 'post',
+				data : "list=" + JSON.stringify(list),
+				dateType : 'json',
+				success : function() {
 					toload();
 				}
 			})
 		}
-		function toload(){
-			$.ajax({
-				url:'index/getAllMsg.do',
-				type:'post',
-				data:"",//发送服务器的数据
-    			dataType:"json",//返会值的类型
-				success:function(data){
-			        var str="";
-					if(data.data.adNum!=0){
-						$('#num').html(data.data.adNum);
-						$("#notification-count").attr("class", "label unread");
-						for(var i=0;i<data.data.adviceMsg.length;i++){
-							str+="<span class='title'><span class='target'>"+data.data.adviceMsg[i].logMsg+"</span><span class='adviceCode' style='display: none'>"+data.data.adviceMsg[i].adviceCode+"</span></span><hr style='margin:0px 0px 3px 0px'>";
-						};
-						$("#msg").html(str);
-					}else{
-						$("#notification-count").attr("class", "label");
-						$("#msg").html("<span style='width:100%;text-align:center;display:block;'>- 没有新通知 -</span>");
-					}
-				}
-			})	
+		function toload() {
+			$
+					.ajax({
+						url : 'index/getAllMsg.do',
+						type : 'post',
+						data : "",//发送服务器的数据
+						dataType : "json",//返会值的类型
+						success : function(data) {
+							var str = "";
+							if (data.data.adNum != 0) {
+								$('#num').html(data.data.adNum);
+								$("#notification-count").attr("class",
+										"label unread");
+								for (var i = 0; i < data.data.adviceMsg.length; i++) {
+									str += "<span class='title'><span class='target'>"
+											+ data.data.adviceMsg[i].logMsg
+											+ "</span><span class='adviceCode' style='display: none'>"
+											+ data.data.adviceMsg[i].adviceCode
+											+ "</span></span><hr style='margin:0px 0px 3px 0px'>";
+								}
+								;
+								$("#msg").html(str);
+							} else {
+								$("#notification-count").attr("class", "label");
+								$("#msg")
+										.html(
+												"<span style='width:100%;text-align:center;display:block;'>- 没有新通知 -</span>");
+							}
+						}
+					})
 		}
 		$(document).bind('click', function(e) {
-				var e = e || window.event; //浏览器兼容性 
-				var elem = e.target || e.srcElement;
-				while (elem) { //循环判断至跟节点，防止点击的是div子元素 
-					if (elem.id && elem.id == 'both') {
-						return;
-					}
-					elem = elem.parentNode;
+			var e = e || window.event; //浏览器兼容性 
+			var elem = e.target || e.srcElement;
+			while (elem) { //循环判断至跟节点，防止点击的是div子元素 
+				if (elem.id && elem.id == 'both') {
+					return;
 				}
-				$('#thediv').css('display', 'none'); //点击的不是div或其子元素 
-			});
-		 //参数n为休眠时间，单位为毫秒:
-	    function sleep(n) {
-	        var start = new Date().getTime();
-	        //  console.log('休眠前：' + start);
-	        while (true) {
-	            if (new Date().getTime() - start > n) {
-	                break;
-	            }
-	        }
-	        }
-
+				elem = elem.parentNode;
+			}
+			$('#thediv').css('display', 'none'); //点击的不是div或其子元素 
+		});
+		//参数n为休眠时间，单位为毫秒:
+		function sleep(n) {
+			var start = new Date().getTime();
+			//  console.log('休眠前：' + start);
+			while (true) {
+				if (new Date().getTime() - start > n) {
+					break;
+				}
+			}
+		}
 	</script>
 	<div id="share" style="display: none;">
 		<span style="font-weight: bold; padding-right: 20px;">分享链接:</span>
