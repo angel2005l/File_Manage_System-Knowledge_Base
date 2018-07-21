@@ -41,6 +41,10 @@ public final class Constant {
 	public static final String PROFESSIONALTAG = "PR";
 
 	/**
+	 * 分享头标识
+	 */
+	public static final String SHARETAG = "SHA";
+	/**
 	 * EXCEL2007及以上后缀名
 	 */
 	public static final String XLSXSUFFIX = ".xlsx";
