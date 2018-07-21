@@ -52,7 +52,7 @@
 		  `project_remark` varchar(255) DEFAULT NULL COMMENT '项目备注',
 		  `project_parent_code` char(19) DEFAULT NULL COMMENT '项目所属父项目编码',
 		  `project_level` int(2) DEFAULT ${projectLevel} COMMENT '项目级别  0为根项目 用于限定开放的项目层级',
-		  `project_status` varchar(9) DEFAULT NULL COMMENT '项目类型  progress:进行中 completed：已完成 canceled：已取消',
+		  `project_status` varchar(9) DEFAULT NULL COMMENT '项目类型  progress:进行中 completed：已完成 canceled：已取消 locked：已锁定' ,
 		  `create_user_code` varchar(11) DEFAULT NULL COMMENT '创建人编码',
 		  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
 		  `update_user_code` varchar(11) DEFAULT NULL COMMENT '更新人编码',
