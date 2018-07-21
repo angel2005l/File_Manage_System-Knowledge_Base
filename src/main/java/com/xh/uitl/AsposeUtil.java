@@ -2,8 +2,10 @@ package com.xh.uitl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.FileChannel;
 
 import org.apache.ibatis.io.Resources;
 import org.slf4j.Logger;
@@ -362,16 +364,15 @@ public class AsposeUtil {
 		}
 		return pdfFileIs;
 	}
-	
-	//*****************************************************
+
 	/**
 	 * 
-	 * @Title: getLicenseWithPpt  
+	 * @Title: getLicenseWithPpt
 	 * @Description: 获得许可证Ppt
 	 * @author 黄官易
-	 * @return    
-	 * @return boolean 
-	 * @date 2018年7月14日  
+	 * @return
+	 * @return boolean
+	 * @date 2018年7月14日
 	 * @version 1.0
 	 */
 	public static boolean getLicenseWithPpt() {
@@ -530,5 +531,93 @@ public class AsposeUtil {
 			}
 		}
 		return pdfFileIs;
+	}
+
+	/**
+	 * 
+	 * @Title: showPDFStr
+	 * @Description: 将pdf文件写入到临时文件 获得文件路径
+	 * @author 黄官易
+	 * @param filePath
+	 * @return
+	 * @return String
+	 * @date 2018年7月19日
+	 * @version 1.0
+	 */
+	public static String showPDFStr(String filePath) {
+		String pdfPath = "";
+		FileChannel inputChannel = null;
+		FileChannel outputChannel = null;
+		try {
+			pdfPath = realPath + "pdf" + File.separator + DateUtil.curDateYMDHMSSForService() + ".pdf";// 临时文件名称
+			System.err.println(filePath);
+			// 使用fileChannel
+			File inputFile = new File(realPath + filePath);
+			System.err.println(inputFile.exists());
+			if (inputFile.exists()) {
+				// 文件是否存在
+				inputChannel = new FileInputStream(inputFile).getChannel();
+				outputChannel = new FileOutputStream(new File(pdfPath)).getChannel();
+				outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+			}
+		} catch (IOException e) {
+			log.error("Aspose工具类【showPDFStr(String)】方法异常,异常原因:【" + e.toString() + "】");
+			return "";
+		} finally {
+			try {
+				if (null != inputChannel) {
+					inputChannel.close();
+				}
+				if (null != outputChannel) {
+					outputChannel.close();
+				}
+			} catch (IOException e) {
+				log.error("Aspose工具类【showPDFStr(String)】方法关闭输入/输出流异常,异常原因:【" + e.toString() + "】");
+			}
+		}
+		return pdfPath;
+	}
+
+	/**
+	 * 
+	 * @Title: showImgStr
+	 * @Description: 将图片文件写入到临时文件 获得文件路径
+	 * @author 黄官易
+	 * @param filePath
+	 * @return
+	 * @return String
+	 * @date 2018年7月21日
+	 * @version 1.0
+	 */
+	@SuppressWarnings("resource")
+	public static String showImgStr(String filePath, String suffix) {
+		String imgPath = "";
+		FileChannel inputChannel = null;
+		FileChannel outputChannel = null;
+		try {
+			imgPath = "pdf" + File.separator + DateUtil.curDateYMDHMSSForService() + suffix;// 临时文件名称
+			File imgFile = new File(realPath + filePath);
+			if (imgFile.exists()) {
+				inputChannel = new FileInputStream(imgFile).getChannel();
+				outputChannel = new FileOutputStream(new File(realPath + imgPath)).getChannel();
+				// 移动到临时文件下
+				outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+				return imgPath;
+			}
+		} catch (IOException e) {
+			log.error("Aspose工具类【showImgStr(String)】方法异常,异常原因:【" + e.toString() + "】");
+		} finally {
+			try {
+				if (null != inputChannel) {
+					inputChannel.close();
+				}
+				if (null != outputChannel) {
+					outputChannel.close();
+				}
+			} catch (IOException e) {
+				log.error("Aspose工具类【showImgStr(String)】方法关闭输入/输出流异常,异常原因:【" + e.toString() + "】");
+			}
+		}
+		return "";
 	}
 }

@@ -7,12 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
@@ -27,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public final class IOUtil {
 	private static final Logger log = LoggerFactory.getLogger(IOUtil.class);
-	private static String realPath = ContextLoader.getCurrentWebApplicationContext().getServletContext()
+	public final static String realPath = ContextLoader.getCurrentWebApplicationContext().getServletContext()
 			.getRealPath("/");
 
 	/**
@@ -297,34 +292,6 @@ public final class IOUtil {
 
 	/**
 	 * 
-	 * @Title: displayPDF
-	 * @Description: TODO(pdf.js)
-	 * @author 陈专懂
-	 * @return void
-	 * @date 2018年6月19日
-	 * @version 1.0
-	 */
-	public static void displayPDF(HttpServletResponse response, HttpServletRequest request, String path,
-			String fileName) {
-		try {
-			File file = new File(realPath + path + File.separator + fileName);
-			FileInputStream fileInputStream = new FileInputStream(file);
-			byte[] b = new byte[fileInputStream.available()];
-			fileInputStream.read(b);
-			response.setHeader("Content-Disposition", "attachment;fileName=预览文件.pdf");
-			ServletOutputStream out = response.getOutputStream();
-			out.write(b);
-			out.flush();
-			out.close();
-			IOUtil.clearTempPdf(fileInputStream, fileName);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * 
 	 * @Title: closeInputStream
 	 * @Description: 关闭输入流对象
 	 * @author 黄官易
@@ -382,16 +349,4 @@ public final class IOUtil {
 		// IOUtil.deleteNoDirectory(realPath + "pdf/");//太过于危险
 	}
 
-	public static Map<String, Object> Object2Map(Object obj) throws IllegalArgumentException, IllegalAccessException {
-		  Map<String, Object> map = new HashMap<>();
-	        Class<?> clazz = obj.getClass();
-	        System.out.println(clazz);
-	        for (Field field : clazz.getDeclaredFields()) {
-	            field.setAccessible(true);
-	            String fieldName = field.getName();
-	            Object value = field.get(obj);
-	            map.put(fieldName, value);
-	        }
-	        return map;
-	}
 }

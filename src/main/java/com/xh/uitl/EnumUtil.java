@@ -39,7 +39,8 @@ public class EnumUtil {
 				if (code.equals(c))
 					return getInvokeValue(t, "getText");
 			}
-			if(FileTypeImgEnum.class.isInstance(ref)) {
+			System.err.println("asdas"+FileTypeImgEnum.class.getName().equals(ref.getName()));
+			if(FileTypeImgEnum.class.getName().equals(ref.getName())) {
 				return "file_extension_file.png";
 			}
 		}
