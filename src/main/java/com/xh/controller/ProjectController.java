@@ -318,7 +318,7 @@ public class ProjectController extends BaseController {
 	 * @date 2018年7月10日
 	 * @version 1.0
 	 */
-	@RequestMapping("/priStatus.do")
+	@RequestMapping("/proStatus.do")
 	@ResponseBody
 	public Result<Object> changeProjectStatus(HttpServletRequest request, HttpSession session) {
 		try {
@@ -357,38 +357,59 @@ public class ProjectController extends BaseController {
 
 	/**
 	 * 
-	 * @Title: delProject  
+	 * @Title: delProject
 	 * @Description: 删除项目
 	 * @author 黄官易
 	 * @param request
 	 * @param session
-	 * @return    
-	 * @return Result<Object> 
-	 * @date 2018年7月21日  
+	 * @return
+	 * @return Result<Object>
+	 * @date 2018年7月21日
 	 * @version 1.0
 	 */
+	@RequestMapping("/delPro.do")
+	@ResponseBody
 	public Result<Object> delProject(HttpServletRequest request, HttpSession session) {
-		// 获得项目编码
 		String projectCode = request.getParameter("project_code");
 		String projectLevel = request.getParameter("project_level");
-		// 操作人
 		try {
-		String userCode = session.getAttribute("user_code").toString();//如果为null 返回登录页面
-		return ps.delProject(Integer.parseInt(projectLevel), projectCode, userCode);
-		}catch(NullPointerException e) {
+			String userCode = session.getAttribute("user_code").toString();// 如果为null 返回登录页面
+			return ps.delProject(Integer.parseInt(projectLevel), projectCode, userCode);
+		} catch (NullPointerException e) {
 			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
 			return rtnFailResult(Result.ERROR_4200, "");
-		}catch (Exception e) {
-			log.error("删除项目异常,异常原因:【"+e.toString()+"】");
+		} catch (Exception e) {
+			log.error("删除项目异常,异常原因:【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
 		}
 	}
 
-	// 项目锁定
-	public Result<Object> lockProject(HttpServletRequest request) {
-		// 项目编码
-
-		return null;
+	/**
+	 * 
+	 * @Title: lockProject
+	 * @Description: 项目锁定
+	 * @author 黄官易
+	 * @param request
+	 * @param session
+	 * @return
+	 * @return Result<Object>
+	 * @date 2018年7月23日
+	 * @version 1.0
+	 */
+	@RequestMapping("/lockPro.do")
+	@ResponseBody
+	public Result<Object> lockProject(HttpServletRequest request, HttpSession session) {
+		String projectLevel = request.getParameter("project_level");
+		String projectCode = request.getParameter("project_code");
+		try {
+			String userCode = session.getAttribute("user_code").toString();// 防止非法登录
+			return ps.lockProject(Integer.parseInt(projectLevel), projectCode, userCode);
+		} catch (NullPointerException e) {
+			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
+			return rtnFailResult(Result.ERROR_4200, "");
+		} catch (Exception e) {
+			log.error("锁定项目异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
+		}
 	}
-
 }

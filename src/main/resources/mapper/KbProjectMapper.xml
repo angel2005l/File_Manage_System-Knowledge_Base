@@ -131,7 +131,7 @@
   			SELECT  a.id AS id, a.project_code AS project_code, a.project_name AS project_name,a.project_type AS project_type, a.project_parent_code AS project_parent_code, 
    a.project_level AS project_level, a.project_status AS project_status, a.create_user_code AS create_user_code, DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') AS create_time, a.update_user_code AS update_user_code,
    DATE_FORMAT(a.update_time,'%Y-%m-%d %H:%i:%s') AS update_time,b.user_name AS create_user_name,c.user_name AS update_user_name
-   FROM ${formName} a INNER JOIN kb_user b ON a.`create_user_code` = b.`user_code` INNER JOIN kb_user c ON a.update_user_code = c.user_code  WHERE a.project_parent_code= #{projectCode}
+   FROM ${formName} a INNER JOIN kb_user b ON a.`create_user_code` = b.`user_code` INNER JOIN kb_user c ON a.update_user_code = c.user_code  WHERE a.project_parent_code= #{projectCode} AND a.project_status NOT IN ('canceled','locked')
   	</select>
 	<!-- 更新项目状态 -->
 	<update id="updateProjectStatus">
