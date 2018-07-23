@@ -53,7 +53,7 @@
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 	<session-config>
-		<session-timeout>15</session-timeout>
+		<session-timeout>120</session-timeout>
 	</session-config>
 	<welcome-file-list>
 		<welcome-file>view/login.jsp</welcome-file>
