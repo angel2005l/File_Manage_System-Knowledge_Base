@@ -156,5 +156,7 @@
 		</selectKey>
 		update ${pt_name} set project_status = 'locked' ,update_user_code = #{userCode} where project_code = #{projectCode}
 	</update>
+	
+	<!-- 根据项目类型获得 -->
 	<!-- 测试分界线 -->
 </mapper>

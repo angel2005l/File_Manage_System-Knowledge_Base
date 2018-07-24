@@ -41,4 +41,8 @@
   	 SELECT <include refid="Base_Column_List" /> FROM kb_user WHERE user_dept_code= (SELECT dept_parent_code FROM kb_dept WHERE  dept_code = #{userDeptCode})
   	AND professional_code =(SELECT professional_code  FROM kb_professional WHERE professional_level = 1)
   </select>
+  <!-- 根据主方法编码查询部门编码 -->
+  <select id="selectDeptCodeByProjectMainCode" resultType="string">
+  	   SELECT user_dept_code FROM ${projectTableName} a INNER JOIN kb_user b ON a.`create_user_code` = b.user_code WHERE a.project_code = #{projectMainCode}
+  </select>
 </mapper>

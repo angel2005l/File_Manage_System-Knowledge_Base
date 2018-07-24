@@ -82,5 +82,20 @@ public interface KbProjectUserMapper {
 	 * @version 1.0
 	 */
 	public int updateCollectByUserCodeAndMainCode(@Param("isCollect") String isCollect,@Param("userCode") String userCode,@Param("projectMainCode") String projectMainCode) throws SQLException;
+	
+	/**
+	 * 
+	 * @Title: selectProjectMainInfo  
+	 * @Description: 获得主项目信息
+	 * @author 黄官易
+	 * @param userCode
+	 * @param project
+	 * @return
+	 * @throws SQLException    
+	 * @return String[] 
+	 * @date 2018年7月24日  
+	 * @version 1.0
+	 */
+	public String[] selectProjectMainInfo(@Param("userCode") String userCode,@Param("projectCode") String projectCode) throws SQLException;
 
 }

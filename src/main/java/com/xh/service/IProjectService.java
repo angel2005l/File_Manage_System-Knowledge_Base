@@ -72,12 +72,11 @@ public interface IProjectService {
 	 * @param kp
 	 * @param kpus
 	 * @return
-	 * @throws Exception
 	 * @return Result<Object>
-	 * @date 2018年6月29日
+	 * @date 2018年7月24日
 	 * @version 1.0
 	 */
-	public Result<Object> insProject(KbProject kp, List<KbProjectUser> kpus) throws Exception;
+	public Result<Object> insProject(KbProject kp, List<KbProjectUser> kpu, String createUserDeptCode) throws Exception;
 
 	/**
 	 * 
@@ -140,35 +139,66 @@ public interface IProjectService {
 	 * @version 1.0
 	 */
 	public Result<Object> changeProjectStatus(int projectLevel, String projectCode, String userCode) throws Exception;
+
 	/**
 	 * 
-	 * @Title: delProject  
+	 * @Title: delProject
 	 * @Description: 删除项目
 	 * @author 黄官易
 	 * @param projectLevel
 	 * @param projectCode
 	 * @param userCode
 	 * @return
-	 * @throws Exception    
-	 * @return Result<Object> 
-	 * @date 2018年7月21日  
+	 * @throws Exception
+	 * @return Result<Object>
+	 * @date 2018年7月21日
 	 * @version 1.0
 	 */
 	public Result<Object> delProject(int projectLevel, String projectCode, String userCode) throws Exception;
+
 	/**
 	 * 
-	 * @Title: lockProject  
-	 * @Description: 锁定项目  
+	 * @Title: lockProject
+	 * @Description: 锁定项目
 	 * @author 黄官易
 	 * @param projectLevel
 	 * @param projectCode
 	 * @param userCode
 	 * @return
-	 * @throws Exception    
-	 * @return Result<Object> 
-	 * @date 2018年7月21日  
+	 * @throws Exception
+	 * @return Result<Object>
+	 * @date 2018年7月21日
 	 * @version 1.0
 	 */
 	public Result<Object> lockProject(int projectLevel, String projectCode, String userCode) throws Exception;
+
+	/**
+	 * 
+	 * @Title: selectDeptCodeByProjectMainCode
+	 * @Description: 根据主方法编码查询部门编码
+	 * @author 黄官易
+	 * @param projectMainCode
+	 * @return
+	 * @throws Exception
+	 * @return String
+	 * @date 2018年7月24日
+	 * @version 1.0
+	 */
+	public String selectDeptCodeByProjectMainCode(String projectMainCode) throws Exception;
+
+	/**
+	 * 
+	 * @Title: selectProjectMainInfo
+	 * @Description: 非主项目时 获得主项目信息 0编码 1 名称 2是否收藏
+	 * @author 黄官易
+	 * @param userCode
+	 * @param projectCode
+	 * @return
+	 * @throws Exception
+	 * @return String
+	 * @date 2018年7月24日
+	 * @version 1.0
+	 */
+	public String[] selectProjectMainInfo(String userCode, String projectCode) throws Exception;
 
 }

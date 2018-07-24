@@ -32,11 +32,6 @@ import com.xh.uitl.DateUtil;
 import com.xh.uitl.Result;
 import com.xh.uitl.StrUtil;
 
-/**
- * @author 陈专懂
- * @date 2018年6月21日下午3:45:15
- * @version 1.0
- */
 @Service("projectServiceImpl")
 public class ProjectServiceImpl extends BaseService implements IProjectService {
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class); // 日志对象
@@ -213,7 +208,8 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 
 	@Transactional(rollbackFor = { Exception.class })
 	@Override
-	public Result<Object> insProject(KbProject kp, List<KbProjectUser> kpus) throws Exception {
+	public Result<Object> insProject(KbProject kp, List<KbProjectUser> kpus, String createUserDeptCode)
+			throws Exception {
 		String projectTableName = "";
 		Integer projectLevel = kp.getProjectLevel(); // 根据当前的项目信息获得项目等级
 		try {
@@ -225,9 +221,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 
 		if (StrUtil.notBlank(projectTableName)) {
 			try {
-				// 根据项目关联关系，获得部门信息
-				String userDeptCode = kpus.get(0).getUserDeptCode();
-				List<KbUser> superiorUserList = kum.selectSuperiorUserByUserDeptCode(userDeptCode);
+				List<KbUser> superiorUserList = kum.selectSuperiorUserByUserDeptCode(createUserDeptCode);
 				if (null != superiorUserList && !superiorUserList.isEmpty()) {
 					for (KbUser kbUser : superiorUserList) {
 						KbProjectUser kpu = new KbProjectUser();
@@ -237,7 +231,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 						kpu.setProjectLevel(projectLevel);
 						kpu.setUserCode(kbUser.getUserCode());
 						kpu.setUserName(kbUser.getUserName());
-						kpu.setUserDeptCode(userDeptCode);
+						kpu.setUserDeptCode(kbUser.getUserDeptCode());
 						kpu.setCreateUserCode("kb_system");
 						kpu.setCreateTime(DateUtil.curDateYMDHMS());
 						kpus.add(kpu);
@@ -350,6 +344,17 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			log.error("锁定项目数据接口异常,异常原因:【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
 		}
+	}
+
+	@Override
+	public String selectDeptCodeByProjectMainCode(String projectMainCode) throws Exception {
+
+		return null;
+	}
+
+	@Override
+	public String[] selectProjectMainInfo(String userCode, String projectCode) throws Exception {
+		return kpum.selectProjectMainInfo(userCode, projectCode);
 	}
 
 }

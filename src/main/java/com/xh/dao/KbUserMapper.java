@@ -3,6 +3,8 @@ package com.xh.dao;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.xh.entity.KbUser;
 
 public interface KbUserMapper {
@@ -42,5 +44,19 @@ public interface KbUserMapper {
 	 * @version 1.0
 	 */
 	public List<KbUser> selectSuperiorUserByUserDeptCode(String userDeptCode) throws SQLException;
+
+	/**
+	 * 
+	 * @Title: selectDeptCodeByProjectMainCode
+	 * @Description: 根据主方法编码查询部门编码
+	 * @author 黄官易
+	 * @param projectMainCode
+	 * @param projectTabelName
+	 * @return
+	 * @return String
+	 * @date 2018年7月24日
+	 * @version 1.0
+	 */
+	public String selectDeptCodeByProjectMainCode(@Param("projectMainCode") String projectMainCode,@Param("projectTabelName") String projectTabelName);
 
 }
