@@ -35,19 +35,25 @@
 		<!-- 创建文件表 -->
 	<update id="createFileDataTable">
 	CREATE TABLE ${fileTableName} (
-  	`id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id自增',
-  	`file_code` char(19) DEFAULT NULL COMMENT '文件编号 F+yyyyMMddHHmmss+4随机数',
-  	`file_name` varchar(32) DEFAULT NULL COMMENT '文件名称',
-  	`file_info` varchar(255) DEFAULT NULL COMMENT '文件信息',
-  	`file_type` varchar(12) DEFAULT NULL COMMENT '.png/.jpge/.cad/.doc/.docx/.xls…(统一小写)',
-  	`file_status` varchar(9) DEFAULT NULL COMMENT '删除:delete 在档：record',
-  	`file_level` int(2) DEFAULT '${fileLevel}' COMMENT '0为根项目 用于限定开放的项目层级',
-  	`project_code` char(19) DEFAULT NULL COMMENT '项目格式 P+yyyyMMddHHmmss+4随机数',
-  	`create_user_code` varchar(11) DEFAULT NULL COMMENT '员工编号',
-  	`create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  	PRIMARY KEY (`id`),
-  	KEY `index_file_code` (`file_code`) USING BTREE,
-  	KEY `index_project_code` (`project_code`) USING BTREE
+  	`id`  int(11) NOT NULL AUTO_INCREMENT COMMENT 'id自增' ,
+	`file_code`  char(19) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件编号 F+yyyyMMddHHmmss+4随机数' ,
+	`file_name`  varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件名称' ,
+	`file_info`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件信息' ,
+	`file_type`  varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '.png/.jpge/.cad/.doc/.docx/.xls…(统一小写)' ,
+	`file_status`  varchar(9) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '删除:delete 在档：record 锁定：locked' ,
+	`file_level`  int(2) NULL DEFAULT 0 COMMENT '0为根项目 用于限定开放的项目层级' ,
+	`project_code`  char(19) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目格式 P+yyyyMMddHHmmss+4随机数' ,
+	`file_event_type`  varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件性质(事件)调研资料：DYZL,会议资料：HYZL,公司信息资料：GSXXZL' ,
+	`file_event_level`  varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件级别(事件)非常重要：FCZY,重要：ZY,一般：YB' ,
+	`file_research_user_code`  varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '调研人编码' ,
+	`file_research_start_time`  date NULL DEFAULT NULL COMMENT '调研时间' ,
+	`create_user_code`  varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '员工编号' ,
+	`create_time`  datetime NULL DEFAULT NULL COMMENT '创建时间' ,
+	`update_user_code`  varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '更新人编码' ,
+	`update_time`  timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间' ,
+	PRIMARY KEY (`id`),
+	INDEX `index_file_code` (`file_code`) USING BTREE ,
+	INDEX `index_project_code` (`project_code`) USING BTREE 
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	</update>
 
