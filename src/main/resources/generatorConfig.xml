@@ -9,7 +9,7 @@
 			<property name="suppressAllComments" value="true" />
 		</commentGenerator>
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://10.168.20.211:3306/xh_hgy?useUnicode=true"
+			connectionURL="jdbc:mysql://10.168.20.196:3306/xh_hgy?useUnicode=true"
 			userId="xh_hgy" password="xinhai0574">
 			<property name="characterEncoding" value="UTF8" />
 		</jdbcConnection>
@@ -29,7 +29,7 @@
 			targetPackage="com.xh.dao" targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator> -->
-		<table tableName="kb_batch_share" enableCountByExample="false"
+		<table tableName="kb_file_0" enableCountByExample="false"
 			enableDeleteByPrimaryKey="false" enableUpdateByPrimaryKey="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableInsert="false" enableSelectByExample="false"

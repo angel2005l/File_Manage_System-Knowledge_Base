@@ -17,9 +17,21 @@ public class KbFile {
 
 	private String projectCode;
 
+	private String fileEventType;
+
+	private String fileEventLevel;
+
+	private String fileResearchUserCode;
+
+	private String fileResearchStartTime;
+
 	private String createUserCode;
 
 	private String createTime;
+
+	private String updateUserCode;
+
+	private String updateTime;
 
 	public Integer getId() {
 		return id;
@@ -85,12 +97,44 @@ public class KbFile {
 		this.projectCode = projectCode == null ? null : projectCode.trim();
 	}
 
+	public String getFileEventType() {
+		return fileEventType;
+	}
+
+	public void setFileEventType(String fileEventType) {
+		this.fileEventType = fileEventType == null ? null : fileEventType.trim();
+	}
+
+	public String getFileEventLevel() {
+		return fileEventLevel;
+	}
+
+	public void setFileEventLevel(String fileEventLevel) {
+		this.fileEventLevel = fileEventLevel == null ? null : fileEventLevel.trim();
+	}
+
+	public String getFileResearchUserCode() {
+		return fileResearchUserCode;
+	}
+
+	public void setFileResearchUserCode(String fileResearchUserCode) {
+		this.fileResearchUserCode = fileResearchUserCode == null ? null : fileResearchUserCode.trim();
+	}
+
+	public String getFileResearchStartTime() {
+		return fileResearchStartTime;
+	}
+
+	public void setFileResearchStartTime(String fileResearchStartTime) {
+		this.fileResearchStartTime = fileResearchStartTime;
+	}
+
 	public String getCreateUserCode() {
 		return createUserCode;
 	}
 
 	public void setCreateUserCode(String createUserCode) {
-		this.createUserCode = createUserCode;
+		this.createUserCode = createUserCode == null ? null : createUserCode.trim();
 	}
 
 	public String getCreateTime() {
@@ -101,12 +145,20 @@ public class KbFile {
 		this.createTime = createTime;
 	}
 
-	@Override
-	public String toString() {
-		return "KbFile [id=" + id + ", fileCode=" + fileCode + ", fileName=" + fileName + ", fileInfo=" + fileInfo
-				+ ", fileType=" + fileType + ", fileStatus=" + fileStatus + ", fileLevel=" + fileLevel
-				+ ", projectCode=" + projectCode + ", createUserCode=" + createUserCode + ", createTime=" + createTime
-				+ "]";
+	public String getUpdateUserCode() {
+		return updateUserCode;
+	}
+
+	public void setUpdateUserCode(String updateUserCode) {
+		this.updateUserCode = updateUserCode == null ? null : updateUserCode.trim();
+	}
+
+	public String getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
 	}
 
 }

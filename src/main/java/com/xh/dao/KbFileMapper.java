@@ -89,4 +89,38 @@ public interface KbFileMapper {
 	 */
 	public KbFile selectFileByFileCode(@Param("fileTableName") String fileTableName, @Param("fileCode") String fileCode)
 			throws SQLException;
+
+	/**
+	 * 
+	 * @Title: updateLockFile
+	 * @Description: 文件锁定
+	 * @author 黄官易
+	 * @param fileLevel
+	 * @param fileCode
+	 * @param userCode
+	 * @return
+	 * @throws SQLException
+	 * @return int
+	 * @date 2018年7月25日
+	 * @version 1.0
+	 */
+	public int updateLockFile(@Param("fileLevel") int fileLevel, @Param("fileCode") String fileCode,
+			@Param("userCode") String userCode) throws SQLException;
+
+	/**
+	 * 
+	 * @Title: deleteFile
+	 * @Description: 文件删除
+	 * @author 黄官易
+	 * @param fileLevel
+	 * @param fileCode
+	 * @param userCode
+	 * @return
+	 * @throws SQLException
+	 * @return int
+	 * @date 2018年7月25日
+	 * @version 1.0
+	 */
+	public int deleteFile(@Param("fileLevel") int fileLevel, @Param("fileCode") String fileCode,
+			@Param("userCode") String userCode) throws SQLException;
 }

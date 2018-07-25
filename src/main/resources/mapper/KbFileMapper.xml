@@ -2,25 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xh.dao.KbFileMapper">
   <resultMap id="BaseResultMap" type="com.xh.entity.KbFile">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="file_code" jdbcType="CHAR" property="fileCode" />
-    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
-    <result column="file_info" jdbcType="VARCHAR" property="fileInfo" />
-    <result column="file_type" jdbcType="VARCHAR" property="fileType" />
-    <result column="file_status" jdbcType="VARCHAR" property="fileStatus" />
-    <result column="file_level" jdbcType="INTEGER" property="fileLevel" />
-    <result column="project_code" jdbcType="CHAR" property="projectCode" />
-    <result column="create_user_code" jdbcType="VARCHAR" property="createUserCode" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="file_code" property="fileCode" jdbcType="CHAR" />
+    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+    <result column="file_info" property="fileInfo" jdbcType="VARCHAR" />
+    <result column="file_type" property="fileType" jdbcType="VARCHAR" />
+    <result column="file_status" property="fileStatus" jdbcType="VARCHAR" />
+    <result column="file_level" property="fileLevel" jdbcType="INTEGER" />
+    <result column="project_code" property="projectCode" jdbcType="CHAR" />
+    <result column="file_event_type" property="fileEventType" jdbcType="VARCHAR" />
+    <result column="file_event_level" property="fileEventLevel" jdbcType="VARCHAR" />
+    <result column="file_research_user_code" property="fileResearchUserCode" jdbcType="VARCHAR" />
+    <result column="file_research_start_time" property="fileResearchStartTime" jdbcType="DATE" />
+    <result column="create_user_code" property="createUserCode" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_user_code" property="updateUserCode" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
-  <sql id="Base_Column_List">
+  <sql id="Base_Column_List" >
     id, file_code, file_name, file_info, file_type, file_status, file_level, project_code, 
-    create_user_code, DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') as create_time
+    file_event_type, file_event_level, file_research_user_code, file_research_start_time, 
+    create_user_code, create_time, update_user_code, update_time
   </sql>
   
   <!-- 新增文件信息 -->
   <insert id="insertFile" parameterType="com.xh.entity.KbFile">
-  	insert into ${fileTabelName}(file_code, file_name, file_info, file_type, file_status, file_level, project_code,create_user_code, create_time) values(#{kf.fileCode},#{kf.fileName},#{kf.fileInfo},#{kf.fileType},#{kf.fileStatus},#{kf.fileLevel},#{kf.projectCode},#{kf.createUserCode},#{kf.createTime})
+  	insert into ${fileTabelName}(id, file_code, file_name, file_info, file_type, file_status, file_level, project_code,
+  	file_event_type, file_event_level, file_research_user_code, file_research_start_time,
+  	create_user_code, create_time, update_user_code)
+  	values(#{kf.fileCode},#{kf.fileName},#{kf.fileInfo},#{kf.fileType},#{kf.fileStatus},#{kf.fileLevel},#{kf.projectCode},#{kf.fileEventType},#{kf.fileEventLevel},#{kf.researchUserCode},#{kf.},#{kf.createUserCode},#{kf.createTime},#{kf.updateUserCode})
   </insert>
   <!-- 根据员工编码查询当前项目下的所有文件 -->
   <select id="selectFileByUserCode" resultType="map">
@@ -41,7 +51,6 @@
   	  	</if>
   </select>
   
-  
   <!-- 根据员工编码查询当前项目下的所有文件行数 -->
   <select id="selectFileCount" resultType="_int">
     	SELECT count(1) FROM ${fileTableName} a INNER JOIN kb_file_user b ON a.file_code = b.file_code AND b.user_code = #{userCode} AND a.project_code = #{projectCode}
@@ -50,4 +59,18 @@
   <select id="selectFileByFileCode" resultMap="BaseResultMap">
   	select <include refid="Base_Column_List" /> from ${fileTableName} where file_code =#{fileCode}
   </select>
+  <!-- 文件锁定 -->
+  <update id="updateLockFile">
+  	<selectKey keyProperty="ft_name" order="BEFORE" keyColumn="ft_name" resultType="string">
+  		select ft_name from kb_file_table where file_level = #{fileLevel}
+  	</selectKey>
+  	update ${ft_name} <set>file_status = 'lock',update_user_code=#{userCode}</set> where file_code = #{fileCode} 
+  </update>
+  <!-- 文件删除 -->
+  <update id="updateLockFile">
+  	<selectKey keyProperty="ft_name" order="BEFORE" keyColumn="ft_name" resultType="string">
+  		select ft_name from kb_file_table where file_level = #{fileLevel}
+  	</selectKey>
+  	update ${ft_name} <set>file_status = 'delete',update_user_code=#{userCode}</set> where file_code = #{fileCode} 
+  </update>
 </mapper>
