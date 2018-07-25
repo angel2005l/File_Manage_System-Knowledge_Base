@@ -240,7 +240,7 @@
 																				<a class="link-change-dir"
 																					onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">解锁</a>
 																				<a class="link-change-dir"
-																					onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">删除</a>
+																					onclick="delFile('${b.file_code }','${b.file_level }')">删除</a>
 																			</c:if>
 																		</c:when>
 																	</c:choose>

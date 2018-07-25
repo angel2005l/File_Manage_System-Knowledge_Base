@@ -75,6 +75,6 @@
   </sql>
   <!-- 查询文件集合信息 -->
   <select id="selectfileByCodes" resultMap="BaseResultMapWithFile">
-  	select <include refid="Base_file_Column_List" /> from ${ftName} where file_code in <foreach collection="fileCodes.split(',')" item="fileCode" open="(" separator="," close=")">#{fileCode}</foreach>
+  	select <include refid="Base_file_Column_List" /> from ${ftName} where file_code in <foreach collection="fileCodes.split(',')" item="fileCode" open="(" separator="," close=")">#{fileCode}</foreach> and file_status ='record'
   </select>
 </mapper>

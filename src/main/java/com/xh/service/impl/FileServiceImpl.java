@@ -479,7 +479,7 @@ public class FileServiceImpl extends BaseService implements IFileService {
 	public Result<Object> deleteFile(int fileLevel, String fileCode, String userCode) throws Exception {
 		try {
 			return kfm.deleteFile(fileLevel, fileCode, userCode) > 0 ? rtnSuccessResult("文件已删除")
-					: rtnFailResult(Result.ERROR_4300, "文件删除失败");
+					: rtnFailResult(Result.ERROR_4300, "文件已删除或上传时间超过30分钟,请联系系统管理员");
 		} catch (SQLException e) {
 			log.error("文件删除数据接口异常,异常原因:【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");

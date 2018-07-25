@@ -46,6 +46,7 @@
 	  	  		<if test="fileSelMap.startDate!=null and fileSelMap.startDate!=''">
 	  	  			and TIMESTAMPDIFF(HOUR,#{fileSelMap.startDate},a.create_time) &gt;= 0 and  TIMESTAMPDIFF(HOUR,#{fileSelMap.endDate},a.create_time) &lt; 24
 	  	  		</if>
+	  	  		and a.file_status &lt;&gt; 'delete'
 	  	  	</where>
   	  	</if>
   </select>
@@ -55,7 +56,7 @@
   </select>
   <!-- 根据文件标号查询特定文件信息 -->
   <select id="selectFileByFileCode" resultMap="BaseResultMap">
-  	select <include refid="Base_Column_List" /> from ${fileTableName} where file_code =#{fileCode}
+  	select <include refid="Base_Column_List" /> from ${fileTableName} where file_code =#{fileCode} and file_status ='record'
   </select>
   <!-- 文件锁定 -->
   <update id="updateLockFile">
@@ -69,6 +70,6 @@
   	<selectKey keyProperty="ft_name" order="BEFORE" keyColumn="ft_name" resultType="string">
   		select ft_name from kb_file_table where file_level = #{fileLevel}
   	</selectKey>
-  	update ${ft_name} <set>file_status = 'delete',update_user_code=#{userCode}</set> where file_code = #{fileCode} and (TIMESTAMPDIFF(MINUTE,create_time,NOW()) &lt;=30 or project_status = 'locked')
+  	update ${ft_name} <set>file_status = 'delete',update_user_code=#{userCode}</set> where file_code = #{fileCode} and (TIMESTAMPDIFF(MINUTE,create_time,NOW()) &lt;=30 or file_status = 'locked')
   </update>
 </mapper>
