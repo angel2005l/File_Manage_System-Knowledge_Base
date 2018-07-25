@@ -11,10 +11,20 @@
   <sql id="Base_Column_List" >
     id, dic_code, dic_name, dic_value, dic_parent_code
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 'false' as QUERYID,
-    <include refid="Base_Column_List" />
-    from kb_dic
-    where id = #{id,jdbcType=INTEGER}
+  <!-- 获得文件事件类型 -->
+  <select id="selectFileEventTypeForAll" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from kb_dic where dic_parent_code = 'file_event_type'
+  </select>
+  <!-- 根据文件事件类型编码获得值 -->
+  <select id="selectFileEventTypeValueByCode" resultMap="BaseResultMap" parameterType="string">
+  	select <include refid="Base_Column_List"/> from kb_dic where dic_parent_code = 'file_event_type' and dic_code = #{code}
+  </select>
+  <!-- 获得文件事件级别 -->
+  <select id="selectFileEventLevelForAll" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/> from kb_dic where dic_parent_code = 'file_event_level'
+  </select>
+  <!-- 根据文件事件级别编码获得值 -->
+  <select id="selectFileEventLevelvalueByCode" resultMap="BaseResultMap" parameterType="string">
+  	select <include refid="Base_Column_List"/> from kb_dic where dic_parent_code = 'file_event_level' and dic_code = #{code}
   </select>
 </mapper>
