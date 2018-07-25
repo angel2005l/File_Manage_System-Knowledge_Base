@@ -64,13 +64,13 @@
   	<selectKey keyProperty="ft_name" order="BEFORE" keyColumn="ft_name" resultType="string">
   		select ft_name from kb_file_table where file_level = #{fileLevel}
   	</selectKey>
-  	update ${ft_name} <set>file_status = 'lock',update_user_code=#{userCode}</set> where file_code = #{fileCode} 
+  	update ${ft_name} <set>file_status = 'locked',update_user_code=#{userCode}</set> where file_code = #{fileCode} 
   </update>
   <!-- 文件删除 -->
   <update id="updateLockFile">
   	<selectKey keyProperty="ft_name" order="BEFORE" keyColumn="ft_name" resultType="string">
   		select ft_name from kb_file_table where file_level = #{fileLevel}
   	</selectKey>
-  	update ${ft_name} <set>file_status = 'delete',update_user_code=#{userCode}</set> where file_code = #{fileCode} 
+  	update ${ft_name} <set>file_status = 'delete',update_user_code=#{userCode}</set> where file_code = #{fileCode} and (TIMESTAMPDIFF(MINUTE,create_time,NOW()) &lt;=30 or project_status = 'locked')
   </update>
 </mapper>
