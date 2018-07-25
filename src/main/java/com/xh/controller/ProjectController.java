@@ -111,6 +111,9 @@ public class ProjectController extends BaseController {
 			int projectLevel = Integer.parseInt(projectParentLevel) + 1;// 当前项目级别
 			String userCode = session.getAttribute("user_code").toString();// 创建人编码
 			String createUserDeptCode ="";// 创建人所属部门编码
+			// 为了获取projectCode，自己存入request
+			String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService()
+			+ StrUtil.getRandom((int) (Math.random() * 10000), 4);// 项目编码
 			String[] projectMainInfos  = null;
 			if(projectLevel>0) {
 				//当项目不是主项目时 获得主项目信息
@@ -121,11 +124,10 @@ public class ProjectController extends BaseController {
 				}
 				createUserDeptCode = ps.selectDeptCodeByProjectMainCode(projectMainInfos[0]);
 			}else {
+				//主项目时 使用当前项目信息
+				projectMainInfos = new String[] {projectCode,projectName,"N"};
 				createUserDeptCode = session.getAttribute("user_dept_code").toString();// 创建人所属部门编码
 			}
-			// 为了获取projectCode，自己存入request
-			String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService()
-					+ StrUtil.getRandom((int) (Math.random() * 10000), 4);// 项目编码
 			request.setAttribute("project_code", projectCode);
 			request.setAttribute("log_event_value", projectName);
 			KbProject kp = new KbProject();
@@ -155,6 +157,9 @@ public class ProjectController extends BaseController {
 					kpu.setUserCode(editUserInfos[0]);
 					kpu.setUserName(editUserInfos[1]);
 					kpu.setUserDeptCode(editUserInfos[2]);
+					kpu.setProjectMainCode(projectMainInfos[0]);
+					kpu.setProjectMainName(projectMainInfos[1]);
+					kpu.setProjectIsCollect(projectMainInfos[2]);
 					kpu.setCreateUserCode(userCode);
 					kpu.setCreateTime(DateUtil.curDateYMDHMS());
 					kpuList.add(kpu);
@@ -173,12 +178,15 @@ public class ProjectController extends BaseController {
 					kpu.setUserCode(readUserInfos[0]);
 					kpu.setUserName(readUserInfos[1]);
 					kpu.setUserDeptCode(readUserInfos[2]);
+					kpu.setProjectMainCode(projectMainInfos[0]);
+					kpu.setProjectMainName(projectMainInfos[1]);
+					kpu.setProjectIsCollect(projectMainInfos[2]);
 					kpu.setCreateUserCode(userCode);
 					kpu.setCreateTime(DateUtil.curDateYMDHMS());
 					kpuList.add(kpu);
 				}
 			}
-			Result<Object> result = ps.insProject(kp, kpuList,createUserDeptCode);
+			Result<Object> result = ps.insProject(kp, kpuList,createUserDeptCode,projectMainInfos);
 			return result;
 		} catch (NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));

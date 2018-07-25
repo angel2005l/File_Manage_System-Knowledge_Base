@@ -76,7 +76,7 @@ public interface IProjectService {
 	 * @date 2018年7月24日
 	 * @version 1.0
 	 */
-	public Result<Object> insProject(KbProject kp, List<KbProjectUser> kpu, String createUserDeptCode) throws Exception;
+	public Result<Object> insProject(KbProject kp, List<KbProjectUser> kpu, String createUserDeptCode,String[] projectMainInfos) throws Exception;
 
 	/**
 	 * 

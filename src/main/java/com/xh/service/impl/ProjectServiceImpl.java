@@ -208,7 +208,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 
 	@Transactional(rollbackFor = { Exception.class })
 	@Override
-	public Result<Object> insProject(KbProject kp, List<KbProjectUser> kpus, String createUserDeptCode)
+	public Result<Object> insProject(KbProject kp, List<KbProjectUser> kpus, String createUserDeptCode,String[] projectMainInfos)
 			throws Exception {
 		String projectTableName = "";
 		Integer projectLevel = kp.getProjectLevel(); // 根据当前的项目信息获得项目等级
@@ -232,6 +232,9 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 						kpu.setUserCode(kbUser.getUserCode());
 						kpu.setUserName(kbUser.getUserName());
 						kpu.setUserDeptCode(kbUser.getUserDeptCode());
+						kpu.setProjectMainCode(projectMainInfos[0]);
+						kpu.setProjectMainName(projectMainInfos[1]);
+						kpu.setProjectIsCollect(projectMainInfos[2]);
 						kpu.setCreateUserCode("kb_system");
 						kpu.setCreateTime(DateUtil.curDateYMDHMS());
 						kpus.add(kpu);
