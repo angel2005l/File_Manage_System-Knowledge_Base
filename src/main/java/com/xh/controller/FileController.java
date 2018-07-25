@@ -473,7 +473,7 @@ public class FileController extends BaseController {
 			return fs.insBatchProject(kbs);
 		} catch (NullPointerException e) {
 			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
-			return rtnErrorResult(Result.ERROR_6000, "登录信息已失效,请重新登录");
+			return rtnErrorResult(Result.ERROR_4200, "登录信息已失效,请重新登录");
 		} catch (Exception e) {
 			log.error("新增文件批量分享信息异常,异常原因:【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
@@ -531,8 +531,65 @@ public class FileController extends BaseController {
 			return fs.deleteTempImg(filePath);
 		} catch (Exception e) {
 			log.error("销毁临时图片文件接口异常,异常原因:【" + e.toString() + "】");
-			return rtnErrorResult(Result.ERROR_6000, "");
+			return rtnErrorResult(Result.ERROR_6000, "系统异常,请联系系统管理员");
 		}
 	}
 
+	/**
+	 * 
+	 * @Title: lockFile
+	 * @Description: 文件锁定
+	 * @author 黄官易
+	 * @param request
+	 * @param session
+	 * @return
+	 * @return Result<Object>
+	 * @date 2018年7月25日
+	 * @version 1.0
+	 */
+	@RequestMapping("/lockFile.do")
+	@ResponseBody
+	public Result<Object> lockFile(HttpServletRequest request, HttpSession session) {
+		String fileCode = request.getParameter("file_code");
+		String fileLevel = request.getParameter("file_level");
+		try {
+			String userCode = session.getAttribute("user_code").toString();
+			return fs.uptlockFile(Integer.parseInt(fileLevel), fileCode, userCode);
+		} catch (NullPointerException e) {
+			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
+			return rtnErrorResult(Result.ERROR_4200, "登录信息已失效,请重新登录");
+		} catch (Exception e) {
+			log.error("文件锁定接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "系统异常,请联系系统管理员");
+		}
+	}
+
+	/**
+	 * 
+	 * @Title: deleteFile
+	 * @Description: 文件删除
+	 * @author 黄官易
+	 * @param request
+	 * @param session
+	 * @return
+	 * @return Result<Object>
+	 * @date 2018年7月25日
+	 * @version 1.0
+	 */
+	@RequestMapping("/delFile.do")
+	@ResponseBody
+	public Result<Object> deleteFile(HttpServletRequest request, HttpSession session) {
+		String fileCode = request.getParameter("file_code");
+		String fileLevel = request.getParameter("file_level");
+		try {
+			String userCode = session.getAttribute("user_code").toString();
+			return fs.deleteFile(Integer.parseInt(fileLevel), fileCode, userCode);
+		} catch (NullPointerException e) {
+			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
+			return rtnErrorResult(Result.ERROR_4200, "登录信息已失效,请重新登录");
+		} catch (Exception e) {
+			log.error("文件删除接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "系统异常,请联系系统管理员");
+		}
+	}
 }

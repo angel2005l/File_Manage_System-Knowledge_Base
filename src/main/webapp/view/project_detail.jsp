@@ -231,8 +231,8 @@
 																			</c:if>
 																			<a class="link-change-dir" onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">分享</a>
 																			<c:if test="${b.file_permission eq 'download' }">
-																			<a class="link-change-dir" onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">锁定</a>
-																			<a class="link-change-dir" onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">删除</a>
+																			<a class="link-change-dir" onclick="lockFile('${b.file_code }','${b.file_level }')">锁定</a>
+																			<a class="link-change-dir" onclick="delFile('${b.file_code }','${b.file_level }')">删除</a>
 																			</c:if>
 																		</c:when>
 																		<c:when test="${b.file_status eq 'locked' }">
@@ -258,7 +258,7 @@
 										<font style="vertical-align: inline;">批量下载</font>
 									</button>
 									<button id="batch_enter" type="button" class="btn btn-reject"
-										style="float: left; display: none" batch_method="">
+										style="float: left; display: none" data-batch-method="">
 										<font style="vertical-align: inline;">确定</font>
 									</button>
 									<button id="batch_cancel" type="button" class="btn btn-reject"
@@ -279,12 +279,12 @@
 			<div class="detail-actions">
 				<c:if test="${!(rootCode eq projectInfo.projectCode) }">
 					<div class="item">
-						<a class="detail-action detail-action-star" title="返回上一层"
+						<a id="back_page" class="detail-action detail-action-star " title="返回上一层"
 							href="file/pfdb.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }&root_code=${rootCode }">返回上一层</a>
 					</div>
 				</c:if>
 				<div class="item">
-					<a class="detail-action detail-action-star" title="返回首页"
+					<a id="back_index" class="detail-action detail-action-star" title="返回首页"
 						href="pro/index.do">返回首页</a>
 				</div>
 				<c:if test="${'write' eq projectInfo.projectPermission }">
@@ -297,15 +297,10 @@
 							href="pro/insProJsp.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }">新增项目</a>
 					</div>
 					<div class="item">
-						<a class="detail-action detail-action-star"
-							href="pro/lockPro.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }">锁定项目</a>
+						<a class="detail-action detail-action-star" onclick="lockProject('${projectInfo.projectCode }','${projectInfo.projectLevel }')">锁定项目</a>
 					</div>
 					<div class="item">
-						<a class="detail-action detail-action-star"
-							href="pro/delPro.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }">删除项目</a>
-					</div>
-					<div class="item">
-						<a class="detail-action detail-action-star" onclick="test()">测试加载弹层</a>
+						<a class="detail-action detail-action-star" onclick="deleteProject('${projectInfo.projectCode }','${projectInfo.projectLevel }')">删除项目</a>
 					</div>
 				</c:if>
 				<div class="item">

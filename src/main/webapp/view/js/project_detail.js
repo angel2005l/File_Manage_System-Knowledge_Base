@@ -8,7 +8,7 @@ $("#batch_download").on("click", function() {
 	if ("none" == displayValue) {
 		bfcObj.css("display", "");
 		$(this).css("display", "none");
-		$("#batch_enter").css("display", "").attr("batch_method", "1");
+		$("#batch_enter").css("display", "").attr("data-batch-method", "1");
 		$("#batch_cancel").css("display", "");
 	}
 })
@@ -19,13 +19,13 @@ $("#batch_share").on("click", function() {
 	if ("none" == displayValue) {
 		bfcObj.css("display", "");
 		$(this).css("display", "none");
-		$("#batch_enter").css("display", "").attr("batch_method", "2");
+		$("#batch_enter").css("display", "").attr("data-batch-method", "2");
 		$("#batch_cancel").css("display", "");
 	}
 })
 
 $("#batch_enter").on("click", function() {
-	var batchMethod = $(this).attr("batch_method");
+	var batchMethod = $(this).attr("data-batch-method");
 	var fileCodes = "";
 	$(".batch-file-check.checked").each(function() {
 		fileCodes += $(this).attr("file_code") + ",";
@@ -82,8 +82,8 @@ $("#batch_cancel").on("click", function() {
 function cancelBtnBatch() {
 	$(".batch-file-check").removeClass("checked").addClass("noChecked")
 			.css("display", "none");
-	$("#batch_enter").css("display", "none").attr("batch_method", "");
-	$("#batch_cancel").css("display", "none").attr("batch_method", "")
+	$("#batch_enter").css("display", "none").attr("data-batch-method", "");
+	$("#batch_cancel").css("display", "none").attr("data-batch-method", "")
 	$("#batch_download,#batch_share").css("display", "");
 }
 
@@ -362,6 +362,101 @@ $(".project-check").on('click', function() {
 	})
 })
 
-function lockproject(code,level){
-	var result = ajaxPost('',data,false);
+function deleteProject(code,level){
+	var data = "project_code="+code+"&project_level="+ level;
+	layer.msg('是否删除项目',{
+		time:0,
+		btn:['确定','取消'],
+		yes:function(index){
+			layer.close(index);
+			var result = ajaxPost('pro/delPro.do',data,false);
+			if(null != result ){
+				if(result.code ==0 ){
+					if(level==0){
+						$("#back_index").click();
+					}else{
+						$("#back_page").click();
+					}
+				}else if(result.code ==4200){
+					window.location.href='user/logout.do'
+				}else{
+					layer.msg(result.msg);
+				}
+			}else{
+				layer.msg('服务未响应');
+			}
+		}
+	})
+}
+
+function lockProject(code,level){
+	var data = "project_code="+code+"&project_level="+ level;
+	layer.msg('是否锁定项目',{
+		time:0,
+		btn:['确定','取消'],
+		yes:function(index){
+			layer.close(index);
+			var result = ajaxPost('pro/lockPro.do',data,false);
+			if(null != result ){
+				if(result.code ==0 ){
+					if(level==0){
+						$("#back_index").click();
+					}else{
+						$("#back_page").click();
+					}
+				}else if(result.code ==4200){
+					window.location.href='user/logout.do'
+				}else{
+					layer.msg(result.msg);
+				}
+			}else{
+				layer.msg('服务未响应');
+			}
+		}
+	})
+}
+function lockFile(code,level){
+	var data = "file_code="+code+"&file_level="+ level;
+	layer.msg('是否锁定文件',{
+		time:0,
+		btn:['确定','取消'],
+		yes:function(index){
+			layer.close(index);
+			var result = ajaxPost('file/lockFile.do',data,false);
+			if(null != result ){
+				if(result.code ==0 ){
+					location.reload();
+				}else if(result.code ==4200){
+					window.location.href='user/logout.do'
+				}else{
+					layer.msg(result.msg);
+				}
+			}else{
+				layer.msg('服务未响应');
+			}
+		}
+	})
+}
+
+function delFile(code,level){
+	var data = "file_code="+code+"&file_level="+ level;
+	layer.msg('是否删除文件',{
+		time:0,
+		btn:['确定','取消'],
+		yes:function(index){
+			layer.close(index);
+			var result = ajaxPost('file/delFile.do',data,false);
+			if(null != result ){
+				if(result.code ==0 ){
+					location.reload();
+				}else if(result.code ==4200){
+					window.location.href='user/logout.do'
+				}else{
+					layer.msg(result.msg);
+				}
+			}else{
+				layer.msg('服务未响应');
+			}
+		}
+	})
 }
