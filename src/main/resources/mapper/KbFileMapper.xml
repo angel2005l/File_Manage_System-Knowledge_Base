@@ -24,21 +24,20 @@
     file_event_type, file_event_level, file_research_user_code, file_research_start_time, 
     create_user_code, create_time, update_user_code, update_time
   </sql>
-  
   <!-- 新增文件信息 -->
   <insert id="insertFile" parameterType="com.xh.entity.KbFile">
   	insert into ${fileTabelName}(id, file_code, file_name, file_info, file_type, file_status, file_level, project_code,
   	file_event_type, file_event_level, file_research_user_code, file_research_start_time,
   	create_user_code, create_time, update_user_code)
-  	values(#{kf.fileCode},#{kf.fileName},#{kf.fileInfo},#{kf.fileType},#{kf.fileStatus},#{kf.fileLevel},#{kf.projectCode},#{kf.fileEventType},#{kf.fileEventLevel},#{kf.researchUserCode},#{kf.},#{kf.createUserCode},#{kf.createTime},#{kf.updateUserCode})
+  	values(#{kf.fileCode},#{kf.fileName},#{kf.fileInfo},#{kf.fileType},#{kf.fileStatus},#{kf.fileLevel},#{kf.projectCode},#{kf.fileEventType},#{kf.fileEventLevel},#{kf.researchUserCode},#{kf.fileResearchStartTime},#{kf.createUserCode},#{kf.createTime},#{kf.updateUserCode})
   </insert>
   <!-- 根据员工编码查询当前项目下的所有文件 -->
   <select id="selectFileByUserCode" resultType="map">
   	SELECT a.id ,a.file_code,a.file_name,a.file_info,a.file_type,a.create_time,a.file_level,b.file_permission FROM ${fileTableName} a INNER JOIN kb_file_user b ON a.file_code = b.file_code AND b.user_code = #{userCode} AND a.project_code = #{projectCode}
   </select>
-  
+  <!-- 根据员工编码查询当前项目下的特定文件 -->
   <select id="selectFileByParams" resultType="map">
-  	  	SELECT a.id ,a.file_code,a.file_name,a.file_info,a.file_type,a.create_time,a.file_level,b.file_permission,b.user_name FROM ${fileTableName} a INNER JOIN kb_file_user b ON a.file_code = b.file_code AND b.user_code = #{userCode} AND a.project_code = #{projectCode} 
+  	  	SELECT a.id ,a.file_code,a.file_name,a.file_info,a.file_type,a.create_time,a.file_level,b.file_permission,a.file_status,b.user_name FROM ${fileTableName} a INNER JOIN kb_file_user b ON a.file_code = b.file_code AND b.user_code = #{userCode} AND a.project_code = #{projectCode} 
   	  	<if test="fileSelMap!=null">
 	  	  	<where>
 	  	  		<if test="fileSelMap.fileName!=null and fileSelMap.fileName!=''">
@@ -50,7 +49,6 @@
 	  	  	</where>
   	  	</if>
   </select>
-  
   <!-- 根据员工编码查询当前项目下的所有文件行数 -->
   <select id="selectFileCount" resultType="_int">
     	SELECT count(1) FROM ${fileTableName} a INNER JOIN kb_file_user b ON a.file_code = b.file_code AND b.user_code = #{userCode} AND a.project_code = #{projectCode}
@@ -67,7 +65,7 @@
   	update ${ft_name} <set>file_status = 'locked',update_user_code=#{userCode}</set> where file_code = #{fileCode} 
   </update>
   <!-- 文件删除 -->
-  <update id="updateLockFile">
+  <update id="deleteFile">
   	<selectKey keyProperty="ft_name" order="BEFORE" keyColumn="ft_name" resultType="string">
   		select ft_name from kb_file_table where file_level = #{fileLevel}
   	</selectKey>
