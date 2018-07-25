@@ -215,14 +215,35 @@
 															</div>
 															<div class="tags"></div>
 															<div class="control-dir no-dir">
-																<a class="link-change-dir displayBtn"  data-info = "${b.file_type },${b.file_code },${b.file_name }"  >预览</a>
-																<c:if test="${b.file_permission eq 'download' }">
-																	<a
-																		onclick="downloadFile('${b.file_code }','${b.file_level }')"
-																		class="link-change-dir">下载</a>
-																</c:if>
-																<a class="link-change-dir"
-																	onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">分享</a>
+																<!-- record -->
+																	<!-- onlyread -->
+																		<!-- 预览、分享 -->
+																	<!-- download -->
+																		<!-- 预览、分享、锁定、删除 -->
+																<!-- lock -->
+																	<!-- download -->
+																		<!-- 解锁、删除 -->
+																	<c:choose>
+																		<c:when test="${b.file_status eq 'record' }">
+																			<a class="link-change-dir displayBtn"  data-info ="${b.file_type },${b.file_code },${b.file_name }" >预览</a>
+																			<c:if test="${b.file_permission eq 'download' }">
+																			<a class="link-change-dir" onclick="downloadFile('${b.file_code }','${b.file_level }')">下载</a>
+																			</c:if>
+																			<a class="link-change-dir" onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">分享</a>
+																			<c:if test="${b.file_permission eq 'download' }">
+																			<a class="link-change-dir" onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">锁定</a>
+																			<a class="link-change-dir" onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">删除</a>
+																			</c:if>
+																		</c:when>
+																		<c:when test="${b.file_status eq 'locked' }">
+																			<c:if test="${b.file_permission eq 'download' }">
+																				<a class="link-change-dir"
+																					onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">解锁</a>
+																				<a class="link-change-dir"
+																					onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">删除</a>
+																			</c:if>
+																		</c:when>
+																	</c:choose>
 															</div>
 														</div>
 													</div>

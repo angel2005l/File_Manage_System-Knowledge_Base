@@ -183,7 +183,7 @@ function downloadFile(code, level) {
 	var result = ajaxPost('file/downloadCheck.do',data,false);
 	if(null != result){
 		if (result.code === 0) {
-			window.location.href = "file/downloadFile.do?file_name="+ data.data;
+			window.location.href = "file/downloadFile.do?file_name="+ result.data;
 		} else {
 			layer.msg(result.msg);
 		}
