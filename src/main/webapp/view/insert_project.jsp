@@ -13,6 +13,7 @@
 <meta name="renderer" content="webkit">
 <link type="text/css" rel="stylesheet"
 	href="assets/css/translateelement.css">
+	<link rel="stylesheet" href="assets/theme/default/layer.css" />
 </head>
 <body>
 	<div class="wrapper">
@@ -95,7 +96,16 @@
 
 								<div class="tab active" data-tab="team">
 									<div class="manage-members">
-										<div class="add-member"></div>
+										<div class="add-member">
+										
+                        <div class="group-select">
+                            <span class="all selected" data-subgroup="-1" >所有人</span>
+                            <span data-subgroup="2098bc04406044ba8349d0b360c88bc5" class="selected">远程</span>
+                            <span data-subgroup="e92f16e42a71438db52fce8361c0546b" class="">南京</span>
+                            <span data-subgroup="4aced19c071f4c058e7ffa9d26c78c9c" class="">设计服务部</span>
+                            <span data-subgroup="21c45a7acf2f46e780d013da170649c5" class="">内贸市场部</span>
+                            </div>
+										</div>
 
 										<div class="members member-checkbox-list">
 											<c:forEach var="b" items="${userList }">
@@ -169,55 +179,8 @@
 		</div>
 	</div>
 	<script type="text/javascript" src="assets/js/jquery.form.js"></script>
-	<script type="text/javascript">
-		$(function() {
-			//创建人默认为项目参与者
-			var createInfo = $("#userInfo").val();
-			$("input[name='project_edit'][value='"+createInfo+"']").prop("checked","checked").on("change",function(){
-				$(this).prop("checked","checked");
-			})
-			$("input[name='project_read'][value='"+createInfo+"']").prop("disabled","disabled");
-			
-			//控制权限唯一
-			$("input[name='project_edit']").on("change", function() {
-				var editVal = $(this).val();
-				changeFileShow(editVal);
-			});
-			$("input[name='project_read']").on("change", function() {
-				var readVal = $(this).val();
-				changeFileDownload(readVal);
-			})
-		});
-		function changeFileShow(editVal) {
-			var obj = $("input[name='project_read'][value='" + editVal + "']");
-			if (obj.is(":checked")) {
-				obj.prop("checked", false);
-			}
-		}
-		function changeFileDownload(readVal) {
-			var obj = $("input[name='project_edit'][value='" + readVal + "']");
-			if (obj.is(":checked")) {
-				obj.prop("checked", false);
-			}
-		}
-
-		function clickBtn() {
-			$("#projectFrom").ajaxSubmit({
-				url : 'pro/insPro.do',
-				type : 'post',
-				dataType : 'json',
-				success : function(result) {
-					alert(result.msg);
-					if (result.code == 0) {
-						self.location=document.referrer;
-					}
-				},
-				error : function(result) {
-					alert("服务未响应");
-				}
-			});
-		}
-	</script>
+	<script type="text/javascript" src="assets/js/layer.js"></script>
+	<script type="text/javascript" src="view/js/insert_project.js"></script>
 </body>
 
 </html>
