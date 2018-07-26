@@ -252,6 +252,13 @@ public class ProjectController extends BaseController {
 					: request.getParameter("project_code");// 获得父类编码
 			String projectParentLevel = StrUtil.isBlank(request.getParameter("project_level")) ? "-1"
 					: request.getParameter("project_level");// 获得父类等级
+			//使用部门协同功能
+			//获得部门信息
+			
+			//获得所有人员信息
+			//2
+			
+			
 			Result<List<KbUser>> userResult = us.selUsersByUserDeptCode(userDeptCode); // 获得员工信息
 			request.setAttribute("userList", userResult.getData());
 			request.setAttribute("projectParentCode", projectParentCode);
