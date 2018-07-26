@@ -76,7 +76,7 @@ public class SystemLogAspect {
 		String logUserCode = session.getAttribute("user_code").toString();
 		String logUserName = session.getAttribute("user_name").toString();
 		// 请求的IP
-		String ip = request.getRemoteAddr(); // 暂时没用
+		// String ip = request.getRemoteAddr(); // 暂时没用
 		// 设立变量
 		String logStatus = "error";
 		String projectCode = "";
@@ -88,7 +88,7 @@ public class SystemLogAspect {
 		Map<String, String> logMap = getControllerMethodDescription(jp);
 		String isAdvice = logMap.get("isAdvice");
 		String isType = logMap.get("logType");
-		String logEventvalue= "";
+		String logEventvalue = "";
 		// 获取request值
 		Object[] obj = jp.getArgs();
 		for (Object object : obj) {
@@ -99,9 +99,10 @@ public class SystemLogAspect {
 				parentProjectLevel = Integer.parseInt(request.getParameter("project_level"));
 				errorLogMsg = logUserName + ",操作时出现异常，异常信息为：" + result.getMsg();
 				logEventvalue = (String) request.getAttribute("log_event_value");
-				}
+			}
 		}
-		String logMsg = logUserName + "," + logMap.get("description")+(StrUtil.isBlank(logEventvalue)?"":"【"+logEventvalue+"】");// 日志信息
+		String logMsg = logUserName + "," + logMap.get("description")
+				+ (StrUtil.isBlank(logEventvalue) ? "" : "【" + logEventvalue + "】");// 日志信息
 		try {
 			if (code == 0) {
 				logStatus = "success";
@@ -110,22 +111,24 @@ public class SystemLogAspect {
 				isAdvice = "false";
 			}
 			// *========控制台输出=========*//
-//			System.out.println("=====后置returning通知开始=====");
-//			System.out.println(
-//					"请求方法:" + (jp.getTarget().getClass().getName() + "." + jp.getSignature().getName() + "()"));
-//			System.out.println("方法描述:" + logUserName + ",操作了:" + getControllerMethodDescription(jp).get("description"));
-//			System.out.println("请求人:" + logUserName);
-//			System.out.println("请求IP:" + ip);
+			// System.out.println("=====后置returning通知开始=====");
+			// System.out.println(
+			// "请求方法:" + (jp.getTarget().getClass().getName() + "." +
+			// jp.getSignature().getName() + "()"));
+			// System.out.println("方法描述:" + logUserName + ",操作了:" +
+			// getControllerMethodDescription(jp).get("description"));
+			// System.out.println("请求人:" + logUserName);
+			// System.out.println("请求IP:" + ip);
 			// *========数据库通知=========*//
 			if (("true").equals(isAdvice)) {
 				List<KbUserAdvice> kbUserAdviceList = new ArrayList<KbUserAdvice>();
-				List<String> userCodeList=new ArrayList<String>();
+				List<String> userCodeList = new ArrayList<String>();
 				// 若该level==0，则无上级，不需要通知任何人了，否则通知上级项目的所有组员
-				if("insertProject".equals(isType)|| parentProjectLevel != 0){
+				if ("insertProject".equals(isType) || parentProjectLevel != 0) {
 					if (StrUtil.notBlank(parentProjectCode)) {
 						userCodeList = kolService.parentUserCodeByCode(parentProjectCode).getData();
 					}
-				}else if("insertFile".equals(isType)){
+				} else if ("insertFile".equals(isType)) {
 					userCodeList = kolService.parentUserCodeByCode(projectCode).getData();
 				}
 				for (String userCode : userCodeList) {
@@ -155,7 +158,7 @@ public class SystemLogAspect {
 			log.setCreateTime(DateUtil.curDateYMDHMS());
 			// 保存数据库
 			kolService.addLog(log);
-//			System.out.println("=====后置returning通知结束=====");
+			// System.out.println("=====后置returning通知结束=====");
 		} catch (Exception e) {
 			// 记录本地异常日志
 			logger.error("==通知异常==");
