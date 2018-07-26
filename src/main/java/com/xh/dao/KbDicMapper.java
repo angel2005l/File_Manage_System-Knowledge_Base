@@ -2,6 +2,9 @@ package com.xh.dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
 
 import com.xh.entity.KbDic;
 
@@ -60,4 +63,33 @@ public interface KbDicMapper {
 	 * @version 1.0
 	 */
 	public String selectFileEventLevelvalueByCode(String code) throws SQLException;
+
+	/**
+	 * 
+	 * @Title: selectDicKvForAll  
+	 * @Description: 获得特定的数据字典集合
+	 * @author 黄官易
+	 * @param dicParentCode
+	 * @return
+	 * @throws SQLException    
+	 * @return List<Map<String,String>> 
+	 * @date 2018年7月26日  
+	 * @version 1.0
+	 */
+	public List<Map<String, String>> selectDicKvForAll(String dicParentCode) throws SQLException;
+	/**
+	 * 
+	 * @Title: selectDicVauleByCode  
+	 * @Description: 根据编码查询数据字典值 
+	 * @author 黄官易
+	 * @param dicParentCode
+	 * @param code
+	 * @return
+	 * @throws SQLException    
+	 * @return String 
+	 * @date 2018年7月26日  
+	 * @version 1.0
+	 */
+	public String selectDicValueByCode(@Param("dicParentCode") String dicParentCode,@Param("code") String code) throws SQLException;
+
 }

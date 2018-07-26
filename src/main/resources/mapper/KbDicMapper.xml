@@ -27,4 +27,12 @@
   <select id="selectFileEventLevelvalueByCode" resultMap="string" parameterType="string">
   	select dic_value from kb_dic where dic_parent_code = 'file_event_level' and dic_code = #{code}
   </select>
+  <!-- 获得特定的数据字典集合 -->
+  <select id="selectDicKvForAll" parameterType="string" resultType="map">
+  	select dic_name,dic_value from kb_dic where dic_parent_code = #{dicParentCode}
+  </select>
+  <!-- 根据编码查询数据字典值 -->
+  <select id="selectDicValueByCode" resultMap="string" >
+    select dic_value from kb_dic where dic_parent_code = #{dicParentCode} and dic_code = #{code} 
+  </select>
 </mapper>

@@ -64,4 +64,16 @@ public class DicServiceImpl extends BaseService implements IDicService {
 
 	}
 
+	@Override
+	public Result<String> selDicKvForAll(String dicParentCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Result<String> selDicValueByCode(String dicParentCode, String code) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
