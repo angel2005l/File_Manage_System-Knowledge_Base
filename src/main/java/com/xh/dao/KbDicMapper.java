@@ -32,7 +32,7 @@ public interface KbDicMapper {
 	 * @date 2018年7月25日
 	 * @version 1.0
 	 */
-	public KbDic selectFileEventTypeValueByCode(String code) throws SQLException;
+	public String selectFileEventTypeValueByCode(String code) throws SQLException;
 
 	/**
 	 * 
@@ -59,5 +59,5 @@ public interface KbDicMapper {
 	 * @date 2018年7月25日
 	 * @version 1.0
 	 */
-	public KbDic selectFileEventLevelvalueByCode(String code) throws SQLException;
+	public String selectFileEventLevelvalueByCode(String code) throws SQLException;
 }

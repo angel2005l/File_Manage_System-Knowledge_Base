@@ -30,7 +30,7 @@ public interface IDicService {
 	 * @date 2018年7月25日  
 	 * @version 1.0
 	 */
-	public Result<KbDic> selFileEventTypeValueByCode(String code) throws Exception;
+	public Result<String> selFileEventTypeValueByCode(String code) throws Exception;
 	/**
 	 * 
 	 * @Title: selFileEventLevelForAll  
@@ -54,5 +54,5 @@ public interface IDicService {
 	 * @date 2018年7月25日  
 	 * @version 1.0
 	 */
-	public Result<KbDic> selFileEventLevelValueByCode(String Code) throws Exception;
+	public Result<String> selFileEventLevelValueByCode(String Code) throws Exception;
 }

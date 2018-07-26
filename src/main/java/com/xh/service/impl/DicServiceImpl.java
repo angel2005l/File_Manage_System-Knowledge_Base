@@ -25,27 +25,43 @@ public class DicServiceImpl extends BaseService implements IDicService {
 		try {
 			return rtnSuccessResult("", kdm.selectFileEventTypeForAll());
 		} catch (SQLException e) {
-			
-			return null;
+			log.error("查询全部文件事件类型数据接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
 		}
 
 	}
 
 	@Override
-	public Result<KbDic> selFileEventTypeValueByCode(String code) throws Exception {
-		return rtnSuccessResult("", kdm.selectFileEventTypeValueByCode(code));
+	public Result<String> selFileEventTypeValueByCode(String code) throws Exception {
+		try {
+			return rtnSuccessResult("", kdm.selectFileEventTypeValueByCode(code));
+		} catch (SQLException e) {
+			log.error("查询特定文件事件类型值数据接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
+		}
 
 	}
 
 	@Override
 	public Result<List<KbDic>> selFileEventLevelForAll() throws Exception {
-		return rtnSuccessResult("", kdm.selectFileEventLevelForAll());
+		try {
+			return rtnSuccessResult("", kdm.selectFileEventLevelForAll());
+		} catch (SQLException e) {
+			log.error("查询全部文件事件等级数据接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
+		}
 
 	}
 
 	@Override
-	public Result<KbDic> selFileEventLevelValueByCode(String code) throws Exception {
-		return rtnSuccessResult("", kdm.selectFileEventLevelvalueByCode(code));
+	public Result<String> selFileEventLevelValueByCode(String code) throws Exception {
+		try {
+			return rtnSuccessResult("", kdm.selectFileEventLevelvalueByCode(code));
+		} catch (SQLException e) {
+			log.error("查询特定文件事件等级值数据接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
+		}
+
 	}
 
 }
