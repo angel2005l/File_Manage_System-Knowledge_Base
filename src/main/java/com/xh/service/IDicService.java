@@ -1,6 +1,7 @@
 package com.xh.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.xh.entity.KbDic;
 import com.xh.uitl.Result;
@@ -71,12 +72,12 @@ public interface IDicService {
 	 * @date 2018年7月26日
 	 * @version 1.0
 	 */
-	public Result<String> selDicKvForAll(String dicParentCode) throws Exception;
+	public Result<List<Map<String, String>>> selDicKvForAll(String dicParentCode) throws Exception;
 
 	/**
 	 * 
 	 * @Title: selDicValueByCode
-	 * @Description: 根据编码查询数据字典值 
+	 * @Description: 根据编码查询数据字典值
 	 * @author 黄官易
 	 * @param dicParentCode
 	 * @param code

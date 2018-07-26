@@ -2,6 +2,7 @@ package com.xh.service.impl;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,15 +66,23 @@ public class DicServiceImpl extends BaseService implements IDicService {
 	}
 
 	@Override
-	public Result<String> selDicKvForAll(String dicParentCode) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public Result<List<Map<String, String>>> selDicKvForAll(String dicParentCode) throws Exception {
+		try {
+			return rtnSuccessResult("", kdm.selectDicKvForAll(dicParentCode));
+		} catch (SQLException e) {
+			log.error("查询特定的数据字典集合数据接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
+		}
 	}
 
 	@Override
 	public Result<String> selDicValueByCode(String dicParentCode, String code) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return rtnSuccessResult("", kdm.selectDicValueByCode(dicParentCode, code));
+		} catch (SQLException e) {
+			log.error("根据编码查询数据字典值数据接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
+		}
 	}
 
 }
