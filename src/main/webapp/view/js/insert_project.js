@@ -17,6 +17,13 @@ $(function() {
 		var readVal = $(this).val();
 		changeFileDownload(readVal);
 	})
+	
+
+	var cudc = $("#create_user_dept_code").val();
+	changeEmpHidenAndShow("join_work",cudc,true);
+	changeEmpHidenAndShow("read_work",cudc,true);
+	onlyDeptHidenAndShow('join');
+	onlyDeptHidenAndShow('read');
 });
 function changeFileShow(editVal) {
 	var obj = $("input[name='project_read'][value='" + editVal + "']");
@@ -47,3 +54,45 @@ function clickBtn() {
 		}
 	});
 }
+	function onlyDeptHidenAndShow(elName){
+		var spanName = elName+"_dept";
+		var labelName = elName+"_work";
+		$("."+spanName).click(function(){
+			var joinDeptSpanObj = $(this);
+			var deptCode = joinDeptSpanObj.attr('data-dept_code');
+			//是否有selected
+			if(joinDeptSpanObj.hasClass('selected')){
+				joinDeptSpanObj.removeClass("selected");
+				changeEmpHidenAndShow(labelName,deptCode,false);
+			}else{
+				joinDeptSpanObj.addClass("selected");
+				changeEmpHidenAndShow(labelName,deptCode,true);
+			}
+		})
+		
+		$(".all_"+spanName).click(function(){
+			var joinDeptSpanObj = $(this);
+			//是否有selected
+			if(joinDeptSpanObj.hasClass('selected')){//取消
+				var deptCode = joinDeptSpanObj.attr("data-dept_code");
+				joinDeptSpanObj.removeClass("selected");
+				$("."+spanName).removeClass("selected");
+				$("."+spanName+"[data-dept_code ='"+deptCode+"']").addClass("selected");
+				changeEmpHidenAndShow(labelName,'all',false);
+				changeEmpHidenAndShow(labelName,deptCode,true);
+			}else{//添加
+				$("."+spanName).addClass("selected")
+				joinDeptSpanObj.addClass("selected");
+				changeEmpHidenAndShow(labelName,'all',true);
+			}
+		})
+	}
+	
+	function changeEmpHidenAndShow(elName,deptCode,isShow){
+		var displayStr = isShow ? 'inline-block':'none';
+		if('all'==deptCode){
+			$("."+elName).css('display',displayStr);
+		}else{
+			$("."+elName+"[data-dept_code='"+deptCode+"']").css('display',displayStr)
+		}
+	}

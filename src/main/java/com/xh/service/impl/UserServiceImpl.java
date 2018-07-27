@@ -103,4 +103,14 @@ public class UserServiceImpl extends BaseService implements IUserService {
 			return rtnErrorResult(Result.ERROR_6000, "查询系统异常,请联系系统管理员");
 		}
 	}
+
+	@Override
+	public Result<List<KbUser>> selUsersForAll() throws Exception {
+		try {
+			return rtnSuccessResult("", kum.selectUsersForAll());
+		} catch (SQLException e) {
+			log.error("查询全部员工信息数据接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "系统异常,请联系系统管理员");
+		}
+	}
 }

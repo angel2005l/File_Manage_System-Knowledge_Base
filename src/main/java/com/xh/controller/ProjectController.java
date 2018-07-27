@@ -28,6 +28,7 @@ import com.xh.entity.KbProject;
 import com.xh.entity.KbProjectTable;
 import com.xh.entity.KbProjectUser;
 import com.xh.entity.KbUser;
+import com.xh.service.IDeptService;
 import com.xh.service.IProjectService;
 import com.xh.service.IUserAdviceService;
 import com.xh.service.IUserService;
@@ -53,6 +54,9 @@ public class ProjectController extends BaseController {
 	@Autowired
 	@Qualifier("userAdviceServiceImpl")
 	private IUserAdviceService ads;
+	@Autowired
+	@Qualifier("deptServiceImpl")
+	private IDeptService ds;
 
 	/**
 	 * 
@@ -110,22 +114,22 @@ public class ProjectController extends BaseController {
 			String projectParentLevel = request.getParameter("project_level");// 项目父类级别
 			int projectLevel = Integer.parseInt(projectParentLevel) + 1;// 当前项目级别
 			String userCode = session.getAttribute("user_code").toString();// 创建人编码
-			String createUserDeptCode ="";// 创建人所属部门编码
+			String createUserDeptCode = "";// 创建人所属部门编码
 			// 为了获取projectCode，自己存入request
 			String projectCode = PROJECTTAG + DateUtil.curDateYMDHMSForService()
-			+ StrUtil.getRandom((int) (Math.random() * 10000), 4);// 项目编码
-			String[] projectMainInfos  = null;
-			if(projectLevel>0) {
-				//当项目不是主项目时 获得主项目信息
+					+ StrUtil.getRandom((int) (Math.random() * 10000), 4);// 项目编码
+			String[] projectMainInfos = null;
+			if (projectLevel > 0) {
+				// 当项目不是主项目时 获得主项目信息
 				projectMainInfos = ps.selectProjectMainInfo(userCode, projectParentCode);
-				//项目所属上级 均为 主方法 上级
-				if(projectMainInfos.length<1) {
+				// 项目所属上级 均为 主方法 上级
+				if (projectMainInfos.length < 1) {
 					return rtnFailResult(Result.ERROR_4000, "非法的项目信息");
 				}
 				createUserDeptCode = ps.selectDeptCodeByProjectMainCode(projectMainInfos[0]);
-			}else {
-				//主项目时 使用当前项目信息
-				projectMainInfos = new String[] {projectCode,projectName,"N"};
+			} else {
+				// 主项目时 使用当前项目信息
+				projectMainInfos = new String[] { projectCode, projectName, "N" };
 				createUserDeptCode = session.getAttribute("user_dept_code").toString();// 创建人所属部门编码
 			}
 			request.setAttribute("project_code", projectCode);
@@ -186,7 +190,7 @@ public class ProjectController extends BaseController {
 					kpuList.add(kpu);
 				}
 			}
-			Result<Object> result = ps.insProject(kp, kpuList,createUserDeptCode,projectMainInfos);
+			Result<Object> result = ps.insProject(kp, kpuList, createUserDeptCode, projectMainInfos);
 			return result;
 		} catch (NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
@@ -247,19 +251,16 @@ public class ProjectController extends BaseController {
 	@RequestMapping("/insProJsp.do")
 	public String toInsertProject(HttpServletRequest request, HttpSession session) {
 		try {
-			String userDeptCode = session.getAttribute("user_dept_code").toString();// 获得部门信息
 			String projectParentCode = StrUtil.isBlank(request.getParameter("project_code")) ? ""
 					: request.getParameter("project_code");// 获得父类编码
 			String projectParentLevel = StrUtil.isBlank(request.getParameter("project_level")) ? "-1"
 					: request.getParameter("project_level");// 获得父类等级
-			//使用部门协同功能
-			//获得部门信息
-			
-			//获得所有人员信息
-			//2
-			
-			
-			Result<List<KbUser>> userResult = us.selUsersByUserDeptCode(userDeptCode); // 获得员工信息
+			// 使用部门协同功能
+			// 获得部门信息
+			Result<List<Map<String, String>>> deptResult = ds.selDeptForAll();
+			// 获得所有人员信息
+			Result<List<KbUser>> userResult = us.selUsersForAll();
+			request.setAttribute("deptList", deptResult.getData());
 			request.setAttribute("userList", userResult.getData());
 			request.setAttribute("projectParentCode", projectParentCode);
 			request.setAttribute("projectLevel", projectParentLevel);

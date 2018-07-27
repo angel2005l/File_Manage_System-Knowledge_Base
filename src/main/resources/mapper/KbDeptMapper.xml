@@ -15,4 +15,8 @@
     id, dept_code, dept_name, dept_level, dept_parent_code, dept_status, create_user_code, 
     create_time
   </sql>
+  <!-- 查询所有的部门简易信息 -->
+  <select id="selectDeptForAll" resultType="map">
+  	select dept_code,dept_name from kb_dept where dept_status='1' order by dept_level
+  </select>
 </mapper>

@@ -45,4 +45,8 @@
   <select id="selectDeptCodeByProjectMainCode" resultType="string">
   	   SELECT user_dept_code FROM ${projectTableName} a INNER JOIN kb_user b ON a.`create_user_code` = b.user_code WHERE a.project_code = #{projectMainCode}
   </select>
+  <!-- 查询所有员工简易信息 -->
+  <select id="selectUsersForAll" resultMap="BaseResultMap">
+  	select  user_code, user_name, user_dept_code, professional_code from kb_user a inner join kb_dept b on a.user_dept_code = b.dept_code where b.dept_status = '1' and a.user_status ='1' order by b.dept_level,a.user_dept_code
+  </select>
 </mapper>

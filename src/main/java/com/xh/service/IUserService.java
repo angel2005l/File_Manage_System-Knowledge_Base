@@ -76,4 +76,16 @@ public interface IUserService {
 	 * @version 1.0
 	 */
 	public Result<List<KbUser>> selSuperiorUserByUserDeptCode(String userDeptCode) throws Exception;
+	/**
+	 * 
+	 * @Title: selUsersForAll  
+	 * @Description: 查询全部员工信息（按部门编号排序）
+	 * @author 黄官易
+	 * @return
+	 * @throws Exception    
+	 * @return Result<List<KbUser>> 
+	 * @date 2018年7月27日  
+	 * @version 1.0
+	 */
+	public Result<List<KbUser>> selUsersForAll() throws Exception;
 }

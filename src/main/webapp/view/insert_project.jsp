@@ -25,19 +25,6 @@
 						style="vertical-align: inherit;"><font
 							style="vertical-align: inherit;">新海科技集团</font></font></a>
 				</h1>
-				<ul class="nav">
-					<li class="" id="nav-project"><a href="" data-stack=""
-						data-stack-root=""> <font style="vertical-align: inherit;">
-								<font style="vertical-align: inherit;">项目</font>
-						</font>
-					</a></li>
-					<li class="" id="nav-me"><a href="" data-stack=""
-						data-stack-root=""> <font style="vertical-align: inherit;">
-								<font style="vertical-align: inherit;">我自己</font>
-						</font>
-					</a></li>
-					<li id="nav-upgrade"></li>
-				</ul>
 			</div>
 		</div>
 
@@ -79,7 +66,7 @@
 							</label> <label class="project-radio"> <input type="radio"
 								name="project_type" value="own"> <font
 								style="vertical-align: inherit;">个人项目</font> <small><font
-									style="vertical-align: inherit;">试用版本，暂不支持个人项目</font></small>
+									style="vertical-align: inherit;">现版本，暂不支持个人项目</font></small>
 							</label>
 						</div>
 
@@ -97,19 +84,17 @@
 								<div class="tab active" data-tab="team">
 									<div class="manage-members">
 										<div class="add-member">
-										
-                        <div class="group-select">
-                            <span class="all selected" data-subgroup="-1" >所有人</span>
-                            <span data-subgroup="2098bc04406044ba8349d0b360c88bc5" class="selected">远程</span>
-                            <span data-subgroup="e92f16e42a71438db52fce8361c0546b" class="">南京</span>
-                            <span data-subgroup="4aced19c071f4c058e7ffa9d26c78c9c" class="">设计服务部</span>
-                            <span data-subgroup="21c45a7acf2f46e780d013da170649c5" class="">内贸市场部</span>
-                            </div>
+                       					 <div class="group-select">
+                        					<span class="all_join_dept" data-dept_code=${sessionScope.user_dept_code }>所有部门</span>
+                        					<c:forEach var="b" items="${deptList }">
+                        						<span class="join_dept <c:if test='${sessionScope.user_dept_code == b.dept_code }'> selected</c:if>" data-dept_code=${b.dept_code }>${b.dept_name }</span>
+                        					</c:forEach>
+                       				     </div>
 										</div>
 
 										<div class="members member-checkbox-list">
 											<c:forEach var="b" items="${userList }">
-												<label title="${b.userName }" class="member"> <input
+												<label title="${b.userDeptCode }" class="member join_work" style="display:none;" data-dept_code ='${b.userDeptCode }'> <input
 													type="checkbox" name="project_edit"
 													value="${b.userCode },${b.userName }"> <span
 													class="name"><font style="vertical-align: inherit;"><font
@@ -134,10 +119,17 @@
 							<div class="manage-members-tabs">
 								<div class="tab active" data-tab="team">
 									<div class="manage-members">
-										<div class="add-member"></div>
+										<div class="add-member">
+										  <div class="group-select">
+                        					<span class="all_read_dept" data-dept_code=${sessionScope.user_dept_code }>所有部门</span>
+                        					<c:forEach var="b" items="${deptList }">
+                        						<span class="read_dept <c:if test='${sessionScope.user_dept_code == b.dept_code }'> selected</c:if>" data-dept_code=${b.dept_code }>${b.dept_name }</span>
+                      					  	</c:forEach>
+                           				  </div>
+										</div>
 										<div class="members member-checkbox-list">
 											<c:forEach var="b" items="${userList }">
-												<label title="${b.userName }" class="member"> <input
+												<label title="${b.userName }" class="member read_work" style="display:none;" data-dept_code ='${b.userDeptCode }'  > <input
 													type="checkbox" name="project_read"
 													value="${b.userCode },${b.userName }"> <span
 													class="name"><font style="vertical-align: inherit;"><font
@@ -177,6 +169,7 @@
 				style="vertical-align: inherit;"> © 商务智能部 </font>
 			</font>
 		</div>
+		<input type="hidden" id="create_user_dept_code" value="${sessionScope.user_dept_code }">
 	</div>
 	<script type="text/javascript" src="assets/js/jquery.form.js"></script>
 	<script type="text/javascript" src="assets/js/layer.js"></script>

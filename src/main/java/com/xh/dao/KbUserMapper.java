@@ -57,6 +57,19 @@ public interface KbUserMapper {
 	 * @date 2018年7月24日
 	 * @version 1.0
 	 */
-	public String selectDeptCodeByProjectMainCode(@Param("projectMainCode") String projectMainCode,@Param("projectTabelName") String projectTabelName);
+	public String selectDeptCodeByProjectMainCode(@Param("projectMainCode") String projectMainCode,
+			@Param("projectTabelName") String projectTabelName);
 
+	/**
+	 * 
+	 * @Title: selectUsersForAll
+	 * @Description: 查询所有员工简易信息
+	 * @author 黄官易
+	 * @return
+	 * @throws SQLException
+	 * @return List<KbUser>
+	 * @date 2018年7月27日
+	 * @version 1.0
+	 */
+	public List<KbUser> selectUsersForAll() throws SQLException;
 }
