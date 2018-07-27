@@ -96,7 +96,7 @@
 											<c:forEach var="b" items="${userList }">
 												<label title="${b.userDeptCode }" class="member join_work" style="display:none;" data-dept_code ='${b.userDeptCode }'> <input
 													type="checkbox" name="project_edit"
-													value="${b.userCode },${b.userName }"> <span
+													value="${b.userCode },${b.userName },${b.professionalCode}"> <span
 													class="name"><font style="vertical-align: inherit;"><font
 															style="vertical-align: inherit;">${b.userName }</font></font></span>
 												</label>
@@ -131,7 +131,7 @@
 											<c:forEach var="b" items="${userList }">
 												<label title="${b.userName }" class="member read_work" style="display:none;" data-dept_code ='${b.userDeptCode }'  > <input
 													type="checkbox" name="project_read"
-													value="${b.userCode },${b.userName }"> <span
+													value="${b.userCode },${b.userName },${b.professionalCode}"> <span
 													class="name"><font style="vertical-align: inherit;"><font
 															style="vertical-align: inherit;">${b.userName }</font></font></span>
 												</label>

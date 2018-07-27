@@ -18,7 +18,7 @@ $(function() {
 		changeFileDownload(readVal);
 	})
 	
-
+//多部门协同
 	var cudc = $("#create_user_dept_code").val();
 	changeEmpHidenAndShow("join_work",cudc,true);
 	changeEmpHidenAndShow("read_work",cudc,true);
@@ -47,6 +47,9 @@ function clickBtn() {
 			layer.msg(result.msg);
 			if (result.code == 0) {
 				self.location = document.referrer;
+			}else if(result.code ==4200){
+				alert(result.code)
+				window.location.href='user/logout.do'
 			}
 		},
 		error : function(result) {

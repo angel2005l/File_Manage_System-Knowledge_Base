@@ -100,9 +100,9 @@ public class ProjectController extends BaseController {
 	 * @date 2018年7月10日
 	 * @version 1.0
 	 */
-	@SystemControllerLog(description = "创建项目", logType = "insertProject", isAdvice = "true")
 	@RequestMapping("/insPro.do")
 	@ResponseBody
+	@SystemControllerLog(description = "创建项目", logType = "insertProject", isAdvice = "true")
 	public Result<Object> addProject(HttpServletRequest request, HttpSession session) {
 		try {
 			// 项目信息主体
@@ -190,11 +190,10 @@ public class ProjectController extends BaseController {
 					kpuList.add(kpu);
 				}
 			}
-			Result<Object> result = ps.insProject(kp, kpuList, createUserDeptCode, projectMainInfos);
-			return result;
-		} catch (NumberFormatException e) {
+			return ps.insProject(kp, kpuList, createUserDeptCode, projectMainInfos);
+		} catch (NullPointerException | NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
-			return rtnErrorResult(Result.ERROR_6000, "非法登录!");
+			return rtnErrorResult(Result.ERROR_4200, "非法登录!");
 		} catch (Exception e) {
 			log.error("新增项目异常,异常原因：【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "新增项目异常,请联系系统管理员");
