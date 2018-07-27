@@ -348,12 +348,10 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 		}
 	}
 
-	// 开发结束点 主项目 获得deptCode
 	@Override
 	public String selectDeptCodeByProjectMainCode(String projectMainCode) throws Exception {
 		try {
 			String projectTableName = kptm.selectProjectTableNameByProjectLevel(0);
-//			System.err.println("ss");
 			return kum.selectDeptCodeByProjectMainCode(projectMainCode, projectTableName);
 		} catch (SQLException e) {
 			log.error("根据主方法编码查询部门编码数据接口异常,异常原因:【" + e.toString() + "】");

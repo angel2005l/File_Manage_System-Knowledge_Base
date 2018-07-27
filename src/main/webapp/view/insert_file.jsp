@@ -24,19 +24,6 @@
 						style="vertical-align: inherit;"><font
 							style="vertical-align: inherit;">新海科技集团</font></font></a>
 				</h1>
-				<ul class="nav">
-					<li class="" id="nav-project"><a href="" data-stack=""
-						data-stack-root=""> <font style="vertical-align: inherit;">
-								<font style="vertical-align: inherit;">项目</font>
-						</font>
-					</a></li>
-					<li class="" id="nav-me"><a href="" data-stack=""
-						data-stack-root=""> <font style="vertical-align: inherit;">
-								<font style="vertical-align: inherit;">我自己</font>
-						</font>
-					</a></li>
-					<li id="nav-upgrade"></li>
-				</ul>
 			</div>
 		</div>
 
@@ -46,7 +33,6 @@
 					<h3 class="page-title">
 						<font style="vertical-align: inherit;">上传文件</font>
 					</h3>
-
 					<form id="fileFrom" class="form" method="post"
 						enctype="multipart/form-data">
 						<div class="form-item">
@@ -62,7 +48,12 @@
 									data-validate-msg="文件描述最长255个字符"></textarea>
 							</div>
 						</div>
-
+						<select id="project-filter">
+							<option value="-1">所有项目</option>
+							<option value="8f766bfdbe614633b7170027e8165a55">(新)-智能工厂</option>
+							<option value="9a04d2dfa487426289ceef66518974b1">博物馆项目</option>
+							<option value="670a1d8d02034809af06d1ece9517b04">新员工项目</option>
+						</select>
 						<div class="setting-section">
 							<h4>
 								<font style="vertical-align: inherit;">选择文件可下载成员</font>
