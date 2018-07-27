@@ -67,4 +67,8 @@
 	<select id="selectProjectMainInfo" resultType="string">
 		select project_main_code,project_main_name,project_is_collect from kb_project_user where project_code = #{projectCode} and  user_code = #{userCode}
 	</select>
+	<!-- 根据项目编码 获得参员工简易信息  -->
+	<select id="selectUsersByProjectCode" parameterType="string" resultType="map">
+		select user_code,user_name from kb_project_user where project_code = #{projectCode}
+	</select>
 </mapper>

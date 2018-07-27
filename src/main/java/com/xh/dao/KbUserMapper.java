@@ -58,7 +58,7 @@ public interface KbUserMapper {
 	 * @version 1.0
 	 */
 	public String selectDeptCodeByProjectMainCode(@Param("projectMainCode") String projectMainCode,
-			@Param("projectTabelName") String projectTabelName);
+			@Param("projectTableName") String projectTableName) throws SQLException;
 
 	/**
 	 * 
@@ -72,4 +72,5 @@ public interface KbUserMapper {
 	 * @version 1.0
 	 */
 	public List<KbUser> selectUsersForAll() throws SQLException;
+	
 }

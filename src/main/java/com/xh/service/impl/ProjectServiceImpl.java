@@ -208,8 +208,8 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 
 	@Transactional(rollbackFor = { Exception.class })
 	@Override
-	public Result<Object> insProject(KbProject kp, List<KbProjectUser> kpus, String createUserDeptCode,String[] projectMainInfos)
-			throws Exception {
+	public Result<Object> insProject(KbProject kp, List<KbProjectUser> kpus, String createUserDeptCode,
+			String[] projectMainInfos) throws Exception {
 		String projectTableName = "";
 		Integer projectLevel = kp.getProjectLevel(); // 根据当前的项目信息获得项目等级
 		try {
@@ -339,7 +339,6 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 
 	@Override
 	public Result<Object> lockProject(int projectLevel, String projectCode, String userCode) throws Exception {
-		// 锁定项目
 		try {
 			return kpm.lockProject(projectLevel, projectCode, userCode) > 0 ? rtnSuccessResult("项目已锁定")
 					: rtnFailResult(Result.ERROR_4300, "项目锁定失败");
@@ -349,15 +348,37 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 		}
 	}
 
+	// 开发结束点 主项目 获得deptCode
 	@Override
 	public String selectDeptCodeByProjectMainCode(String projectMainCode) throws Exception {
-
-		return null;
+		try {
+			String projectTableName = kptm.selectProjectTableNameByProjectLevel(0);
+//			System.err.println("ss");
+			return kum.selectDeptCodeByProjectMainCode(projectMainCode, projectTableName);
+		} catch (SQLException e) {
+			log.error("根据主方法编码查询部门编码数据接口异常,异常原因:【" + e.toString() + "】");
+			return "";
+		}
 	}
 
 	@Override
 	public String[] selectProjectMainInfo(String userCode, String projectCode) throws Exception {
-		return kpum.selectProjectMainInfo(userCode, projectCode);
+		try {
+			return kpum.selectProjectMainInfo(userCode, projectCode);
+		} catch (SQLException e) {
+			log.error("非主项目时获得主项目信息数据接口异常,异常原因:【" + e.toString() + "】");
+			return new String[3];
+		}
+	}
+
+	@Override
+	public Result<List<Map<String, String>>> selectUsersByProjectCode(String projectCode) throws Exception {
+		try {
+			return rtnSuccessResult("", kpum.selectUsersByProjectCode(projectCode));
+		}catch(SQLException e) {
+			log.error("根据项目编码获得参员工简易信息数据接口异常,异常原因:【"+e.toString()+"】");
+			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
+		}
 	}
 
 }

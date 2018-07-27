@@ -26,8 +26,8 @@ import com.xh.entity.KbBatchShare;
 import com.xh.entity.KbFile;
 import com.xh.entity.KbFileTable;
 import com.xh.entity.KbFileUser;
-import com.xh.entity.KbUser;
 import com.xh.service.IFileService;
+import com.xh.service.IProjectService;
 import com.xh.service.IUserService;
 import com.xh.uitl.DateUtil;
 import com.xh.uitl.IOUtil;
@@ -46,11 +46,14 @@ public class FileController extends BaseController {
 	@Autowired
 	@Qualifier("fileServiceImpl")
 	private IFileService fs;
-
 	@Autowired
 	@Qualifier("userServiceImpl")
 	private IUserService us;
-
+	@Autowired
+	@Qualifier("projectServiceImpl")
+	private IProjectService ps;
+	
+	
 	/**
 	 * 
 	 * @Title: uploadFile
@@ -141,7 +144,7 @@ public class FileController extends BaseController {
 			return result;
 		} catch (NumberFormatException e) {
 			log.error("非法登录,非法ip：" + IpUtil.getIp(request));
-			return rtnErrorResult(Result.ERROR_6000, "非法登录!");
+			return rtnErrorResult(Result.ERROR_4200, "非法登录!");
 		} catch (Exception e) {
 			log.error("文件上传服务异常,异常原因【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "文件上传服务异常,请联系系统管理员");
@@ -432,11 +435,10 @@ public class FileController extends BaseController {
 	@RequestMapping("/insFileJsp.do")
 	public String toInsertFile(HttpServletRequest request, HttpSession session) {
 		try {
-			String userDeptCode = session.getAttribute("user_dept_code").toString();// 获得部门信息
 			String projectCode = request.getParameter("project_code");// 获得父类编码
 			String projectLevel = StrUtil.isBlank(request.getParameter("project_level")) ? "0"
 					: request.getParameter("project_level"); // 获得父类等级
-			Result<List<KbUser>> userResult = us.selUsersByUserDeptCode(userDeptCode); // 获得员工信息
+			Result<List<Map<String, String>>> userResult = ps.selectUsersByProjectCode(projectCode);
 			request.setAttribute("userList", userResult.getData());
 			request.setAttribute("projectLevel", projectLevel);
 			request.setAttribute("projectCode", projectCode);
@@ -449,8 +451,18 @@ public class FileController extends BaseController {
 		return "view/insert_file";
 	}
 
-	// 批量分享生成链接
-	// 并且返回分享码
+	/**
+	 * 
+	 * @Title: getBatchShare
+	 * @Description: 批量分享生成链接 并且返回分享码
+	 * @author 黄官易
+	 * @param request
+	 * @param session
+	 * @return
+	 * @return Result<String>
+	 * @date 2018年7月27日
+	 * @version 1.0
+	 */
 	@RequestMapping("/insShareFiles.do")
 	@ResponseBody
 	public Result<String> getBatchShare(HttpServletRequest request, HttpSession session) {

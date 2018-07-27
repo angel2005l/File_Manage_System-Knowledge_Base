@@ -76,7 +76,8 @@ public interface IProjectService {
 	 * @date 2018年7月24日
 	 * @version 1.0
 	 */
-	public Result<Object> insProject(KbProject kp, List<KbProjectUser> kpu, String createUserDeptCode,String[] projectMainInfos) throws Exception;
+	public Result<Object> insProject(KbProject kp, List<KbProjectUser> kpu, String createUserDeptCode,
+			String[] projectMainInfos) throws Exception;
 
 	/**
 	 * 
@@ -200,5 +201,19 @@ public interface IProjectService {
 	 * @version 1.0
 	 */
 	public String[] selectProjectMainInfo(String userCode, String projectCode) throws Exception;
+
+	/**
+	 * 
+	 * @Title: selectUsersByProjectCode
+	 * @Description: 根据项目编码 获得参员工简易信息业务接口
+	 * @author 黄官易
+	 * @param projectCode
+	 * @return
+	 * @throws Exception
+	 * @return Result<Object>
+	 * @date 2018年7月27日
+	 * @version 1.0
+	 */
+	public Result<List<Map<String, String>>> selectUsersByProjectCode(String projectCode) throws Exception;
 
 }

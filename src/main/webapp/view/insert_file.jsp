@@ -77,21 +77,18 @@
 								<div class="tab active" data-tab="team">
 									<div class="manage-members">
 										<div class="add-member"></div>
-
 										<div class="members member-checkbox-list">
 											<c:forEach var="b" items="${userList }">
-												<label title="${b.userName }" class="member"> <input
-													type="checkbox" name="file_download" value="${b.userCode },${b.userName }">
+												<label title="${b.user_name }" class="member"> <input
+													type="checkbox" name="file_download" value="${b.user_code },${b.user_name }">
 													<span class="name"><font
 														style="vertical-align: inherit;"><font
-															style="vertical-align: inherit;">${b.userName }</font></font></span>
+															style="vertical-align: inherit;">${b.user_name }</font></font></span>
 												</label>
 											</c:forEach>
-
 										</div>
 									</div>
 								</div>
-
 							</div>
 						</div>
 						<div class="setting-section">
@@ -109,11 +106,11 @@
 										<div class="add-member"></div>
 										<div class="members member-checkbox-list">
 											<c:forEach var="b" items="${userList }" >
-												<label title="${b.userName }" class="member"> <input
-													type="checkbox" name="file_show" value="${b.userCode },${b.userName }">
+												<label title="${b.user_name }" class="member"> <input
+													type="checkbox" name="file_show" value="${b.user_code },${b.user_name }">
 													<span class="name"><font
 														style="vertical-align: inherit;"><font
-															style="vertical-align: inherit;">${b.userName }</font></font></span>
+															style="vertical-align: inherit;">${b.user_name }</font></font></span>
 												</label>
 											</c:forEach>
 										</div>
