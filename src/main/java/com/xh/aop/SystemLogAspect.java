@@ -69,41 +69,43 @@ public class SystemLogAspect {
 	 */
 	@AfterReturning(pointcut = "controllerAspect()", returning = "result")
 	public void doAround(JoinPoint jp, Result<Object> result) throws Throwable {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-				.getRequest();
-		HttpSession session = request.getSession();
-		// 读取session中的用户
-		String logUserCode = session.getAttribute("user_code").toString();
-		String logUserName = session.getAttribute("user_name").toString();
-		// 请求的IP
-		// String ip = request.getRemoteAddr(); // 暂时没用
-		// 设立变量
-		String logStatus = "error";
-		String projectCode = "";
-		String parentProjectCode = "";// 父类项目的父类项目编码
-		int parentProjectLevel = 0;// 新建项目的父类等级
-		int code = result.getCode();
-		String logCode = "L" + DateUtil.curDateYMDHMSForService() + StrUtil.getRandom((int) (Math.random() * 10000), 4);// 日志编号
-		String errorLogMsg = "";// 异常的信息抓取
-		Map<String, String> logMap = getControllerMethodDescription(jp);
-		String isAdvice = logMap.get("isAdvice");
-		String isType = logMap.get("logType");
-		String logEventvalue = "";
-		// 获取request值
-		Object[] obj = jp.getArgs();
-		for (Object object : obj) {
-			if (object instanceof HttpServletRequest) {
-				request = (HttpServletRequest) object;
-				projectCode = (String) request.getAttribute("project_code");
-				parentProjectCode = request.getParameter("project_parent_code");
-				parentProjectLevel = Integer.parseInt(request.getParameter("project_level"));
-				errorLogMsg = logUserName + ",操作时出现异常，异常信息为：" + result.getMsg();
-				logEventvalue = (String) request.getAttribute("log_event_value");
-			}
-		}
-		String logMsg = logUserName + "," + logMap.get("description")
-				+ (StrUtil.isBlank(logEventvalue) ? "" : "【" + logEventvalue + "】");// 日志信息
 		try {
+			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+					.getRequest();
+			HttpSession session = request.getSession();
+			// 读取session中的用户
+			String logUserCode = session.getAttribute("user_code").toString();
+			String logUserName = session.getAttribute("user_name").toString();
+			// 请求的IP
+			// String ip = request.getRemoteAddr(); // 暂时没用
+			// 设立变量
+			String logStatus = "error";
+			String projectCode = "";
+			String parentProjectCode = "";// 父类项目的父类项目编码
+			int parentProjectLevel = 0;// 新建项目的父类等级
+			int code = result.getCode();
+			String logCode = "L" + DateUtil.curDateYMDHMSForService()
+					+ StrUtil.getRandom((int) (Math.random() * 10000), 4);// 日志编号
+			String errorLogMsg = "";// 异常的信息抓取
+			Map<String, String> logMap = getControllerMethodDescription(jp);
+			String isAdvice = logMap.get("isAdvice");
+			String isType = logMap.get("logType");
+			String logEventvalue = "";
+			// 获取request值
+			Object[] obj = jp.getArgs();
+			for (Object object : obj) {
+				if (object instanceof HttpServletRequest) {
+					request = (HttpServletRequest) object;
+					projectCode = (String) request.getAttribute("project_code");
+					parentProjectCode = request.getParameter("project_parent_code");
+					parentProjectLevel = Integer.parseInt(request.getParameter("project_level"));
+					errorLogMsg = logUserName + ",操作时出现异常，异常信息为：" + result.getMsg();
+					logEventvalue = (String) request.getAttribute("log_event_value");
+				}
+			}
+			String logMsg = logUserName + "," + logMap.get("description")
+					+ (StrUtil.isBlank(logEventvalue) ? "" : "【" + logEventvalue + "】");// 日志信息
+
 			if (code == 0) {
 				logStatus = "success";
 			} else {
@@ -181,30 +183,37 @@ public class SystemLogAspect {
 	 * @return 方法描述
 	 * @throws Exception
 	 */
-	public static Map<String, String> getControllerMethodDescription(JoinPoint joinPoint) throws Exception {
+	public static Map<String, String> getControllerMethodDescription(JoinPoint joinPoint) {
 		Map<String, String> map = new HashMap<String, String>();
-		String targetName = joinPoint.getTarget().getClass().getName();
-		String methodName = joinPoint.getSignature().getName();
-		Object[] arguments = joinPoint.getArgs();
-		Class<?> targetClass = Class.forName(targetName);
-		Method[] methods = targetClass.getMethods();
-		String description = "";
-		String logType = "";
-		String isAdvice = "";
-		for (Method method : methods) {
-			if (method.getName().equals(methodName)) {
-				Class<?>[] clazzs = method.getParameterTypes();
-				if (clazzs.length == arguments.length) {
-					description = method.getAnnotation(SystemControllerLog.class).description();
-					logType = method.getAnnotation(SystemControllerLog.class).logType();
-					isAdvice = method.getAnnotation(SystemControllerLog.class).isAdvice();
-					map.put("description", description);
-					map.put("logType", logType);
-					map.put("isAdvice", isAdvice);
-					break;
+		try {
+			String targetName = joinPoint.getTarget().getClass().getName();
+			String methodName = joinPoint.getSignature().getName();
+			Object[] arguments = joinPoint.getArgs();
+			Class<?> targetClass;
+			targetClass = Class.forName(targetName);
+			Method[] methods = targetClass.getMethods();
+			String description = "";
+			String logType = "";
+			String isAdvice = "";
+			for (Method method : methods) {
+				if (method.getName().equals(methodName)) {
+					Class<?>[] clazzs = method.getParameterTypes();
+					if (clazzs.length == arguments.length) {
+						description = method.getAnnotation(SystemControllerLog.class).description();
+						logType = method.getAnnotation(SystemControllerLog.class).logType();
+						isAdvice = method.getAnnotation(SystemControllerLog.class).isAdvice();
+						map.put("description", description);
+						map.put("logType", logType);
+						map.put("isAdvice", isAdvice);
+						break;
+					}
 				}
 			}
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
 		return map;
 	}
 }
