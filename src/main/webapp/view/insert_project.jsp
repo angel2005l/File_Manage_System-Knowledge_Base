@@ -37,8 +37,7 @@
 							style="vertical-align: inherit;">创建新项目</font></font>
 					</h3>
 
-					<form id="projectFrom" class="form form-invite"
-						enctype="multipart/form-data">
+					<form id="projectFrom" class="form form-invite">
 						<div class="form-item">
 							<div class="form-field">
 								<input type="text" name="project_name" placeholder="项目名称"
@@ -160,7 +159,7 @@
 							value="${projectParentCode }">
 					</form>
 					<!-- 不需要提交的隐藏域 -->
-					<input type="hidden" id="userInfo" value="${sessionScope.user_code },${sessionScope.user_name }" />
+					<input type="hidden" id="userInfo" value="${sessionScope.user_code },${sessionScope.user_name },${sessionScope.profession_code }" />
 				</div>
 			</div>
 		</div>
