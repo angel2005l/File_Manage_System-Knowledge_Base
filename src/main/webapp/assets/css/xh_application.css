@@ -247,6 +247,19 @@ input[type="text"].no-border.error:focus, input[type="password"].no-border.error
 	box-shadow: none
 }
 
+.xh_file_select{
+	width: 220px;
+	line-height: 18px;
+	margin: 0;
+	padding: 8px 12px;
+	border: 1px solid #ccc;
+	outline: 0;
+	font-size: 14px;
+	border-radius: 5px;
+	box-shadow: none;
+	overflow: auto
+}
+
 .fake-textarea {
 	min-height: 1em;
 	padding: 10px 15px;

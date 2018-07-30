@@ -16,6 +16,18 @@ $(function() {
 		var showVal = $(this).val();
 		changeFileDownload(showVal);
 	})
+	$('.form_datetime').datetimepicker({
+		language : 'zh-CN',
+		weekStart : 1,// 星期几为周一
+		autoclose : 1,
+		startView : 4,
+		minView : 2,
+		maxView : 4,
+		endDate:new Date(),
+		todayHighlight : true,
+		todayBtn : true,
+		format : "yyyy-mm-dd",
+	});
 })
 
 function changeFileShow(dowloadVal) {

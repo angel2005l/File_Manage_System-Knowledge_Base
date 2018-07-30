@@ -318,8 +318,7 @@
 	</form>
 	<script type="text/javascript" src="assets/js/layer.js"></script>
 	<script type="text/javascript" src="assets/js/viewer.js"></script>
-	<script type="text/javascript"
-		src="assets/js/bootstrap-datetimepicker.js"></script>
+	<script type="text/javascript" src="assets/js/bootstrap-datetimepicker.min.js"></script>
 	<script type="text/javascript"
 		src="assets/js/bootstrap-datetimepicker.zh-CN.js"></script>
 	<script type="text/javascript" src="view/js/project_detail.js" ></script>

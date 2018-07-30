@@ -10,7 +10,11 @@
 
 <title>知识库-上传文件</title>
 <meta name="renderer" content="webkit">
-<link type="text/css" rel="stylesheet" href="assets/css/translateelement.css">
+<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="assets/css/bootstrap/bootstrap-datetimepicker.min.css">
+<link type="text/css" rel="stylesheet"
+	href="assets/css/translateelement.css">
 <link rel="stylesheet" href="assets/theme/default/layer.css" />
 </head>
 
@@ -48,12 +52,51 @@
 									data-validate-msg="文件描述最长255个字符"></textarea>
 							</div>
 						</div>
-						<select id="project-filter">
-							<option value="-1">所有项目</option>
-							<option value="8f766bfdbe614633b7170027e8165a55">(新)-智能工厂</option>
-							<option value="9a04d2dfa487426289ceef66518974b1">博物馆项目</option>
-							<option value="670a1d8d02034809af06d1ece9517b04">新员工项目</option>
-						</select>
+						<div class="form-item">
+							<div style="float: left; display: inline-block; padding-right: 10%">
+								<h4>
+									<font style="vertical-align: inherit;">选择事件类型</font>
+								</h4>
+								<select class="xh_file_select">
+									<option value="">(新)-智能工厂</option>
+									<option value="">博物馆项目</option>
+									<option value=""
+										<c:if test="${b.user_code eq sessionScope.user_code }" >selected</c:if>>新员工项目</option>
+								</select>
+							</div>
+							<div style="display: inline-block;">
+								<h4>
+									<font style="vertical-align: inherit;">选择事件级别</font>
+								</h4>
+								<select class="xh_file_select">
+									<option value="">(新)-智能工厂</option>
+									<option value="">博物馆项目</option>
+									<option value=""
+										<c:if test="${b.user_code eq sessionScope.user_code }" >selected</c:if>>新员工项目</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-item">
+							<div style="float: left; display: inline-block; padding-right: 10%">
+								<h4>
+									<font style="vertical-align: inherit;">选择调研人</font>
+								</h4>
+								<select class="xh_file_select">
+									<option value="">(新)-智能工厂</option>
+									<option value="">博物馆项目</option>
+									<option value=""
+										<c:if test="${b.user_code eq sessionScope.user_code }" >selected</c:if>>新员工项目</option>
+								</select>
+							</div>
+							<div style="display: inline-block;">
+								<h4>
+									<font style="vertical-align: inherit;">选择调研时间</font>
+								</h4>
+								<input type="text" class="form_datetime"
+									style="display: inline; width: 220px;" name="form_start_date"
+									placeholder="请选择调研时间" autocomplete="off" readonly="readonly">
+							</div>
+						</div>
 						<div class="setting-section">
 							<h4>
 								<font style="vertical-align: inherit;">选择文件可下载成员</font>
@@ -71,9 +114,9 @@
 										<div class="members member-checkbox-list">
 											<c:forEach var="b" items="${userList }">
 												<label title="${b.user_name }" class="member"> <input
-													type="checkbox" name="file_download" value="${b.user_code },${b.user_name }">
-													<span class="name"><font
-														style="vertical-align: inherit;"><font
+													type="checkbox" name="file_download"
+													value="${b.user_code },${b.user_name }"> <span
+													class="name"><font style="vertical-align: inherit;"><font
 															style="vertical-align: inherit;">${b.user_name }</font></font></span>
 												</label>
 											</c:forEach>
@@ -96,11 +139,11 @@
 									<div class="manage-members">
 										<div class="add-member"></div>
 										<div class="members member-checkbox-list">
-											<c:forEach var="b" items="${userList }" >
+											<c:forEach var="b" items="${userList }">
 												<label title="${b.user_name }" class="member"> <input
-													type="checkbox" name="file_show" value="${b.user_code },${b.user_name }">
-													<span class="name"><font
-														style="vertical-align: inherit;"><font
+													type="checkbox" name="file_show"
+													value="${b.user_code },${b.user_name }"> <span
+													class="name"><font style="vertical-align: inherit;"><font
 															style="vertical-align: inherit;">${b.user_name }</font></font></span>
 												</label>
 											</c:forEach>
@@ -118,19 +161,22 @@
 									style="vertical-align: inherit;">上传文件</font></font>
 							</button>
 
-							<a href="javascript:" onclick="self.location=document.referrer;" class="btn btn-x"> <font
-								style="vertical-align: inherit;"> <font
-									style="vertical-align: inherit;">取消</font>
+							<a href="javascript:" onclick="self.location=document.referrer;"
+								class="btn btn-x"> <font style="vertical-align: inherit;">
+									<font style="vertical-align: inherit;">取消</font>
 							</font>
 							</a>
 						</div>
 						<!-- 当前项目等级（父类） -->
-						<input type="hidden" name="project_level" id="project_level" value="${projectLevel }">
+						<input type="hidden" name="project_level" id="project_level"
+							value="${projectLevel }">
 						<!-- 当前项目编码（父类）-->
-						<input type="hidden" name="project_code" id="project_code" value="${projectCode }">
+						<input type="hidden" name="project_code" id="project_code"
+							value="${projectCode }">
 					</form>
 					<!-- 不需要提交的隐藏域 -->
-					<input type="hidden" id="userInfo" value="${sessionScope.user_code },${sessionScope.user_name }" />
+					<input type="hidden" id="userInfo"
+						value="${sessionScope.user_code },${sessionScope.user_name }" />
 				</div>
 			</div>
 		</div>
@@ -140,6 +186,10 @@
 			</font>
 		</div>
 	</div>
+	<script type="text/javascript"
+		src="assets/js/bootstrap-datetimepicker.min.js"></script>
+	<script type="text/javascript"
+		src="assets/js/bootstrap-datetimepicker.zh-CN.js"></script>
 	<script type="text/javascript" src="assets/js/jquery.form.js"></script>
 	<script type="text/javascript" src="assets/js/layer.js"></script>
 	<script type="text/javascript" src="view/js/insert_file.js"></script>
