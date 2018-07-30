@@ -82,6 +82,10 @@ public class FileController extends BaseController {
 			String fileInfo = request.getParameter("file_info");
 			String projectLevel = request.getParameter("project_level");
 			String projectCode = request.getParameter("project_code");
+			String fileEventType = request.getParameter("file_event_type");
+			String fileEventLevel = request.getParameter("file_event_level");
+			String fileResearchUserCode = request.getParameter("file_research_user_code");
+			String fileResearchStartTime = request.getParameter("file_research_start_time");
 			String userCode = session.getAttribute("user_code").toString();
 			String userDeptCode = session.getAttribute("user_dept_code").toString();
 			Map<String, String> fileMap = ufResult.getData();// 文件写入后的信息
@@ -97,7 +101,13 @@ public class FileController extends BaseController {
 			kf.setFileStatus("record");
 			kf.setFileLevel(Integer.parseInt(projectLevel));
 			kf.setProjectCode(projectCode);
+			kf.setFileEventType(fileEventType);
+			kf.setFileEventLevel(fileEventLevel);
+			kf.setFileResearchUserCode(fileResearchUserCode);
+			kf.setFileResearchStartTime(fileResearchStartTime);
 			kf.setCreateUserCode(userCode);
+			kf.setCreateTime(DateUtil.curDateYMDHMS());
+			kf.setUpdateUserCode(userCode);
 			kf.setCreateTime(DateUtil.curDateYMDHMS());
 			// 文件关联关系对象
 			List<KbFileUser> kfus = new ArrayList<KbFileUser>();

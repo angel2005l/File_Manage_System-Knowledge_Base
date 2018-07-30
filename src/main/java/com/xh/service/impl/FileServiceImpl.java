@@ -10,6 +10,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ import com.xh.dao.KbFileTableMapper;
 import com.xh.dao.KbFileUserMapper;
 import com.xh.dao.KbProjectMapper;
 import com.xh.dao.KbProjectTableMapper;
+import com.xh.dao.KbProjectUserMapper;
 import com.xh.dao.KbUserMapper;
 import com.xh.entity.KbBatchShare;
 import com.xh.entity.KbFile;
@@ -32,6 +34,7 @@ import com.xh.entity.KbFileUser;
 import com.xh.entity.KbProject;
 import com.xh.entity.KbUser;
 import com.xh.service.IFileService;
+import com.xh.service.IProjectService;
 import com.xh.uitl.AsposeUtil;
 import com.xh.uitl.DateUtil;
 import com.xh.uitl.IOUtil;
@@ -58,6 +61,11 @@ public class FileServiceImpl extends BaseService implements IFileService {
 	private KbProjectMapper kpm;// 项目接口
 	@Autowired
 	private KbBatchShareMapper kbsm; // 批量分享接口
+	@Autowired
+	private KbProjectUserMapper kpum; // 
+	@Autowired
+	@Qualifier("projectServiceImpl")
+	IProjectService ps;
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -72,7 +80,8 @@ public class FileServiceImpl extends BaseService implements IFileService {
 		if (StrUtil.notBlank(fileTableName)) {
 			try {
 				// 根据项目关联关系，获得部门信息
-				String userDeptCode = kfus.get(0).getUserDeptCode();
+				String projectMainCode = kpum.selectProjectMainCodeByUserCodeAndProjectCode(kf.getCreateUserCode(),kf.getProjectCode());
+				String userDeptCode = ps.selectDeptCodeByProjectMainCode(projectMainCode);
 				List<KbUser> superiorUserList = kum.selectSuperiorUserByUserDeptCode(userDeptCode);
 				if (null != superiorUserList && !superiorUserList.isEmpty()) {
 					for (KbUser kbUser : superiorUserList) {

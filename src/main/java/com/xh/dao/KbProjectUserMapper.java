@@ -57,19 +57,6 @@ public interface KbProjectUserMapper {
 
 	/**
 	 * 
-	 * @Title: selectProjectUserByProjectCodeAndUserCode
-	 * @Description: 根据userCode&projectCode查询用户的主项目信息
-	 * @author 黄官易
-	 * @return
-	 * @throws SQLException
-	 * @return String[]
-	 * @date 2018年7月7日
-	 * @version 1.0
-	 */
-	public String[] selectMainProjectInfoByProjectCodeAndUserCode() throws SQLException;
-
-	/**
-	 * 
 	 * @Title: updateCollectByUserCodeAndMainCode
 	 * @Description: 根据用户编码和主方法更新收藏
 	 * @author 黄官易
@@ -99,17 +86,33 @@ public interface KbProjectUserMapper {
 	 */
 	public String[] selectProjectMainInfo(@Param("userCode") String userCode, @Param("projectCode") String projectCode)
 			throws SQLException;
-	
+
 	/**
 	 * 
-	 * @Title: selectUsersByProjectCode  
-	 * @Description: 根据项目编码 获得参员工简易信息 
+	 * @Title: selectProjectMainCodeByUserCodeAndProjectCode
+	 * @Description: 获得主项目编码
+	 * @author 黄官易
+	 * @param userCode
+	 * @param projectCode
+	 * @return
+	 * @throws SQLException
+	 * @return String
+	 * @date 2018年7月30日
+	 * @version 1.0
+	 */
+	public String selectProjectMainCodeByUserCodeAndProjectCode(@Param("userCode") String userCode,
+			@Param("projectCode") String projectCode) throws SQLException;
+
+	/**
+	 * 
+	 * @Title: selectUsersByProjectCode
+	 * @Description: 根据项目编码 获得参员工简易信息
 	 * @author 黄官易
 	 * @param projetcCode
 	 * @return
-	 * @throws SQLException    
-	 * @return List<Map<String,String>> 
-	 * @date 2018年7月27日  
+	 * @throws SQLException
+	 * @return List<Map<String,String>>
+	 * @date 2018年7月27日
 	 * @version 1.0
 	 */
 	public List<Map<String, String>> selectUsersByProjectCode(String projectCode) throws SQLException;

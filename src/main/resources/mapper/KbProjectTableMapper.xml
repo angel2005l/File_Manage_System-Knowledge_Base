@@ -12,13 +12,6 @@
   <sql id="Base_Column_List">
     id, pt_code, pt_name, project_level, create_user_code, DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') as create_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 'false' as QUERYID,
-    <include refid="Base_Column_List" />
-    from kb_project_table
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  
   	<!-- 判断该层级表信息是否存在 -->
 	<select id="isExistProjectTable" parameterType="_int" resultType="_boolean">
 		select count(1) from kb_project_table where project_level =

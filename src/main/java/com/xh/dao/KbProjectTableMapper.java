@@ -8,8 +8,6 @@ import org.apache.ibatis.annotations.Param;
 import com.xh.entity.KbProjectTable;
 
 public interface KbProjectTableMapper {
-	// 自动生成,根据主键查询ProjectTable信息
-	public KbProjectTable selectByPrimaryKey(Integer id);
 
 	// 判断该层级表信息是否存在
 	public boolean isExistProjectTable(int projectLevel) throws SQLException;
