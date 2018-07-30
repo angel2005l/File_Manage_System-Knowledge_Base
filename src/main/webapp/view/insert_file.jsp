@@ -57,22 +57,18 @@
 								<h4>
 									<font style="vertical-align: inherit;">选择事件类型</font>
 								</h4>
-								<select class="xh_file_select">
+								<select id="file_event_type" class="xh_file_select" name="file_event_type">
 									<option value="">(新)-智能工厂</option>
 									<option value="">博物馆项目</option>
-									<option value=""
-										<c:if test="${b.user_code eq sessionScope.user_code }" >selected</c:if>>新员工项目</option>
 								</select>
 							</div>
 							<div style="display: inline-block;">
 								<h4>
 									<font style="vertical-align: inherit;">选择事件级别</font>
 								</h4>
-								<select class="xh_file_select">
+								<select id="file_event_level" class="xh_file_select" name="file_event_level">
 									<option value="">(新)-智能工厂</option>
 									<option value="">博物馆项目</option>
-									<option value=""
-										<c:if test="${b.user_code eq sessionScope.user_code }" >selected</c:if>>新员工项目</option>
 								</select>
 							</div>
 						</div>
@@ -81,11 +77,10 @@
 								<h4>
 									<font style="vertical-align: inherit;">选择调研人</font>
 								</h4>
-								<select class="xh_file_select">
-									<option value="">(新)-智能工厂</option>
-									<option value="">博物馆项目</option>
-									<option value=""
-										<c:if test="${b.user_code eq sessionScope.user_code }" >selected</c:if>>新员工项目</option>
+								<select class="xh_file_select" name="file_research_user_code">
+								<c:forEach var="b" items="${userList }">
+									<option value="${b.user_code }" <c:if test="${b.user_code eq sessionScope.user_code }" >selected</c:if> >${b.user_name }</option>
+								</c:forEach>
 								</select>
 							</div>
 							<div style="display: inline-block;">
@@ -93,7 +88,7 @@
 									<font style="vertical-align: inherit;">选择调研时间</font>
 								</h4>
 								<input type="text" class="form_datetime"
-									style="display: inline; width: 220px;" name="form_start_date"
+									style="display: inline; width: 220px;" name="file_research_start_time"
 									placeholder="请选择调研时间" autocomplete="off" readonly="readonly">
 							</div>
 						</div>

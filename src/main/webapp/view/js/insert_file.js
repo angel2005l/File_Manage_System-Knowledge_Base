@@ -16,6 +16,8 @@ $(function() {
 		var showVal = $(this).val();
 		changeFileDownload(showVal);
 	})
+	changeFileEventType();
+	changeFileEventLevel();
 	$('.form_datetime').datetimepicker({
 		language : 'zh-CN',
 		weekStart : 1,// 星期几为周一
@@ -23,10 +25,10 @@ $(function() {
 		startView : 4,
 		minView : 2,
 		maxView : 4,
-		endDate:new Date(),
+		endDate : new Date(),
 		todayHighlight : true,
 		todayBtn : true,
-		format : "yyyy-mm-dd",
+		format : "yyyy-mm-dd"
 	});
 })
 
@@ -62,6 +64,37 @@ function clickBtn() {
 		});
 	}
 }
+
+function changeFileEventType() {
+	var result = ajaxGet("dic/getFet.do", false);
+	var fileEventTypeSelectObj = $("#file_event_type");
+	fileEventTypeSelectObj.empty();
+	fileEventTypeSelectObj.append($("<option />").text("请选择事件类型").attr("value",
+			"").attr("selected", "selected"));
+	if (result.code == 0) {
+		$(result.data).each(
+				function() {
+					fileEventTypeSelectObj.append($("<option />").text(
+							this.dicName).attr("value", this.dicCode));
+				})
+	}
+}
+
+function changeFileEventLevel(){
+	var result = ajaxGet("dic/getFel.do", false);
+	var fileEventLevelSelectObj = $("#file_event_level");
+	fileEventLevelSelectObj.empty();
+	fileEventLevelSelectObj.append($("<option />").text("请选择事件级别").attr("value",
+			"").attr("selected", "selected"));
+	if (result.code == 0) {
+		$(result.data).each(
+				function() {
+					fileEventLevelSelectObj.append($("<option />").text(
+							this.dicName).attr("value", this.dicCode));
+				})
+	}
+}
+
 function checkFile() {
 	var fileUrl = $("#file_data").val();
 	if (fileUrl == '') {
