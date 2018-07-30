@@ -14,3 +14,19 @@ function ajaxPost(url,data,isAsync){
 	})
 	return result;
 }
+
+function ajaxGet(url,isAsync){
+	var result = null;
+	$.ajax({
+		url:url,
+		async:isAsync,
+		type:'get',
+		success:function(data){
+			result = data;
+		},
+		error:function(){
+			return ;
+		}
+	})
+	return result;
+}
