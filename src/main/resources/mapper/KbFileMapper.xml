@@ -26,10 +26,10 @@
   </sql>
   <!-- 新增文件信息 -->
   <insert id="insertFile" parameterType="com.xh.entity.KbFile">
-  	insert into ${fileTabelName}(id, file_code, file_name, file_info, file_type, file_status, file_level, project_code,
+  	insert into ${fileTabelName}(file_code, file_name, file_info, file_type, file_status, file_level, project_code,
   	file_event_type, file_event_level, file_research_user_code, file_research_start_time,
   	create_user_code, create_time, update_user_code)
-  	values(#{kf.fileCode},#{kf.fileName},#{kf.fileInfo},#{kf.fileType},#{kf.fileStatus},#{kf.fileLevel},#{kf.projectCode},#{kf.fileEventType},#{kf.fileEventLevel},#{kf.researchUserCode},#{kf.fileResearchStartTime},#{kf.createUserCode},#{kf.createTime},#{kf.updateUserCode})
+  	values(#{kf.fileCode},#{kf.fileName},#{kf.fileInfo},#{kf.fileType},#{kf.fileStatus},#{kf.fileLevel},#{kf.projectCode},#{kf.fileEventType},#{kf.fileEventLevel},#{kf.fileResearchUserCode},#{kf.fileResearchStartTime},#{kf.createUserCode},#{kf.createTime},#{kf.updateUserCode})
   </insert>
   <!-- 根据员工编码查询当前项目下的所有文件 -->
   <select id="selectFileByUserCode" resultType="map">

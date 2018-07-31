@@ -107,7 +107,7 @@ public class FileServiceImpl extends BaseService implements IFileService {
 				int fileNum = kfm.insertFile(kf, fileTableName);
 				// 保存文件与用户的关联关系
 				int fileUserNum = kfum.batchInsertFileUser(kfus);
-				if (fileNum > 0 && fileUserNum == kfus.size()) {
+				if (fileNum > 0 && fileUserNum>0) {
 					return rtnSuccessResult("文件保存成功");
 				} else {
 					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚

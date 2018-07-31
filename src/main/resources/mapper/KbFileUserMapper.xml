@@ -19,7 +19,7 @@
   </sql>
   <!-- 批量插入文件与用户关联关系    -->
   <insert id="batchInsertFileUser" parameterType="list">
-  	insert into kb_file_user(file_code, file_name, file_type, file_permission, user_code, user_name, user_dept_code, create_user_code, create_time) values
+  	insert IGNORE into kb_file_user(file_code, file_name, file_type, file_permission, user_code, user_name, user_dept_code, create_user_code, create_time) values
   	<foreach collection="list" item="kfu" separator=",">
   		(#{kfu.fileCode},#{kfu.fileName},#{kfu.fileType},#{kfu.filePermission},#{kfu.userCode},#{kfu.userName},#{kfu.userDeptCode},#{kfu.createUserCode},#{kfu.createTime})
   	</foreach>
