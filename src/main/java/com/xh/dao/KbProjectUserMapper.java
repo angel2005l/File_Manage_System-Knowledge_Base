@@ -36,8 +36,7 @@ public interface KbProjectUserMapper {
 	 * @version 1.0
 	 */
 
-	public int batchInsertProjectUsers(@Param("kpuList") List<KbProjectUser> kpuList,
-			@Param("projectCode") String projectCode, @Param("userCode") String userCode) throws SQLException;
+	public int batchInsertProjectUsers(List<KbProjectUser> kpuList) throws SQLException;
 
 	/**
 	 * 

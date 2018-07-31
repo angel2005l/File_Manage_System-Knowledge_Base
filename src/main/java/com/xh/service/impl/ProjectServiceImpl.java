@@ -218,7 +218,6 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			log.error("获得项目表信息异常,异常原因【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "获得项目表信息异常,请联系系统管理员");
 		}
-
 		if (StrUtil.notBlank(projectTableName)) {
 			try {
 				List<KbUser> superiorUserList = kum.selectSuperiorUserByUserDeptCode(createUserDeptCode);
@@ -247,8 +246,8 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			// 执行操作 保证数据操作的原子性
 			try {
 				int insProNum = kpm.insertProject(kp, projectTableName);
-				int insUsersNum = kpum.batchInsertProjectUsers(kpus, kp.getProjectParentCode(), kp.getCreateUserCode());
-				if (insProNum > 0 && kpus.size() == insUsersNum) {
+				int insUsersNum = kpum.batchInsertProjectUsers(kpus);
+				if (insProNum > 0 && insUsersNum>0) {
 					return rtnSuccessResult("新建项目成功");
 				} else {
 					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚

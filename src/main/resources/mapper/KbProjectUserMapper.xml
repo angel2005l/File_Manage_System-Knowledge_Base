@@ -48,12 +48,11 @@
 		order by a.create_time DESC
 	</select>
 	<!-- 新增项目信息关联表信息 新版本 -->
-	
-	<insert id="batchInsertProjectUsers" >
-			insert into kb_project_user(project_code, project_name, project_permission,project_level,user_code, user_name, user_dept_code,project_main_code,project_main_name,project_is_collect,create_user_code, create_time) values
-				<foreach collection="kpuList" item="kpu" separator=",">
-					(#{kpu.projectCode},#{kpu.projectName},#{kpu.projectPermission},#{kpu.projectLevel},#{kpu.userCode},#{kpu.userName},#{kpu.userDeptCode},#{projectMainInfo.project_main_code},#{projectMainInfo.project_main_name},#{projectMainInfo.project_is_collect},#{kpu.createUserCode},#{kpu.createTime})
-				</foreach>
+	<insert id="batchInsertProjectUsers" parameterType="list">
+			insert ignore into kb_project_user(project_code, project_name, project_permission,project_level,user_code, user_name, user_dept_code,project_main_code,project_main_name,project_is_collect,create_user_code, create_time) values
+			<foreach collection="list" item="kpu" separator=",">
+					(#{kpu.projectCode},#{kpu.projectName},#{kpu.projectPermission},#{kpu.projectLevel},#{kpu.userCode},#{kpu.userName},#{kpu.userDeptCode},#{kpu.projectMainCode},#{kpu.projectMainName},#{kpu.projectIsCollect},#{kpu.createUserCode},#{kpu.createTime})
+			</foreach>
 	</insert>
 	<!-- 查询特定的项目权限 -->
 	<select id="selectProjectPermissionByUserCode" resultType="string">
