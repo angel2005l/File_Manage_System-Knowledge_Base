@@ -1,5 +1,7 @@
 $(function(){
 	toload();
+	changeFileEventType();
+	changeFileEventLevel();
 })
 
 $("#batch_download").on("click", function() {
@@ -31,7 +33,7 @@ $("#batch_enter").on("click", function() {
 		fileCodes += $(this).attr("file_code") + ",";
 	})
 	if (fileCodes.length < 2) {
-		alert("文件未选择");
+		layer.msg("文件未选择");
 	} else {
 		fileCodes = fileCodes.substr(0, fileCodes.length - 1);
 	}
@@ -56,11 +58,11 @@ $("#batch_enter").on("click", function() {
 				if (result.code == 0) {
 					shareFiles(result.data)
 				} else {
-					alert(result.msg);
+					layer.msg(result.msg)
 				}
 			},
 			error : function() {
-				alert("服务器未响应");
+				layer.msg("服务器未响应")
 			}
 		});
 		break;
@@ -164,16 +166,16 @@ function display(suffix, code, name,obj) {
 						keyboard : false,
 					}).viewer("view");
 				} else {
-					alert(result.msg);
+					layer.msg(result.msg);
 				}
 			},
 			error : function() {
-				alert("服务未响应");
+				layer.msg("服务未响应")
 			}
 		})
 		break;
 	default:
-		alert("不支持的文件格式");
+		layer.msg("不支持的文件格式")
 		break;
 	}
 }
@@ -459,4 +461,34 @@ function delFile(code,level){
 			}
 		}
 	})
+}
+
+function changeFileEventType() {
+	var result = ajaxGet("dic/getFet.do", false);
+	var fileEventTypeSelectObj = $("#xh_type_select");
+	fileEventTypeSelectObj.empty();
+	fileEventTypeSelectObj.append($("<option />").text("请选择事件类型").attr("value",
+			"").attr("selected", "selected"));
+	if (result.code == 0) {
+		$(result.data).each(
+				function() {
+					fileEventTypeSelectObj.append($("<option />").text(
+							this.dicName).attr("value", this.dicCode));
+				})
+	}
+}
+
+function changeFileEventLevel(){
+	var result = ajaxGet("dic/getFel.do", false);
+	var fileEventLevelSelectObj = $("#xh_level_select");
+	fileEventLevelSelectObj.empty();
+	fileEventLevelSelectObj.append($("<option />").text("请选择事件级别").attr("value",
+			"").attr("selected", "selected"));
+	if (result.code == 0) {
+		$(result.data).each(
+				function() {
+					fileEventLevelSelectObj.append($("<option />").text(
+							this.dicName).attr("value", this.dicCode));
+				})
+	}
 }

@@ -146,11 +146,8 @@
 																href="file/pfd.do?project_code=${projects.projectCode }&project_level=${projects.projectLevel}&root_code=${rootCode }">${projects.projectName }</a>
 														</span>
 														</span> <span class="todo-detail"> <a
-															class="label todo-assign-due">${projects.updateUserName }
-														</a><a class="label todo-assign-due"><fmt:parseDate
-																	value="${projects.updateTime }" var="parsedEmpDate" />
-																<fmt:formatDate value="${parsedEmpDate }"
-																	pattern="yyyy-MM-dd" /> </a></span>
+															class="label todo-assign-due">${projects.updateUserName }</a>
+															<a class="label todo-assign-due"><fmt:parseDate value="${projects.updateTime }" var="parsedEmpDate" /><fmt:formatDate value="${parsedEmpDate }" pattern="yyyy-MM-dd" /> </a></span>
 													</div>
 												</li>
 											</c:if>
@@ -163,27 +160,33 @@
 							<div class="comment">
 								<div class="search-wrap">
 									<form id="search" method="post" action="file/pfd.do">
-										<input type="text" class="keyword"
-											style="display: inline; width: 150px; margin-right: 20px;"
-											name="form_file_name" placeholder="请输入文件关键字名"
-											autocomplete="off"> <input type="text"
-											class="keyword form_datetime"
-											style="display: inline; width: 100px; margin-right: 20px;"
-											name="form_start_date" placeholder="起始时间" autocomplete="off"
-											readonly="readonly"> <input type="text"
-											class="keyword form_datetime"
-											style="display: inline; width: 100px; margin-right: 20px;"
-											name="form_end_date" placeholder="终止时间" autocomplete="off"
-											readonly="readonly"> <input id="hidden_project_code"
-											type="hidden" name="project_code"
-											value="${projectInfo.projectCode }"> <input
-											id="hidden_project_level" type="hidden" name="project_level"
-											value="${projectInfo.projectLevel}"> <input
-											type="hidden" name="root_code" value="${rootCode }">
-										<button type="button" class="btn btn-primary"
-											style="float: right;" onclick="formSubmit()">
+										<div style="margin-bottom: 5px">
+										<input type="text" class="keyword" style="display: inline; width: 150px; margin-right: 10px;"
+											 name="form_file_name" placeholder="请输入文件名关键字" autocomplete="off">
+										<input type="text" class="keyword" style="display: inline; width: 150px; margin-right: 10px;"
+											 name="form_file_name" placeholder="请输入文件描述关键字" autocomplete="off">
+										<span >类型: </span><select id="xh_type_select" class="xh_detail_select" name="file_event_type">
+										</select>	 
+										<span >级别: </span><select id="xh_level_select" class="xh_detail_select" name="file_event_level">
+										</select>
+										<button type="button" class="btn btn-primary" style="float:right;" onclick="formSubmit()"> 
 											<font style="vertical-align: inline;">筛选</font>
 										</button>
+										</div>	 
+										<span >上传时间: </span><input type="text" class="keyword form_datetime" style="display: inline; width: 100px; margin-right: 10px;"
+											 name="form_start_date" placeholder="起始时间" autocomplete="off" readonly="readonly"> 
+										<input type="text" class="keyword form_datetime" style="display: inline; width: 100px; margin-right: 10px;"
+											 name="form_end_date" placeholder="终止时间" autocomplete="off" readonly="readonly"> 
+										<span >调研时间: </span><input type="text" class="keyword form_datetime" style="display: inline; width: 100px; margin-right: 10px;"
+											 name="form_start_date" placeholder="起始时间" autocomplete="off" readonly="readonly"> 
+										<input type="text" class="keyword form_datetime" style="display: inline; width: 100px; margin-right: 10px;"
+											 name="form_end_date" placeholder="终止时间" autocomplete="off" readonly="readonly"> 	 
+											 
+										<!-- 默认区域 -->
+										<input id="hidden_project_code" type="hidden" name="project_code" value="${projectInfo.projectCode }">
+										<input id="hidden_project_level" type="hidden" name="project_level" value="${projectInfo.projectLevel}">
+										<input type="hidden" name="root_code" value="${rootCode }">
+										
 									</form>
 								</div>
 								<c:forEach var="b" items="${files }">
@@ -193,57 +196,58 @@
 												<div class="others">
 													<div class="attachment">
 														<div class="attachment-thumb" style="width: 70px">
-															<div class="simple-checkbox noChecked batch-file-check"
-																style="margin-bottom: 50px; display: none;"
-																file_code="${b.file_code }">
-																<div class="checkbox-container"
-																	style="border: 1.8px solid;">
-																	<div class="checkbox-tick"
-																		style="border-right: 2.52px solid; border-bottom: 2.52px solid;"></div>
+															<div class="simple-checkbox noChecked batch-file-check" style="margin-bottom: 50px; display: none;" file_code="${b.file_code }">
+																<div class="checkbox-container" style="border: 1.8px solid;">
+																	<div class="checkbox-tick" style="border-right: 2.52px solid; border-bottom: 2.52px solid;"></div>
 																</div>
 															</div>
-															<img class = "tempImg" data-src
-																src="assets/img/<tag:enum className="FileTypeImgEnum">${b.file_type }</tag:enum>" />
+															<img class="tempImg" data-src src="assets/img/<tag:enum className="FileTypeImgEnum">${b.file_type }</tag:enum>" />
 														</div>
 														<div class="attachment-info">
 															<div class="name">
-																<a class="link-download"><span class="-rest">${b.file_name }</span>
-																</a> <span style="font-size: 10px; padding-left: 40px">${b.user_name }</span>
-																<span style="font-size: 8px; padding-left: 10px">${b.create_time }</span>
-																<p class=" detail">${b.file_info }</p>
+																<div class="file_name_rest">
+																	<span class="file_name_span" style="float:left;">${b.file_name }</span>
+																	<span style="font-size: 10px; padding-left: 10px;display: inline-block;">${b.user_name }&nbsp;&nbsp;<fmt:formatDate value="${b.create_time }" pattern="yyyy-MM-dd HH:mm:ss" /></span>
+																</div>
+																<p class=" file_name_rest">${b.file_info }</p>
 																<%-- <p class="detail-p"><a class="link-download">${b.file_info }</a></p> --%>
 															</div>
 															<div class="tags"></div>
 															<div class="control-dir no-dir">
 																<!-- record -->
-																	<!-- onlyread -->
-																		<!-- 预览、分享 -->
-																	<!-- download -->
-																		<!-- 预览、分享、锁定、删除 -->
+																<!-- onlyread -->
+																<!-- 预览、分享 -->
+																<!-- download -->
+																<!-- 预览、分享、锁定、删除 -->
 																<!-- lock -->
-																	<!-- download -->
-																		<!-- 解锁、删除 -->
-																	<c:choose>
-																		<c:when test="${b.file_status eq 'record' }">
-																			<a class="link-change-dir displayBtn"  data-info ="${b.file_type },${b.file_code },${b.file_name }" >预览</a>
-																			<c:if test="${b.file_permission eq 'download' }">
-																			<a class="link-change-dir" onclick="downloadFile('${b.file_code }','${b.file_level }')">下载</a>
-																			</c:if>
-																			<a class="link-change-dir" onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">分享</a>
-																			<c:if test="${b.file_permission eq 'download' }">
-																			<a class="link-change-dir" onclick="lockFile('${b.file_code }','${b.file_level }')">锁定</a>
-																			<a class="link-change-dir" onclick="delFile('${b.file_code }','${b.file_level }')">删除</a>
-																			</c:if>
-																		</c:when>
-																		<c:when test="${b.file_status eq 'locked' }">
-																			<c:if test="${b.file_permission eq 'download' }">
-																				<a class="link-change-dir"
-																					onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">解锁</a>
-																				<a class="link-change-dir"
-																					onclick="delFile('${b.file_code }','${b.file_level }')">删除</a>
-																			</c:if>
-																		</c:when>
-																	</c:choose>
+																<!-- download -->
+																<!-- 解锁、删除 -->
+																<c:choose>
+																	<c:when test="${b.file_status eq 'record' }">
+																		<a class="link-change-dir displayBtn"
+																			data-info="${b.file_type },${b.file_code },${b.file_name }">预览</a>
+																		<c:if test="${b.file_permission eq 'download' }">
+																			<a class="link-change-dir"
+																				onclick="downloadFile('${b.file_code }','${b.file_level }')">下载</a>
+																		</c:if>
+																		<a class="link-change-dir"
+																			onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">分享</a>
+																		<c:if test="${b.file_permission eq 'download' }">
+																			<a class="link-change-dir"
+																				onclick="lockFile('${b.file_code }','${b.file_level }')">锁定</a>
+																			<a class="link-change-dir"
+																				onclick="delFile('${b.file_code }','${b.file_level }')">删除</a>
+																		</c:if>
+																	</c:when>
+																	<c:when test="${b.file_status eq 'locked' }">
+																		<c:if test="${b.file_permission eq 'download' }">
+																			<a class="link-change-dir"
+																				onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">解锁</a>
+																			<a class="link-change-dir"
+																				onclick="delFile('${b.file_code }','${b.file_level }')">删除</a>
+																		</c:if>
+																	</c:when>
+																</c:choose>
 															</div>
 														</div>
 													</div>
@@ -252,24 +256,26 @@
 										</div>
 									</div>
 								</c:forEach>
-								<c:if test="${fn:length(files)>0 }">
-									<button id="batch_download" type="button"
-										class="btn btn-reject" style="float: left;">
-										<font style="vertical-align: inline;">批量下载</font>
-									</button>
-									<button id="batch_enter" type="button" class="btn btn-reject"
-										style="float: left; display: none" data-batch-method="">
-										<font style="vertical-align: inline;">确定</font>
-									</button>
-									<button id="batch_cancel" type="button" class="btn btn-reject"
-										style="float: left; display: none">
-										<font style="vertical-align: inline;">取消</font>
-									</button>
-									<button id="batch_share" type="button" class="btn btn-reject"
-										style="float: left;">
-										<font style="vertical-align: inline;">批量分享</font>
-									</button>
-								</c:if>
+								<div style="margin-top:40px">
+									<c:if test="${fn:length(files)>0 }">
+										<button id="batch_download" type="button"
+											class="btn btn-reject" style="float: left;">
+											<font style="vertical-align: inline;">批量下载</font>
+										</button>
+										<button id="batch_enter" type="button" class="btn btn-reject"
+											style="float: left; display: none" data-batch-method="">
+											<font style="vertical-align: inline;">确定</font>
+										</button>
+										<button id="batch_cancel" type="button" class="btn btn-reject"
+											style="float: left; display: none">
+											<font style="vertical-align: inline;">取消</font>
+										</button>
+										<button id="batch_share" type="button" class="btn btn-reject"
+											style="float: left;">
+											<font style="vertical-align: inline;">批量分享</font>
+										</button>
+									</c:if>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -279,28 +285,33 @@
 			<div class="detail-actions">
 				<c:if test="${!(rootCode eq projectInfo.projectCode) }">
 					<div class="item">
-						<a id="back_page" class="detail-action detail-action-star " title="返回上一层"
+						<a id="back_page" class="detail-action detail-action-star "
+							title="返回上一层"
 							href="file/pfdb.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }&root_code=${rootCode }">返回上一层</a>
 					</div>
 				</c:if>
 				<div class="item">
-					<a id="back_index" class="detail-action detail-action-star" title="返回首页"
-						href="pro/index.do">返回首页</a>
+					<a id="back_index" class="detail-action detail-action-star"
+						title="返回首页" href="pro/index.do">返回首页</a>
 				</div>
 				<c:if test="${'write' eq projectInfo.projectPermission }">
+					<c:if test="${'progress' eq projectInfo.projectStatus }">
+						<div class="item">
+							<a class="detail-action detail-action-star" title="文件上传"
+								href="file/insFileJsp.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }">文件上传</a>
+						</div>
+						<div class="item">
+							<a class="detail-action detail-action-star"
+								href="pro/insProJsp.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }">新增项目</a>
+						</div>
+					</c:if>
 					<div class="item">
-						<a class="detail-action detail-action-star" title="文件上传"
-							href="file/insFileJsp.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }">文件上传</a>
+						<a class="detail-action detail-action-star"
+							onclick="lockProject('${projectInfo.projectCode }','${projectInfo.projectLevel }')">锁定项目</a>
 					</div>
 					<div class="item">
 						<a class="detail-action detail-action-star"
-							href="pro/insProJsp.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }">新增项目</a>
-					</div>
-					<div class="item">
-						<a class="detail-action detail-action-star" onclick="lockProject('${projectInfo.projectCode }','${projectInfo.projectLevel }')">锁定项目</a>
-					</div>
-					<div class="item">
-						<a class="detail-action detail-action-star" onclick="deleteProject('${projectInfo.projectCode }','${projectInfo.projectLevel }')">删除项目</a>
+							onclick="deleteProject('${projectInfo.projectCode }','${projectInfo.projectLevel }')">删除项目</a>
 					</div>
 				</c:if>
 				<div class="item">
@@ -318,10 +329,11 @@
 	</form>
 	<script type="text/javascript" src="assets/js/layer.js"></script>
 	<script type="text/javascript" src="assets/js/viewer.js"></script>
-	<script type="text/javascript" src="assets/js/bootstrap-datetimepicker.min.js"></script>
+	<script type="text/javascript"
+		src="assets/js/bootstrap-datetimepicker.min.js"></script>
 	<script type="text/javascript"
 		src="assets/js/bootstrap-datetimepicker.zh-CN.js"></script>
-	<script type="text/javascript" src="view/js/project_detail.js" ></script>
+	<script type="text/javascript" src="view/js/project_detail.js"></script>
 	<div id="share" style="display: none;">
 		<span style="font-weight: bold; padding-right: 20px;">分享链接:</span>
 		<textarea id="shareUrl"
