@@ -2,6 +2,7 @@ package com.xh.dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -72,5 +73,18 @@ public interface KbUserMapper {
 	 * @version 1.0
 	 */
 	public List<KbUser> selectUsersForAll() throws SQLException;
-	
+
+	/**
+	 * 
+	 * @Title: selectResearchUserKVByProject
+	 * @Description: 根据项目编码查询相关用户信息键值对
+	 * @author 黄官易
+	 * @param projectCode
+	 * @return
+	 * @throws SQLException
+	 * @return List<Map<String,String>>
+	 * @date 2018年7月31日
+	 * @version 1.0
+	 */
+	public List<Map<String, String>> selectResearchUserKVByProject(String projectCode) throws SQLException;
 }

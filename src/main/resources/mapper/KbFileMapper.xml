@@ -43,11 +43,28 @@
 	  	  		<if test="fileSelMap.fileName!=null and fileSelMap.fileName!=''">
 	  	  			and locate (#{fileSelMap.fileName}, a.file_name)>0
 	  	  		</if>
+	  	  		<if test="fileSelMap.fileInfo!=null and fileSelMap.fileInfo!=''">
+	  	  			and locate (#{fileSelMap.fileInfo}, a.file_info)>0
+	  	  		</if>
+	  	  		<if test="fileSelMap.eventType!=null and fileSelMap.eventType!=''">
+	  	  			and file_event_type =#{fileSelMap.eventType}
+	  	  		</if>
+	  	  		<if test="fileSelMap.eventLevel!=null and fileSelMap.eventLevel!=''">
+	  	  			and file_event_level = #{fileSelMap.eventLevel}
+	  	  		</if>
+	  	  		<if test="fileSelMap.researchUserCode!=null and fileSelMap.researchUserCode!=''">
+	  	  			and file_research_user_code = #{fileSelMap.researchUserCode}
+	  	  		</if>
 	  	  		<if test="fileSelMap.startDate!=null and fileSelMap.startDate!=''">
 	  	  			and TIMESTAMPDIFF(HOUR,#{fileSelMap.startDate},a.create_time) &gt;= 0 and  TIMESTAMPDIFF(HOUR,#{fileSelMap.endDate},a.create_time) &lt; 24
 	  	  		</if>
+	  	  		<if test="fileSelMap.researchStartDate!=null and fileSelMap.researchStartDate!=''">
+	  	  		    and TIMESTAMPDIFF(DAY,#{fileSelMap.researchStartDate},a.file_research_start_time) &gt;= 0 AND  TIMESTAMPDIFF(DAY,#{fileSelMap.researchEndDate},a.file_research_start_time) &lt;=0
+	  	  		</if>
+	  	  		
 	  	  		and a.file_status &lt;&gt; 'delete'
 	  	  	</where>
+	  	  	 order by create_time DESC
   	  	</if>
   </select>
   <!-- 根据员工编码查询当前项目下的所有文件行数 -->

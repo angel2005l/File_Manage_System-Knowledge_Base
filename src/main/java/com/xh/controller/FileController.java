@@ -315,13 +315,26 @@ public class FileController extends BaseController {
 			String userCode = session.getAttribute("user_code").toString();// 用户编码
 			String rootCode = StrUtil.isBlank(request.getParameter("root_code")) ? projectCode
 					: request.getParameter("root_code");// 根路径
+			//文件查询条件
 			Map<String, String> fileSelMap = new HashMap<String, String>();
 			String fileName = request.getParameter("form_file_name");
 			String startDate = request.getParameter("form_start_date");
 			String endDate = request.getParameter("form_end_date");
+			String fileInfo = request.getParameter("form_file_info");
+			String eventType = request.getParameter("form_event_type");
+			String eventLevel = request.getParameter("form_event_level");
+			String researchUserCode = request.getParameter("form_research_user_code");
+			String researchStartDate = request.getParameter("form_research_start_date");
+			String researchEndDate = request.getParameter("form_research_end_date");
 			fileSelMap.put("fileName", fileName);
 			fileSelMap.put("startDate", startDate);
 			fileSelMap.put("endDate", endDate);
+			fileSelMap.put("fileInfo", fileInfo);
+			fileSelMap.put("eventType", eventType);
+			fileSelMap.put("eventLevel", eventLevel);
+			fileSelMap.put("researchUserCode", researchUserCode);
+			fileSelMap.put("researchStartDate", researchStartDate);
+			fileSelMap.put("researchEndDate", researchEndDate);
 			Result<Map<String, Object>> result = fs.getProjectDetailData(projectCode, Integer.parseInt(projectLevel),
 					userCode, fileSelMap);
 			if (Result.SUCCESS_0 == result.getCode()) {

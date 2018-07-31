@@ -62,7 +62,7 @@ public class FileServiceImpl extends BaseService implements IFileService {
 	@Autowired
 	private KbBatchShareMapper kbsm; // 批量分享接口
 	@Autowired
-	private KbProjectUserMapper kpum; // 
+	private KbProjectUserMapper kpum; //
 	@Autowired
 	@Qualifier("projectServiceImpl")
 	IProjectService ps;
@@ -80,7 +80,8 @@ public class FileServiceImpl extends BaseService implements IFileService {
 		if (StrUtil.notBlank(fileTableName)) {
 			try {
 				// 根据项目关联关系，获得部门信息
-				String projectMainCode = kpum.selectProjectMainCodeByUserCodeAndProjectCode(kf.getCreateUserCode(),kf.getProjectCode());
+				String projectMainCode = kpum.selectProjectMainCodeByUserCodeAndProjectCode(kf.getCreateUserCode(),
+						kf.getProjectCode());
 				String userDeptCode = ps.selectDeptCodeByProjectMainCode(projectMainCode);
 				List<KbUser> superiorUserList = kum.selectSuperiorUserByUserDeptCode(userDeptCode);
 				if (null != superiorUserList && !superiorUserList.isEmpty()) {
@@ -107,7 +108,7 @@ public class FileServiceImpl extends BaseService implements IFileService {
 				int fileNum = kfm.insertFile(kf, fileTableName);
 				// 保存文件与用户的关联关系
 				int fileUserNum = kfum.batchInsertFileUser(kfus);
-				if (fileNum > 0 && fileUserNum>0) {
+				if (fileNum > 0 && fileUserNum > 0) {
 					return rtnSuccessResult("文件保存成功");
 				} else {
 					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
@@ -386,7 +387,8 @@ public class FileServiceImpl extends BaseService implements IFileService {
 						: 0;
 				// 3.该员工所具有权限的文件信息
 				String fileTableName = kftm.selectFileTableNameByFileLevel(projectLevel);
-				fileList = kfm.selectFileByParams(fileTableName, projectCode, userCode, DateManager(fileSelMap));
+				fileSelMap = DateManager(fileSelMap);
+				fileList = kfm.selectFileByParams(fileTableName, projectCode, userCode, fileSelMap);
 				resultMap.put("files", fileList);
 				resultMap.put("projectSonInfos", projectSonInfos);
 				resultMap.put("ratio", ratio);
@@ -415,15 +417,22 @@ public class FileServiceImpl extends BaseService implements IFileService {
 		if (null == obj) {
 			return obj;
 		}
-		String startTime = obj.get("startDate");
-		String endTime = obj.get("endDate");
-
-		if (StrUtil.isBlank(startTime) && StrUtil.isBlank(endTime)) {
+		String startDate = obj.get("startDate");
+		String endDate = obj.get("endDate");
+		String eventStartDate = obj.get("researchStartDate");
+		String eventEndDate = obj.get("researchEndDate");
+		if (StrUtil.isBlank(startDate) && StrUtil.isBlank(endDate)&&StrUtil.isBlank(eventStartDate) && StrUtil.isBlank(eventEndDate)) {
 			return obj;
-		} else if (StrUtil.isBlank(startTime)) {
-			obj.put("startDate", DateUtil.addDay(endTime, -7));
-		} else if (StrUtil.isBlank(endTime)) {
-			obj.put("endDate", DateUtil.addDay(startTime, 7));
+		}
+		if (StrUtil.isBlank(startDate)&& StrUtil.notBlank(endDate)) {
+			obj.put("startDate", DateUtil.addDay(endDate, -7));
+		} else if (StrUtil.isBlank(endDate)&& StrUtil.notBlank(startDate)) {
+			obj.put("endDate", DateUtil.addDay(startDate, 7));
+		}
+		if (StrUtil.isBlank(eventStartDate)&& StrUtil.notBlank(eventEndDate)) {
+			obj.put("researchStartDate", DateUtil.addDay(eventEndDate, -7));
+		} else if (StrUtil.isBlank(eventEndDate)&& StrUtil.notBlank(eventStartDate)) {
+			obj.put("researchEndDate", DateUtil.addDay(eventStartDate, 7));
 		}
 		return obj;
 	}
