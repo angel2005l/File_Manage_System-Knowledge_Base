@@ -58,8 +58,6 @@
 									<font style="vertical-align: inherit;">选择事件类型</font>
 								</h4>
 								<select id="file_event_type" class="xh_file_select" name="file_event_type">
-									<option value="">(新)-智能工厂</option>
-									<option value="">博物馆项目</option>
 								</select>
 							</div>
 							<div style="display: inline-block;">
@@ -67,8 +65,6 @@
 									<font style="vertical-align: inherit;">选择事件级别</font>
 								</h4>
 								<select id="file_event_level" class="xh_file_select" name="file_event_level">
-									<option value="">(新)-智能工厂</option>
-									<option value="">博物馆项目</option>
 								</select>
 							</div>
 						</div>
