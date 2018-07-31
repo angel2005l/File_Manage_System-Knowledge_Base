@@ -2,6 +2,7 @@ package com.xh.service.impl;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,5 +113,16 @@ public class UserServiceImpl extends BaseService implements IUserService {
 			log.error("查询全部员工信息数据接口异常,异常原因:【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "系统异常,请联系系统管理员");
 		}
+	}
+
+	@Override
+	public Result<List<Map<String, String>>> selResearchUserKVByProjectCode(String projectCode) throws Exception {
+		try {
+			return rtnSuccessResult("", kum.selectResearchUserKVByProject(projectCode));
+		} catch (SQLException e) {
+			log.error("根据项目信息获得项目相关人员键值对数据接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "系统异常,请联系系统管理员");
+		}
+
 	}
 }

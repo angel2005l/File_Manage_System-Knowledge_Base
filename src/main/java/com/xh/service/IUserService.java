@@ -1,6 +1,7 @@
 package com.xh.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.xh.entity.KbUser;
 import com.xh.uitl.Result;
@@ -76,16 +77,31 @@ public interface IUserService {
 	 * @version 1.0
 	 */
 	public Result<List<KbUser>> selSuperiorUserByUserDeptCode(String userDeptCode) throws Exception;
+
 	/**
 	 * 
-	 * @Title: selUsersForAll  
+	 * @Title: selUsersForAll
 	 * @Description: 查询全部员工信息（按部门编号排序）
 	 * @author 黄官易
 	 * @return
-	 * @throws Exception    
-	 * @return Result<List<KbUser>> 
-	 * @date 2018年7月27日  
+	 * @throws Exception
+	 * @return Result<List<KbUser>>
+	 * @date 2018年7月27日
 	 * @version 1.0
 	 */
 	public Result<List<KbUser>> selUsersForAll() throws Exception;
+
+	/**
+	 * 
+	 * @Title: selResearchUserKVByProjectCode  
+	 * @Description: 根据项目信息获得项目相关人员键值对
+	 * @author 黄官易
+	 * @param projectCode
+	 * @return
+	 * @throws Exception    
+	 * @return Result<List<Map<String,String>>> 
+	 * @date 2018年7月31日  
+	 * @version 1.0
+	 */
+	public Result<List<Map<String, String>>> selResearchUserKVByProjectCode(String projectCode) throws Exception;
 }

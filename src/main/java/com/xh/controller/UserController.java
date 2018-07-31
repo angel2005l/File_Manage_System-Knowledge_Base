@@ -1,5 +1,8 @@
 package com.xh.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -23,7 +26,7 @@ public class UserController extends BaseController {
 
 	@Autowired
 	@Qualifier("userServiceImpl")
-	private IUserService userService;// 实例化用户服务类
+	private IUserService us;// 实例化用户服务类
 
 	/**
 	 * 
@@ -41,7 +44,7 @@ public class UserController extends BaseController {
 		String userCode = request.getParameter("user_code");
 		String userPassword = request.getParameter("user_password");
 		try {
-			Result<KbUser> loginResult = userService.login(userCode, userPassword);
+			Result<KbUser> loginResult = us.login(userCode, userPassword);
 			if (Result.SUCCESS_0 == loginResult.getCode()) {
 				KbUser ku = loginResult.getData();
 				session.setAttribute("user_code", ku.getUserCode());
@@ -74,4 +77,27 @@ public class UserController extends BaseController {
 		return "view/login";
 	}
 
+	/**
+	 * 
+	 * @Title: getResearchUserInfoKV  
+	 * @Description: 根据项目获得参与人编码 
+	 * @author 黄官易
+	 * @param request
+	 * @return    
+	 * @return Result<List<Map<String,String>>> 
+	 * @date 2018年7月31日  
+	 * @version 1.0
+	 */
+	@RequestMapping("/researchUserKv.do")
+	@ResponseBody
+	public Result<List<Map<String,String>>> getResearchUserInfoKV(HttpServletRequest request){
+		try {
+			String projectCode = request.getParameter("project_code");
+			return us.selResearchUserKVByProjectCode(projectCode);
+		} catch (Exception e) {
+			log.error("查询全部文件事件类型业务接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
+		}
+	}
+	
 }

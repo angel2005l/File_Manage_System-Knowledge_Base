@@ -49,4 +49,12 @@
   <select id="selectUsersForAll" resultMap="BaseResultMap">
   	select  user_code, user_name, user_dept_code, professional_code from kb_user a inner join kb_dept b on a.user_dept_code = b.dept_code where b.dept_status = '1' and a.user_status ='1' order by b.dept_level,a.user_dept_code
   </select>
+  <resultMap type="map" id="researchUsersBaseResultMap">
+  	<result column="user_code"  property="userCode" jdbcType="VARCHAR"/>
+  	<result column="user_name"  property="userName" jdbcType="VARCHAR"/>
+  </resultMap>
+  <!-- 根据项目编码查询相关用户信息键值对 -->
+  <select id="selectResearchUserKVByProject" parameterType="string" resultMap="researchUsersBaseResultMap">
+  	SELECT DISTINCT user_code,user_name from kb_project_user where project_code = #{projectCode}
+  </select>
 </mapper>
