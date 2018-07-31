@@ -81,10 +81,8 @@
 										<h4>
 											<span class="name-non-linkable"> <span
 												class="todolist-rest" id="project_name">${projectInfo.projectName }</span>
-												<span style="display: none"><input type="text"
-													value="${projectInfo.projectCode }" id="project_code" /></span> <!-- 父类的projectCode -->
-												<span style="display: none"><input type="text"
-													value="${projectInfo.projectLevel }" id="project_level" /></span>
+												<input type="hidden" value="${projectInfo.projectCode }" id="project_code" /> <!-- 父类的projectCode -->
+												<input type="hidden" value="${projectInfo.projectLevel }" id="project_level"  />
 												<!-- 父类的projectLevel -->
 											</span>
 
@@ -164,24 +162,24 @@
 										<input type="text" class="keyword" style="display: inline; width: 150px; margin-right: 10px;"
 											 name="form_file_name" placeholder="请输入文件名关键字" autocomplete="off">
 										<input type="text" class="keyword" style="display: inline; width: 150px; margin-right: 10px;"
-											 name="form_file_name" placeholder="请输入文件描述关键字" autocomplete="off">
-										<span >类型: </span><select id="xh_type_select" class="xh_detail_select" name="file_event_type">
+											 name="form_file_info" placeholder="请输入文件描述关键字" autocomplete="off">
+										<span >类型: </span><select id="xh_type_select" class="xh_detail_select" name="form_event_type">
 										</select>	 
-										<span >级别: </span><select id="xh_level_select" class="xh_detail_select" name="file_event_level">
+										<span >级别: </span><select id="xh_level_select" class="xh_detail_select" name="form_event_level">
 										</select>
 										<button type="button" class="btn btn-primary" style="float:right;" onclick="formSubmit()"> 
 											<font style="vertical-align: inline;">筛选</font>
 										</button>
 										</div>	 
-										<span >上传时间: </span><input type="text" class="keyword form_datetime" style="display: inline; width: 100px; margin-right: 10px;"
+										<span >调研人: </span><select id="xh_research_user_select" class="xh_detail_select" name="form_research_user_code"></select>
+										<span >调研时间: </span><input type="text" class="keyword form_datetime" style="display: inline; width: 80px; margin-right: 5px;"
+											 name="form_research_start_date" placeholder="起始时间" autocomplete="off" readonly="readonly"> 
+										<input type="text" class="keyword form_datetime" style="display: inline; width: 80px; margin-right: 10px;"
+											 name="form_research_end_date" placeholder="终止时间" autocomplete="off" readonly="readonly"> 	 
+										<span >上传时间: </span><input type="text" class="keyword form_datetime" style="display: inline; width: 80px; margin-right: 5px;"
 											 name="form_start_date" placeholder="起始时间" autocomplete="off" readonly="readonly"> 
-										<input type="text" class="keyword form_datetime" style="display: inline; width: 100px; margin-right: 10px;"
+										<input type="text" class="keyword form_datetime" style="display: inline; width: 80px; margin-right: 10px;"
 											 name="form_end_date" placeholder="终止时间" autocomplete="off" readonly="readonly"> 
-										<span >调研时间: </span><input type="text" class="keyword form_datetime" style="display: inline; width: 100px; margin-right: 10px;"
-											 name="form_start_date" placeholder="起始时间" autocomplete="off" readonly="readonly"> 
-										<input type="text" class="keyword form_datetime" style="display: inline; width: 100px; margin-right: 10px;"
-											 name="form_end_date" placeholder="终止时间" autocomplete="off" readonly="readonly"> 	 
-											 
 										<!-- 默认区域 -->
 										<input id="hidden_project_code" type="hidden" name="project_code" value="${projectInfo.projectCode }">
 										<input id="hidden_project_level" type="hidden" name="project_level" value="${projectInfo.projectLevel}">

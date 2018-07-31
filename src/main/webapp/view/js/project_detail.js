@@ -2,6 +2,7 @@ $(function(){
 	toload();
 	changeFileEventType();
 	changeFileEventLevel();
+	changeResearchUserInfo();
 })
 
 $("#batch_download").on("click", function() {
@@ -491,4 +492,21 @@ function changeFileEventLevel(){
 							this.dicName).attr("value", this.dicCode));
 				})
 	}
+}
+
+function changeResearchUserInfo(){
+	var projectCode = $("#project_code").val();
+	var result = ajaxGet("user/researchUserKv.do?project_code="+projectCode,false);
+	var fileEventLevelSelectObj = $("#xh_research_user_select");
+	fileEventLevelSelectObj.empty();
+	fileEventLevelSelectObj.append($("<option />").text("请选择调研人").attr("value",
+			"").attr("selected", "selected"));
+	if (result.code == 0) {
+		$(result.data).each(
+				function() {
+					fileEventLevelSelectObj.append($("<option />").text(
+							this.userName).attr("value", this.userCode));
+				})
+	}
+	
 }
