@@ -54,12 +54,15 @@
 					data-page-name="新海科技集团的项目">
 					<div class="projects-tools">
 						<div class="project-groups">
-							<a class="project-group" title="我的收藏"
-								href="pro/index.do?method=collect">我的收藏 <i
-								class="twr twr-star"></i></a> <a class="project-group" title="我的项目"
-								href="pro/index.do?method=self">我的项目</a> <a
-								class="project-group" title="参与项目"
-								href="pro/index.do?method=participation">参与项目</a>
+							<a class="project-group" title="我的收藏" href="pro/index.do?method=collect">我的收藏 <i class="twr twr-star"></i></a> 
+							<a class="project-group" title="我的项目" href="pro/index.do?method=self">我的项目</a> 
+							<a class="project-group" title="参与项目" href="pro/index.do?method=participation">参与项目</a>
+							<a class="project-group" title="参与项目" href="pro/index.do?method=participation">锁定项目</a>
+							<input type="text" class="keyword" style="display:inline-block; width: 150px; margin-right: 10px;"
+								 name="form_file_name" placeholder="请输入项目名称关键字" autocomplete="off">
+							<button type="button" class="btn btn-primary"  onclick="formSubmit()"> 
+								<font style="vertical-align: inline;">搜索</font>
+							</button>
 							<div class="project-tools-right">
 								<a class="create-project" href="pro/insProJsp.do"> <font
 									style="vertical-align: inherit;"> <font
