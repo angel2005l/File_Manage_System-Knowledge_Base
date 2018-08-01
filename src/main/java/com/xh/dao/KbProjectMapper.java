@@ -89,40 +89,6 @@ public interface KbProjectMapper {
 
 	/**
 	 * 
-	 * @Title: selectAllPro
-	 * @Description: 查询主界面的所有的项目信息
-	 * @author 陈专懂
-	 * @return List<KbProject>
-	 * @date 2018年6月28日
-	 * @version 1.0
-	 */
-	public List<KbProject> selectAllPro(@Param("formName") String formName);
-
-	/**
-	 * 
-	 * @Title: selectSuperiorAllPro
-	 * @Description: 返回功能 查询上级项目下的所有的项目
-	 * @author 陈专懂
-	 * @return List<KbProject>
-	 * @date 2018年6月28日
-	 * @version 1.0
-	 */
-	public List<KbProject> selectSuperiorAllPro(@Param("formName") String formName,
-			@Param("projectCode") String projectCode, @Param("userCode") String userCode);
-
-	/**
-	 * 
-	 * @Title: getProjectParentCode
-	 * @Description: 根据projectCode获取父类的Code
-	 * @author 陈专懂
-	 * @return String
-	 * @date 2018年6月29日
-	 * @version 1.0
-	 */
-	public String getProjectParentCode(@Param("formName") String formName, @Param("projectCode") String projectCode);
-
-	/**
-	 * 
 	 * @Title: selectProjectInfoByProjectCode
 	 * @Description: 根据项目编码获得项目信息
 	 * @author 黄官易
@@ -218,7 +184,20 @@ public interface KbProjectMapper {
 	 */
 	public int updateProjectStatus(@Param("projectLevel") int projectLevel, @Param("projectCode") String projectCode,
 			@Param("projectStatus") String projectStatus, @Param("userCode") String userCode) throws SQLException;
-
+	/**
+	 * 
+	 * @Title: selectSonProject  
+	 * @Description: 查询子项目
+	 * @author 黄官易
+	 * @param formName
+	 * @param projectCode
+	 * @param userCode
+	 * @return
+	 * @throws SQLException    
+	 * @return int 
+	 * @date 2018年8月1日  
+	 * @version 1.0
+	 */
 	public int selectSonProject(@Param("formName") String formName, @Param("projectCode") String projectCode,
 			@Param("userCode") String userCode) throws SQLException;
 

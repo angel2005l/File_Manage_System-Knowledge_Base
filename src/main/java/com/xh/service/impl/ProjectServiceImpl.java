@@ -196,9 +196,10 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	}
 
 	@Override
-	public List<Map<String, Object>> selectProjectByUserCodeAndMethod(String userCode, String method) throws Exception {
+	public List<Map<String, Object>> selectProjectByUserCodeAndMethod(String userCode, String method,String formProjectName) throws Exception {
 		try {
-			return kpum.selectProjectSimpleInfoByUserCodeAndMethod(userCode, method);
+			String projectTable = kptm.selectProjectTableNameByProjectLevel(0);
+			return kpum.selectProjectSimpleInfoByUserCodeAndMethod(userCode, method,projectTable,formProjectName);
 		} catch (SQLException e) {
 			log.error("根据用户编码查询项目简易信息数据接口异常,异常原因:【" + e.toString() + "】");
 			return null;
@@ -247,7 +248,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 			try {
 				int insProNum = kpm.insertProject(kp, projectTableName);
 				int insUsersNum = kpum.batchInsertProjectUsers(kpus);
-				if (insProNum > 0 && insUsersNum>0) {
+				if (insProNum > 0 && insUsersNum > 0) {
 					return rtnSuccessResult("新建项目成功");
 				} else {
 					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();// 手动回滚
@@ -372,8 +373,8 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	public Result<List<Map<String, String>>> selectUsersByProjectCode(String projectCode) throws Exception {
 		try {
 			return rtnSuccessResult("", kpum.selectUsersByProjectCode(projectCode));
-		}catch(SQLException e) {
-			log.error("根据项目编码获得参员工简易信息数据接口异常,异常原因:【"+e.toString()+"】");
+		} catch (SQLException e) {
+			log.error("根据项目编码获得参员工简易信息数据接口异常,异常原因:【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
 		}
 	}

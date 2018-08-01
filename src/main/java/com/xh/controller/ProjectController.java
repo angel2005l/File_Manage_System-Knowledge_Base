@@ -290,9 +290,10 @@ public class ProjectController extends BaseController {
 	public String index(HttpServletRequest request, HttpSession session) {
 		try {
 			String userCode = session.getAttribute("user_code").toString();// 用户编码
+			String fromProjectName = request.getParameter("form_project_name");
 			String method = request.getParameter("method");
 			List<Map<String, Object>> result = ps.selectProjectByUserCodeAndMethod(userCode,
-					StrUtil.isBlank(method) ? "self" : method);// 查询用户关联的所有项目
+					StrUtil.isBlank(method) ? "self" : method, fromProjectName);// 查询用户关联的所有项目
 			request.setAttribute("projectList", result);
 		} catch (NullPointerException e) {
 			log.error("非法登录,登录IP：" + IpUtil.getIp(request));

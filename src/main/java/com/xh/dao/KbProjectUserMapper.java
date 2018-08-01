@@ -21,7 +21,7 @@ public interface KbProjectUserMapper {
 	 * @version 1.0
 	 */
 	public List<Map<String, Object>> selectProjectSimpleInfoByUserCodeAndMethod(@Param("userCode") String userCode,
-			@Param("method") String method) throws SQLException;
+			@Param("method") String method,@Param("projectTable") String projectTable,@Param("formProjectName") String formProjectName) throws SQLException;
 
 	/**
 	 * 

@@ -59,28 +59,14 @@
   <select id="selectProjectWithProjectPerssionByProjectCode" resultMap="projectUsetInfoResultMap" >
   	select <include refid="Base_Column_List" />,'${userCode}' as col1 from ${projectTableName}  where project_code = #{projectCode}
   </select>
-    <!-- 查询特定的项目信息 -->
+  <!-- 查询特定的项目信息 -->
   <select id="selectProjectByProjectCode" resultMap="BaseResultMap">
   	select <include refid="Base_Column_List" /> from ${projectTableName}  where project_code = #{projectCode}
   </select>
-  <!-- 查询主界面所有信息 -->
-  <select id="selectAllPro" parameterType="string" resultMap="BaseResultMap">
-  	select <include refid="Base_Column_List" /> from ${formName}
-  </select>
-    <!-- 查询上级项目下的所有的项目 -->
-  <select id="selectSuperiorAllPro" resultMap="BaseResultMap" parameterType="string">
-  	select <include refid="Base_Column_List" /> from ${formName} 
-  	where project_parent_code = (SELECT project_parent_code from ${formName} a INNER JOIN kb_project_user b 
-  	on a.project_code=b.project_code and a.project_code=#{projectCode} and b.user_code=#{userCode})
-  </select>
-  <!-- 查询父类的code -->
-  <select id="getProjectParentCode" resultType="String" parameterType="string">
-  	SELECT project_parent_code from ${formName} where project_code=#{projectCode} 
-  </select>
   <!-- 根据项目编码获得项目信息 -->
-	  <select id="selectProjectInfoByProjectCode" resultMap="BaseResultMap">
-	  		select <include refid="Base_Column_List" /> from ${projectTableName} where project_code = #{projectCode}
-	  </select>
+	 <select id="selectProjectInfoByProjectCode" resultMap="BaseResultMap">
+	 	select <include refid="Base_Column_List" /> from ${projectTableName} where project_code = #{projectCode}
+	 </select>
   <!-- 根据项目编码获得项目名称 -->
   <select id="selectProjectNameByProjectCode" resultType="string">
   	select project_name from ${projectTableName} where project_code = #{projectCode}
@@ -156,7 +142,5 @@
 		</selectKey>
 		update ${pt_name} set project_status = 'locked' ,update_user_code = #{userCode} where project_code = #{projectCode}
 	</update>
-	
-	<!-- 根据项目类型获得 -->
 	<!-- 测试分界线 -->
 </mapper>
