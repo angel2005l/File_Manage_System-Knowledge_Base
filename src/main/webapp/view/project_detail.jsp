@@ -261,7 +261,7 @@
 																	<c:when test="${b.file_status eq 'locked' }">
 																		<c:if test="${b.file_permission eq 'download' }">
 																			<a class="link-change-dir"
-																				onclick="shareFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">解锁</a>
+																				onclick="unLockFile('${b.file_code }','${b.file_level }','${projectInfo.projectCode }')">解锁</a>
 																			<a class="link-change-dir"
 																				onclick="delFile('${b.file_code }','${b.file_level }')">删除</a>
 																		</c:if>

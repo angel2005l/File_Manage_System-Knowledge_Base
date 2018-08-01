@@ -1,4 +1,4 @@
-$(function(){
+$(function() {
 	toload();
 	changeFileEventType();
 	changeFileEventLevel();
@@ -83,8 +83,8 @@ $("#batch_cancel").on("click", function() {
 })
 
 function cancelBtnBatch() {
-	$(".batch-file-check").removeClass("checked").addClass("noChecked")
-			.css("display", "none");
+	$(".batch-file-check").removeClass("checked").addClass("noChecked").css(
+			"display", "none");
 	$("#batch_enter").css("display", "none").attr("data-batch-method", "");
 	$("#batch_cancel").css("display", "none").attr("data-batch-method", "")
 	$("#batch_download,#batch_share").css("display", "");
@@ -102,24 +102,18 @@ $('.form_datetime').datetimepicker({
 	format : "yyyy-mm-dd"
 });
 
-/*
- * function checkDate() {
- *  }
- */
-
 function formSubmit() {
 	$('#search').submit();
 }
 
-
-$(".displayBtn").on("click",function(){
+$(".displayBtn").on("click", function() {
 	var obj = $(this);
 	var dataStr = obj.attr("data-info");
 	var fileInfos = dataStr.split(",");
-	display(fileInfos[0],fileInfos[1],fileInfos[2],obj);
+	display(fileInfos[0], fileInfos[1], fileInfos[2], obj);
 })
 
-function display(suffix, code, name,obj) {
+function display(suffix, code, name, obj) {
 	// 需要进行分类
 	switch (suffix) {
 	case ".xls":
@@ -129,8 +123,8 @@ function display(suffix, code, name,obj) {
 	case ".ppt":
 	case ".pptx":
 	case ".pdf":
-		var str = $("base").attr('href')+"file/disPdf.do?file_info="
-				+ code + "," + name;
+		var str = $("base").attr('href') + "file/disPdf.do?file_info=" + code
+				+ "," + name;
 		$("#displayValues").val(str);
 		$("#displayForm").submit();
 		break;
@@ -139,25 +133,29 @@ function display(suffix, code, name,obj) {
 	case ".jpg":
 	case ".png":
 		var imgObj = obj.parent().parent().parent().find(".tempImg");
-		var file_info = code+","+name
-	 	$.ajax({
-			url:"file/disImg.do",
-			data:{"file_info":file_info},
-			type:"post",
-			dataType:"json",
-			success :function(result){
-				if(result.code ==0){
+		var file_info = code + "," + name
+		$.ajax({
+			url : "file/disImg.do",
+			data : {
+				"file_info" : file_info
+			},
+			type : "post",
+			dataType : "json",
+			success : function(result) {
+				if (result.code == 0) {
 					imgObj.attr("data-src", result.data);
 					imgObj.viewer({
 						url : 'data-src',
 						hide : function(e) {
 							$.ajax({
-								url:'file/delTempImg.do',
-								type:'post',
-								data:{"delete_file_path":result.data},
-								dataType:"json",
-								success:function(){
-									return ;	
+								url : 'file/delTempImg.do',
+								type : 'post',
+								data : {
+									"delete_file_path" : result.data
+								},
+								dataType : "json",
+								success : function() {
+									return;
 								}
 							})
 							imgObj.viewer('destroy')
@@ -182,15 +180,16 @@ function display(suffix, code, name,obj) {
 }
 
 function downloadFile(code, level) {
-	var data = "file_code="+code+"&file_level="+level;
-	var result = ajaxPost('file/downloadCheck.do',data,false);
-	if(null != result){
+	var data = "file_code=" + code + "&file_level=" + level;
+	var result = ajaxPost('file/downloadCheck.do', data, false);
+	if (null != result) {
 		if (result.code === 0) {
-			window.location.href = "file/downloadFile.do?file_name="+ result.data;
+			window.location.href = "file/downloadFile.do?file_name="
+					+ result.data;
 		} else {
 			layer.msg(result.msg);
 		}
-	}else{
+	} else {
 		layer.msg("服务器未响应");
 	}
 }
@@ -199,12 +198,12 @@ function downloadFileCheck(code, level) {
 	var resultArray = new Array(2);
 	resultArray[0] = -1;
 	resultArray[1] = "";
-	var data = "file_code="+code+"&file_level="+level;
-	var result = ajaxPost('file/downloadCheck.do',data,false);
-	if(null != result){
+	var data = "file_code=" + code + "&file_level=" + level;
+	var result = ajaxPost('file/downloadCheck.do', data, false);
+	if (null != result) {
 		resultArray[0] = result.code;
-		resultArray[1] = result.data;		
-	}else{
+		resultArray[1] = result.data;
+	} else {
 		layer.msg("服务器未响应")
 	}
 	return resultArray;
@@ -218,23 +217,19 @@ function downloadFiles(fileCodes, level) {
 		console.log(result[1]);
 		if (result[0] == 0) {
 			if (index == (fileCodesArray.length - 1)) {
-				window.open("file/downloadFile.do?file_name="
-						+ result[1], "_self");
+				window.open("file/downloadFile.do?file_name=" + result[1],
+						"_self");
 			} else {
-				window.open("file/downloadFile.do?file_name="
-						+ result[1]);
-			} 
+				window.open("file/downloadFile.do?file_name=" + result[1]);
+			}
 		}
 	}
 	cancelBtnBatch();
 }
 
 function shareProject(projectCode, projectLevel, userCode) {
-	var str = $("base").attr('href')+"pro/sp.do?project_code="
-			+ projectCode
-			+ "&project_level="
-			+ projectLevel
-			+ "&user_code=" + userCode;
+	var str = $("base").attr('href') + "pro/sp.do?project_code=" + projectCode
+			+ "&project_level=" + projectLevel + "&user_code=" + userCode;
 	$("#shareUrl").html(str)
 	layer.open({
 		type : 1,
@@ -247,12 +242,8 @@ function shareProject(projectCode, projectLevel, userCode) {
 	})
 }
 function shareFile(fileCode, fileLevel, projectCode) {
-	var str = $("base").attr('href')+"file/sf.do?file_code="
-			+ fileCode
-			+ "&file_level="
-			+ fileLevel
-			+ "&project_code="
-			+ projectCode;
+	var str = $("base").attr('href') + "file/sf.do?file_code=" + fileCode
+			+ "&file_level=" + fileLevel + "&project_code=" + projectCode;
 	$("#shareUrl").html(str)
 	layer.open({
 		type : 1,
@@ -266,7 +257,7 @@ function shareFile(fileCode, fileLevel, projectCode) {
 }
 
 function shareFiles(shareCode) {
-	var str = $("base").attr('href')+"file/shareFiles.do?share_code="
+	var str = $("base").attr('href') + "file/shareFiles.do?share_code="
 			+ shareCode;
 	$("#shareUrl").html(str)
 	layer.open({
@@ -292,7 +283,8 @@ function allread() {
 	var list = [];
 	for (var i = 0; i < $(".adviceCode").length; i++) {
 		list.push($(".adviceCode")[i].innerHTML)
-	};
+	}
+	;
 	$.ajax({
 		url : 'pro/isRead.do',
 		type : 'post',
@@ -305,27 +297,31 @@ function allread() {
 }
 
 function toload() {
-	$.ajax({
-		url : 'index/getAllMsg.do',
-		type : 'post',
-		data : "",// 发送服务器的数据
-		dataType : "json",// 返会值的类型
-		success : function(data) {
-			var str = "";
-			if (data.data.adNum != 0) {
-				$('#num').html(data.data.adNum);
-				$("#notification-count").attr("class","label unread");
-					for (var i = 0; i < data.data.adviceMsg.length; i++) {
-						str += "<span class='title'><span class='target'>"
+	$
+			.ajax({
+				url : 'index/getAllMsg.do',
+				type : 'post',
+				data : "",// 发送服务器的数据
+				dataType : "json",// 返会值的类型
+				success : function(data) {
+					var str = "";
+					if (data.data.adNum != 0) {
+						$('#num').html(data.data.adNum);
+						$("#notification-count").attr("class", "label unread");
+						for (var i = 0; i < data.data.adviceMsg.length; i++) {
+							str += "<span class='title'><span class='target'>"
 									+ data.data.adviceMsg[i].logMsg
 									+ "</span><span class='adviceCode' style='display: none'>"
 									+ data.data.adviceMsg[i].adviceCode
 									+ "</span></span><hr style='margin:0px 0px 3px 0px'>";
-						};
+						}
+						;
 						$("#msg").html(str);
 					} else {
 						$("#notification-count").attr("class", "label");
-						$("#msg").html("<span style='width:100%;text-align:center;display:block;'>- 没有新通知 -</span>");
+						$("#msg")
+								.html(
+										"<span style='width:100%;text-align:center;display:block;'>- 没有新通知 -</span>");
 					}
 				}
 			})
@@ -343,121 +339,110 @@ $(document).bind('click', function(e) {
 	$('#thediv').css('display', 'none'); // 点击的不是div或其子元素
 });
 
-$(".project-check").on('click', function() {
-	var checkedObj = $(this);
-	var data =  "project_code="+ checkedObj.attr('project_code')+"&project_level="+ checkedObj.attr('project_level');
-	layer.msg('确认后无法更改项目内容,是否完成任务',{
-		time:0,
-		btn:['确定','取消'],
-		yes:function(index){
-			layer.close(index);
-			var result = ajaxPost('pro/proStatus.do',data,false);
-			if(null != result ){
-				if(result.code ==0 ){
-					location.reload();
-				}else{
-					layer.msg(result.msg);
-				}
-			}else{
-				layer.msg('服务未响应');
-			}
-		}
-	})
-})
-
-function deleteProject(code,level){
-	var data = "project_code="+code+"&project_level="+ level;
-	layer.msg('是否删除项目',{
-		time:0,
-		btn:['确定','取消'],
-		yes:function(index){
-			layer.close(index);
-			var result = ajaxPost('pro/delPro.do',data,false);
-			if(null != result ){
-				if(result.code ==0 ){
-					if(level==0){
-						$("#back_index").click();
-					}else{
-						$("#back_page").click();
+$(".project-check").on(
+		'click',
+		function() {
+			var checkedObj = $(this);
+			var data = "project_code=" + checkedObj.attr('project_code')
+					+ "&project_level=" + checkedObj.attr('project_level');
+			layer.msg('确认后无法更改项目内容,是否完成任务', {
+				time : 0,
+				btn : [ '确定', '取消' ],
+				yes : function(index) {
+					layer.close(index);
+					var result = ajaxPost('pro/proStatus.do', data, false);
+					if (null != result) {
+						if (result.code == 0) {
+							location.reload();
+						} else {
+							layer.msg(result.msg);
+						}
+					} else {
+						layer.msg('服务未响应');
 					}
-				}else if(result.code ==4200){
-					window.location.href='user/logout.do'
-				}else{
-					layer.msg(result.msg);
 				}
-			}else{
+			})
+		})
+
+/*
+ * function deleteProject(code,level){ var data =
+ * "project_code="+code+"&project_level="+ level; layer.msg('是否删除项目',{ time:0,
+ * btn:['确定','取消'], yes:function(index){ layer.close(index); var result =
+ * ajaxPost('pro/delPro.do',data,false); if(null != result ){ if(result.code ==0 ){
+ * if(level==0){ $("#back_index").click(); }else{ $("#back_page").click(); }
+ * }else if(result.code ==4200){ window.location.href='user/logout.do' }else{
+ * layer.msg(result.msg); } }else{ layer.msg('服务未响应'); } } }) }
+ */
+/*
+ * function lockProject(code,level){ var data =
+ * "project_code="+code+"&project_level="+ level; layer.msg('是否锁定项目',{ time:0,
+ * btn:['确定','取消'], yes:function(index){ layer.close(index); var result =
+ * ajaxPost('pro/lockPro.do',data,false); if(null != result ){ if(result.code
+ * ==0 ){ if(level==0){ $("#back_index").click(); }else{
+ * $("#back_page").click(); } }else if(result.code ==4200){
+ * window.location.href='user/logout.do' }else{ layer.msg(result.msg); } }else{
+ * layer.msg('服务未响应'); } } }) }
+ */
+function lockFile(code, level) {
+	var data = "file_code=" + code + "&file_level=" + level;
+	layer.msg('是否锁定文件', {
+		time : 0,
+		btn : [ '确定', '取消' ],
+		yes : function(index) {
+			layer.close(index);
+			var result = ajaxPost('file/lockFile.do', data, false);
+			if (null != result) {
+				layer.msg(result.msg);
+				if (result.code == 0) {
+					location.reload();
+				} else if (result.code == 4200) {
+					window.location.href = 'user/logout.do'
+				}
+			} else {
 				layer.msg('服务未响应');
 			}
 		}
 	})
 }
 
-function lockProject(code,level){
-	var data = "project_code="+code+"&project_level="+ level;
-	layer.msg('是否锁定项目',{
-		time:0,
-		btn:['确定','取消'],
-		yes:function(index){
+function delFile(code, level) {
+	var data = "file_code=" + code + "&file_level=" + level;
+	layer.msg('是否解锁文件', {
+		time : 0,
+		btn : [ '确定', '取消' ],
+		yes : function(index) {
 			layer.close(index);
-			var result = ajaxPost('pro/lockPro.do',data,false);
-			if(null != result ){
-				if(result.code ==0 ){
-					if(level==0){
-						$("#back_index").click();
-					}else{
-						$("#back_page").click();
-					}
-				}else if(result.code ==4200){
-					window.location.href='user/logout.do'
-				}else{
-					layer.msg(result.msg);
-				}
-			}else{
-				layer.msg('服务未响应');
-			}
-		}
-	})
-}
-function lockFile(code,level){
-	var data = "file_code="+code+"&file_level="+ level;
-	layer.msg('是否锁定文件',{
-		time:0,
-		btn:['确定','取消'],
-		yes:function(index){
-			layer.close(index);
-			var result = ajaxPost('file/lockFile.do',data,false);
-			if(null != result ){
-				if(result.code ==0 ){
+			var result = ajaxPost('file/unLockFile.do', data, false);
+			if (null != result) {
+				layer.msg(result.msg);
+				if (result.code == 0) {
 					location.reload();
-				}else if(result.code ==4200){
-					window.location.href='user/logout.do'
-				}else{
-					layer.msg(result.msg);
+				} else if (result.code == 4200) {
+					window.location.href = 'user/logout.do'
 				}
-			}else{
+			} else {
 				layer.msg('服务未响应');
 			}
 		}
 	})
 }
 
-function delFile(code,level){
-	var data = "file_code="+code+"&file_level="+ level;
-	layer.msg('是否删除文件',{
-		time:0,
-		btn:['确定','取消'],
-		yes:function(index){
+function unLockFile(code, level) {
+	var data = "file_code=" + code + "&file_level=" + level;
+	layer.msg('是否锁定文件', {
+		time : 0,
+		btn : [ '确定', '取消' ],
+		yes : function(index) {
 			layer.close(index);
-			var result = ajaxPost('file/delFile.do',data,false);
-			if(null != result ){
-				if(result.code ==0 ){
+			var result = ajaxPost('file/lockFile.do', data, false);
+			if (null != result) {
+				layer.msg(result.msg);
+				if (result.code == 0) {
 					location.reload();
-				}else if(result.code ==4200){
-					window.location.href='user/logout.do'
-				}else{
-					layer.msg(result.msg);
+				} else if (result.code == 4200) {
+					window.location.href = 'user/logout.do'
 				}
-			}else{
+			} else {
 				layer.msg('服务未响应');
 			}
 		}
@@ -479,12 +464,12 @@ function changeFileEventType() {
 	}
 }
 
-function changeFileEventLevel(){
+function changeFileEventLevel() {
 	var result = ajaxGet("dic/getFel.do", false);
 	var fileEventLevelSelectObj = $("#xh_level_select");
 	fileEventLevelSelectObj.empty();
-	fileEventLevelSelectObj.append($("<option />").text("请选择事件级别").attr("value",
-			"").attr("selected", "selected"));
+	fileEventLevelSelectObj.append($("<option />").text("请选择事件级别").attr(
+			"value", "").attr("selected", "selected"));
 	if (result.code == 0) {
 		$(result.data).each(
 				function() {
@@ -494,9 +479,10 @@ function changeFileEventLevel(){
 	}
 }
 
-function changeResearchUserInfo(){
+function changeResearchUserInfo() {
 	var projectCode = $("#project_code").val();
-	var result = ajaxGet("user/researchUserKv.do?project_code="+projectCode,false);
+	var result = ajaxGet("user/researchUserKv.do?project_code=" + projectCode,
+			false);
 	var fileEventLevelSelectObj = $("#xh_research_user_select");
 	fileEventLevelSelectObj.empty();
 	fileEventLevelSelectObj.append($("<option />").text("请选择调研人").attr("value",
@@ -508,5 +494,5 @@ function changeResearchUserInfo(){
 							this.userName).attr("value", this.userCode));
 				})
 	}
-	
+
 }
