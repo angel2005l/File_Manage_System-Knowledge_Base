@@ -68,15 +68,6 @@
 															<div class="tags"></div>
 															<div class="control-dir no-dir">
 															<a class="link-change-dir displayBtn" data-info="${b.fileType },${b.fileCode },${b.fileName }">预览</a>
-																<%-- <c:choose>
-																	<c:when test="${b.fileStatus eq 'record' }"> --%>
-																		<%-- <a class="link-change-dir displayBtn"
-																			onclick="display('${b.fileCode }','${b.fileName }'">预览</a> --%>
-																<%--	</c:when>
-																 	<c:when test="${b.fileStatus eq 'locked' }">
-																		<a class="link-change-dir" >已锁定</a>
-																	</c:when>
-																</c:choose> --%>
 															</div>
 														</div>
 													</div>
