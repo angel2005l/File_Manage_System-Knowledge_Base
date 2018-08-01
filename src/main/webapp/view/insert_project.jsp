@@ -20,32 +20,23 @@
 		<div class="header">
 			<div class="header-container">
 				<h1 class="logo">
-					<a class="header-team-name" data-stack="true"
-						data-stack-root="true" href=""><font
-						style="vertical-align: inherit;"><font
+					<a class="header-team-name" href="pro/index.do?method=participation"><font style="vertical-align: inherit;"><font
 							style="vertical-align: inherit;">新海科技集团</font></font></a>
 				</h1>
 			</div>
 		</div>
-
-
 		<div class="container workspace simple-stack simple-stack-transition">
 			<div class="page page-0 simple-pjax">
-				<div class="page-inner" id="page-new-project" data-page-name="创建新项目">
+				<div class="page-inner" id="page-new-project">
 					<h3 class="page-title">
-						<font style="vertical-align: inherit;"><font
-							style="vertical-align: inherit;">创建新项目</font></font>
+						<font style="vertical-align: inherit;">创建新项目</font>
 					</h3>
-
-					<form id="projectFrom" class="form form-invite">
+					<form id="projectFrom" class="form">
 						<div class="form-item">
 							<div class="form-field">
-								<input type="text" name="project_name" placeholder="项目名称"
-									autofocus="" data-validate="required;length:1,32"
-									data-validate-msg="请填写项目名称;项目名称最长32个字符">
+								<input type="text" name="project_name" placeholder="项目名称" autofocus="autofocus" onkeydown='if(event.keyCode==13) return false;' >
 							</div>
 						</div>
-
 						<div class="form-item">
 							<div class="form-field">
 								<textarea name="project_info" id="project_info"
@@ -141,8 +132,7 @@
 
 							</div>
 						</div>
-
-						<div class="form-buttons">
+						<div class="">
 							<button type="button" class="btn btn-primary"
 								onclick="clickBtn()">
 								<font style="vertical-align: inherit;"><font
