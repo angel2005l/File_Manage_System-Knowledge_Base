@@ -83,7 +83,7 @@ public interface KbProjectUserMapper {
 	 * @date 2018年7月24日
 	 * @version 1.0
 	 */
-	public String[] selectProjectMainInfo(@Param("userCode") String userCode, @Param("projectCode") String projectCode)
+	public String selectProjectMainInfo(@Param("userCode") String userCode, @Param("projectCode") String projectCode)
 			throws SQLException;
 
 	/**

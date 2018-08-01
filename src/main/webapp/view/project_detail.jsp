@@ -304,12 +304,12 @@
 					<div class="item">
 						<a id="back_page" class="detail-action detail-action-star "
 							title="返回上一层"
-							href="file/pfdb.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }&root_code=${rootCode }">返回上一层</a>
+							href="file/pfdb.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }&root_code=${rootCode }"> <span>返回上一层</span></a>
 					</div>
 				</c:if>
 				<div class="item">
 					<a id="back_index" class="detail-action detail-action-star"
-						title="返回首页" href="pro/index.do">返回首页</a>
+						title="返回首页" href="pro/index.do"><span>返回首页</span></a>
 				</div>
 				<c:if test="${'write' eq projectInfo.projectPermission }">
 					<c:if test="${'progress' eq projectInfo.projectStatus }">

@@ -297,7 +297,8 @@ function allread() {
 }
 
 function toload() {
-	$.ajax({
+	$
+			.ajax({
 				url : 'index/getAllMsg.do',
 				type : 'post',
 				data : "",// 发送服务器的数据
@@ -363,15 +364,33 @@ $(".project-check").on(
 			})
 		})
 
-/*
- * function deleteProject(code,level){ var data =
- * "project_code="+code+"&project_level="+ level; layer.msg('是否删除项目',{ time:0,
- * btn:['确定','取消'], yes:function(index){ layer.close(index); var result =
- * ajaxPost('pro/delPro.do',data,false); if(null != result ){ if(result.code ==0 ){
- * if(level==0){ $("#back_index").click(); }else{ $("#back_page").click(); }
- * }else if(result.code ==4200){ window.location.href='user/logout.do' }else{
- * layer.msg(result.msg); } }else{ layer.msg('服务未响应'); } } }) }
- */
+function deleteProject(code, level) {
+	var data = "project_code=" + code + "&project_level=" + level;
+	layer.msg('是否删除项目', {
+		time : 0,
+		btn : [ '确定', '取消' ],
+		yes : function(index) {
+			layer.close(index);
+			var result = ajaxPost('pro/delPro.do', data, false);
+			if (null != result) {
+				if (result.code == 0) {
+					if (level == 0) {
+						$("#back_index>span").trigger('click');
+					} else {
+						$("#back_page>span").trigger('click');
+					}
+				} else if (result.code == 4200) {
+					window.location.href = 'user/logout.do'
+				} else {
+					layer.msg(result.msg);
+				}
+			} else {
+				layer.msg('服务未响应');
+			}
+		}
+	})
+}
+
 /*
  * function lockProject(code,level){ var data =
  * "project_code="+code+"&project_level="+ level; layer.msg('是否锁定项目',{ time:0,
