@@ -123,7 +123,7 @@ public class ProjectController extends BaseController {
 				// 当项目不是主项目时 获得主项目信息
 				projectMainInfos = ps.selectProjectMainInfo(userCode, projectParentCode);
 				// 项目所属上级 均为 主方法 上级
-				if (projectMainInfos.length < 1) {
+				if (null!=projectMainInfos && projectMainInfos.length < 1) {
 					return rtnFailResult(Result.ERROR_4000, "非法的项目信息");
 				}
 				createUserDeptCode = ps.selectDeptCodeByProjectMainCode(projectMainInfos[0]);

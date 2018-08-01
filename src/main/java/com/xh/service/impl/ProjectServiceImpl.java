@@ -196,10 +196,11 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	}
 
 	@Override
-	public List<Map<String, Object>> selectProjectByUserCodeAndMethod(String userCode, String method,String formProjectName) throws Exception {
+	public List<Map<String, Object>> selectProjectByUserCodeAndMethod(String userCode, String method,
+			String formProjectName) throws Exception {
 		try {
 			String projectTable = kptm.selectProjectTableNameByProjectLevel(0);
-			return kpum.selectProjectSimpleInfoByUserCodeAndMethod(userCode, method,projectTable,formProjectName);
+			return kpum.selectProjectSimpleInfoByUserCodeAndMethod(userCode, method, projectTable, formProjectName);
 		} catch (SQLException e) {
 			log.error("根据用户编码查询项目简易信息数据接口异常,异常原因:【" + e.toString() + "】");
 			return null;
@@ -330,7 +331,7 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 		 */
 		try {
 			return kpm.delProject(projectLevel, projectCode, userCode) > 0 ? rtnSuccessResult("项目删除成功")
-					: rtnFailResult(Result.ERROR_4300, "项目删除失败");
+					: rtnFailResult(Result.ERROR_4300, "项目删除失败,项目创建超过30分钟/项目不存在,请联系系统管理员");
 		} catch (SQLException e) {
 			log.error("删除项目数据接口异常,异常原因:【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
@@ -362,10 +363,11 @@ public class ProjectServiceImpl extends BaseService implements IProjectService {
 	@Override
 	public String[] selectProjectMainInfo(String userCode, String projectCode) throws Exception {
 		try {
-			return kpum.selectProjectMainInfo(userCode, projectCode);
+			String projectInfos = kpum.selectProjectMainInfo(userCode, projectCode);
+			return StrUtil.isBlank(projectInfos) ? null : projectInfos.split(",");
 		} catch (SQLException e) {
 			log.error("非主项目时获得主项目信息数据接口异常,异常原因:【" + e.toString() + "】");
-			return new String[3];
+			return null;
 		}
 	}
 
