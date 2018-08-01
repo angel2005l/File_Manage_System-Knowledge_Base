@@ -297,8 +297,7 @@ function allread() {
 }
 
 function toload() {
-	$
-			.ajax({
+	$.ajax({
 				url : 'index/getAllMsg.do',
 				type : 'post',
 				data : "",// 发送服务器的数据
@@ -407,12 +406,12 @@ function lockFile(code, level) {
 
 function delFile(code, level) {
 	var data = "file_code=" + code + "&file_level=" + level;
-	layer.msg('是否解锁文件', {
+	layer.msg('是否删除文件', {
 		time : 0,
 		btn : [ '确定', '取消' ],
 		yes : function(index) {
 			layer.close(index);
-			var result = ajaxPost('file/unLockFile.do', data, false);
+			var result = ajaxPost('file/delFile.do', data, false);
 			if (null != result) {
 				layer.msg(result.msg);
 				if (result.code == 0) {
@@ -429,12 +428,12 @@ function delFile(code, level) {
 
 function unLockFile(code, level) {
 	var data = "file_code=" + code + "&file_level=" + level;
-	layer.msg('是否锁定文件', {
+	layer.msg('是否解锁文件', {
 		time : 0,
 		btn : [ '确定', '取消' ],
 		yes : function(index) {
 			layer.close(index);
-			var result = ajaxPost('file/lockFile.do', data, false);
+			var result = ajaxPost('file/unLockFile.do', data, false);
 			if (null != result) {
 				layer.msg(result.msg);
 				if (result.code == 0) {
