@@ -63,8 +63,7 @@
 											<div class="others">
 												<div class="attachment">
 													<div class="attachment-thumb">
-														<img
-															src="assets/img/<tag:enum className="FileTypeImgEnum">${shareFile.fileType }</tag:enum>">
+														<img class="tempImg" src="assets/img/<tag:enum className="FileTypeImgEnum">${shareFile.fileType }</tag:enum>">
 													</div>
 													<div class="attachment-info">
 														<div class="name">
@@ -72,9 +71,7 @@
 														</div>
 														<div class="tags"></div>
 														<div class="control-dir no-dir">
-															<a class="link-change-dir"
-																onclick="display('${shareFile.fileCode }','${shareFile.fileName }')"
-																target="_blank">预览</a>
+															<a class="link-change-dir displayBtn" data-info="${shareFile.fileType },${shareFile.fileCode },${shareFile.fileName }">预览</a>
 															<%-- 	<c:if test="${b.file_permission eq 'download' }">
 															<a
 																onclick="downloadFile('${b.file_code }','${b.file_level }')"
@@ -101,14 +98,9 @@
 		method="get" target="_blank">
 		<input id="displayValues" type="hidden" name="file" />
 	</form>
-	<script type="text/javascript">
-	function display(code, name) {
-		var str = "${pageContext.request.contextPath }/file/disPdf.do?file_info="
-				+ code + "," + name;
-		$("#displayValues").val(str);
-		$("#displayForm").submit();
-	}
-	</script>
+	<script type="text/javascript" src="assets/js/layer.js"></script>
+	<script type="text/javascript" src="assets/js/viewer.js"></script>
+	<script type="text/javascript" src="view/js/share_file.js"></script>
 </body>
 
 </html>

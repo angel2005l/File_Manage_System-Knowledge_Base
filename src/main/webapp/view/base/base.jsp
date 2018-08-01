@@ -16,6 +16,8 @@
 <link rel="stylesheet" href="assets/css/xh.css" />
 <script type="text/javascript" src="assets/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="view/base/base.js"></script>
+<link rel="stylesheet" href="assets/theme/default/layer.css" />
+<link rel="stylesheet" href="assets/css/viewer.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body>

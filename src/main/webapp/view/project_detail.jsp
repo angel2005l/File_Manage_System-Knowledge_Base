@@ -16,8 +16,6 @@
 <link rel="stylesheet"
 	href="assets/css/bootstrap/bootstrap-datetimepicker.min.css">
 <link rel="stylesheet" media="all" href="assets/css/xh_application.css">
-<link rel="stylesheet" href="assets/theme/default/layer.css" />
-<link rel="stylesheet" href="assets/css/viewer.css" />
 <style type="text/css">
 </style>
 </head>
