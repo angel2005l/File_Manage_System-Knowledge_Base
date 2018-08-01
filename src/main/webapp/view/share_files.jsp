@@ -17,11 +17,8 @@
 <link rel="stylesheet" href="assets/css/xh.css" />
 <script src="assets/js/analytics.js"></script>
 </head>
-
 <body class="" style="cursor: auto;">
-
 	<div class="wrapper">
-
 		<div class="header">
 			<div class="header-container">
 				<h1 class="logo">
@@ -32,7 +29,6 @@
 				</div>
 			</div>
 		</div>
-
 		<div class="container workspace simple-stack simple-stack-transition">
 			<div class="page page-1 simple-pjax">
 				<div class="page-inner" id="page-todolist">
@@ -51,11 +47,8 @@
 												</h3>
 											</div>
 										</li>
-
 									</ul>
-
 								</div>
-
 							</div>
 						</div>
 						<div class="comment-actions ">
@@ -78,8 +71,15 @@
 															</div>
 															<div class="tags"></div>
 															<div class="control-dir no-dir">
-																<a class="link-change-dir"
-																	onclick="display('${b.fileCode }','${b.fileName }')">预览</a>
+																<c:choose>
+																	<c:when test="${b.fileStatus eq 'record' }">
+																		<a class="link-change-dir displayBtn"
+																			onclick="display('${b.fileCode }','${b.fileName }'">预览</a>
+																	</c:when>
+																	<c:when test="${b.fileStatus eq 'locked' }">
+																		<a class="link-change-dir" >已锁定</a>
+																	</c:when>
+																</c:choose>
 															</div>
 														</div>
 													</div>

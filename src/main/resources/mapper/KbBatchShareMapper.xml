@@ -26,7 +26,7 @@
   
   <resultMap id="BaseResultMapWithShareData" type="map">
   	<association column="{projectCode=a.project_code,ptName=c.pt_name}" property="project" javaType="com.xh.entity.KbProject" select="selectProjectByCode" />
-  	<collection column="{fileCodes=a.file_codes,ftName=b.ft_name}" property="files" select="selectfileByCodes" />
+  	<collection column="{fileCodes=a.file_codes,ftName=b.ft_name}" property="files" javaType="list" select="selectfileByCodes" />
   </resultMap>
   
   <!-- 根据分享码查询分享信息 -->

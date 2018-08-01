@@ -26,6 +26,7 @@ import com.xh.entity.KbBatchShare;
 import com.xh.entity.KbFile;
 import com.xh.entity.KbFileTable;
 import com.xh.entity.KbFileUser;
+import com.xh.entity.KbProject;
 import com.xh.service.IFileService;
 import com.xh.service.IProjectService;
 import com.xh.service.IUserService;
@@ -425,9 +426,17 @@ public class FileController extends BaseController {
 			// 获得项目名称与分享文件
 			Map<String, Object> shareMap = fs.getShareFile(fileCode, Integer.parseInt(fileLevel), projectCode);
 			if (!shareMap.isEmpty()) {
-				request.setAttribute("shareProject", shareMap.get("shareProject"));
-				request.setAttribute("shareFile", shareMap.get("shareFile"));
-				return "view/share_file";
+				KbProject kp = (KbProject) shareMap.get("shareProject");
+				KbFile kf = (KbFile) shareMap.get("shareFile");
+				if ("canceled".equals(kp.getProjectStatus()) || "delete".equals(kf.getFileStatus())) {
+					request.setAttribute("error", rtnErrorResult(Result.ERROR_4300, "糟糕，分享文件不存在"));
+				} else if ("locked".equals(kf.getFileStatus())) {
+					request.setAttribute("error", rtnErrorResult(Result.ERROR_4300, "糟糕，分享文件状态异常"));
+				} else {
+					request.setAttribute("shareProject", kp);
+					request.setAttribute("shareFile", kf);
+					return "view/share_file";
+				}
 			} else {
 				request.setAttribute("error", rtnErrorResult(Result.SUCCESS_0, "糟糕，分享文件不存在"));
 			}
@@ -492,7 +501,7 @@ public class FileController extends BaseController {
 		String projectCode = request.getParameter("project_code");
 		// 获得项目层级
 		String projectLevel = request.getParameter("project_level");
-		// 获得文件S编号
+		// 获得文件编号
 		String fileCodes = request.getParameter("file_codes");
 		try {
 			KbBatchShare kbs = new KbBatchShare();
@@ -532,9 +541,14 @@ public class FileController extends BaseController {
 			Result<Map<String, Object>> resultData = fs.selectShareFilesData(shareCode);
 			if (Result.SUCCESS_0 == resultData.getCode()) {
 				Map<String, Object> dataMap = resultData.getData();
-				request.setAttribute("shareProject", dataMap.get("project"));
+				KbProject kp = (KbProject) dataMap.get("project");
+				if ("canceled".equals(kp.getProjectStatus())) {
+					request.setAttribute("error",rtnFailResult(Result.ERROR_4300, "分享链接不存在或已过期"));
+				} else {
+				request.setAttribute("shareProject", kp);
 				request.setAttribute("shareFiles", dataMap.get("files"));
 				return "view/share_files";
+				}
 			} else {
 				request.setAttribute("error", resultData);
 				return "view/error";
@@ -542,8 +556,8 @@ public class FileController extends BaseController {
 		} catch (Exception e) {
 			log.error("文件批量分享异常,异常原因:【" + e.toString() + "】");
 			request.setAttribute("error", rtnErrorResult(Result.ERROR_6000, "系统异常,请联系系统管理员"));
-			return "view/error";
 		}
+		return "view/error";
 	}
 
 	/**
