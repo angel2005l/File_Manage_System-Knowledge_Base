@@ -17,7 +17,6 @@
 	href="assets/css/translateelement.css">
 <link rel="stylesheet" href="assets/theme/default/layer.css" />
 </head>
-
 <body>
 	<div class="wrapper">
 		<div class="header">
@@ -30,7 +29,6 @@
 				</h1>
 			</div>
 		</div>
-
 		<div class="container workspace simple-stack simple-stack-transition">
 			<div class="page page-0 simple-pjax">
 				<div class="page-inner" id="page-new-project">
@@ -44,7 +42,6 @@
 								<input type="file" name="file_data">
 							</div>
 						</div>
-
 						<div class="form-item">
 							<div class="form-field">
 								<textarea name="file_info" id="file_info"
@@ -144,14 +141,12 @@
 
 							</div>
 						</div>
-
-						<div class="">
-							<button type="button" class="btn btn-primary"
+						<div>
+							<button type="button" class="btn btn-primary" id="uploadBtn" 
 								onclick="clickBtn()">
 								<font style="vertical-align: inherit;"><font
 									style="vertical-align: inherit;">上传文件</font></font>
 							</button>
-
 							<a href="javascript:" onclick="self.location=document.referrer;"
 								class="btn btn-x"> <font style="vertical-align: inherit;">
 									<font style="vertical-align: inherit;">取消</font>

@@ -47,7 +47,9 @@ function changeFileDownload(showVal) {
 function clickBtn() {
 	var projectCode = $("#project_code").val();
 	var projectLevel = $("#project_level").val();
+	var uploadbtnObj = $("#uploadBtn");
 	if (checkLabel()) {
+		uploadbtnObj.attr("disabled","disabled");
 		$("#fileFrom").ajaxSubmit({
 			url : 'file/upFile.do',
 			type : 'post',
@@ -57,6 +59,7 @@ function clickBtn() {
 				if (result.code == 0) {
 					self.location = document.referrer;
 				}
+				uploadbtnObj.removeAttr("disabled");
 			},
 			error : function() {
 				layer.msg("服务未响应");
