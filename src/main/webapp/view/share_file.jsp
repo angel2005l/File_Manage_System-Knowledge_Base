@@ -30,7 +30,7 @@
 			</div>
 		</div>
 		<div class="container workspace simple-stack simple-stack-transition">
-			<div class="page page-1 simple-pjax">
+			<div class="page page-0 simple-pjax">
 				<div class="page-inner" id="page-todolist">
 					<div class="todos-all">
 						<div class="todolists-wrap">
