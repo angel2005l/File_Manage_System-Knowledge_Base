@@ -236,7 +236,7 @@ public interface IFileService {
 	 * @date 2018年7月25日
 	 * @version 1.0
 	 */
-	public Result<Object> uptlockFile(int fileLevel, String fileCode, String userCode) throws Exception;
+	public Result<Object> uptLockFile(int fileLevel, String fileCode, String userCode) throws Exception;
 
 	/**
 	 * 
@@ -253,4 +253,20 @@ public interface IFileService {
 	 * @version 1.0
 	 */
 	public Result<Object> deleteFile(int fileLevel, String fileCode, String userCode) throws Exception;
+
+	/**
+	 * 
+	 * @Title: uptUnLockFile
+	 * @Description: 解锁文件  解锁必须要延迟1小时方可解除
+	 * @author 黄官易
+	 * @param fileLevel
+	 * @param fileCode
+	 * @param userCode
+	 * @return
+	 * @throws Exception
+	 * @return Result<Object>
+	 * @date 2018年8月1日
+	 * @version 1.0
+	 */
+	public Result<Object> uptUnLockFile(int fileLevel, String fileCode, String userCode) throws Exception;
 }

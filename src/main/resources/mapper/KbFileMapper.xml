@@ -89,4 +89,11 @@
   	</selectKey>
   	update ${ft_name} <set>file_status = 'delete',update_user_code=#{userCode}</set> where file_code = #{fileCode} and (TIMESTAMPDIFF(MINUTE,create_time,NOW()) &lt;=30 or file_status = 'locked')
   </update>
+  <!-- 文件解锁 -->
+  <update id="updateUnLockFile">
+  	<selectKey keyProperty="ft_name" order="BEFORE" keyColumn="ft_name" resultType="string">
+  		select ft_name from kb_file_table where file_level = #{fileLevel}
+  	</selectKey>
+  	update ${ft_name} <set>file_status = 'record',update_user_code=#{userCode}</set> where file_code = #{fileCode} and TIMESTAMPDIFF(HOUR,update_time,NOW()) &gt;=1
+  </update>
 </mapper>

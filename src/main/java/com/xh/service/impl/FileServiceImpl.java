@@ -367,7 +367,7 @@ public class FileServiceImpl extends BaseService implements IFileService {
 			if (null != projectObj) {
 				projectInfo = (Map<String, Object>) projectObj; // 强转Map
 				Object sonProjectsObj = projectDataMap.get("sonProjectInfos");
-				if (null != sonProjectsObj && !"canceled".equals(projectInfo.get("projectStatus")+"")) {
+				if (null != sonProjectsObj) {
 					projectSonInfos = (List<Map<String, Object>>) sonProjectsObj;// 强转List
 					if (!projectSonInfos.isEmpty()) {
 						for (int index = 0; index < projectSonInfos.size(); index++) {
@@ -420,17 +420,18 @@ public class FileServiceImpl extends BaseService implements IFileService {
 		String endDate = obj.get("endDate");
 		String eventStartDate = obj.get("researchStartDate");
 		String eventEndDate = obj.get("researchEndDate");
-		if (StrUtil.isBlank(startDate) && StrUtil.isBlank(endDate)&&StrUtil.isBlank(eventStartDate) && StrUtil.isBlank(eventEndDate)) {
+		if (StrUtil.isBlank(startDate) && StrUtil.isBlank(endDate) && StrUtil.isBlank(eventStartDate)
+				&& StrUtil.isBlank(eventEndDate)) {
 			return obj;
 		}
-		if (StrUtil.isBlank(startDate)&& StrUtil.notBlank(endDate)) {
+		if (StrUtil.isBlank(startDate) && StrUtil.notBlank(endDate)) {
 			obj.put("startDate", DateUtil.addDay(endDate, -7));
-		} else if (StrUtil.isBlank(endDate)&& StrUtil.notBlank(startDate)) {
+		} else if (StrUtil.isBlank(endDate) && StrUtil.notBlank(startDate)) {
 			obj.put("endDate", DateUtil.addDay(startDate, 7));
 		}
-		if (StrUtil.isBlank(eventStartDate)&& StrUtil.notBlank(eventEndDate)) {
+		if (StrUtil.isBlank(eventStartDate) && StrUtil.notBlank(eventEndDate)) {
 			obj.put("researchStartDate", DateUtil.addDay(eventEndDate, -7));
-		} else if (StrUtil.isBlank(eventEndDate)&& StrUtil.notBlank(eventStartDate)) {
+		} else if (StrUtil.isBlank(eventEndDate) && StrUtil.notBlank(eventStartDate)) {
 			obj.put("researchEndDate", DateUtil.addDay(eventStartDate, 7));
 		}
 		return obj;
@@ -482,7 +483,7 @@ public class FileServiceImpl extends BaseService implements IFileService {
 	}
 
 	@Override
-	public Result<Object> uptlockFile(int fileLevel, String fileCode, String userCode) throws Exception {
+	public Result<Object> uptLockFile(int fileLevel, String fileCode, String userCode) throws Exception {
 		try {
 			return kfm.updateLockFile(fileLevel, fileCode, userCode) > 0 ? rtnSuccessResult("文件已锁定")
 					: rtnFailResult(Result.ERROR_4300, "文件锁定失败");
@@ -499,6 +500,17 @@ public class FileServiceImpl extends BaseService implements IFileService {
 					: rtnFailResult(Result.ERROR_4300, "文件已删除或上传时间超过30分钟,请联系系统管理员");
 		} catch (SQLException e) {
 			log.error("文件删除数据接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
+		}
+	}
+
+	@Override
+	public Result<Object> uptUnLockFile(int fileLevel, String fileCode, String userCode) throws Exception {
+		try {
+			return kfm.updateUnLockFile(fileLevel, fileCode, userCode) > 0 ? rtnSuccessResult("文件已解锁")
+					: rtnFailResult(Result.ERROR_4300, "文件解锁失败。文件锁定时间未超过1小时/文件未锁定，请联系系统管理员");
+		} catch (SQLException e) {
+			log.error("文件锁定数据接口异常,异常原因:【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "服务器异常,请联系系统管理员");
 		}
 	}

@@ -123,4 +123,21 @@ public interface KbFileMapper {
 	 */
 	public int deleteFile(@Param("fileLevel") int fileLevel, @Param("fileCode") String fileCode,
 			@Param("userCode") String userCode) throws SQLException;
+
+	/**
+	 * 
+	 * @Title: uodateUnLockFile
+	 * @Description: 文件解锁
+	 * @author 黄官易
+	 * @param fileLevel
+	 * @param fileCode
+	 * @param userCode
+	 * @return
+	 * @throws SQLException
+	 * @return int
+	 * @date 2018年8月1日
+	 * @version 1.0
+	 */
+	public int updateUnLockFile(@Param("fileLevel") int fileLevel, @Param("fileCode") String fileCode,
+			@Param("userCode") String userCode) throws SQLException;
 }

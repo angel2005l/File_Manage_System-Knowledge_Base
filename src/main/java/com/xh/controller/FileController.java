@@ -52,8 +52,7 @@ public class FileController extends BaseController {
 	@Autowired
 	@Qualifier("projectServiceImpl")
 	private IProjectService ps;
-	
-	
+
 	/**
 	 * 
 	 * @Title: uploadFile
@@ -315,7 +314,7 @@ public class FileController extends BaseController {
 			String userCode = session.getAttribute("user_code").toString();// 用户编码
 			String rootCode = StrUtil.isBlank(request.getParameter("root_code")) ? projectCode
 					: request.getParameter("root_code");// 根路径
-			//文件查询条件
+			// 文件查询条件
 			Map<String, String> fileSelMap = new HashMap<String, String>();
 			String fileName = request.getParameter("form_file_name");
 			String startDate = request.getParameter("form_start_date");
@@ -589,7 +588,7 @@ public class FileController extends BaseController {
 		String fileLevel = request.getParameter("file_level");
 		try {
 			String userCode = session.getAttribute("user_code").toString();
-			return fs.uptlockFile(Integer.parseInt(fileLevel), fileCode, userCode);
+			return fs.uptLockFile(Integer.parseInt(fileLevel), fileCode, userCode);
 		} catch (NullPointerException e) {
 			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
 			return rtnErrorResult(Result.ERROR_4200, "登录信息已失效,请重新登录");
@@ -624,6 +623,35 @@ public class FileController extends BaseController {
 			return rtnErrorResult(Result.ERROR_4200, "登录信息已失效,请重新登录");
 		} catch (Exception e) {
 			log.error("文件删除接口异常,异常原因:【" + e.toString() + "】");
+			return rtnErrorResult(Result.ERROR_6000, "系统异常,请联系系统管理员");
+		}
+	}
+
+	/**
+	 * 
+	 * @Title: unLockFile
+	 * @Description: 文件锁定
+	 * @author 黄官易
+	 * @param request
+	 * @param session
+	 * @return
+	 * @return Result<Object>
+	 * @date 2018年8月1日
+	 * @version 1.0
+	 */
+	@RequestMapping("/unLockFile.do")
+	@ResponseBody
+	public Result<Object> unLockFile(HttpServletRequest request, HttpSession session) {
+		String fileCode = request.getParameter("file_code");
+		String fileLevel = request.getParameter("file_level");
+		try {
+			String userCode = session.getAttribute("user_code").toString();
+			return fs.uptUnLockFile(Integer.parseInt(fileLevel), fileCode, userCode);
+		} catch (NullPointerException e) {
+			log.error("非法登录,登录IP：" + IpUtil.getIp(request));
+			return rtnErrorResult(Result.ERROR_4200, "登录信息已失效,请重新登录");
+		} catch (Exception e) {
+			log.error("文件锁定接口异常,异常原因:【" + e.toString() + "】");
 			return rtnErrorResult(Result.ERROR_6000, "系统异常,请联系系统管理员");
 		}
 	}
