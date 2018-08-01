@@ -34,7 +34,7 @@
 					<form id="projectFrom" class="form">
 						<div class="form-item">
 							<div class="form-field">
-								<input type="text" name="project_name" placeholder="项目名称" autofocus="autofocus" onkeydown='if(event.keyCode==13) return false;' >
+								<input type="text" id="project_name" name="project_name" placeholder="项目名称" autofocus="autofocus" onkeydown='if(event.keyCode==13) return false;' >
 							</div>
 						</div>
 						<div class="form-item">
@@ -59,7 +59,6 @@
 									style="vertical-align: inherit;">现版本，暂不支持个人项目</font></small>
 							</label>
 						</div>
-
 						<div class="setting-section">
 							<h4>
 								<font style="vertical-align: inherit;">选择项目参与成员</font>
@@ -70,7 +69,6 @@
 								</font>
 							</p>
 							<div class="manage-members-tabs">
-
 								<div class="tab active" data-tab="team">
 									<div class="manage-members">
 										<div class="add-member">
@@ -81,7 +79,6 @@
                         					</c:forEach>
                        				     </div>
 										</div>
-
 										<div class="members member-checkbox-list">
 											<c:forEach var="b" items="${userList }">
 												<label title="${b.userDeptCode }" class="member join_work" style="display:none;" data-dept_code ='${b.userDeptCode }'> <input
@@ -129,11 +126,10 @@
 										</div>
 									</div>
 								</div>
-
 							</div>
 						</div>
 						<div class="">
-							<button type="button" class="btn btn-primary"
+							<button type="button" class="btn btn-primary" id="createProjectBtn"
 								onclick="clickBtn()">
 								<font style="vertical-align: inherit;"><font
 									style="vertical-align: inherit;">创建项目</font></font>
