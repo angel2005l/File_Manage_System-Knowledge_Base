@@ -123,6 +123,27 @@
 											</c:if>
 										</c:forEach>
 									</ul>
+							<%-- 		<ul class="todos todos-uncompleted ui-sortable">
+										<c:forEach var="projects" items="${projectSonInfos }">
+											<c:if test="${projects.projectStatus=='locked' }">
+												<li class="todo completed">
+													<div class="todo-wrap">
+														<span class="todo-content"> <span
+															class="content-linkable"> <a class="todo-rest"
+																data-stack="true"
+																href="file/pfd.do?project_code=${projects.projectCode }&project_level=${projects.projectLevel}&root_code=${rootCode }">${projects.projectName }</a>
+														</span>
+														</span> <span class="todo-detail" style=""> <a
+															class="label todo-assign-due">${projects.createUserName }
+														</a><a class="label todo-assign-due"><fmt:parseDate
+																	value="${projects.createTime }" var="parsedEmpDate" />
+																<fmt:formatDate value="${parsedEmpDate }"
+																	pattern="yyyy-MM-dd" /> </a></span>
+													</div>
+												</li>
+											</c:if>
+										</c:forEach>
+									</ul> --%>
 									<ul class="todo-new-wrap">
 										<c:forEach var="projects" items="${projectSonInfos }">
 											<c:if test="${projects.projectStatus=='completed' }">
@@ -302,21 +323,34 @@
 							<a class="detail-action detail-action-star"
 								href="pro/insProJsp.do?project_code=${projectInfo.projectCode }&project_level=${projectInfo.projectLevel }">新增项目</a>
 						</div>
+							<div class="item">
+								<a class="detail-action detail-action-star"
+									onclick="deleteProject('${projectInfo.projectCode }','${projectInfo.projectLevel }')">删除项目</a>
+						</div>
 					</c:if>
-					<div class="item">
-						<a class="detail-action detail-action-star"
-							onclick="lockProject('${projectInfo.projectCode }','${projectInfo.projectLevel }')">锁定项目</a>
-					</div>
-					<div class="item">
-						<a class="detail-action detail-action-star"
-							onclick="deleteProject('${projectInfo.projectCode }','${projectInfo.projectLevel }')">删除项目</a>
-					</div>
+					<!-- 延期锁定项目功能 -->
+			<%-- 		<c:choose>
+						<c:when test="${'locked' eq projectInfo.projectStatus }">
+							<div class="item">
+								<a class="detail-action detail-action-star"
+									onclick="lockProject('${projectInfo.projectCode }','${projectInfo.projectLevel }')">解锁项目</a>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<div class="item">
+								<a class="detail-action detail-action-star"
+									onclick="lockProject('${projectInfo.projectCode }','${projectInfo.projectLevel }')">锁定项目</a>
+							</div>
+						</c:otherwise>
+					</c:choose> --%>
 				</c:if>
-				<div class="item">
-					<!-- 分享项目需要 -->
-					<a class="detail-action detail-action-archive"
-						onclick="shareProject('${projectInfo.projectCode}','${projectInfo.projectLevel }','${sessionScope.user_code }')">分享</a>
-				</div>
+				<%-- <c:if test="${!'locked' eq projectInfo.projectStatus }"> --%>
+					<div class="item">
+						<!-- 分享项目需要 -->
+						<a class="detail-action detail-action-archive"
+							onclick="shareProject('${projectInfo.projectCode}','${projectInfo.projectLevel }','${sessionScope.user_code }')">分享</a>
+					</div>
+				<%-- </c:if> --%>
 			</div>
 		</div>
 		<div class="footer">© 商务智能部</div>

@@ -358,7 +358,6 @@ public class FileServiceImpl extends BaseService implements IFileService {
 		 * 
 		 */
 		try {
-
 			if (kptm.isExistProjectTable(projectLevel + 1)) {
 				projectDataMap = kpm.selectProjectAndSonProjectInfos(projectLevel, projectCode, userCode);// 项目及子项目详细
 			} else {
@@ -368,7 +367,7 @@ public class FileServiceImpl extends BaseService implements IFileService {
 			if (null != projectObj) {
 				projectInfo = (Map<String, Object>) projectObj; // 强转Map
 				Object sonProjectsObj = projectDataMap.get("sonProjectInfos");
-				if (null != sonProjectsObj) {
+				if (null != sonProjectsObj && !"canceled".equals(projectInfo.get("projectStatus")+"")) {
 					projectSonInfos = (List<Map<String, Object>>) sonProjectsObj;// 强转List
 					if (!projectSonInfos.isEmpty()) {
 						for (int index = 0; index < projectSonInfos.size(); index++) {

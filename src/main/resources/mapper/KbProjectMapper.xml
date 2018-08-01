@@ -86,6 +86,7 @@
 	<resultMap type="map" id="projectInfoResultMap">
 		<association property="projectInfo" javaType="map" column="{projectTableName = pt_name,userCode = user_code,projectCode = project_code}" select="selectProjectWithProjectPerssionByProjectCode"></association>
 	</resultMap>
+	<!-- 根据userCode，projectCode查询项目详细 -->
 	<select id="selectProjectInfo" resultMap="projectInfoResultMap">
 		SELECT pt_name,'${userCode}' as user_Code , '${projectCode}' as project_code FROM kb_project_table WHERE project_level=${projectLevel}
 	</select>
@@ -93,6 +94,7 @@
 		<association property="projectInfo" javaType="map" column="{projectTableName = a.pt_name,userCode = user_code,projectCode = project_code}" select="selectProjectWithProjectPerssionByProjectCode"></association>
 		<collection property="sonProjectInfos" column="{formName = b.pt_name,userCode = user_code,projectCode = project_code}" select="selectSonProject" ></collection>
 	</resultMap>
+	<!-- 根据userCode，projectCode查询项目详细 -->
 	<select id="selectProjectAndSonProjectInfos" resultMap="projectInfoAndSonProjectInfosResultMap">
 		 SELECT a.pt_name,b.pt_name,'${userCode}' as user_Code , '${projectCode}' as project_code FROM kb_project_table a LEFT JOIN kb_project_table b ON a.`project_level` +1 = b.`project_level` WHERE a.`project_level`=${projectLevel}
 	</select>
@@ -117,7 +119,7 @@
   			SELECT  a.id AS id, a.project_code AS project_code, a.project_name AS project_name,a.project_type AS project_type, a.project_parent_code AS project_parent_code, 
    a.project_level AS project_level, a.project_status AS project_status, a.create_user_code AS create_user_code, DATE_FORMAT(a.create_time,'%Y-%m-%d %H:%i:%s') AS create_time, a.update_user_code AS update_user_code,
    DATE_FORMAT(a.update_time,'%Y-%m-%d %H:%i:%s') AS update_time,b.user_name AS create_user_name,c.user_name AS update_user_name
-   FROM ${formName} a INNER JOIN kb_user b ON a.`create_user_code` = b.`user_code` INNER JOIN kb_user c ON a.update_user_code = c.user_code  WHERE a.project_parent_code= #{projectCode} AND a.project_status NOT IN ('canceled','locked')
+   FROM ${formName} a INNER JOIN kb_user b ON a.`create_user_code` = b.`user_code` INNER JOIN kb_user c ON a.update_user_code = c.user_code  WHERE a.project_parent_code= #{projectCode} AND a.project_status &lt;&gt; 'canceled' <!-- not in('canceled','locked') -->
   	</select>
 	<!-- 更新项目状态 -->
 	<update id="updateProjectStatus">

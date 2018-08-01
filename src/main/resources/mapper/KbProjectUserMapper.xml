@@ -31,19 +31,19 @@
 			<choose>
 				<!-- 收藏 -->
 				<when test="method =='collect'">
-					and project_is_collect ='Y' and a.project_status not in('canceled','locked')
+					and project_is_collect ='Y' and a.project_status &lt;&gt; 'canceled' <!-- not in('canceled','locked') -->
 				</when>
 				<!-- 我的项目 -->
 				<when test="method =='self'">
-				and b.create_user_code = #{userCode} and a.project_status not in('canceled','locked')
+				and b.create_user_code = #{userCode} and a.project_status &lt;&gt; 'canceled' <!-- not in('canceled','locked') -->
 				</when>
 				<!-- 参与项目 -->
 				<when test="method =='participation'">
-					and a.project_status not in('canceled','locked')
+					and a.project_status &lt;&gt; 'canceled' <!-- not in('canceled','locked') -->
 				</when>
 				<!-- 默认：我的项目 -->
 				<otherwise>
-					and b.create_user_code = #{userCode} and a.project_status not in('canceled','locked')
+					and b.create_user_code = #{userCode} and a.project_status &lt;&gt; 'canceled' <!-- not in('canceled','locked') -->
 				</otherwise>
 			</choose>	
 		</where>
