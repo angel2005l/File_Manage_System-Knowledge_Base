@@ -47,7 +47,7 @@ function changeFileDownload(showVal) {
 function clickBtn() {
 	var projectCode = $("#project_code").val();
 	var projectLevel = $("#project_level").val();
-	if (checkFile) {
+	if (checkLabel()) {
 		$("#fileFrom").ajaxSubmit({
 			url : 'file/upFile.do',
 			type : 'post',
@@ -80,12 +80,12 @@ function changeFileEventType() {
 	}
 }
 
-function changeFileEventLevel(){
+function changeFileEventLevel() {
 	var result = ajaxGet("dic/getFel.do", false);
 	var fileEventLevelSelectObj = $("#file_event_level");
 	fileEventLevelSelectObj.empty();
-	fileEventLevelSelectObj.append($("<option />").text("请选择事件级别").attr("value",
-			"").attr("selected", "selected"));
+	fileEventLevelSelectObj.append($("<option />").text("请选择事件级别").attr(
+			"value", "").attr("selected", "selected"));
 	if (result.code == 0) {
 		$(result.data).each(
 				function() {
@@ -95,12 +95,30 @@ function changeFileEventLevel(){
 	}
 }
 
-function checkFile() {
-	var fileUrl = $("#file_data").val();
+function checkLabel() {
+	var fileUrl = $("input[name='file_data']").val();
+	var fileEventType = $("#file_event_type").val();
+	var fileEventLevel = $("#file_event_level").val();
+	var fileResearchUserCode = $("#file_research_user_code").val();
+	var fileResearchStartTime = $("#file_research_start_time").val();
 	if (fileUrl == '') {
 		layer.msg("请选择文件");
-	} else if (fileUrl.indexOf(" ") >= 0) {
+		return false;
+	} else if ((fileUrl.indexOf(" ") >= 0)) {
 		layer.msg("文件名不能有空格");
 		return false;
+	} else if (fileEventType == '') {
+		layer.msg("请选择事件类型");
+		return false;
+	} else if (fileEventLevel == '') {
+		layer.msg("请选择事件级别");
+		return false;
+	} else if (fileResearchUserCode == '') {
+		layer.msg("请选择调研人");
+		return false;
+	} else if (fileResearchStartTime == '') {
+		layer.msg("请选择调研时间");
+		return false;
 	}
+	return true;
 }

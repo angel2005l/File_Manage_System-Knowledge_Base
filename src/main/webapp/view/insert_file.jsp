@@ -73,7 +73,7 @@
 								<h4>
 									<font style="vertical-align: inherit;">选择调研人</font>
 								</h4>
-								<select class="xh_file_select" name="file_research_user_code">
+								<select id="file_research_user_code" class="xh_file_select" name="file_research_user_code">
 								<c:forEach var="b" items="${userList }">
 									<option value="${b.user_code }" <c:if test="${b.user_code eq sessionScope.user_code }" >selected</c:if> >${b.user_name }</option>
 								</c:forEach>
@@ -83,7 +83,7 @@
 								<h4>
 									<font style="vertical-align: inherit;">选择调研时间</font>
 								</h4>
-								<input type="text" class="form_datetime"
+								<input type="text" class="form_datetime" id="file_research_start_time"
 									style="display: inline; width: 220px;" name="file_research_start_time"
 									placeholder="请选择调研时间" autocomplete="off" readonly="readonly">
 							</div>
