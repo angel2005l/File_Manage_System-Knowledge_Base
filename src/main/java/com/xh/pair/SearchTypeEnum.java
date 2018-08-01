@@ -2,7 +2,7 @@ package com.xh.pair;
 
 public enum SearchTypeEnum {
 
-	COLLECT("collect", "收藏"), SELF("self", "我的项目"), PARTICIPATION("participation", "参与的项目"),LOCKED("locked","锁定的项目");
+	COLLECT("collect", "收藏"), SELF("self", "我的项目"), PARTICIPATION("participation", "参与的项目");
 
 	private String code;
 	private String text;
