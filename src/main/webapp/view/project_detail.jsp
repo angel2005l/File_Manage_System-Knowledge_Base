@@ -226,7 +226,7 @@
 															<div class="name">
 																<div class="file_name_rest">
 																	<span class="file_name_span" style="float:left;">${b.file_name }</span>
-																	<span style="font-size: 10px; padding-left: 10px;display: inline-block;">${b.user_name }&nbsp;&nbsp;<fmt:formatDate value="${b.create_time }" pattern="yyyy-MM-dd HH:mm:ss" /></span>
+																	<span style="font-size: 10px;display: inline-block;">${b.user_name }&nbsp;&nbsp;<fmt:formatDate value="${b.create_time }" pattern="yyyy-MM-dd HH:mm:ss" /></span>
 																</div>
 																<p class=" file_name_rest">${b.file_info }</p>
 																<%-- <p class="detail-p"><a class="link-download">${b.file_info }</a></p> --%>
