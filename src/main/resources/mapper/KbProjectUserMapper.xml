@@ -23,7 +23,7 @@
   </sql>
 	<!-- 根据用户编码查询用户所关联的信息 -->
 	<select id="selectProjectSimpleInfoByUserCodeAndMethod" resultType="map">
-		SELECT DISTINCT a.`project_status`, project_main_code,project_main_name,project_is_collect FROM ${projectTable} a INNER JOIN kb_project_user b ON  a.`project_code` = b.`project_main_code` AND b.`user_code` = #{userCode}
+		SELECT DISTINCT a.`project_status`, project_main_code,project_main_name,project_is_collect,a.create_time FROM ${projectTable} a INNER JOIN kb_project_user b ON  a.`project_code` = b.`project_main_code` AND b.`user_code` = #{userCode}
 		<where>
 			<if test="formProjectName !=null and formProjectName !=''">
 				and locate (#{formProjectName}, b.project_name)>0

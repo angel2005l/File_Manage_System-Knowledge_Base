@@ -19,59 +19,14 @@
 
 <script src="assets/js/xh_application.js"></script>
 </head>
-
 <body class="" style="cursor: auto;">
-
 	<div class="wrapper">
-
 		<div class="header">
 			<div class="header-container">
 				<h1 class="logo">
 					<a class="header-team-name js-show-focus-driver"
 						href="javascript:;">新海科技集团</a>
 				</h1>
-
-				<div class="command-bar">
-					<div class="search-wrap">
-						<a href="javascript:;" class="link-search" title="搜索"><i
-							class="twr twr-search"></i></a>
-						<form id="form-search" class="form" method="get">
-							<input id="txt-search" type="text" class="keyword no-border"
-								name="keyword" placeholder="搜索" autocomplete="off">
-						</form>
-					</div>
-
-					<div class="notification-info">
-						<a href="javascript:;" id="notification-count" class="label"
-							title="新的通知" >
-							<span class="twr twr-bell-o bell"></span> <span class="num">0</span>
-						</a>
-						<div class="noti-pop">
-							<div class="noti-pop-hd">
-								<b class="title">通知</b> <a class="mark-as-read"
-									id="noti-mark-read">
-									<span class="twr twr twr-check"></span> 全部标记为已读
-								</a>
-							</div>
-							<div class="noti-pop-list-wrap">
-								<div class="noti-pop-list notification-list"></div>
-							</div>
-							<div class="noti-pop-empty">- 没有新通知 -</div>
-							<div class="noti-pop-footer">
-								<a class="noti-settings">
-									<i class="twr twr-cog"></i> 通知设置
-								</a> <a class="noti-all-link" data-stack="true">查看全部通知</a>
-							</div>
-						</div>
-					</div>
-					<div class="account-info">
-						<div class="member-settings">
-							<a class="link-member-menu" href="javascript:;"
-								data-new-feature="false"> <span class="twr twr-caret-down"></span>
-							</a>
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 
@@ -93,11 +48,8 @@
 												</h3>
 											</div>
 										</li>
-
 									</ul>
-
 								</div>
-
 							</div>
 						</div>
 						<div class="comment-actions ">
@@ -122,9 +74,15 @@
 														</div>
 														<div class="tags"></div>
 														<div class="control-dir no-dir">
-															<a class="link-change-dir"
-																onclick="display('${shareFile.file_code }','${shareFile.file_name }')"
-																target="_blank">预览</a>
+															<c:choose>
+																<c:when test="${b.file_status eq 'record' }">
+																	<a class="link-change-dir displayBtn"
+																		onclick="display('${b.file_ode }','${b.file_name }'">预览</a>
+																</c:when>
+																<c:when test="${b.file_status eq 'locked' }">
+																	<a class="link-change-dir" >已锁定</a>
+																</c:when>
+															</c:choose>
 															<%-- 	<c:if test="${shareFile.file_permission eq 'download' }">
 															<a
 																onclick="downloadFile('${shareFile.file_code }','${shareFile.file_level }')"
@@ -148,6 +106,18 @@
 		</div>
 	</div>
 	<div class="footer">© 商务智能部</div>
+	<form id="displayForm" action="build/generic/web/viewer.html"
+		method="get" target="_blank">
+		<input id="displayValues" type="hidden" name="file" />
+	</form>
+	<script type="text/javascript">
+	function display(code, name) {
+		var str = "${pageContext.request.contextPath }/file/disPdf.do?file_info="
+				+ code + "," + name;
+		$("#displayValues").val(str);
+		$("#displayForm").submit();
+	}
+	</script>
 </body>
 
 </html>

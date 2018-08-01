@@ -220,9 +220,14 @@ public class ProjectController extends BaseController {
 		try {
 			Map<String, Object> shareMap = ps.getShareProject(projectCode, Integer.parseInt(projectLevel), userCode);
 			if (!shareMap.isEmpty()) {
-				request.setAttribute("shareProject", shareMap.get("shareProject"));
-				request.setAttribute("shareFiles", shareMap.get("shareFiles"));
-				return "view/share_project";
+				KbProject kp = (KbProject) shareMap.get("shareProject");
+				if("canceled".equals(kp.getProjectStatus())) {
+					request.setAttribute("error", rtnErrorResult(Result.ERROR_6000, "糟糕，分享项目已删除"));
+				}else {
+					request.setAttribute("shareProject", shareMap.get("shareProject"));
+					request.setAttribute("shareFiles", shareMap.get("shareFiles"));
+					return "view/share_project";
+				}
 			}
 			request.setAttribute("error", rtnErrorResult(Result.ERROR_6000, "糟糕，分享项目不存在"));
 		} catch (NumberFormatException e) {
