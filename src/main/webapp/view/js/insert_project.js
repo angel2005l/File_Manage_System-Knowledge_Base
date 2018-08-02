@@ -113,5 +113,5 @@ function clickBtn() {
 			layer.msg("项目名称不能大于32位,请修改文件名称");
 			return false;
 		}
-		return false;
+		return true;
 	}
