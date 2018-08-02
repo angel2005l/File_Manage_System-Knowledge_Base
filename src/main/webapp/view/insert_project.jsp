@@ -39,9 +39,7 @@
 						</div>
 						<div class="form-item">
 							<div class="form-field">
-								<textarea name="project_info" id="project_info"
-									placeholder="简单描述项目，便于其他人理解（选填）" data-validate="length:0,255"
-									data-validate-msg="项目描述最长255个字符"></textarea>
+								<textarea name="project_info" id="project_info" placeholder="简单描述项目，便于其他人理解（选填）"></textarea>
 							</div>
 						</div>
 						<div class="setting-section select-section">
@@ -50,7 +48,7 @@
 									style="vertical-align: inherit;">项目类型</font></font>
 							</h4>
 							<label class="project-radio"><input type="radio"
-								name="project_type" value="pub" checked=""> <font
+								name="project_type" value="pub" checked="checked"> <font
 								style="vertical-align: inherit;">部门项目</font> <small><font
 									style="vertical-align: inherit;">更好地组织、细分和管理任务，适用于一般项目管理</font></small>
 							</label> <label class="project-radio"> <input type="radio"

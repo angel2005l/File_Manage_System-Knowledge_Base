@@ -1,12 +1,5 @@
 $(function() {
-	// 上传文件者默认为项目参与者
-	var createInfo = $("#userInfo").val();
-	$("input[name='file_download'][value='" + createInfo + "']").prop(
-			"checked", "checked").on("change", function() {
-		$(this).prop("checked", "checked");
-	})
-	$("input[name='file_show'][value='" + createInfo + "']").prop("disabled",
-			"disabled");
+	initJoinUser();
 	// 控制权限唯一
 	$("input[name='file_download']").on("change", function() {
 		var dowloadVal = $(this).val();
@@ -15,6 +8,38 @@ $(function() {
 	$("input[name='file_show']").on("change", function() {
 		var showVal = $(this).val();
 		changeFileDownload(showVal);
+	})
+	
+	$("input[name='file_all']").on('click',function(){
+		var thisObj = $(this);
+		if(thisObj.is(":checked")){
+			switch (thisObj.val()) {
+				case "download":
+					$("input[name='file_all'][value='show']").prop("checked", false);
+					$("input[name='file_download']").prop("checked", "checked");
+					$("input[name='file_show']").prop("checked", false);			
+					break;
+				case "show":
+					$("input[name='file_all'][value='download']").prop("checked", false);
+					$("input[name='file_show']").prop("checked", "checked");
+					$("input[name='file_download']").prop("checked", false);
+					break;
+			}
+			thisObj.prop("checked", "checked");
+		}else{
+			switch (thisObj.val()) {
+			case "download":
+			$("input[name='file_all'][value='download']").prop("checked", false);
+			$("input[name='file_download']").prop("checked", false);
+			break;
+		case "show":
+			$("input[name='file_all'][value='show']").prop("checked", false);
+			$("input[name='file_show']").prop("checked", false);
+			break;
+		}
+		thisObj.prop("checked", false);
+	}
+		initJoinUser();
 	})
 	changeFileEventType();
 	changeFileEventLevel();
@@ -31,6 +56,17 @@ $(function() {
 		format : "yyyy-mm-dd"
 	});
 })
+
+function initJoinUser(){
+	// 上传文件者默认为项目参与者
+	var createInfo = $("#userInfo").val();
+	$("input[name='file_download'][value='" + createInfo + "']").prop(
+			"checked", "checked").on("change", function() {
+		$(this).prop("checked", "checked");
+	})
+	$("input[name='file_show'][value='" + createInfo + "']").prop("disabled",
+			"disabled").prop("checked", false);
+}
 
 function changeFileShow(dowloadVal) {
 	var obj = $("input[name='file_show'][value='" + dowloadVal + "']");

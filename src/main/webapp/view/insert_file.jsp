@@ -100,6 +100,10 @@
 									<div class="manage-members">
 										<div class="add-member"></div>
 										<div class="members member-checkbox-list">
+												<label class="member"> <input type="checkbox" name="file_all" value="download" ><span
+													class="name"><font style="vertical-align: inherit;"><font
+															style="vertical-align: inherit;">全选</font></font></span>
+												</label>
 											<c:forEach var="b" items="${userList }">
 												<label title="${b.user_name }" class="member"> <input
 													type="checkbox" name="file_download"
@@ -127,6 +131,10 @@
 									<div class="manage-members">
 										<div class="add-member"></div>
 										<div class="members member-checkbox-list">
+											<label class="member"> <input type="checkbox" name="file_all" value="show" ><span
+													class="name"><font style="vertical-align: inherit;"><font
+															style="vertical-align: inherit;">全选</font></font></span>
+												</label>
 											<c:forEach var="b" items="${userList }">
 												<label title="${b.user_name }" class="member"> <input
 													type="checkbox" name="file_show"
@@ -138,7 +146,6 @@
 										</div>
 									</div>
 								</div>
-
 							</div>
 						</div>
 						<div>
